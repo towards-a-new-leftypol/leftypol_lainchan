@@ -321,7 +321,7 @@ CREATE TABLE `pages` (
 --
 
 CREATE TABLE `nntp_references` (
-  `board` varchar(60) NOT NULL,
+  `board` varchar(30) NOT NULL,
   `id` int(11) unsigned NOT NULL,
   `message_id` varchar(190) CHARACTER SET ascii NOT NULL,
   `message_id_digest` varchar(40) CHARACTER SET ascii NOT NULL,
@@ -345,3 +345,4 @@ CREATE TABLE IF NOT EXISTS `calendar_events` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
