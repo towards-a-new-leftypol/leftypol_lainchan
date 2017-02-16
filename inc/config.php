@@ -1151,6 +1151,7 @@
     $config['error']['nodelete']        = _('You didn\'t select anything to delete.');
     $config['error']['nodeletethread']  = _('You are not allowed to delete threads.');
     $config['error']['noreport']        = _('You didn\'t select anything to report.');
+ 	$config['error']['invalidreport']	= _('The reason was too long.');
     $config['error']['toomanyreports']  = _('You can\'t report that many posts at once.');
     $config['error']['invalidpassword'] = _('Wrong password…');
     $config['error']['invalidimg']      = _('Invalid image.');
