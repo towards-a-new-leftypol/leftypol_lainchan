@@ -45,6 +45,7 @@
     $config['check_updates_time'] = 43200; // 12 hours
 
     // Shows some extra information at the bottom of pages. Good for development/debugging.
+    // The /debug pages in mod.php must be manually uncommented for extra safety.
     $config['debug'] = false;
     // For development purposes. Displays (and "dies" on) all errors and warnings. Turn on with the above.
     $config['verbose_errors'] = true;
