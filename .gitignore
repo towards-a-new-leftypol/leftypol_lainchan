@@ -16,7 +16,7 @@
 /inc/lib/minify
 
 # instance-config
-/inc/instance-config.php
+# /inc/instance-config.php
 
 # .installed
 /.installed
