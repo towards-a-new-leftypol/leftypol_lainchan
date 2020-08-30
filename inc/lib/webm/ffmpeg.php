@@ -27,7 +27,7 @@ function is_valid_webm($ffprobe_out) {
 	if ($extension === 'webm' && !stristr($ffprobe_out['format']['format_name'], 'mp4')) {
 		if ($ffprobe_out['format']['format_name'] != 'matroska,webm')
 			return array('code' => 2, 'msg' => $config['error']['invalidwebm']."error 1");
-	} elseif ($extension === 'mp4') {
+	} elseif ($extension === 'mp4' || stristr($ffprobe_out['format']['format_name'], 'mp4')) {
 		if ($ffprobe_out['streams'][0]['codec_name'] != 'h264' && $ffprobe_out['streams'][1]['codec_name'] != 'aac')
 			return array('code' => 2, 'msg' => $config['error']['invalidwebm']."error 2");
 	} else {
