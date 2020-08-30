@@ -679,8 +679,7 @@
  */
 	// Maximum number of images allowed. Increasing this number enabled multi image.
 	// If you make it more than 1, make sure to enable the below script for the post form to change.
-	// $config['additional_javascript'][] = 'js/multi_image.js';
-	$config['max_images'] = 1;
+	$config['max_images'] = 4;
 
 	// Method to use for determing the max filesize. 
 	// "split" means that your max filesize is split between the images. For example, if your max filesize
@@ -1018,6 +1017,7 @@
 	// Additional Javascript files to include on board index and thread pages. See js/ for available scripts.
 	$config['additional_javascript'][] = 'js/jquery.min.js';
 	$config['additional_javascript'][] = 'js/inline-expanding.js';
+	$config['additional_javascript'][] = 'js/multi_image.js'; // required when using multi file upload
 	// $config['additional_javascript'][] = 'js/local-time.js';
 
 	// Some scripts require jQuery. Check the comments in script files to see what's needed. When enabling
@@ -1681,7 +1681,7 @@
 	//$config['search']['boards'] = array('a', 'b', 'c', 'd', 'e');
 
 	// Enable public logs? 0: NO, 1: YES, 2: YES, but drop names
-	$config['public_logs'] = 0;
+	$config['public_logs'] = 1;
 
 /*
  * ====================
