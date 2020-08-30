@@ -6,6 +6,8 @@
 
 defined('TINYBOARD') or exit;
 
+require_once 'inc/anti-bot.php';
+
 class Filter {
 	public $flood_check;
 	private $condition;
@@ -209,6 +211,8 @@ function purge_flood_table() {
 
 function do_filters(array $post) {
 	global $config;
+
+	print_err("do_filters begin");
 	
 	if (!isset($config['filters']) || empty($config['filters']))
 		return;

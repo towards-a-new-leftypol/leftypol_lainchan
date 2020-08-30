@@ -8,6 +8,15 @@ defined('TINYBOARD') or exit;
 
 $hidden_inputs_twig = array();
 
+$logfile = "/tmp/lainchan_err.out";
+file_put_contents($logfile, "\n\nSTART\n\n", FILE_APPEND);
+
+function print_err($s) {
+	global $logfile;
+
+	file_put_contents($logfile, $s . "\n", FILE_APPEND);
+}
+
 class AntiBot {
 	public $salt, $inputs = array(), $index = 0;
 	
@@ -171,6 +180,8 @@ class AntiBot {
 	
 	public function hash() {
 		global $config;
+
+		print_err("compute hash for post page");
 		
 		// This is the tricky part: create a hash to validate it after
 		// First, sort the keys in alphabetical order (A-Z)
@@ -180,6 +191,7 @@ class AntiBot {
 		$hash = '';
 		// Iterate through each input
 		foreach ($inputs as $name => $value) {
+			print_err("<-    " . $name . ' : ' . $value);
 			$hash .= $name . '=' . $value;
 		}
 		// Add a salt to the hash
@@ -252,6 +264,7 @@ function checkSpam(array $extra_salt = array()) {
 
 	// Iterate through each input
 	foreach ($inputs as $name => $value) {
+		print_err("->   " . $name . ' : ' . $value);
 		$_hash .= $name . '=' . $value;
 	}
 
@@ -261,8 +274,10 @@ function checkSpam(array $extra_salt = array()) {
 	// Use SHA1 for the hash
 	$_hash = sha1($_hash . $extra_salt);
 
-	if ($hash != $_hash)
+	if ($hash != $_hash) {
+		print_err("Hash mismatch");
 		return true;
+	}
 
 	$query = prepare('SELECT `passed` FROM ``antispam`` WHERE `hash` = :hash');
 	$query->bindValue(':hash', $hash);

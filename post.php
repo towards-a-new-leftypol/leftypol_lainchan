@@ -396,10 +396,19 @@ function handle_report(){
 
 }
 
+print_err("Hello Top Level");
+
 function handle_post(){
 	global $config,$dropped_post,$board, $mod,$pdo;
-	if (!isset($_POST['body'], $_POST['board']) && !$dropped_post)
+
+	print_err("Hello Debugging");
+
+	if (!isset($_POST['body'], $_POST['board']) && !$dropped_post) {
+		print_err("We are a bot 1");
 		error($config['error']['bot']);
+	}
+
+	print_err("Not a bot 1");
 
 	$post = array('board' => $_POST['board'], 'files' => array());
 
@@ -430,11 +439,14 @@ function handle_post(){
 	if (isset($_POST['thread'])) {
 		$post['op'] = false;
 		$post['thread'] = round($_POST['thread']);
-	} else
+	} else {
 		$post['op'] = true;
+	}
 
 
 	if (!$dropped_post) {
+		print_err("not a dropped post");
+
 		// Check for CAPTCHA right after opening the board so the "return" link is in there
 		if ($config['recaptcha']) {
 			if (!isset($_POST['g-recaptcha-response']))
@@ -449,6 +461,9 @@ function handle_post(){
 				error($config['error']['captcha']);
 			}
 		}
+
+		print_err("pass captcha block");
+
 		if(isset($config['securimage']) && $config['secureimage']){
 			if(!isset($_POST['captcha'])){
 				error($config['error']['securimage']['missing']);
@@ -466,19 +481,34 @@ function handle_post(){
 			}
 		}
 
+		print_err("pass securimage block");
+
+
 		if (!(($post['op'] && $_POST['post'] == $config['button_newtopic']) ||
-			(!$post['op'] && $_POST['post'] == $config['button_reply'])))
+			(!$post['op'] && $_POST['post'] == $config['button_reply']))) {
+
+			print_err("we are a bot 2");
 			error($config['error']['bot']);
+		}
+
+		print_err("we are not a bot 2");
 	
 		// Check the referrer
 		if ($config['referer_match'] !== false &&
-			(!isset($_SERVER['HTTP_REFERER']) || !preg_match($config['referer_match'], rawurldecode($_SERVER['HTTP_REFERER']))))
+			(!isset($_SERVER['HTTP_REFERER']) || !preg_match($config['referer_match'], rawurldecode($_SERVER['HTTP_REFERER'])))) {
+
+			print_err("Missing REFERRER");
 			error($config['error']['referer']);
+		}
+
+		print_err("ReferrerOK");
 	
 		checkDNSBL();
 		
 		// Check if banned
 		checkBan($board['uri']);
+
+		print_err("Not banned");
 
 		if ($post['mod'] = isset($_POST['mod']) && $_POST['mod']) {
 			check_login(false);
@@ -498,21 +528,34 @@ function handle_post(){
 			if ($post['raw'] && !hasPermission($config['mod']['rawhtml'], $board['uri']))
 				error($config['error']['noaccess']);
 		}
+
+		print_err("Mod block 1 pass");
 		
 		if (!$post['mod']) {
-			$post['antispam_hash'] = checkSpam(array($board['uri'], isset($post['thread']) ? $post['thread'] : ($config['try_smarter'] && isset($_POST['page']) ? 0 - (int)$_POST['page'] : null)));
-			if ($post['antispam_hash'] === true)
+			$post['antispam_hash'] = checkSpam(
+				array($board['uri'],
+				isset($post['thread']) ? $post['thread'] : ($config['try_smarter'] && isset($_POST['page']) ? 0 - (int)$_POST['page'] : null))
+			);
+			//$post['antispam_hash'] = checkSpam();
+
+			if ($post['antispam_hash'] === true) {
+				print_err("Anti spam triggered");
 				error($config['error']['spam']);
+			}
 		}
 	
 		if ($config['robot_enable'] && $config['robot_mute']) {
 			checkMute();
 		}
+
+		print_err("Mod block 2 pass");
 	}
 	else {
 		$mod = $post['mod'] = false;
 	}
 	
+	print_err("not dropped block pass");
+
 	//Check if thread exists
 	if (!$post['op']) {
 		$query = prepare(sprintf("SELECT `sticky`,`locked`,`cycle`,`sage`,`slug` FROM ``posts_%s`` WHERE `id` = :id AND `thread` IS NULL LIMIT 1", $board['uri']));
@@ -527,6 +570,8 @@ function handle_post(){
 	else {
 		$thread = false;
 	}
+
+	print_err("check OP ok");
 		
 	
 	// Check for an embed field
@@ -546,6 +591,8 @@ function handle_post(){
 			error($config['error']['invalid_embed']);
 		}
 	}
+
+	print_err("embed field block pass");
 	
 	if (!hasPermission($config['mod']['bypass_field_disable'], $board['uri'])) {
 		if ($config['field_disable_name'])
@@ -561,6 +608,8 @@ function handle_post(){
 			$_POST['subject'] = '';
 	}
 	
+	print_err("mod bypass block ok");
+
 	if ($config['allow_upload_by_url'] && isset($_POST['file_url1']) && !empty($_POST['file_url1'])) {
 		function unlink_tmp_file($file) {
 			@unlink($file);
@@ -627,6 +676,8 @@ function handle_post(){
 		}
 			
 	}
+
+	print_err("allow upload by url block ok");
 	
 	$post['name'] = $_POST['name'] != '' ? $_POST['name'] : $config['anonymous'];
 	$post['subject'] = $_POST['subject'];
@@ -635,11 +686,52 @@ function handle_post(){
 	$post['password'] = $_POST['password'];
 	$post['has_file'] = (!isset($post['embed']) && (($post['op'] && !isset($post['no_longer_require_an_image_for_op']) && $config['force_image_op']) || count($_FILES) > 0));
 	
+	print_err("post vars set");
+
 	if (!$dropped_post) {
+		print_err("not dropped post");
 
 		if (!($post['has_file'] || isset($post['embed'])) || (($post['op'] && $config['force_body_op']) || (!$post['op'] && $config['force_body']))) {
+			if (!$post['has_file']) {
+				print_err("post has no file");
+			} else {
+				print_err("post has file");
+			}
+
+			if (!isset($post['embed'])) {
+				print_err("post has no embed");
+			} else {
+				print_err("post has embed");
+			}
+
+			if (!$post['op']) {
+				print_err("post is not op");
+			} else {
+				print_err("post is op");
+			}
+
+			if (!$config['force_body_op']) {
+				print_err("force body op is off");
+			} else {
+				print_err("force body op is on");
+			}
+
+			if (!$config['force_body']) {
+				print_err("force body is off");
+			} else {
+				print_err("force body is on");
+			}
+
+			print_err("post body:\n" . $post['body']);
 			$stripped_whitespace = preg_replace('/[\s]/u', '', $post['body']);
+
+			print_err(print_r(preg_last_error(), true));
+			if (preg_last_error() != PREG_BAD_UTF8_ERROR) {
+				print_err("Bad unicode preg error");
+			}
+
 			if ($stripped_whitespace == '') {
+				print_err("error: body too short!");
 				error($config['error']['tooshort_body']);
 			}
 		}
@@ -647,26 +739,35 @@ function handle_post(){
 		if (!$post['op']) {
 			// Check if thread is locked
 			// but allow mods to post
-			if ($thread['locked'] && !hasPermission($config['mod']['postinlocked'], $board['uri']))
+			if ($thread['locked'] && !hasPermission($config['mod']['postinlocked'], $board['uri'])) {
+				print_err("error thread locked");
 				error($config['error']['locked']);
+			}
 		
 			$numposts = numPosts($post['thread']);
 			
 			$replythreshold = isset($thread['cycle']) && $thread['cycle'] ? $numposts['replies'] - 1 : $numposts['replies'];	
 			$imagethreshold = isset($thread['cycle']) && $thread['cycle'] ? $numposts['images'] - 1 : $numposts['images'];	
 
-			if ($config['reply_hard_limit'] != 0 && $config['reply_hard_limit'] <= $replythreshold)
+			if ($config['reply_hard_limit'] != 0 && $config['reply_hard_limit'] <= $replythreshold) {
+				print_err("reply hard limit");
 				error($config['error']['reply_hard_limit']);
+			}
 		
-			if ($post['has_file'] && $config['image_hard_limit'] != 0 && $config['image_hard_limit'] <= $imagethreshold)
+			if ($post['has_file'] && $config['image_hard_limit'] != 0 && $config['image_hard_limit'] <= $imagethreshold) {
+				print_err("image hard limit");
 				error($config['error']['image_hard_limit']);
+			}
 		}
 	}
 	else {
+		print_err("dropped post active");
 		if (!$post['op']) {
                         $numposts = numPosts($post['thread']);
 		}
 	}
+
+	print_err("Not dropped post block 2 OK");
 		
 	if ($post['has_file']) {
 		// Determine size sanity
@@ -702,7 +803,8 @@ function handle_post(){
 			)));
 		$post['filesize'] = $size;
 	}
-	
+
+	print_err("has File block OK");
 	
 	$post['capcode'] = false;
 	
@@ -769,18 +871,24 @@ function handle_post(){
 		}
 	}
 
+	print_err("has File block 2 OK");
+
 	if (empty($post['files'])) $post['has_file'] = false;
 
 	if (!$dropped_post) {
 		// Check for a file
 		if ($post['op'] && !isset($post['no_longer_require_an_image_for_op'])) {
-			if (!$post['has_file'] && $config['force_image_op'])
+			if (!$post['has_file'] && $config['force_image_op']) {
+				print_err("error No Image");
 				error($config['error']['noimage']);
+			}
 		}
 
 		// Check for too many files
-		if (sizeof($post['files']) > $config['max_images'])
+		if (sizeof($post['files']) > $config['max_images']) {
+			print_err("Too many images");
 			error($config['error']['toomanyimages']);
+		}
 	}
 
 	if ($config['strip_combining_chars']) {
@@ -789,24 +897,43 @@ function handle_post(){
 		$post['subject'] = strip_combining_chars($post['subject']);
 		$post['body'] = strip_combining_chars($post['body']);
 	}
+
+	print_err("post fields strip");
 	
 	if (!$dropped_post) {
 		// Check string lengths
-		if (mb_strlen($post['name']) > 35)
+		if (mb_strlen($post['name']) > 35) {
+			print_err("name too long");
 			error(sprintf($config['error']['toolong'], 'name'));	
-		if (mb_strlen($post['email']) > 40)
+		}
+		if (mb_strlen($post['email']) > 40) {
+			print_err("email too long");
 			error(sprintf($config['error']['toolong'], 'email'));
-		if (mb_strlen($post['subject']) > 100)
+		}
+		if (mb_strlen($post['subject']) > 100) {
+			print_err("subject too long");
 			error(sprintf($config['error']['toolong'], 'subject'));
-		if (!$mod && mb_strlen($post['body']) > $config['max_body'])
+		}
+		if (!$mod && mb_strlen($post['body']) > $config['max_body']) {
+			print_err("body too long");
 			error($config['error']['toolong_body']);
-		if (!$mod && mb_strlen($post['body']) > 0 && (mb_strlen($post['body']) < $config['min_body']))
+		}
+		if (!$mod && mb_strlen($post['body']) > 0 && (mb_strlen($post['body']) < $config['min_body'])) {
+			print_err("body too short");
 			error($config['error']['tooshort_body']);
-		if (mb_strlen($post['password']) > 20)
+		}
+		if (mb_strlen($post['password']) > 20) {
+			print_err("password too long");
 			error(sprintf($config['error']['toolong'], 'password'));
+		}
 	}
+
+	print_err("wordfilters");
+
 	wordfilters($post['body']);
 	
+	print_err("Process post body");
+
 	$post['body'] = escape_markup_modifiers($post['body']);
 	
 	if ($mod && isset($post['raw']) && $post['raw']) {
@@ -880,6 +1007,7 @@ function handle_post(){
 	
 	$post['tracked_cites'] = markup($post['body'], true);
 
+	print_err("Process post tags flags and other stuff");
 	
 	
 	if ($post['has_file']) {
@@ -928,20 +1056,29 @@ function handle_post(){
 		}
 	}
 
+	print_err("has file block 2 OK");
+
 	if (!hasPermission($config['mod']['bypass_filters'], $board['uri']) && !$dropped_post) {
 		require_once 'inc/filters.php';
 
+		print_err("doing filters");
 		do_filters($post);
+		print_err("filters OK");
 	}
 
+	print_err("filters block OK");
+
 	if ($post['has_file']) {
+		print_err("files block 3 start!");
 		foreach ($post['files'] as $key => &$file) {
 		if ($file['is_an_image']) {
+			print_err("file is an image");
 			if ($config['ie_mime_type_detection'] !== false) {
 				// Check IE MIME type detection XSS exploit
 				$buffer = file_get_contents($upload, null, null, null, 255);
 				if (preg_match($config['ie_mime_type_detection'], $buffer)) {
 					undoImage($post);
+					print_err("error mime exploit");
 					error($config['error']['mime_exploit']);
 				}
 			}
@@ -950,15 +1087,19 @@ function handle_post(){
 			
 			// find dimensions of an image using GD
 			if (!$size = @getimagesize($file['tmp_name'])) {
+				print_err("error invalid image");
 				error($config['error']['invalidimg']);
 			}
 			if (!in_array($size[2], array(IMAGETYPE_PNG, IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_BMP))) {
+				print_err("error invalid image2");
 				error($config['error']['invalidimg']);
 			}
 			if ($size[0] > $config['max_width'] || $size[1] > $config['max_height']) {
+				print_err("error invalid maxsize");
 				error($config['error']['maxsize']);
 			}
 			
+			print_err("initial image checks OK");
 			
 			if ($config['convert_auto_orient'] && ($file['extension'] == 'jpg' || $file['extension'] == 'jpeg')) {
 				// The following code corrects the image orientation.
@@ -989,8 +1130,10 @@ function handle_post(){
 								$error = shell_exec_error(($gm ? 'gm ' : '') . 'convert ' .
 										escapeshellarg($file['tmp_name']) . ' -auto-orient ' . escapeshellarg($upload));
 							}
-							if ($error)
+							if ($error) {
+								print_err("Could not auto-orient image!");
 								error(_('Could not auto-orient image!'), null, $error);
+							}
 							$size = @getimagesize($file['tmp_name']);
 							if ($config['strip_exif'])
 								$file['exif_stripped'] = true;
@@ -998,14 +1141,20 @@ function handle_post(){
 					}
 				}
 			}
+
+			print_err("convert auto orient block OK");
 			
 			// create image object
 			$image = new Image($file['tmp_name'], $file['extension'], $size);
 			if ($image->size->width > $config['max_width'] || $image->size->height > $config['max_height']) {
 				$image->delete();
+
+				print_err("image too large");
 				error($config['error']['maxsize']);
 			}
 			
+			print_err("create image object ok");
+
 			$file['width'] = $image->size->width;
 			$file['height'] = $image->size->height;
 			
@@ -1039,6 +1188,8 @@ function handle_post(){
 			
 				$thumb->_destroy();
 			}
+
+			print_err("something to do with thumbnails block OK");
 			
 			if ($config['redraw_image'] || (!@$file['exif_stripped'] && $config['strip_exif'] && ($file['extension'] == 'jpg' || $file['extension'] == 'jpeg'))) {
 				if (!$config['redraw_image'] && $config['use_exiftool']) {
@@ -1154,6 +1305,8 @@ function handle_post(){
 			}
 		}
 
+		print_err("is an image block OK");
+
 		if ($config['tesseract_ocr'] && $file['thumb'] != 'file') { // Let's OCR it!
 			$fname = $file['tmp_name'];
 
@@ -1181,6 +1334,8 @@ function handle_post(){
 				}
 			}
 		}
+
+		print_err("OCR block pass");
 		
 		if (!isset($dont_copy_file) || !$dont_copy_file) {
 			if (isset($file['file_tmp'])) {
@@ -1192,9 +1347,12 @@ function handle_post(){
 			}
 		}
 
+		print_err("image reject repost begin");
+
 		if ($config['image_reject_repost']) {
 			if ($p = getPostByHash($post['filehash'])) {
 				undoImage($post);
+				print_err("file exists!");
 				error(sprintf($config['error']['fileexists'], 
 					($post['mod'] ? $config['root'] . $config['file_mod'] . '?/' : $config['root']) .
 					($board['dir'] . $config['dir']['res'] .
@@ -1208,6 +1366,7 @@ function handle_post(){
 		} else if (!$post['op'] && $config['image_reject_repost_in_thread']) {
 			if ($p = getPostByHashInThread($post['filehash'], $post['thread'])) {
 				undoImage($post);
+				print_err("file exists ITT!");
 				error(sprintf($config['error']['fileexistsinthread'], 
 					($post['mod'] ? $config['root'] . $config['file_mod'] . '?/' : $config['root']) .
 					($board['dir'] . $config['dir']['res'] .
@@ -1219,7 +1378,11 @@ function handle_post(){
 				));
 			}
 		}
-		}
+
+		print_err("End of has file block 3");
+	}
+
+	print_err("has file block 3 OK");
 	
 	// Do filters again if OCRing
 	if ($config['tesseract_ocr'] && !hasPermission($config['mod']['bypass_filters'], $board['uri']) && !$dropped_post) {
@@ -1227,10 +1390,13 @@ function handle_post(){
 	}
 
 	if (!hasPermission($config['mod']['postunoriginal'], $board['uri']) && $config['robot_enable'] && checkRobot($post['body_nomarkup']) && !$dropped_post) {
+		print_err("muted or unoriginal");
 		undoImage($post);
 		if ($config['robot_mute']) {
+			print_err("muted");
 			error(sprintf($config['error']['muted'], mute()));
 		} else {
+			print_err("unoriginal");
 			error($config['error']['unoriginal']);
 		}
 	}
@@ -1245,6 +1411,8 @@ function handle_post(){
 				$file['thumb'] = mb_substr($file['thumb'], mb_strlen($board['dir'] . $config['dir']['thumb']));
 		}
 	}
+
+	print_err("has file block 5 OK");
 	
 	$post = (object)$post;
 	$post->files = array_map(function($a) { return (object)$a; }, $post->files);
@@ -1252,19 +1420,32 @@ function handle_post(){
 	$error = event('post', $post);
 	$post->files = array_map(function($a) { return (array)$a; }, $post->files);
 
+	print_err("post set files map");
+
 	if ($error) {
+		print_err("Error " . $error);
 		undoImage((array)$post);
 		error($error);
 	}
+
+	print_err("no error yet");
+
 	$post = (array)$post;
 
-	if ($post['files'])
+	if ($post['files']) {
 		$post['files'] = $post['files'];
+	}
+
+	print_err("no error yet2");
+
 	$post['num_files'] = sizeof($post['files']);
 	
+	print_err("no error yet3");
 	$post['id'] = $id = post($post);
+	print_err("no error yet 4");
 	$post['slug'] = slugify($post);
 	
+	print_err("Set post props OK");
 
 	if ($dropped_post && $dropped_post['from_nntp']) {
 	        $query = prepare("INSERT INTO ``nntp_references`` (`board`, `id`, `message_id`, `message_id_digest`, `own`, `headers`) VALUES ".
@@ -1301,6 +1482,7 @@ function handle_post(){
 		nntp_publish($message, $msgid);
 	}
 
+	print_err("insert flood post");
 	insertFloodPost($post);
 
 	// Handle cyclical threads
@@ -1312,6 +1494,7 @@ function handle_post(){
 		$query->execute() or error(db_error($query));
 	}
 	
+	print_err("increment antispam");
 	if (isset($post['antispam_hash'])) {
 		incrementSpamHash($post['antispam_hash']);
 	}
@@ -1325,10 +1508,14 @@ function handle_post(){
 		}
 		query('INSERT INTO ``cites`` VALUES ' . implode(', ', $insert_rows)) or error(db_error());
 	}
+
+	print_err("tracked cites block ok");
 	
 	if (!$post['op'] && strtolower($post['email']) != 'sage' && !$thread['sage'] && ($config['reply_limit'] == 0 || $numposts['replies']+1 < $config['reply_limit'])) {
 		bumpThread($post['thread']);
 	}
+
+	print_err("thread bumped");
 	
 	if (isset($_SERVER['HTTP_REFERER'])) {
 		// Tell Javascript that we posted successfully
@@ -1367,8 +1554,12 @@ function handle_post(){
 		
 	}
 
+	print_err("Redirect or noko block OK");
+
 	buildThread($post['op'] ? $id : $post['thread']);
 	
+	print_err("build thread OK");
+
 	if ($config['syslog'])
 		_syslog(LOG_INFO, 'New post: /' . $board['dir'] . $config['dir']['res'] .
 			link_for($post) . (!$post['op'] ? '#' . $id : ''));
@@ -1397,15 +1588,18 @@ function handle_post(){
 	buildIndex();
 
 	// We are already done, let's continue our heavy-lifting work in the background (if we run off FastCGI)
-	if (function_exists('fastcgi_finish_request'))
+	if (function_exists('fastcgi_finish_request')) {
 		@fastcgi_finish_request();
+	}
 
-	if ($post['op'])
+	if ($post['op']) {
 		rebuildThemes('post-thread', $board['uri']);
-	else
+	} else {
 		rebuildThemes('post', $board['uri']);
+	}
 	
 
+	print_err("handle post DONE");
 }
 
 function handle_appeal(){

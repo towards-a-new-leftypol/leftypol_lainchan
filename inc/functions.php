@@ -25,6 +25,8 @@ require_once 'inc/queue.php';
 require_once 'inc/polyfill.php';
 @include_once 'inc/lib/parsedown/Parsedown.php'; // fail silently, this isn't a critical piece of code
 
+require_once 'inc/anti-bot.php'; // DELETE ME THIS IS FOR print_err function only!
+
 if (!extension_loaded('gettext')) {
 	require_once 'inc/lib/gettext/gettext.inc';
 }
@@ -371,6 +373,7 @@ function define_groups() {
 function create_antibot($board, $thread = null) {
 	require_once dirname(__FILE__) . '/anti-bot.php';
 
+	print_err("Create Antibot.");
 	return _create_antibot($board, $thread);
 }
 
@@ -995,6 +998,7 @@ function insertFloodPost(array $post) {
 
 function post(array $post) {
 	global $pdo, $board,$config;
+	print_err("Post function START");
 	$query = prepare(sprintf("INSERT INTO ``posts_%s`` VALUES ( NULL, :thread, :subject, :email, :name, :trip, :capcode, :body, :body_nomarkup, :time, :time, :files, :num_files, :filehash, :password, :ip, :sticky, :locked, :cycle, 0, :embed, :slug)", $board['uri']));
 
 	// Basic stuff
@@ -1083,9 +1087,12 @@ function post(array $post) {
 	}
 
 	if (!$query->execute()) {
+		print_err("Post DB ERROR " . print_r($query, true));
 		undoImage($post);
 		error(db_error($query));
 	}
+
+	print_err("Post function DONE");
 
 	return $pdo->lastInsertId();
 }
