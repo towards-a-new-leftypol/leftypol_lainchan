@@ -1,5 +1,5 @@
 <?php 
-require '/var/www/html/inc/functions.php';
+require './inc/functions.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 	if ($method == 'POST') {

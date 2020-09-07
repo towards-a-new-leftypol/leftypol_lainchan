@@ -35,8 +35,9 @@ function is_valid_webm($ffprobe_out) {
 	}
 	if ((count($ffprobe_out['streams']) > 1) && (!$config['webm']['allow_audio']))
 		return array('code' => 3, 'msg' => $config['error']['webmhasaudio']."error 4");
-	if (empty($ffprobe_out['streams'][0]['width']) || (empty($ffprobe_out['streams'][0]['height'])))
+	if ((empty($ffprobe_out['streams'][0]['width']) || (empty($ffprobe_out['streams'][0]['height']))) && !$config['webm']['allow_audio']) {
 		return array('code' => 2, 'msg' => $config['error']['invalidwebm']."error 5");
+	}
 	if ($ffprobe_out['format']['duration'] > $config['webm']['max_length'])
 		return array('code' => 4, 'msg' => sprintf($config['error']['webmtoolong'], $config['webm']['max_length'])."error 6");
 }

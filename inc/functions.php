@@ -1938,7 +1938,9 @@ function remove_modifiers($body) {
 
 function markup(&$body, $track_cites = false, $op = false) {
 	global $board, $config, $markup_urls;
-	
+
+	print_err("Markup BEGIN");
+
 	$modifiers = extract_modifiers($body);
 	
 	$body = preg_replace('@<tinyboard (?!escape )([\w\s]+)>(.+?)</tinyboard>@us', '', $body);
@@ -1948,8 +1950,12 @@ function markup(&$body, $track_cites = false, $op = false) {
 		return array();
 	}
 
+	print_err("Markup utf start");
+
 	$body = str_replace("\r", '', $body);
 	$body = utf8tohtml($body);
+
+	print_err("Markup utf OK");
 
 	if (mysql_version() < 50503)
 		$body = mb_encode_numericentity($body, array(0x010000, 0xffffff, 0, 0xffffff), 'UTF-8');
@@ -1981,8 +1987,10 @@ function markup(&$body, $track_cites = false, $op = false) {
 				-1,
 				$num_links);
 
-		if ($num_links > $config['max_links'])
+		if ($num_links > $config['max_links']) {
+			print_err("Error too many links");
 			error($config['error']['toomanylinks']);
+		}
 	}
 	
 	if ($config['markup_repair_tidy'])
@@ -1999,6 +2007,8 @@ function markup(&$body, $track_cites = false, $op = false) {
 	}
 
 	$tracked_cites = array();
+
+	print_err("Cites BEGIN");
 
 	// Cites
 	if (isset($board) && preg_match_all('/(^|\s)&gt;&gt;(\d+?)([\s,.)?]|$)/m', $body, $cites, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
@@ -2046,6 +2056,9 @@ function markup(&$body, $track_cites = false, $op = false) {
 			}
 		}
 	}
+
+	print_err("Cites END");
+	print_err("Cross board linking BEGIN");
 
 	// Cross-board linking
 	if (preg_match_all('/(^|\s)&gt;&gt;&gt;\/(' . $config['board_regex'] . 'f?)\/(\d+)?([\s,.)?]|$)/um', $body, $cites, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
@@ -2181,6 +2194,8 @@ function markup(&$body, $track_cites = false, $op = false) {
 			}
 		}
 	}
+
+	print_err("Cross board linking End");
 	
 	$tracked_cites = array_unique($tracked_cites, SORT_REGULAR);
 

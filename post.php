@@ -726,7 +726,7 @@ function handle_post(){
 			$stripped_whitespace = preg_replace('/[\s]/u', '', $post['body']);
 
 			print_err(print_r(preg_last_error(), true));
-			if (preg_last_error() != PREG_BAD_UTF8_ERROR) {
+			if (preg_last_error() == PREG_BAD_UTF8_ERROR) {
 				print_err("Bad unicode preg error");
 			}
 
@@ -935,6 +935,8 @@ function handle_post(){
 	print_err("Process post body");
 
 	$post['body'] = escape_markup_modifiers($post['body']);
+
+	print_err("body escaped");
 	
 	if ($mod && isset($post['raw']) && $post['raw']) {
 		$post['body'] .= "\n<tinyboard raw html>1</tinyboard>";
@@ -964,6 +966,8 @@ function handle_post(){
 		}
 	}
 
+	print_err("flag stuff block OK");
+
 	if ($config['user_flag'] && isset($_POST['user_flag']))
 	if (!empty($_POST['user_flag']) ){
 		
@@ -978,15 +982,21 @@ function handle_post(){
 		"\n<tinyboard flag alt>" . $flag_alt . "</tinyboard>";
 	}
 
+	print_err("user flag block ok");
+
 	if ($config['allowed_tags'] && $post['op'] && isset($_POST['tag']) && isset($config['allowed_tags'][$_POST['tag']])) {
 		$post['body'] .= "\n<tinyboard tag>" . $_POST['tag'] . "</tinyboard>";
 	}
+
+	print_err("allowed tags block ok");
 
 	if (!$dropped_post)
         if ($config['proxy_save'] && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 		$proxy = preg_replace("/[^0-9a-fA-F.,: ]/", '', $_SERVER['HTTP_X_FORWARDED_FOR']);
 		$post['body'] .= "\n<tinyboard proxy>".$proxy."</tinyboard>";
 	}
+
+	print_err("proxy save block ok");
 	
 	if (mysql_version() >= 50503) {
 		$post['body_nomarkup'] = $post['body']; // Assume we're using the utf8mb4 charset
@@ -1004,6 +1014,8 @@ function handle_post(){
 			$post['body_nomarkup'] .= $char;
 		}
 	}
+
+	print_err("body nomarkup block OK");
 	
 	$post['tracked_cites'] = markup($post['body'], true);
 
@@ -1019,11 +1031,14 @@ function handle_post(){
 
 		foreach ($post['files'] as $key => &$file) {
 			if ($post['op'] && $config['allowed_ext_op']) {
-				if (!in_array($file['extension'], $config['allowed_ext_op']))
+				if (!in_array($file['extension'], $config['allowed_ext_op'])) {
+					print_err("Unknown extension (1)!");
 					error($config['error']['unknownext']);
-			}
-			elseif (!in_array($file['extension'], $config['allowed_ext']) && !in_array($file['extension'], $config['allowed_ext_files']))
+				}
+			} elseif (!in_array($file['extension'], $config['allowed_ext']) && !in_array($file['extension'], $config['allowed_ext_files'])) {
+				print_err("Unknown extension (2)!");
 				error($config['error']['unknownext']);
+			}
 			
 			$file['is_an_image'] = !in_array($file['extension'], $config['allowed_ext_files']);
 			
@@ -1158,7 +1173,10 @@ function handle_post(){
 			$file['width'] = $image->size->width;
 			$file['height'] = $image->size->height;
 			
+			print_err("image size width and height");
+
 			if ($config['spoiler_images'] && isset($_POST['spoiler'])) {
+				print_err("spoiler set");
 				$file['thumb'] = 'spoiler';
 				
 				$size = @getimagesize($config['spoiler_image']);
@@ -1169,19 +1187,24 @@ function handle_post(){
 				$image->size->height <= $config['thumb_height'] &&
 				$file['extension'] == ($config['thumb_ext'] ? $config['thumb_ext'] : $file['extension'])) {
 			
+				print_err("minimum copy resize");
 				// Copy, because there's nothing to resize
 				copy($file['tmp_name'], $file['thumb']);
 			
 				$file['thumbwidth'] = $image->size->width;
 				$file['thumbheight'] = $image->size->height;
 			} else {
+				print_err("thumbnail resize");
 				$thumb = $image->resize(
 					$config['thumb_ext'] ? $config['thumb_ext'] : $file['extension'],
 					$post['op'] ? $config['thumb_op_width'] : $config['thumb_width'],
 					$post['op'] ? $config['thumb_op_height'] : $config['thumb_height']
 				);
+				print_err("thumbnail resize ok");
 				
 				$thumb->to($file['thumb']);
+
+				print_err("thumbnail save ok");
 			
 				$file['thumbwidth'] = $thumb->width;
 				$file['thumbheight'] = $thumb->height;

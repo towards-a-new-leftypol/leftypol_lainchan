@@ -1,6 +1,6 @@
 <?php 
 $name = $contactmethod = $email = $application = $antispam = $displaymessage = "";
-require '/var/www/html/inc/functions.php';
+require './inc/functions.php';
 if (isset ($_POST["antispam"])){
 	if ($_POST["antispam"] == "DUCK"){
 	$namecheck = ! empty($_POST["name"]);
