@@ -54,7 +54,7 @@
 	$config['max_height'] = 10000;
 	$config['max_images'] = 4;
 	$config['threads_per_page'] = 10;
-	$config['max_pages'] = 10;
+	$config['max_pages'] = 50;
 	$config['threads_preview'] = 5;
 	$config['root'] = '/';
 	$config['secure_trip_salt'] = 'MzdhNTJiMjNkMTM5Nzc5NDcwOGViMD';
@@ -81,10 +81,6 @@
 	$config['additional_javascript'][] = 'js/webm-settings.js';
 	$config['additional_javascript'][] = 'js/expand-video.js';
 	$config['max_filesize'] = 50 * 1024 * 1024; // 50MB
-	$config['webm']['ffmpeg_path'] = '/usr/bin/ffmpeg';
-	$config['webm']['ffprobe_path'] = '/usr/bin/ffprobe';
-	$config['mp4']['ffmpeg_path'] = '/usr/bin/ffmpeg';
-	$config['mp4']['ffprobe_path'] = '/usr/bin/ffprobe';
 	$config['webm']['allow_audio'] = true;
 	$config['webm']['max_length'] = 620;
 	 //end test section

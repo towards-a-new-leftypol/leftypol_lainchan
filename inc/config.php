@@ -1129,7 +1129,7 @@
 	$config['error']['webmerror'] 		= _('There was a problem processing your webm.');//Is this error used anywhere ?
 	$config['error']['invalidwebm'] 	= _('Invalid webm uploaded.');
 	$config['error']['webmhasaudio'] 	= _('The uploaded webm contains an audio or another type of additional stream.');
-	$config['error']['webmtoolong'] 	= _('The uploaded webm is longer than ' . $config['webm']['max_length'] . ' seconds.');
+	$config['error']['webmtoolong'] 	= _('The uploaded webm is longer than ' . $config['webm']['max_length'] . ' seconds.'); // note that this will sub the initial value from this file, not instance-config.php
 	$config['error']['fileexists']		= _('That file <a href="%s">already exists</a>!');
 	$config['error']['fileexistsinthread']	= _('That file <a href="%s">already exists</a> in this thread!');
 	$config['error']['delete_too_soon']	= _('You\'ll have to wait another %s before deleting that.');
