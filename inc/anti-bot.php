@@ -17,6 +17,10 @@ function print_err($s) {
 	file_put_contents($logfile, $s . "\n", FILE_APPEND);
 }
 
+function print_err2($s) {
+	print_err($s);
+}
+
 class AntiBot {
 	public $salt, $inputs = array(), $index = 0;
 	

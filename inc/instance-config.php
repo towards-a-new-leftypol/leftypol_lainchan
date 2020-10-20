@@ -35,7 +35,7 @@
 	$config['db']['database'] = 'lainchan';
 	$config['db']['prefix'] = '';
 	$config['db']['user'] = 'lainchan';
-	$config['db']['password'] = 'oijrljqqwjr242kjn';
+	$config['db']['password'] = '';
 
 
 	$config['cookies']['mod'] = 'mod';
@@ -82,7 +82,7 @@
 	$config['additional_javascript'][] = 'js/expand-video.js';
 	$config['max_filesize'] = 50 * 1024 * 1024; // 50MB
 	$config['webm']['allow_audio'] = true;
-	$config['webm']['max_length'] = 620;
+	$config['webm']['max_length'] = 1000;
 	 //end test section
 	
 	
@@ -91,6 +91,8 @@
 	$config['allowed_ext_files'][] = 'txt';
 	$config['allowed_ext_files'][] = 'zip';
 	$config['allowed_ext_files'][] = 'epub';
+
+	$config['api']['enabled'] = false;
 
 	/*
 	 * From Config:

@@ -379,21 +379,26 @@ function create_antibot($board, $thread = null) {
 
 function rebuildThemes($action, $boardname = false) {
 	global $config, $board, $current_locale;
+    print_err("rebuildThemes");
 
 	// Save the global variables
 	$_config = $config;
 	$_board = $board;
 
+    print_err("list themes");
 	// List themes
 	if ($themes = Cache::get("themes")) {
 		// OK, we already have themes loaded
+        print_err("themes loaded from cache");
 	}
 	else {
+        print_err("querying db for themes");
 		$query = query("SELECT `theme` FROM ``theme_settings`` WHERE `name` IS NULL AND `value` IS NULL") or error(db_error());
 
 		$themes = array();
 
 		while ($theme = $query->fetch(PDO::FETCH_ASSOC)) {
+            print_err("theme found in db");
 			$themes[] = $theme;
 		}
 
@@ -449,6 +454,7 @@ function loadThemeConfig($_theme) {
 function rebuildTheme($theme, $action, $board = false) {
 	global $config, $_theme;
 	$_theme = $theme;
+    print_err("rebuildTheme with \$theme as " . $theme);
 
 	$theme = loadThemeConfig($_theme);
 
@@ -2293,9 +2299,11 @@ function strip_combining_chars($str) {
 function buildThread($id, $return = false, $mod = false) {
 	global $board, $config, $build_pages;
 	$id = round($id);
+    print_err("buildThread start");
 
-	if (event('build-thread', $id))
+	if (event('build-thread', $id)) {
 		return;
+    }
 
 	if ($config['cache']['enabled'] && !$mod) {
 		// Clear cache

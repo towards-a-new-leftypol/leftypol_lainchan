@@ -3,12 +3,14 @@
  * ffmpeg.php
  * A barebones ffmpeg based webm implementation for vichan.
  */
+
 function get_webm_info($filename) {
 	global $board, $config;
 	$filename = escapeshellarg($filename);
 	$ffprobe = $config['webm']['ffprobe_path'];
 	$ffprobe_out = array();
 	$webminfo = array();
+
 	exec("$ffprobe -v quiet -print_format json -show_format -show_streams $filename", $ffprobe_out);
 	$ffprobe_out = json_decode(implode("\n", $ffprobe_out), 1);
 	$webminfo['error'] = is_valid_webm($ffprobe_out);
