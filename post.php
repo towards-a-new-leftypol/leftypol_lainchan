@@ -498,6 +498,7 @@ function handle_post(){
 			(!isset($_SERVER['HTTP_REFERER']) || !preg_match($config['referer_match'], rawurldecode($_SERVER['HTTP_REFERER'])))) {
 
 			print_err("Missing REFERRER");
+			print_err($config['referer_match']);
 			error($config['error']['referer']);
 		}
 
@@ -531,7 +532,7 @@ function handle_post(){
 
 		print_err("Mod block 1 pass");
 		
-		if (!$post['mod']) {
+		if (!$post['mod'] && $config['spam']['enabled'] == true) {
 			$post['antispam_hash'] = checkSpam(
 				array($board['uri'],
 				isset($post['thread']) ? $post['thread'] : ($config['try_smarter'] && isset($_POST['page']) ? 0 - (int)$_POST['page'] : null))
