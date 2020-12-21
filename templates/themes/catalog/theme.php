@@ -25,6 +25,7 @@
                     file_unlink($config['dir']['home'] . $board . '/index.rss');
                 }
                 elseif ($action == 'rebuild') {
+                    print_err("catalog_build calling Catalog.build 1. board: $board");
                     $b->build($settings, $board);
                 }
             }
@@ -38,6 +39,7 @@
                 file_unlink($config['dir']['home'] . $board . '/index.rss');
             }
             elseif ($action == 'rebuild') {
+                print_err("catalog_build calling Catalog.build 2");
                 $b->build($settings, $board);
             }
         }
@@ -297,21 +299,28 @@
                     error(sprintf(_("Board %s doesn't exist"), $board_name));
                 }
             }   
+            print_err("Catalog.build 1");
 
             if (array_key_exists($board_name, $this->threadsCache)) {
                 $threads = $this->threadsCache[$board_name];
             } else {
+                print_err("Catalog.build calling buildThreadsQuery. boardname: $board_name");
                 $sql = $this->buildThreadsQuery($board_name);
+                print_err("Catalog.build calling buildThreadsQuery ok");
                 $query = query($sql . ' ORDER BY `bump` DESC') or error(db_error());
                 $threads = $query->fetchAll(PDO::FETCH_ASSOC);
+                print_err("Catalog.build has threads");
                 // Save for posterity
                 $this->threadsCache[$board_name] = $threads;
             }
+            print_err("Catalog.build 2");
 
             // Generate data for the template
             $recent_posts = $this->generateRecentPosts($threads);
 
+            print_err("Catalog.build 3");
             $this->saveForBoard($board_name, $recent_posts);
+            print_err("Catalog.build 4");
         }
 
         private function buildThreadsQuery($board) {

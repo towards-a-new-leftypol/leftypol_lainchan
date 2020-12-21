@@ -185,8 +185,6 @@ class AntiBot {
 	public function hash() {
 		global $config;
 
-		print_err("compute hash for post page");
-		
 		// This is the tricky part: create a hash to validate it after
 		// First, sort the keys in alphabetical order (A-Z)
 		$inputs = $this->inputs;
@@ -195,7 +193,6 @@ class AntiBot {
 		$hash = '';
 		// Iterate through each input
 		foreach ($inputs as $name => $value) {
-			print_err("<-    " . $name . ' : ' . $value);
 			$hash .= $name . '=' . $value;
 		}
 		// Add a salt to the hash

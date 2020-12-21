@@ -6,6 +6,8 @@
 
 defined('TINYBOARD') or exit;
 
+require_once 'inc/anti-bot.php'; // DELETE ME THIS IS FOR print_err function only!
+
 function mod_page($title, $template, $args, $subtitle = false) {
 	global $config, $mod;
 	
@@ -2649,6 +2651,7 @@ function mod_new_pm($username) {
 
 function mod_rebuild() {
 	global $config, $twig;
+    print_err("mod_rebuild");
 	
 	if (!hasPermission($config['mod']['rebuild']))
 		error($config['error']['noaccess']);
@@ -2673,7 +2676,9 @@ function mod_rebuild() {
 		
 		if (isset($_POST['rebuild_themes'])) {
 			$log[] = 'Regenerating theme files';
+            print_err("mod_rebuild calling rebuildThemes");
 			rebuildThemes('all');
+            print_err("mod_rebuild calling rebuildThemes ok");
 		}
 		
 		if (isset($_POST['rebuild_javascript'])) {
