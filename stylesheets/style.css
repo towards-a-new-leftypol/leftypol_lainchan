@@ -1954,3 +1954,10 @@ div.mix {
 footer {
  margin-bottom: 50px;
 }
+
+@media (max-width:768px) {
+  #sidebar{display:none;}
+  iframe#main{left: 0; border-left:none; width:100%;}
+  .bar.bottom{opacity:0.8;}
+  footer p.unimportant{display:none;}
+}
