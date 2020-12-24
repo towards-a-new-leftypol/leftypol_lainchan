@@ -41,3 +41,4 @@
 
 	$config['stylesheets']['Dark'] = 'dark.css';
 	$config['stylesheets']['Dark Red'] = 'dark_red.css';
+	$config['always_noko'] = true;
