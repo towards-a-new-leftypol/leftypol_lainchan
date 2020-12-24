@@ -39,3 +39,5 @@
 	$config['thumb_method'] = 'gm+gifsicle';
 	$config['gnu_md5'] = '1';
 
+	$config['stylesheets']['Dark'] = 'dark.css';
+	$config['stylesheets']['Dark Red'] = 'dark_red.css';

@@ -930,8 +930,7 @@
 	$config['stylesheets']['Yotsuba B'] = ''; // Default; there is no additional/custom stylesheet for this.
 	$config['stylesheets']['Yotsuba'] = 'yotsuba.css';
 	// $config['stylesheets']['Futaba'] = 'futaba.css';
-	$config['stylesheets']['Dark'] = 'dark.css';
-	$config['stylesheets']['Dark Red'] = 'dark_red.css';
+	// $config['stylesheets']['Dark'] = 'dark.css';
 
 	// The prefix for each stylesheet URI. Defaults to $config['root']/stylesheets/
 	// $config['uri_stylesheets'] = 'http://static.example.org/stylesheets/';
