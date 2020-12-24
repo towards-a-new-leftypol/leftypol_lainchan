@@ -145,8 +145,9 @@ p.intro a.email, p.intro a.email span.name, p.intro a.email:hover, p.intro a.ema
 
 div.boardlist a
 {
-	font-size: 12px;
+        font-size: 12px;
 }
+
 div.boardlist
 {
 	color: #0b000f;
