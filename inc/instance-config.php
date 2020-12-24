@@ -57,36 +57,36 @@
  * Database and site wide configurations
  */
 
-	$config['db']['server'] = 'localhost';
-	$config['db']['database'] = 'lainchan';
-	$config['db']['prefix'] = '';
-	$config['db']['user'] = 'lainchan';
-	$config['db']['password'] = '';
+$config['db']['server'] = 'localhost';
+$config['db']['database'] = 'lainchan';
+$config['db']['prefix'] = '';
+$config['db']['user'] = 'lainchan';
+$config['db']['password'] = '';
 
 
-	$config['cookies']['mod'] = 'mod';
-	$config['cookies']['salt'] = 'MGYwNjhlNjU5Y2QxNWU3YjQ3MzQ1Yj';
+$config['cookies']['mod'] = 'mod';
+$config['cookies']['salt'] = 'MGYwNjhlNjU5Y2QxNWU3YjQ3MzQ1Yj';
 
-	$config['flood_time'] = 0;
-	$config['flood_time_ip'] = 0;
-	$config['flood_time_same'] = 0;
-	$config['max_body'] = 100000;
-	$config['reply_limit'] = 250;
-	$config['max_links'] = 40;
-	$config['max_filesize'] = 52428800;
-	$config['thumb_width'] = 255;
-	$config['thumb_height'] = 255;
-	$config['max_width'] = 10000;
-	$config['max_height'] = 10000;
-	$config['threads_per_page'] = 10;
-	$config['max_pages'] = 36;
-	$config['threads_preview'] = 5;
-	$config['root'] = '/';
-	$config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
+$config['flood_time'] = 0;
+$config['flood_time_ip'] = 0;
+$config['flood_time_same'] = 0;
+$config['max_body'] = 100000;
+$config['reply_limit'] = 250;
+$config['max_links'] = 40;
+$config['max_filesize'] = 52428800;
+$config['thumb_width'] = 255;
+$config['thumb_height'] = 255;
+$config['max_width'] = 10000;
+$config['max_height'] = 10000;
+$config['threads_per_page'] = 10;
+$config['max_pages'] = 36;
+$config['threads_preview'] = 5;
+$config['root'] = '/';
+$config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
 
-	$config['thumb_method'] = 'gm+gifsicle';
-	$config['gnu_md5'] = '1';
-	// $config['update_on_posts'] = true;
+$config['thumb_method'] = 'gm+gifsicle';
+$config['gnu_md5'] = '1';
+// $config['update_on_posts'] = true;
 
 
 // Changes made via web editor by "krates" @ Tue, 22 Dec 2020 16:28:45 -0800:
@@ -119,28 +119,32 @@ $config['reply_hard_limit'] = 1000;
  * ====================
  */
 
-	$config['additional_javascript'][] = 'js/local-time.js';
-	$config['additional_javascript'][] = 'js/auto-reload.js';
-	$config['additional_javascript'][] = 'js/post-hover.js';
-	$config['additional_javascript'][] = 'js/style-select.js';
+$config['additional_javascript'][] = 'js/local-time.js';
+$config['additional_javascript'][] = 'js/auto-reload.js';
+$config['additional_javascript'][] = 'js/post-hover.js';
+$config['additional_javascript'][] = 'js/style-select.js';
 
-    $config['additional_javascript'][] = 'js/hide-threads.js';
-    $config['additional_javascript'][] = 'js/hide-images.js';
-    $config['additional_javascript'][] = 'js/show-backlinks.js';
-    $config['additional_javascript'][] = 'js/show-op.js';
+$config['additional_javascript'][] = 'js/hide-threads.js';
+$config['additional_javascript'][] = 'js/hide-images.js';
+$config['additional_javascript'][] = 'js/show-backlinks.js';
+$config['additional_javascript'][] = 'js/show-op.js';
 
-    $config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
-    $config['additional_javascript'][] = 'js/quick-reply.js';
+$config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
+$config['additional_javascript'][] = 'js/quick-reply.js';
 
-    $config['enable_embedding'] = true;
+$config['enable_embedding'] = true;
 
-    $config['youtube_js_html'] = '<div class="video-container" data-video="$2">'.
-    '<a href="https://youtu.be/$2" target="_blank" class="file">'.
-    '<img style="width:255px;height:190px;" src="//img.youtube.com/vi/$2/0.jpg" class="post-image"/>'.
-    '</a></div>';
+$config['youtube_js_html'] = '<div class="video-container" data-video="$2">'.
+'<a href="https://youtu.be/$2" target="_blank" class="file">'.
+'<img style="width:255px;height:190px;" src="//img.youtube.com/vi/$2/0.jpg" class="post-image"/>'.
+'</a></div>';
 
-    $config['embedding'] = array();
-    $config['embedding'][0] = array(
-    '/^https?:\/\/(\w+\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9\-_]{10,11})(&.+)?$/i',
-    $config['youtube_js_html']);
-    $config['additional_javascript'][] = 'js/youtube.js';
+$config['embedding'] = array();
+$config['embedding'][0] = array(
+'/^https?:\/\/(\w+\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9\-_]{10,11})(&.+)?$/i',
+$config['youtube_js_html']);
+$config['additional_javascript'][] = 'js/youtube.js';
+
+$config['stylesheets']['Dark'] = 'dark.css';
+$config['stylesheets']['Dark Red'] = 'dark_red.css';
+$config['always_noko'] = true;
