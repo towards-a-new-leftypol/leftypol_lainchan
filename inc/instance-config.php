@@ -87,6 +87,7 @@ $config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
 $config['thumb_method'] = 'gm+gifsicle';
 $config['gnu_md5'] = '1';
 // $config['update_on_posts'] = true;
+$config['referer_match'] = false;
 
 
 // Changes made via web editor by "krates" @ Tue, 22 Dec 2020 16:28:45 -0800:
