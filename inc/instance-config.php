@@ -112,6 +112,10 @@ $config['delete_time'] = 5;
 // Changes made via web editor by "krates" @ Tue, 22 Dec 2020 17:20:14 -0800:
 $config['reply_hard_limit'] = 1000;
 
+//Changes by Barbara_Pitt
+$config['stylesheets']['Dark'] = 'dark.css';
+$config['stylesheets']['Dark Red'] = 'dark_red.css';
+$config['always_noko'] = true;
 
 /*
  * ====================
@@ -144,7 +148,3 @@ $config['embedding'][0] = array(
 '/^https?:\/\/(\w+\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9\-_]{10,11})(&.+)?$/i',
 $config['youtube_js_html']);
 $config['additional_javascript'][] = 'js/youtube.js';
-
-$config['stylesheets']['Dark'] = 'dark.css';
-$config['stylesheets']['Dark Red'] = 'dark_red.css';
-$config['always_noko'] = true;
