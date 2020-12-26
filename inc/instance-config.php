@@ -139,6 +139,19 @@ $config['stylesheets']['Dark'] = 'dark.css';
 $config['stylesheets']['Dark Red'] = 'dark_red.css';
 $config['always_noko'] = true;
 
+//more themes (issue#26)
+$config['stylesheets']['Burichan'] = 'burichan.css';
+$config['stylesheets']['Futaba'] = 'futaba.css';
+$config['stylesheets']['Gentoochan'] = 'gentoochan.css';
+$config['stylesheets']['Gurochan'] = 'gurochan.css';
+$config['stylesheets']['Jungle'] = 'jungle.css';
+$config['stylesheets']['LainchanJP'] = 'lainchanjp.css';
+$config['stylesheets']['Miku'] = 'miku.css';
+$config['stylesheets']['Notsuba'] = 'notsuba.css';
+$config['stylesheets']['Photon'] = 'photon.css';
+$config['stylesheets']['Szalet'] = 'szalet.css';
+$config['stylesheets']['Tsuki'] = 'tsuki.css';
+
 /*
  * ====================
  *  Javascript
