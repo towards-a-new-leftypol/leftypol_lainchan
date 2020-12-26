@@ -21,7 +21,7 @@
              'games',
              'anime'
        ) ,
-      array('gulag')
+      array('meta')
    );
    // Board categories. Only used in the "Categories" theme.
    $config['categories'] = array(
@@ -33,7 +33,7 @@
              'games',
              'anime'
        ),
-      'Meta' => array('gulag')
+      'Meta' => array('meta')
    );
    // Optional for the Categories theme. This is an array of name => (title, url) groups for categories
    // with non-board links.
