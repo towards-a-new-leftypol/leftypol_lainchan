@@ -138,6 +138,7 @@ $config['reply_hard_limit'] = 1000;
 $config['stylesheets']['Dark'] = 'dark.css';
 $config['stylesheets']['Dark Red'] = 'dark_red.css';
 $config['always_noko'] = true;
+$config['spoiler_images'] = true;
 
 //more themes (issue#26)
 $config['stylesheets']['Burichan'] = 'burichan.css';
