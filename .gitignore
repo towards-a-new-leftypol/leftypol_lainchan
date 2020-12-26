@@ -7,6 +7,8 @@
 /*/config.php
 /*.html
 /*.xml
+/vendor/*
+/vendor
 
 # include some files though
 !/templates/*.html
