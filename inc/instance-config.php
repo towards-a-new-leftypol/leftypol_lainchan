@@ -21,7 +21,7 @@
              'games',
              'anime'
        ) ,
-      array('gulag')
+      array('meta')
    );
    // Board categories. Only used in the "Categories" theme.
    $config['categories'] = array(
@@ -33,7 +33,7 @@
              'games',
              'anime'
        ),
-      'Meta' => array('gulag')
+      'Meta' => array('meta')
    );
    // Optional for the Categories theme. This is an array of name => (title, url) groups for categories
    // with non-board links.
@@ -87,6 +87,28 @@ $config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
 $config['thumb_method'] = 'gm+gifsicle';
 $config['gnu_md5'] = '1';
 // $config['update_on_posts'] = true;
+$config['referer_match'] = false;
+
+$config['allowed_ext'][] = 'mp4';
+$config['allowed_ext'][] = 'webm';
+$config['allowed_ext_files'][] = 'webm';
+$config['webm']['use_ffmpeg'] = true;
+$config['max_filesize'] = 50 * 1024 * 1024; // 50MB
+$config['webm']['allow_audio'] = true;
+$config['webm']['max_length'] = 1000;
+
+// Allowed image file extensions.
+$config['allowed_ext'][] = 'jpg';
+$config['allowed_ext'][] = 'jpeg';
+$config['allowed_ext'][] = 'bmp';
+$config['allowed_ext'][] = 'gif';
+$config['allowed_ext'][] = 'png';
+
+$config['allowed_ext_files'][] = 'mp4';
+$config['allowed_ext_files'][] = 'pdf';
+$config['allowed_ext_files'][] = 'txt';
+$config['allowed_ext_files'][] = 'zip';
+$config['allowed_ext_files'][] = 'epub';
 
 
 // Changes made via web editor by "krates" @ Tue, 22 Dec 2020 16:28:45 -0800:
@@ -112,6 +134,10 @@ $config['delete_time'] = 5;
 // Changes made via web editor by "krates" @ Tue, 22 Dec 2020 17:20:14 -0800:
 $config['reply_hard_limit'] = 1000;
 
+//Changes by Barbara_Pitt
+$config['stylesheets']['Dark'] = 'dark.css';
+$config['stylesheets']['Dark Red'] = 'dark_red.css';
+$config['always_noko'] = true;
 
 /*
  * ====================
@@ -132,6 +158,9 @@ $config['additional_javascript'][] = 'js/show-op.js';
 $config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
 $config['additional_javascript'][] = 'js/quick-reply.js';
 
+$config['additional_javascript'][] = 'js/options.js';
+$config['additional_javascript'][] = 'js/webm-settings.js';
+$config['additional_javascript'][] = 'js/expand-video.js';
 $config['enable_embedding'] = true;
 
 $config['youtube_js_html'] = '<div class="video-container" data-video="$2">'.
@@ -144,7 +173,3 @@ $config['embedding'][0] = array(
 '/^https?:\/\/(\w+\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9\-_]{10,11})(&.+)?$/i',
 $config['youtube_js_html']);
 $config['additional_javascript'][] = 'js/youtube.js';
-
-$config['stylesheets']['Dark'] = 'dark.css';
-$config['stylesheets']['Dark Red'] = 'dark_red.css';
-$config['always_noko'] = true;
