@@ -307,7 +307,7 @@
                 print_err("Catalog.build calling buildThreadsQuery. boardname: $board_name");
                 $sql = $this->buildThreadsQuery($board_name);
                 print_err("Catalog.build calling buildThreadsQuery ok");
-                $query = query($sql . ' ORDER BY `bump` DESC') or error(db_error());
+                $query = query($sql . ' ORDER BY `sticky` DESC,`bump` DESC') or error(db_error());
                 $threads = $query->fetchAll(PDO::FETCH_ASSOC);
                 print_err("Catalog.build has threads");
                 // Save for posterity
