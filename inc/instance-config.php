@@ -89,6 +89,27 @@ $config['gnu_md5'] = '1';
 // $config['update_on_posts'] = true;
 $config['referer_match'] = false;
 
+$config['allowed_ext'][] = 'mp4';
+$config['allowed_ext'][] = 'webm';
+$config['allowed_ext_files'][] = 'webm';
+$config['webm']['use_ffmpeg'] = true;
+$config['max_filesize'] = 50 * 1024 * 1024; // 50MB
+$config['webm']['allow_audio'] = true;
+$config['webm']['max_length'] = 1000;
+
+// Allowed image file extensions.
+$config['allowed_ext'][] = 'jpg';
+$config['allowed_ext'][] = 'jpeg';
+$config['allowed_ext'][] = 'bmp';
+$config['allowed_ext'][] = 'gif';
+$config['allowed_ext'][] = 'png';
+
+$config['allowed_ext_files'][] = 'mp4';
+$config['allowed_ext_files'][] = 'pdf';
+$config['allowed_ext_files'][] = 'txt';
+$config['allowed_ext_files'][] = 'zip';
+$config['allowed_ext_files'][] = 'epub';
+
 
 // Changes made via web editor by "krates" @ Tue, 22 Dec 2020 16:28:45 -0800:
 $config['robot_mute'] = false;
@@ -137,6 +158,9 @@ $config['additional_javascript'][] = 'js/show-op.js';
 $config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
 $config['additional_javascript'][] = 'js/quick-reply.js';
 
+$config['additional_javascript'][] = 'js/options.js';
+$config['additional_javascript'][] = 'js/webm-settings.js';
+$config['additional_javascript'][] = 'js/expand-video.js';
 $config['enable_embedding'] = true;
 
 $config['youtube_js_html'] = '<div class="video-container" data-video="$2">'.
