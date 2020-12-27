@@ -83,7 +83,10 @@ $config['max_pages'] = 36;
 $config['threads_preview'] = 5;
 $config['root'] = '/';
 $config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
+
+//Permissions
 $config['mod']['move'] = MOD;
+$config['mod']['editpost'] = MOD;
 
 // Max attachments per post
 $config['max_images'] = 5;
