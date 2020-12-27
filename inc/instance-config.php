@@ -84,9 +84,13 @@ $config['threads_preview'] = 5;
 $config['root'] = '/';
 $config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
 
-//Permissions
+/*
+ * Permissions
+ */
 $config['mod']['move'] = MOD;
 $config['mod']['editpost'] = MOD;
+// Raw HTML posting
+$config['mod']['rawhtml'] = MOD;
 
 // Max attachments per post
 $config['max_images'] = 5;
