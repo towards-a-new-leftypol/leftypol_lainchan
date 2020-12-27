@@ -1,4 +1,6 @@
 {
+    "name": "leftypol/leftypol",
+    "description": "An imageboard based on lainchans",
     "require": {
         "phpunit/phpunit": "^5"
     },
