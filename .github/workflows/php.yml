@@ -21,9 +21,6 @@ jobs:
           PHP_VERSION: ${{ matrix.php }}
       steps:
       - uses: actions/checkout@v2
-        
-      - name: Install composer
-        run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: Validate composer.json and composer.lock
         run: composer validate
@@ -33,6 +30,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: vendor
+          php-version: '5.6'
           key: ${{ matrix.os }}-php-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ matrix.os }}-php-
