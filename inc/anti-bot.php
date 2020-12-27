@@ -12,9 +12,8 @@ $logfile = "/tmp/lainchan_err.out";
 file_put_contents($logfile, "\n\nSTART\n\n", FILE_APPEND);
 
 function print_err($s) {
-	global $logfile;
-
-	file_put_contents($logfile, $s . "\n", FILE_APPEND);
+	// global $logfile;
+	// file_put_contents($logfile, $s . "\n", FILE_APPEND);
 }
 
 function print_err2($s) {
