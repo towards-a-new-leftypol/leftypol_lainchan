@@ -2,6 +2,7 @@
     "name": "leftypol/leftypol",
     "description": "An imageboard based on lainchans",
     "require": {
+        "php": "5.6.40",
         "phpunit/phpunit": "^5"
     },
     "scripts":{
