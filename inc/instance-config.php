@@ -140,6 +140,7 @@ $config['stylesheets']['Dark Red'] = 'dark_red.css';
 $config['always_noko'] = true;
 $config['spoiler_images'] = true;
 $config['spoiler_image'] = 'static/spoiler.png';
+$config['image_deleted'] = 'static/deleted.png';
 
 //more themes (issue#26)
 $config['stylesheets']['Burichan'] = 'burichan.css';
