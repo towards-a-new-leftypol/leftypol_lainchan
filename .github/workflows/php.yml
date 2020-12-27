@@ -8,30 +8,38 @@ on:
 
 jobs:
   build:
+      strategy:
+        matrix:
+          php: ['5.6.40']
+          os: ['ubuntu-16.04']
+          include:
+            - php: '5.6.40'
+              os: 'ubuntu-16.04'
+    
+      runs-on: ${{ matrix.os }}
+      env:
+          PHP_VERSION: ${{ matrix.php }}
+      steps:
+      - uses: actions/checkout@v2
 
-    runs-on: ubuntu-16.04
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
-    steps:
-    - uses: actions/checkout@v2
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
+      - name: Install dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v2
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
+      # Docs: https://getcomposer.org/doc/articles/scripts.md
 
-    - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress --no-suggest
-
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-    - name: Run test suite
-      run: composer run-script test
+      - name: Run test suite
+        run: composer run-script test
