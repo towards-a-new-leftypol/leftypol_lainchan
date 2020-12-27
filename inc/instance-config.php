@@ -84,6 +84,9 @@ $config['threads_preview'] = 5;
 $config['root'] = '/';
 $config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
 
+// Max attachments per post
+$config['max_images'] = 5;
+
 $config['thumb_method'] = 'gm+gifsicle';
 $config['gnu_md5'] = '1';
 // $config['update_on_posts'] = true;
