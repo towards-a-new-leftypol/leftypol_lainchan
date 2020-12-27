@@ -86,6 +86,7 @@ $config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
 
 // Max attachments per post
 $config['max_images'] = 5;
+$config['image_reject_repost'] = false;
 
 $config['thumb_method'] = 'gm+gifsicle';
 $config['gnu_md5'] = '1';
