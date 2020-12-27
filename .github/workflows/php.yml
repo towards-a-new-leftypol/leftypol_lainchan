@@ -21,6 +21,9 @@ jobs:
           PHP_VERSION: ${{ matrix.php }}
       steps:
       - uses: actions/checkout@v2
+        
+      - name: Install composer
+        run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: Validate composer.json and composer.lock
         run: composer validate
