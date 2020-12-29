@@ -183,6 +183,8 @@ $config['additional_javascript'][] = 'js/hide-images.js';
 $config['additional_javascript'][] = 'js/show-backlinks.js';
 $config['additional_javascript'][] = 'js/show-op.js';
 
+$config['additional_javascript'][] = 'js/multi-image.js'; // Support for posting multiple files
+
 $config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
 $config['additional_javascript'][] = 'js/quick-reply.js';
 
