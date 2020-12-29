@@ -29,14 +29,16 @@
 		public static function homepage($settings) {
 			global $config;
 
-            return Element(
-                'themes/categories/frames.html',
-                Array(
-                    'config' => $config,
-                    'settings' => $settings,
-                    'categories' => Categories::getCategories($config)
-                )
-            );
+			return Element(
+				'themes/categories/frames.html',
+				Array(
+					'config' => $config,
+					'settings' => $settings,
+					'categories' => Categories::getCategories($config),
+					'boardlist' => createBoardlist(false)
+
+				)
+			);
 		}
 		
 		// Build news page
@@ -50,7 +52,7 @@
 				'settings' => $settings,
 				'config' => $config,
 				'news' => $news,
-		                'boardlist' => createBoardlist(false)
+				'boardlist' => createBoardlist(false)
 			));
 		}
 		
@@ -65,7 +67,7 @@
 			));
 		}
 
-        private static function getCategories($config) {
+		private static function getCategories($config) {
 			$categories = $config['categories'];
 			
 			foreach ($categories as &$boards) {
@@ -77,8 +79,8 @@
 				}
 			}
 
-            return $categories;
-        }
+			return $categories;
+		}
 	};
 	
 ?>

@@ -4,8 +4,8 @@
         <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-	<link rel="stylesheet" media="screen" href="{{ config.url_stylesheet }}">
-	<style type="text/css">
+    <link rel="stylesheet" media="screen" href="{{ config.url_stylesheet }}">
+    <style type="text/css">
         .sidebar {
             width: 200px;
             border-right-color: gray;
@@ -52,20 +52,29 @@
             font-weight: bold;
         }
         
-		@media (max-width:768px) {
-			.sidebar { 
-				display: none;
-			}
-		
-			footer {
-				display: none;
-			}
-		}
-	</style>
-	<title>{{ settings.title }}</title>
+        @media (max-width:768px) {
+            .sidebar {
+                width: 80vw;
+                border: none;
+            }
+            .main {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .boardlist {
+                display: none;
+            }
+
+            footer {
+                display: none;
+            }
+        }
+    </style>
+    <title>{{ settings.title }}</title>
 </head>
 <body>
-	{% include 'themes/categories/' ~ settings.file_sidebar %}
-	{% include 'themes/categories/' ~ settings.file_news %}
+    {% include 'themes/categories/' ~ settings.file_sidebar %}
+    {% include 'themes/categories/' ~ settings.file_news %}
 </body>
 </html>
