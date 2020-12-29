@@ -65,7 +65,7 @@
 	<title>{{ settings.title }}</title>
 </head>
 <body>
-	{{ include(settings.file_sidebar) }}
-	{{ include(settings.file_news) }}
+	{% include 'themes/categories/' ~ settings.file_sidebar %}
+	{% include 'themes/categories/' ~ settings.file_news %}
 </body>
 </html>

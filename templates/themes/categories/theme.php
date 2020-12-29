@@ -28,8 +28,15 @@
 		// Build homepage
 		public static function homepage($settings) {
 			global $config;
-			
-			return Element('themes/categories/frames.html', Array('config' => $config, 'settings' => $settings));
+
+            return Element(
+                'themes/categories/frames.html',
+                Array(
+                    'config' => $config,
+                    'settings' => $settings,
+                    'categories' => Categories::getCategories($config)
+                )
+            );
 		}
 		
 		// Build news page
@@ -51,6 +58,14 @@
 		public static function sidebar($settings) {
 			global $config, $board;
 			
+			return Element('themes/categories/sidebar.html', Array(
+				'settings' => $settings,
+				'config' => $config,
+				'categories' => Categories::getCategories($config)
+			));
+		}
+
+        private static function getCategories($config) {
 			$categories = $config['categories'];
 			
 			foreach ($categories as &$boards) {
@@ -61,13 +76,9 @@
 					$board = Array('title' => $title, 'uri' => sprintf($config['board_path'], $board));
 				}
 			}
-			
-			return Element('themes/categories/sidebar.html', Array(
-				'settings' => $settings,
-				'config' => $config,
-				'categories' => $categories
-			));
-		}
+
+            return $categories;
+        }
 	};
 	
 ?>
