@@ -2717,7 +2717,8 @@ function slugify($post) {
 	$slug = mb_convert_encoding($slug, "UTF-8", "UTF-8");
 
 	// Transliterate local characters like ü, I wonder how would it work for weird alphabets :^)
-	$slug = iconv("UTF-8", "ASCII//TRANSLIT//IGNORE", $slug);
+	// $slug = iconv("UTF-8", "ASCII//TRANSLIT//IGNORE", $slug);
+	$slug = mb_convert_encoding($slug, "ASCII", "UTF-8");
 
 	// Remove Tinyboard custom markup
 	$slug = preg_replace("/<tinyboard [^>]+>.*?<\/tinyboard>/s", '', $slug);
