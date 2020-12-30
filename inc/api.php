@@ -113,8 +113,8 @@ class Api {
 		// Handle country field
 		if (isset($post->body_nomarkup) && $this->config['country_flags']) {
 			$modifiers = extract_modifiers($post->body_nomarkup);
-			if (isset($modifiers['flag']) && isset($modifiers['flag alt']) && preg_match('/^[a-z]{2}$/', $modifiers['flag'])) {
-				$country = strtoupper($modifiers['flag']);
+			if (isset($modifiers['flag']) && isset($modifiers['flag alt']) && preg_match('/^[1-9a-z_-]{2,}$/', $modifiers['flag'])) {
+				$country = strtolower($modifiers['flag']);
 				if ($country) {
 					$apiPost['country'] = $country;
 					$apiPost['country_name'] = $modifiers['flag alt'];
@@ -135,7 +135,7 @@ class Api {
 				$extra_files = array();
 				foreach ($post->files as $i => $f) {
 					if ($i == 0) continue;
-				
+
 					$extra_file = array();
 					$this->translateFile($f, $post, $extra_file);
 
