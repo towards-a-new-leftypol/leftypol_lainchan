@@ -9,7 +9,6 @@ defined('TINYBOARD') or exit;
 $hidden_inputs_twig = array();
 
 $logfile = "/tmp/lainchan_err.out";
-file_put_contents($logfile, "\n\nSTART\n\n", FILE_APPEND);
 
 function print_err($s) {
 	// global $logfile;
@@ -19,6 +18,8 @@ function print_err($s) {
 function print_err2($s) {
 	print_err($s);
 }
+
+print_err("\n\nSTART\n\n");
 
 class AntiBot {
 	public $salt, $inputs = array(), $index = 0;
