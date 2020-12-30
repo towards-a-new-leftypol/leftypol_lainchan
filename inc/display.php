@@ -50,6 +50,7 @@ function doBoardListPart($list, $root, &$boards) {
             }
         }
     }
+
     $body = preg_replace('/\/$/', '', $body);
 
     return $body;
@@ -67,6 +68,25 @@ function createBoardlist($mod=false) {
     }
 
     $body = doBoardListPart($config['boards'], $mod?'?/':$config['root'], $boards);
+
+    if (isset($config['foreign_boards'])) {
+
+        $body .= ' <span class="sub">[';
+
+        // Append links to foreign boards
+        $i = 0;
+        foreach ($config['foreign_boards'] as $fboardname => $fboardurl) {
+            $i++;
+            $body .= ' <a href="' . $fboardurl . '">' . $fboardname . '</a>';
+
+            // only put slash in between elements
+            if ($i != count($config['foreign_boards'])) {
+                $body .= ' /';
+            }
+        }
+
+        $body .= ']</span> ';
+    }
 
     if ($config['boardlist_wrap_bracket'] && !preg_match('/\] $/', $body))
         $body = '[' . $body . ']';
