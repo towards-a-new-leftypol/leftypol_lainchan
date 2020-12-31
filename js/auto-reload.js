@@ -47,7 +47,7 @@ $(document).ready(function(){
 	{
 		return; // not index
 	}	
-	if($(".post.op").size() != 1)
+	if($(".post.op").length != 1)
 	{
 		return; //not thread page
 	}
