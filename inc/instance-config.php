@@ -12,46 +12,55 @@
  * Front page configurations.
  */
 
-   $config['boards'] = array(
-       array('leftypol',
-             'b',
-             'hobby',
-             'tech',
-             'edu',
-             'games',
-             'anime'
-       ) ,
-      array('meta')
-   );
-   // Board categories. Only used in the "Categories" theme.
-   $config['categories'] = array(
-      'Leftypol' => array('leftypol',
-             'b',
-             'hobby',
-             'tech',
-             'edu',
-             'games',
-             'anime'
-       ),
-      'Meta' => array('meta')
-   );
-   // Optional for the Categories theme. This is an array of name => (title, url) groups for categories
-   // with non-board links.
-   $config['custom_categories'] = array(
-      'Links' => array(
-          'New Multitude' => 'https://newmultitude.org/',
-          'Booru image repository' => 'https://lefty.booru.org/',
-          'Leftypedia' => 'https://leftypedia.org/',
-          'Official chat room' => 'https://app.element.io/#/room/!RQxdjfGouwsFHwUzwL:matrix.org',
-          'Rules' => 'rules.html'
-      ),
-      'Learning resources and blogs' => array(
-          'Michael Roberts\' blog' => 'https://thenextrecession.wordpress.com/',
-          'A Critique Of Crisis Theory blog' => 'https://critiqueofcrisistheory.wordpress.com/',
-          'Leftypedia' => 'https://leftypedia.org/',
-          'Marxis Internet Archive' => 'https://www.marxists.org/'
-      ),
-   );
+$config['boards'] = array(
+   array('leftypol',
+         'b',
+         'hobby',
+         'tech',
+         'edu',
+         'games',
+         'anime'
+   ) ,
+  array('meta')
+);
+$config['foreign_boards'] = array(
+    'GET' => 'https://getchan.net/GET/',
+    'ref' => 'https://getchan.net/ref/'
+);
+// Board categories. Only used in the "Categories" theme.
+$config['categories'] = array(
+    'Leftypol' => array('leftypol',
+        'b',
+        'hobby',
+        'tech',
+        'edu',
+        'games',
+        'anime'
+    ),
+    'Meta' => array('meta')
+);
+
+// Optional for the Categories theme. This is an array of name => (title, url) groups for categories
+// with non-board links.
+$config['custom_categories'] = array(
+    'Our Friends' => array(
+        'GET' => 'https://getchan.net/GET/',
+        'ref' => 'https://getchan.net/ref/'
+    ),
+    'Links' => array(
+        'New Multitude' => 'https://newmultitude.org/',
+        'Booru image repository' => 'https://lefty.booru.org/',
+        'Leftypedia' => 'https://leftypedia.org/',
+        'Official chat room' => 'https://app.element.io/#/room/!RQxdjfGouwsFHwUzwL:matrix.org',
+        'Rules' => 'rules.html'
+    ),
+    'Learning resources and blogs' => array(
+        'Michael Roberts\' blog' => 'https://thenextrecession.wordpress.com/',
+        'A Critique Of Crisis Theory blog' => 'https://critiqueofcrisistheory.wordpress.com/',
+        'Leftypedia' => 'https://leftypedia.org/',
+        'Marxis Internet Archive' => 'https://www.marxists.org/'
+    ),
+);
 
 /*
  * Database and site wide configurations
