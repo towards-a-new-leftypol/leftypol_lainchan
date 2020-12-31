@@ -259,6 +259,7 @@ $config['stylesheets']['Photon'] = 'photon.css';
 $config['stylesheets']['Szalet'] = 'szalet.css';
 $config['stylesheets']['Tsuki'] = 'tsuki.css';
 
+$config['default_stylesheet'] = array('Dark Red', $config['stylesheets']['Dark Red']);
 /*
  * ====================
  *  Javascript
