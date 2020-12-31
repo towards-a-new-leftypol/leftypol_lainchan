@@ -111,7 +111,7 @@ class Api {
 		if ($threadsPage) return $apiPost;
 
 		// Handle country field
-		if (isset($post->body_nomarkup) && $this->config['country_flags']) {
+		if (isset($post->body_nomarkup) && ($this->config['country_flags'] || $this->config['user_flag'])) {
 			$modifiers = extract_modifiers($post->body_nomarkup);
 			if (isset($modifiers['flag']) && isset($modifiers['flag alt']) && preg_match('/^[1-9a-z_-]{2,}$/', $modifiers['flag'])) {
 				$country = strtolower($modifiers['flag']);
