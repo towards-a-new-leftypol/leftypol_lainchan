@@ -1846,7 +1846,7 @@ function mod_ban_post($board, $delete, $post, $token = false) {
         'token' => $security_token
     );
 
-    if($_GET['thread']) {
+    if(isset($_GET['thread']) && $_GET['thread']) {
         $args['thread'] = $_GET['thread'];
     }
     
