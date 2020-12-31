@@ -267,6 +267,7 @@ $config['stylesheets']['Tsuki'] = 'tsuki.css';
 
 $config['additional_javascript'][] = 'js/local-time.js';
 $config['additional_javascript'][] = 'js/auto-reload.js';
+$config['additional_javascript'][] = 'js/thread-stats.js';
 $config['additional_javascript'][] = 'js/post-hover.js';
 $config['additional_javascript'][] = 'js/style-select.js';
 
