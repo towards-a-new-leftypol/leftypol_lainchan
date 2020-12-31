@@ -153,6 +153,7 @@ $config['user_flags'] = array (
     'bolshevik' => 'Bolshevik',
     'brocialism' => 'Brocialism',
     'burkina_faso' => 'Burkina Faso',
+    'ca' => 'Canadien',
     'chavismo' => 'Chavismo',
     'che' => 'Che',
     'china' => 'China',
@@ -164,6 +165,7 @@ $config['user_flags'] = array (
     'democratic_socialism' => 'Democratic Socialism',
     'dprk' => 'DPRK',
     'eurocommunism' => 'Eurocommunism',
+    'farc' => 'Las FARC',
     'fed' => 'Fed',
     'freud' => 'Freud',
     'gadsden' => 'Gadsden',
@@ -208,10 +210,11 @@ $config['user_flags'] = array (
     'syndicalism' => 'Syndicalism',
     'tankie' => 'Tankie',
     'think' => 'Think',
+    'united_farm_workers' => 'United Farm Workers',
     'viet_cong' => 'Viet Cong',
     'yugoslavia' => 'Yugoslavia',
-    'zapatista' => 'Zapatista',
-    'ca' => 'Canadien'
+    'zapatista' => 'Zapatista'
+
 );
 
 
