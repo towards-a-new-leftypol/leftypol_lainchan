@@ -292,9 +292,6 @@ $config['additional_javascript'][] = 'js/post-menu.js';
 $config['additional_javascript'][] = 'js/post-filter.js';
 
 $config['additional_javascript'][] = 'js/options.js';
-$config['additional_javascript'][] = 'js/webm-settings.js';
-$config['additional_javascript'][] = 'js/expand-video.js';
-$config['additional_javascript'][] = 'js/style-select.js';
 $config['additional_javascript'][] = 'js/options/general.js';
 $config['additional_javascript'][] = 'js/options/user-css.js';
 $config['additional_javascript'][] = 'js/options/user-js.js';
@@ -304,7 +301,8 @@ $config['additional_javascript'][] = 'js/gallery-view.js';
 $config['additional_javascript'][] = 'js/expand.js';
 $config['additional_javascript'][] = 'js/file-selector.js';
 $config['additional_javascript'][] = 'js/save-user_flag.js';
-$config['additional_javascript'][] = 'js/treeview.js';
+$config['additional_javascript'][] = 'js/webm-settings.js';
+$config['additional_javascript'][] = 'js/expand-video.js';
 
 $config['enable_embedding'] = true;
 
