@@ -1,3 +1,8 @@
+/* Depends on post-menu.js
+ * Usage:
+ * $config['additional_javascript'][] = 'js/post-menu.js';
+ * $config['additional_javascript'][] = 'js/post-filter.js';
+ */
 if (active_page === 'thread' || active_page === 'index' || active_page === 'catalog' || active_page === 'ukko') {
 	$(document).on('menu_ready', function () {
 		'use strict';
