@@ -284,6 +284,7 @@ $config['additional_javascript'][] = 'js/multi-image.js'; // Support for posting
 
 $config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
 $config['additional_javascript'][] = 'js/quick-reply.js';
+$config['additional_javascript'][] = 'js/post-filter.js';
 
 $config['additional_javascript'][] = 'js/options.js';
 $config['additional_javascript'][] = 'js/webm-settings.js';
