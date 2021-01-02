@@ -287,6 +287,8 @@ $config['additional_javascript'][] = 'js/show-own-posts.js';
 $config['additional_javascript'][] = 'js/multi-image.js'; // Support for posting multiple files
 
 $config['additional_javascript'][] = 'js/quick-reply.js';
+$config['additional_javascript'][] = 'js/post-menu.js';
+$config['additional_javascript'][] = 'js/post-filter.js';
 
 $config['additional_javascript'][] = 'js/options.js';
 $config['additional_javascript'][] = 'js/webm-settings.js';
