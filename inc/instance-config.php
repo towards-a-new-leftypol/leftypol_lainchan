@@ -269,6 +269,9 @@ $config['default_stylesheet'] = array('Dark Red', $config['stylesheets']['Dark R
  * ====================
  */
 
+$config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
+$config['additional_javascript'][] = 'js/ajax.js';
+
 $config['additional_javascript'][] = 'js/local-time.js';
 $config['additional_javascript'][] = 'js/auto-reload.js';
 $config['additional_javascript'][] = 'js/thread-stats.js';
@@ -279,10 +282,10 @@ $config['additional_javascript'][] = 'js/hide-threads.js';
 $config['additional_javascript'][] = 'js/hide-images.js';
 $config['additional_javascript'][] = 'js/show-backlinks.js';
 $config['additional_javascript'][] = 'js/show-op.js';
+$config['additional_javascript'][] = 'js/show-own-posts.js';
 
 $config['additional_javascript'][] = 'js/multi-image.js'; // Support for posting multiple files
 
-$config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
 $config['additional_javascript'][] = 'js/quick-reply.js';
 
 $config['additional_javascript'][] = 'js/options.js';
