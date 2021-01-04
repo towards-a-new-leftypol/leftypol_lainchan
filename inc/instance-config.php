@@ -275,6 +275,7 @@ $config['additional_javascript'][] = 'js/ajax.js';
 
 $config['additional_javascript'][] = 'js/local-time.js';
 $config['additional_javascript'][] = 'js/auto-reload.js';
+$config['additional_javascript'][] = 'js/auto-scroll.js';
 $config['additional_javascript'][] = 'js/thread-stats.js';
 $config['additional_javascript'][] = 'js/post-hover.js';
 $config['additional_javascript'][] = 'js/style-select.js';
@@ -292,8 +293,18 @@ $config['additional_javascript'][] = 'js/post-menu.js';
 $config['additional_javascript'][] = 'js/post-filter.js';
 
 $config['additional_javascript'][] = 'js/options.js';
+$config['additional_javascript'][] = 'js/options/general.js';
+$config['additional_javascript'][] = 'js/options/user-css.js';
+$config['additional_javascript'][] = 'js/options/user-js.js';
+$config['additional_javascript'][] = 'js/thread-watcher.js';
+$config['additional_javascript'][] = 'js/catalog-search.js';
+$config['additional_javascript'][] = 'js/gallery-view.js';
+$config['additional_javascript'][] = 'js/expand.js';
+$config['additional_javascript'][] = 'js/file-selector.js';
+$config['additional_javascript'][] = 'js/save-user_flag.js';
 $config['additional_javascript'][] = 'js/webm-settings.js';
 $config['additional_javascript'][] = 'js/expand-video.js';
+
 $config['enable_embedding'] = true;
 
 $config['youtube_js_html'] = '<div class="video-container" data-video="$2">'.
