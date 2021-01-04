@@ -232,10 +232,18 @@ $(document).ready(function(){
         $.ajax({
             url: document.location,
             success: function(data) {
+                console.log("poll ajax succes");
+                console.log(data);
                 var loaded_posts = 0;   // the number of new posts loaded in this update
+
                 $(data).find('div.post.reply').each(function() {
+                    console.log("new data post reply:", this);
                     var id = $(this).attr('id');
+                    console.log("new data post reply id:", id);
+
+                    // check that this post doesn't already exist
                     if($('#' + id).length == 0) {
+                        console.log("post with id ", id, "does not already exist on the page");
                         if (!new_posts) {
                             first_new_post = this;
                             makeIcon('reply');
@@ -245,17 +253,22 @@ $(document).ready(function(){
                             }
                         }
                         if ($("div.post").length > 1){
+                            console.log("adding post A");
                             $(this).parent().insertAfter($('div.post:not(.post-hover):last').parent().next()).after('<br class="clear">');
                         }
                         else {
+                            console.log("adding post B");
                             $(this).insertAfter($('div.post:not(.post-hover):last')).after('<br class="clear">');
                         }
                         new_posts++;
                         loaded_posts++;
                         $(document).trigger('new_post', this);
                         recheck_activated();
+                    } else {
+                        console.log("post with id ", id, "already exists on the page, not adding");
                     }
                 });
+
                 time_loaded = Date.now(); // interop with watch.js
                 
                 
@@ -312,8 +325,13 @@ $(document).ready(function(){
     };
 
     $(post).on('submit', function(e){
-        poll(manualUpdate = true);
-        dothis(this);
+        console.log("post on submit");
+        setTimeout(
+            function() {
+                poll(manualUpdate = true)
+            },
+            500
+        );
      });
     
     $(window).scrollStopped(function() {

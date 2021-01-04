@@ -79,6 +79,8 @@ $(window).ready(function() {
                             || (!settings.get('always_noko_replies', true) && !post_response.noko)) {
                             document.location = post_response.redirect;
                         } else {
+                            console.log("do nothing for now, this behaviour will be handled by auto-reload.js");
+                            /*
                             $.ajax({
                                 url: document.location,
                                 success: function(data) {
@@ -105,9 +107,14 @@ $(window).ready(function() {
                                 contentType: false,
                                 processData: false
                             }, 'html');
+                        */
                         }
                         $(form).find('input[type="submit"]').val(_('Posted...'));
                         $(document).trigger("ajax_after_post", post_response);
+                        $(form).find('input[type="submit"]').val(submit_txt);
+                        $(form).find('input[type="submit"]').removeAttr('disabled');
+                        $(form).find('input[name="subject"],input[name="file_url"],\
+                            textarea[name="body"],input[type="file"]').val('').change();
                     } else {
                         alert(_('An unknown error occured when posting!'));
                         $(form).find('input[type="submit"]').val(submit_txt);
