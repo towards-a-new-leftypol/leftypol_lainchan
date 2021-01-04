@@ -125,6 +125,7 @@ $config['allowed_ext'][] = 'bmp';
 $config['allowed_ext'][] = 'gif';
 $config['allowed_ext'][] = 'png';
 
+$config['allowed_ext_files'][] = 'mp3';
 $config['allowed_ext_files'][] = 'mp4';
 $config['allowed_ext_files'][] = 'pdf';
 $config['allowed_ext_files'][] = 'txt';
