@@ -110,7 +110,7 @@ class Api {
 		if (isset($config['poster_ids']) && $config['poster_ids']) $apiPost['id'] = poster_id($post->ip, $post->thread, $board['uri']);
 		if ($threadsPage) return $apiPost;
 
-		// Handle country field
+		// Handle special fields
 		if (isset($post->body_nomarkup) && ($this->config['country_flags'] || $this->config['user_flag'])) {
 			$modifiers = extract_modifiers($post->body_nomarkup);
 			if (isset($modifiers['flag']) && isset($modifiers['flag alt']) && preg_match('/^[1-9a-z_-]{2,}$/', $modifiers['flag'])) {
@@ -119,6 +119,12 @@ class Api {
 					$apiPost['country'] = $country;
 					$apiPost['country_name'] = $modifiers['flag alt'];
 				}
+			}
+			if (isset($modifiers['warning message'])) {
+				$apiPost['warning_msg'] = $modifiers['warning message'];
+			}
+			if (isset($modifiers['ban message'])) {
+				$apiPost['ban_msg'] = $modifiers['ban message'];
 			}
 		}
 
