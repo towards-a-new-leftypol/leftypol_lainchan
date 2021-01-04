@@ -94,6 +94,16 @@ $config['root'] = '/';
 $config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
 
 /*
+ * Some users are having trouble posting when this is on,
+ * with the message 'Your request looks automated; Post discarded.'
+ *
+ * This did not affect all users, and for some users only for some posts.
+ *
+ * If we are getting spammed hard, try turning this on.
+ */
+$config['spam']['enabled'] = false;
+
+/*
  * Permissions
  */
 $config['mod']['move'] = MOD;
