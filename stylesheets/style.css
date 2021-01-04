@@ -1954,3 +1954,11 @@ div.mix {
 footer {
  margin-bottom: 50px;
 }
+
+span.underline {
+    text-decoration: underline;
+}
+
+span.orangeQuote {
+    color: #FF8C00;
+}

@@ -317,3 +317,12 @@ $config['embedding'][0] = array(
 '/^https?:\/\/(\w+\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9\-_]{10,11})(&.+)?$/i',
 $config['youtube_js_html']);
 $config['additional_javascript'][] = 'js/youtube.js';
+
+/*
+ * ====================
+ *  Markup
+ * ====================
+ */
+
+$config['markup'][] = array("/^\s*&lt;.*$/m", '<span class="orangeQuote">$0</span>');
+$config['markup'][] = array("/__(.+?)__/", "<span class=\"underline\">\$1</span>");
