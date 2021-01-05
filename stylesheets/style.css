@@ -1959,6 +1959,10 @@ span.underline {
     text-decoration: underline;
 }
 
+span.strikethrough {
+    text-decoration: line-through;
+}
+
 span.orangeQuote {
     color: #FF8C00;
 }
