@@ -79,7 +79,6 @@ $(window).ready(function() {
                             || (!settings.get('always_noko_replies', true) && !post_response.noko)) {
                             document.location = post_response.redirect;
                         } else {
-                            console.log("do nothing for now, this behaviour will be handled by auto-reload.js");
                             /*
                             $.ajax({
                                 url: document.location,
