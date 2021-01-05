@@ -68,3 +68,8 @@ div.boardlist a {
 table.modlog tr th {
 	background: #EA8;
 }
+
+#quick-reply table {
+	background: #0E0E0E url(data:image/gif;base64,R0lGODlhGAAMAKEEAOXl5ebm5vDw8PHx8SH+EUNyZWF0ZWQgd2l0aCBHSU1QACwAAAAAGAAMAAACRpQiY6cLa146MyY1EJQKjG81lNGRUPOIkgMJHtquBgIO7xwvpbrpduUSuXq8ntEC0bBEylYitdDAdM1ViaobkgKgZwyDLAAAOw==) repeat 0 0 !important;
+}
+

@@ -1954,3 +1954,15 @@ div.mix {
 footer {
  margin-bottom: 50px;
 }
+
+span.underline {
+    text-decoration: underline;
+}
+
+span.strikethrough {
+    text-decoration: line-through;
+}
+
+span.orangeQuote {
+    color: #FF8C00;
+}
