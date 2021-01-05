@@ -6,7 +6,7 @@
 @import url("/stylesheets/dark.css");
 
 span.quote {
-	color:#D96262;
+	/* color:#D96262; */
 }
 
 div.blotter, h1, h2, header div.subtitle, div.title, a:link:hover, a:visited:hover p.intro a.post_no:hover, 
