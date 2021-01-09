@@ -320,14 +320,14 @@ function handle_report(){
     $reason = escape_markup_modifiers($_POST['reason']);
     markup($reason);
     
-    foreach ($report as &$id) {
+    foreach ($report as $id) {
         $query = prepare(sprintf("SELECT `id`,`thread` , `body_nomarkup` FROM ``posts_%s`` WHERE `id` = :id", $board['uri']));
         $query->bindValue(':id', $id, PDO::PARAM_INT);
         $query->execute() or error(db_error($query));
         
         $thread = $query->fetch(PDO::FETCH_ASSOC);
 
-        $error = event('report', array('ip' => $_SERVER['REMOTE_ADDR'], 'board' => $board['uri'], 'post' => $post, 'reason' => $reason, 'link' => link_for($post)));
+        $error = event('report', array('ip' => $_SERVER['REMOTE_ADDR'], 'board' => $board['uri'], 'post' => $post, 'reason' => $reason, 'link' => link_for($thread)));
         if ($error) {
             error($error);
         }
