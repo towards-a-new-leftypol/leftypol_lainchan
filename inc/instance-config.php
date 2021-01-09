@@ -93,6 +93,9 @@ $config['threads_preview'] = 5;
 $config['root'] = '/';
 $config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
 
+//Banners
+$config['url_banner'] = '/banners.php';
+
 /*
  * Some users are having trouble posting when this is on,
  * with the message 'Your request looks automated; Post discarded.'
