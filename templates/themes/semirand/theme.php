@@ -3,7 +3,7 @@
 	require 'info.php';
 
 	/**
- 	 * Generate the board's HTML and move it and its JavaScript in place, whence
+	 * Generate the board's HTML and move it and its JavaScript in place, whence
 	 * it's served
 	 */
 	function semirand_build($action, $settings) {
@@ -64,7 +64,7 @@
 		}
 
 		/**
- 		 * Obtain list of all threads from all non-excluded boards
+		 * Obtain list of all threads from all non-excluded boards
 		 */
 		private function fetchThreads() {
 			$query   = '';
@@ -87,9 +87,12 @@
 		/**
 		 * Retrieve all replies to a given thread
 		 */
-		private function fetchReplies($board, $thread_id) {
+		private function fetchReplies($board, $thread_id, $preview_count) {
+			$query = prepare("SELECT * FROM (SELECT * FROM ``posts_$board`` WHERE `thread` = :id ORDER BY `time` DESC LIMIT :limit) as
+ t ORDER BY t.time ASC");
 			$query = prepare("SELECT * FROM ``posts_$board`` WHERE `thread` = :id");
 			$query->bindValue(':id', $thread_id, PDO::PARAM_INT);
+			$query->bindValue(':limit', $preview_count, PDO::PARAM_INT);
 			$query->execute() or error(db_error($query));
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -131,13 +134,13 @@
 
 			openBoard($post['board']);
 			$thread  = new Thread($post, $mod ? '?/' : $config['root'], $mod);
-			$replies = $this->fetchReplies($post['board'], $post['id']);
 			// Number of replies to a thread that are displayed beneath it
 			$preview_count = $post['sticky'] ? $config['threads_preview_sticky'] :
 				$config['threads_preview'];
+			$replies = $this->fetchReplies($post['board'], $post['id'], $preview_count);
 
 			// Chomp the last few replies
-			$disp_replies   = array_splice($replies, 0, $preview_count);
+			$disp_replies   = $replies;
 			$disp_img_count = 0;
 			foreach ($disp_replies as $reply) {
 				if ($reply['files'] !== '')
@@ -182,7 +185,7 @@
 
 			// Fetch threads from all boards and chomp the first 'n' posts, depending
 			// on the setting
-			$threads     = $this->shuffleThreads($this->fetchThreads());
+			$threads     = $this->fetchThreads();
 			$total_count = count($threads);
 			// Top threads displayed on load
 			$top_threads = array_splice($threads, 0, $this->settings['thread_limit']);
