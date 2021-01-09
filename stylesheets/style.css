@@ -380,7 +380,6 @@ div.banner a:hover {
 
 img.banner,img.board_image {
   display: block;
-  border: 1px solid #a9a9a9;
   margin: 3em auto 0 auto;
 }
 
