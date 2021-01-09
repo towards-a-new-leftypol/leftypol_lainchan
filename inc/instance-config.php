@@ -23,6 +23,11 @@ $config['boards'] = array(
    ) ,
   array('meta')
 );
+
+$config['prepended_foreign_boards'] = array(
+    'overboard' => 'overboard/index.html',
+);
+
 $config['foreign_boards'] = array(
     'GET' => 'https://getchan.net/GET/',
     'ref' => 'https://getchan.net/ref/'

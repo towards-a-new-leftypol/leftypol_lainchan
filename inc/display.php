@@ -66,8 +66,27 @@ function createBoardlist($mod=false) {
     foreach ($xboards as $val) {
         $boards[$val['uri']] = $val['title'];
     }
+    $body = '';
+    if (isset($config['prepended_foreign_boards'])){
+         $body .= ' <span class="sub">[';
 
-    $body = doBoardListPart($config['boards'], $mod?'?/':$config['root'], $boards);
+        // Append links to foreign boards
+        $i = 0;
+        foreach ($config['prepended_foreign_boards'] as $fboardname => $fboardurl) {
+            $i++;
+            $body .= ' <a href="' . $fboardurl . '">' . $fboardname . '</a>';
+
+            // only put slash in between elements
+            if ($i != count($config['prepended_foreign_boards'])) {
+                $body .= ' /';
+            }
+        }
+
+        $body .= ']</span> ';
+    }
+    
+
+    $body .= doBoardListPart($config['boards'], $mod?'?/':$config['root'], $boards);
 
     if (isset($config['foreign_boards'])) {
 
