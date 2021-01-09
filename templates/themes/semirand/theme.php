@@ -90,7 +90,6 @@
 		private function fetchReplies($board, $thread_id, $preview_count) {
 			$query = prepare("SELECT * FROM (SELECT * FROM ``posts_$board`` WHERE `thread` = :id ORDER BY `time` DESC LIMIT :limit) as
  t ORDER BY t.time ASC");
-			$query = prepare("SELECT * FROM ``posts_$board`` WHERE `thread` = :id");
 			$query->bindValue(':id', $thread_id, PDO::PARAM_INT);
 			$query->bindValue(':limit', $preview_count, PDO::PARAM_INT);
 			$query->execute() or error(db_error($query));
