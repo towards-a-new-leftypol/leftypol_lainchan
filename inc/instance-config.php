@@ -133,6 +133,9 @@ $config['max_filesize'] = 50 * 1024 * 1024; // 50MB
 $config['webm']['allow_audio'] = true;
 $config['webm']['max_length'] = 1000;
 
+$config['pdf_file_thumbnail'] = true;
+$config['djvu_file_thumbnail'] = true;
+
 // Allowed image file extensions.
 $config['allowed_ext'][] = 'jpg';
 $config['allowed_ext'][] = 'jpeg';
