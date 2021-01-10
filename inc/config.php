@@ -1120,6 +1120,7 @@
 	$config['error']['toomanycites']	= _('Too many cites; post discarded.');
 	$config['error']['toomanycross']	= _('Too many cross-board links; post discarded.');
 	$config['error']['nodelete']		= _('You didn\'t select anything to delete.');
+	$config['error']['nodeletethread']	= _('You are not allowed to delete threads.');
 	$config['error']['noreport']		= _('You didn\'t select anything to report.');
 	$config['error']['toomanyreports']	= _('You can\'t report that many posts at once.');
 	$config['error']['invalidpassword']	= _('Wrong password…');

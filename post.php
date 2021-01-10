@@ -230,6 +230,10 @@ function handle_delete(){
                 $thread = $thread_query->fetch(PDO::FETCH_ASSOC);   
             }
 
+            if (isset($config['allow_thread_deletion']) && !$config['allow_thread_deletion'] && !$post['thread']) {
+                error($config['error']['nodeletethread']);
+            }
+
             if ($password != '' && $post['password'] != $password && (!$thread || $thread['password'] != $password))
                 error($config['error']['invalidpassword']);
             

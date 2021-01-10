@@ -111,6 +111,8 @@ $config['mod']['editpost'] = MOD;
 // Raw HTML posting
 $config['mod']['rawhtml'] = MOD;
 
+$config['allow_thread_deletion'] = false;
+
 // Max attachments per post
 $config['max_images'] = 5;
 $config['image_reject_repost'] = false;
