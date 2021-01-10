@@ -234,7 +234,6 @@ function handle_delete(){
                 error($config['error']['nodeletethread']);
             }
 
-
             if ($password != '' && $post['password'] != $password && (!$thread || $thread['password'] != $password))
                 error($config['error']['invalidpassword']);
             
