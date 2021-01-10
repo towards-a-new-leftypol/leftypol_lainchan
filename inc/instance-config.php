@@ -110,6 +110,7 @@ $config['mod']['move'] = MOD;
 $config['mod']['editpost'] = MOD;
 // Raw HTML posting
 $config['mod']['rawhtml'] = MOD;
+$config['mod']['mod_board_log'] = MOD;
 
 // Max attachments per post
 $config['max_images'] = 5;
