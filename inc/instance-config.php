@@ -314,6 +314,7 @@ $config['additional_javascript'][] = 'js/file-selector.js';
 $config['additional_javascript'][] = 'js/save-user_flag.js';
 $config['additional_javascript'][] = 'js/webm-settings.js';
 $config['additional_javascript'][] = 'js/expand-video.js';
+$config['additional_javascript'][] = 'js/download-original.js';
 
 $config['enable_embedding'] = true;
 
