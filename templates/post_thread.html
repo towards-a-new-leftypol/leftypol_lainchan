@@ -98,7 +98,7 @@
 	{% endif %}
 	{% include 'post_reply.html' %}
 {% endfor %}
-{% if mod and not index %}
+{% if not index %}
 <div id="uniqueip"><span style="display: block; float: left;">Unique IPs: {{ iparray|length  }} </span></div>
 {% endif %}
 <br class="clear"/>{% if hr %}<hr/>{% endif %}
