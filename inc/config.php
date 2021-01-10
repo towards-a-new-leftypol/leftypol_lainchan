@@ -1881,6 +1881,9 @@
 	// Enable PDF file thumbnail generation
 	$config['pdf_file_thumbnail'] = false;
 
+	// Enable TXT file thumbnail
+	$config['txt_file_thumbnail'] = false;
+
 	// Enable SCeditor WYSIWIG and CSS
 	$config['sc_editor'] = false;
 	$config['sc_editor_theme'] = 'transparent.min';
