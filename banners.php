@@ -1,22 +1,16 @@
-<html>
-<head>
-<title>Lainchan Banners</title>
-</head>
-<body>
 <?php
-function listBannersInDir($dir) {
-    if ($handle = opendir($dir)) {
-        while (false !== ($entry = readdir($handle))) {
-            if ($entry != "." && $entry != "..") {
-                echo "<a href=\"$dir/$entry\"><img src=\"$dir/$entry\" alt=\"$entry\" style=\"width:348px;height:128px\"></a> ";
-            }
-        }
-        closedir($handle);
-    }
+function getBannerSrc(){
+	$files = scandir(__dir__.'/banners/');
+	$files = array_diff($files, array('.', '..'));
+	return $files[array_rand($files)];
 }
 
-listBannersInDir("banners_priority");
-listBannersInDir("banners");
+$filename = getBannerSrc();
+$filename = "banners/" . $filename;
+$fp = fopen($filename, 'rb');
+
+header("Content-Type: image/png");
+header("Content-Length: " . filesize($filename)); 
+
+fpassthru($fp);
 ?>
-</body>
-</html>
