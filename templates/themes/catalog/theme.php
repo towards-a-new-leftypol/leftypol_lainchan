@@ -361,12 +361,12 @@
                                 }
 
                                 if (empty($post['file']))
-                                    $post['file'] = $config['image_deleted'];
+                                    $post['file'] = $config['root'] . $config['image_deleted'];
                             } else {
-                                $post['file'] = $config['image_deleted'];
+                                $post['file'] = $config['root'] . $config['image_deleted'];
                             }
                         } else if($files[0]->thumb == 'spoiler') {
-                            $post['file'] = '/' . $config['spoiler_image'];
+                            $post['file'] = $config['root'] . $config['spoiler_image'];
                         } else {
                             $post['file'] = $config['uri_thumb'] . $files[0]->thumb;
                         }
