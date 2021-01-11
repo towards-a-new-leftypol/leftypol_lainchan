@@ -349,7 +349,7 @@
        /**
          * Build and save the HTML of the catalog for the overboard
          */
-        public function buildOverboardCatalog($settings, $board_names) {
+        public function buildOverboardCatalog($settings, $boards) {
             $board_name = $settings['overboard_location'];
 
             if (array_key_exists($board_name, $this->threadsCache)) {
@@ -360,16 +360,16 @@
                     $sql .= $this->buildThreadsQuery($board);
                     $sql .= " UNION ALL ";
                 }
-                $query  = preg_replace('/UNION ALL $/', 'ORDER BY `bump` DESC', $query);
-                $result = query($query) or error(db_error());
-                $threads = $query->fetchAll(PDO::FETCH_ASSOC);
+                $sql  = preg_replace('/UNION ALL $/', 'ORDER BY `bump` DESC', $sql);
+                $result = query($sql) or error(db_error());
+                $threads = $result->fetchAll(PDO::FETCH_ASSOC);
                 // Save for posterity
                 $this->threadsCache[$board_name] = $threads;
             }
             // Generate data for the template
             $recent_posts = $this->generateRecentPosts($threads);
 
-            $this->saveForBoard($board_name, $recent_posts);
+            $this->saveForBoard($board_name, $recent_posts,  '/' . $settings['overboard_location']);
         }
 
         private function generateRecentPosts($threads) {
