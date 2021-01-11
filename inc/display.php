@@ -56,6 +56,30 @@ function doBoardListPart($list, $root, &$boards) {
     return $body;
 }
 
+function createForeignBoardListSection($configKey){
+    $body = '';
+
+    if (isset($config[$configKey])){
+         $body .= ' <span class="sub">[';
+
+        // Append links to foreign boards
+        $i = 0;
+        foreach ($config[$configKey] as $fboardname => $fboardurl) {
+            $i++;
+            $body .= ' <a href="' . $fboardurl . '">' . $fboardname . '</a>';
+
+            // only put slash in between elements
+            if ($i != count($configKey)) {
+                $body .= ' /';
+            }
+        }
+
+        $body .= ']</span> ';
+    }
+
+    return body;
+}
+
 function createBoardlist($mod=false) {
     global $config;
     
@@ -67,45 +91,11 @@ function createBoardlist($mod=false) {
         $boards[$val['uri']] = $val['title'];
     }
     $body = '';
-    if (isset($config['prepended_foreign_boards'])){
-         $body .= ' <span class="sub">[';
-
-        // Append links to foreign boards
-        $i = 0;
-        foreach ($config['prepended_foreign_boards'] as $fboardname => $fboardurl) {
-            $i++;
-            $body .= ' <a href="' . $fboardurl . '">' . $fboardname . '</a>';
-
-            // only put slash in between elements
-            if ($i != count($config['prepended_foreign_boards'])) {
-                $body .= ' /';
-            }
-        }
-
-        $body .= ']</span> ';
-    }
+    $body .= createForeignBoardListSection('prepended_foreign_boards');
     
 
     $body .= doBoardListPart($config['boards'], $mod?'?/':$config['root'], $boards);
-
-    if (isset($config['foreign_boards'])) {
-
-        $body .= ' <span class="sub">[';
-
-        // Append links to foreign boards
-        $i = 0;
-        foreach ($config['foreign_boards'] as $fboardname => $fboardurl) {
-            $i++;
-            $body .= ' <a href="' . $fboardurl . '">' . $fboardname . '</a>';
-
-            // only put slash in between elements
-            if ($i != count($config['foreign_boards'])) {
-                $body .= ' /';
-            }
-        }
-
-        $body .= ']</span> ';
-    }
+    $body .= createForeignBoardListSection('foreign_boards');
 
     if ($config['boardlist_wrap_bracket'] && !preg_match('/\] $/', $body))
         $body = '[' . $body . ']';

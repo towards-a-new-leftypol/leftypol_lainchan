@@ -25,7 +25,7 @@ $config['boards'] = array(
 );
 
 $config['prepended_foreign_boards'] = array(
-    'overboard' => '/overboard',
+    'overboard' => '/overboard/',
 );
 
 $config['foreign_boards'] = array(
