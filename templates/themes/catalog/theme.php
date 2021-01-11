@@ -17,8 +17,6 @@
         //  - post-thread (a thread has been made)
         if ($action === 'all') {
             foreach ($boards as $board) {
-                //$b = new Catalog($settings);
-
                 $action = generation_strategy("sb_catalog", array($board));
                 if ($action == 'delete') {
                     file_unlink($config['dir']['home'] . $board . '/catalog.html');
