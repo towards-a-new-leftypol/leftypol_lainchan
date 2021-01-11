@@ -17,8 +17,6 @@
         //  - post-thread (a thread has been made)
         if ($action === 'all') {
             foreach ($boards as $board) {
-                $b = new Catalog($settings);
-
                 $action = generation_strategy("sb_catalog", array($board));
                 if ($action == 'delete') {
                     file_unlink($config['dir']['home'] . $board . '/catalog.html');
@@ -27,6 +25,17 @@
                 elseif ($action == 'rebuild') {
                     print_err("catalog_build calling Catalog.build 1. board: $board");
                     $b->build($settings, $board);
+                }
+            }
+            if($settings['has_overboard']) {
+                $board = $settings['overboard_location'];
+                $action = generation_strategy("sb_catalog", array($board));
+                if ($action == 'delete') {
+                    file_unlink($config['dir']['home'] . $board . '/catalog.html');
+                    file_unlink($config['dir']['home'] . $board . '/index.rss');
+                }
+                elseif ($action == 'rebuild') {
+                    $b->buildOverboardCatalog($settings, $boards);
                 }
             }
         } elseif ($action == 'post-thread' || ($settings['update_on_posts'] && $action == 'post') || ($settings['update_on_posts'] && $action == 'post-delete')
@@ -41,6 +50,9 @@
             elseif ($action == 'rebuild') {
                 print_err("catalog_build calling Catalog.build 2");
                 $b->build($settings, $board);
+                if($settings['has_overboard']) {
+                    $b->buildOverboardCatalog($settings, $boards);
+                }
             }
         }
         // FIXME: Check that Ukko is actually enabled
@@ -330,6 +342,35 @@
                 "'$board' AS `board` FROM ``posts_$board`` WHERE `thread` IS NULL";
 
             return $sql;
+        }
+
+       /**
+         * Build and save the HTML of the catalog for the overboard
+         */
+        public function buildOverboardCatalog($settings, $boards) {
+            $board_name = $settings['overboard_location'];
+
+            if (array_key_exists($board_name, $this->threadsCache)) {
+                $threads = $this->threadsCache[$board_name];
+            } else {
+                $sql = '';
+                foreach ($boards as $board) {
+                    $sql .= '('. $this->buildThreadsQuery($board) . ')';
+                    $sql .= " UNION ALL ";
+                }
+                $sql  = preg_replace('/UNION ALL $/', 'ORDER BY `bump` DESC LIMIT :limit', $sql);
+                $query = prepare($sql);
+                $query->bindValue(':limit', $settings['overboard_limit'], PDO::PARAM_INT);
+                $query->execute() or error(db_error($query));
+                
+                $threads = $query->fetchAll(PDO::FETCH_ASSOC);
+                // Save for posterity
+                $this->threadsCache[$board_name] = $threads;
+            }
+            // Generate data for the template
+            $recent_posts = $this->generateRecentPosts($threads);
+
+            $this->saveForBoard($board_name, $recent_posts,  '/' . $settings['overboard_location']);
         }
 
         private function generateRecentPosts($threads) {
