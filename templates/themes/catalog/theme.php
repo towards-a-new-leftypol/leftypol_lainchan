@@ -17,7 +17,7 @@
         //  - post-thread (a thread has been made)
         if ($action === 'all') {
             foreach ($boards as $board) {
-                $b = new Catalog($settings);
+                //$b = new Catalog($settings);
 
                 $action = generation_strategy("sb_catalog", array($board));
                 if ($action == 'delete') {
@@ -27,6 +27,17 @@
                 elseif ($action == 'rebuild') {
                     print_err("catalog_build calling Catalog.build 1. board: $board");
                     $b->build($settings, $board);
+                }
+            }
+            if($settings['has_overboard']) {
+                $board = $settings['overboard_location'];
+                $action = generation_strategy("sb_catalog", array($board));
+                if ($action == 'delete') {
+                    file_unlink($config['dir']['home'] . $board . '/catalog.html');
+                    file_unlink($config['dir']['home'] . $board . '/index.rss');
+                }
+                elseif ($action == 'rebuild') {
+                    $b->buildOverboardCatalog($settings, $boards);
                 }
             }
         } elseif ($action == 'post-thread' || ($settings['update_on_posts'] && $action == 'post') || ($settings['update_on_posts'] && $action == 'post-delete')
@@ -339,7 +350,6 @@
          * Build and save the HTML of the catalog for the overboard
          */
         public function buildOverboardCatalog($settings, $board_names) {
-            global $config;
             $board_name = $settings['overboard_location'];
 
             if (array_key_exists($board_name, $this->threadsCache)) {
