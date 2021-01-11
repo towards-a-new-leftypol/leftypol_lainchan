@@ -357,12 +357,15 @@
             } else {
                 $sql = '';
                 foreach ($boards as $board) {
-                    $sql .= $this->buildThreadsQuery($board);
+                    $sql .= '('. $this->buildThreadsQuery($board) . ')';
                     $sql .= " UNION ALL ";
                 }
-                $sql  = preg_replace('/UNION ALL $/', 'ORDER BY `bump` DESC', $sql);
-                $result = query($sql) or error(db_error());
-                $threads = $result->fetchAll(PDO::FETCH_ASSOC);
+                $sql  = preg_replace('/UNION ALL $/', 'ORDER BY `bump` DESC LIMIT :limit', $sql);
+                $query = prepare($sql);
+                $query->bindValue(':limit', $settings['overboard_limit'], PDO::PARAM_INT);
+                $query->execute() or error(db_error($query));
+                
+                $threads = $query->fetchAll(PDO::FETCH_ASSOC);
                 // Save for posterity
                 $this->threadsCache[$board_name] = $threads;
             }

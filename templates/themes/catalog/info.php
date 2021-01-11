@@ -97,6 +97,13 @@
 		'default' => 'overboard',
 		'comment' => 'Fill in the location of the overboard directory. Default is \'overboard\' which corresponds to ./overboard'
 	);
+	$theme['config'][] = Array(
+		'title' => 'Max posts in catalog overboard',
+		'name' => 'overboard_limit',
+		'type' => 'text',
+		'default' => '350',
+		'comment' => 'The maximum number of thread that will appear in the overboard catalog'
+	);
 
 	// Unique function name for building everything
 	$theme['build_function'] = 'catalog_build';
