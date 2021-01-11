@@ -167,6 +167,13 @@ class Api {
 			$apiPosts['posts'][] = $this->translatePost($p, $threadsPage);
 		}
 
+		// Count unique IPs
+		$ips = array($thread->ip);
+		foreach ($thread->posts as $p) {
+			$ips[] = $p->ip;
+		}
+		$apiPosts['posts'][0]['unique_ips'] = count(array_unique($ips));
+
 		return $apiPosts;
 	}
 
