@@ -36,7 +36,6 @@ $.fn.longtable = function(fields, options, data) {
         }
       }
       el.css("width", fields[field].width);
-      //el.css("height", options.row_h);
       return el;
     },
     _gen_tr: function(id) {
@@ -46,7 +45,6 @@ $.fn.longtable = function(fields, options, data) {
       });
       if (id !== undefined) {
         el.addClass("row").addClass("row_"+id);
-        //el.css({position: "absolute", top: options.row_h * (id+1)});
       }
       return el;
     },
@@ -128,7 +126,6 @@ $.fn.longtable = function(fields, options, data) {
     },
 
     update_data: function() {
-      //$(elem).height((data.length + 1) * options.row_h);
 
       lt._clean();
       lt.update_viewport();
