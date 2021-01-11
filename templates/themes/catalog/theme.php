@@ -468,10 +468,13 @@
                     $threads[] = new Thread($post);
                 }
 
-                $json = json_encode($api->translateCatalogPage($threads));
+                // Page 0, the only page
+                $threads = array($threads);
+
+                $json = json_encode($api->translateCatalog($threads));
                 file_write($config['dir']['home'] . $board_name . '/catalog.json', $json);
     
-                $json = json_encode($api->translateCatalogPage($threads, true));
+                $json = json_encode($api->translateCatalog($threads, true));
                 file_write($config['dir']['home'] . $board_name . '/threads.json', $json);
             }        
         }
