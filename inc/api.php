@@ -35,11 +35,13 @@ class Api {
 			'cycle' => 'cyclical',
 			'bump' => 'last_modified',
 			'embed' => 'embed',
+			'board' => 'board',
 		);
 
 		$this->threadsPageFields = array(
 			'id' => 'no',
-			'bump' => 'last_modified'
+			'bump' => 'last_modified',
+			'board' => 'board',
 		);
 
 		$this->fileFields = array(

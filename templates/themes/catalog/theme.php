@@ -458,5 +458,21 @@
                 'recent_posts' => $recent_posts,
                 'board' => $board
             )));
+
+            if ($config['api']['enabled']) {
+                $api = new Api();
+
+                $threads = array();
+
+                foreach ($recent_posts as $post) {
+                    $threads[] = new Thread($post);
+                }
+
+                $json = json_encode($api->translateCatalogPage($threads));
+                file_write($config['dir']['home'] . $board_name . '/catalog.json', $json);
+    
+                $json = json_encode($api->translateCatalogPage($threads, true));
+                file_write($config['dir']['home'] . $board_name . '/threads.json', $json);
+            }        
         }
     }
