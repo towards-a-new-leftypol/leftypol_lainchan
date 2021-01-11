@@ -57,6 +57,7 @@ function doBoardListPart($list, $root, &$boards) {
 }
 
 function createForeignBoardListSection($configKey){
+    global $config;
     $body = '';
 
     if (isset($config[$configKey])){
@@ -69,7 +70,7 @@ function createForeignBoardListSection($configKey){
             $body .= ' <a href="' . $fboardurl . '">' . $fboardname . '</a>';
 
             // only put slash in between elements
-            if ($i != count($configKey)) {
+            if ($i != count($config[$configKey])) {
                 $body .= ' /';
             }
         }
@@ -77,7 +78,7 @@ function createForeignBoardListSection($configKey){
         $body .= ']</span> ';
     }
 
-    return body;
+    return $body;
 }
 
 function createBoardlist($mod=false) {
@@ -92,8 +93,6 @@ function createBoardlist($mod=false) {
     }
     $body = '';
     $body .= createForeignBoardListSection('prepended_foreign_boards');
-    
-
     $body .= doBoardListPart($config['boards'], $mod?'?/':$config['root'], $boards);
     $body .= createForeignBoardListSection('foreign_boards');
 
