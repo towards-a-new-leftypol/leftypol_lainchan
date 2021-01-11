@@ -41,6 +41,9 @@
             elseif ($action == 'rebuild') {
                 print_err("catalog_build calling Catalog.build 2");
                 $b->build($settings, $board);
+                if($settings['has_overboard']) {
+                    $b->buildOverboardCatalog($settings, $boards);
+                }
             }
         }
         // FIXME: Check that Ukko is actually enabled
@@ -330,6 +333,33 @@
                 "'$board' AS `board` FROM ``posts_$board`` WHERE `thread` IS NULL";
 
             return $sql;
+        }
+
+       /**
+         * Build and save the HTML of the catalog for the overboard
+         */
+        public function buildOverboardCatalog($settings, $board_names) {
+            global $config;
+            $board_name = $settings['overboard_location'];
+
+            if (array_key_exists($board_name, $this->threadsCache)) {
+                $threads = $this->threadsCache[$board_name];
+            } else {
+                $sql = '';
+                foreach ($boards as $board) {
+                    $sql .= $this->buildThreadsQuery($board);
+                    $sql .= " UNION ALL ";
+                }
+                $query  = preg_replace('/UNION ALL $/', 'ORDER BY `bump` DESC', $query);
+                $result = query($query) or error(db_error());
+                $threads = $query->fetchAll(PDO::FETCH_ASSOC);
+                // Save for posterity
+                $this->threadsCache[$board_name] = $threads;
+            }
+            // Generate data for the template
+            $recent_posts = $this->generateRecentPosts($threads);
+
+            $this->saveForBoard($board_name, $recent_posts);
         }
 
         private function generateRecentPosts($threads) {
