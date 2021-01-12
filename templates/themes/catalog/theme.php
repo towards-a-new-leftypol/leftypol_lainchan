@@ -348,6 +348,8 @@
          * Build and save the HTML of the catalog for the overboard
          */
         public function buildOverboardCatalog($settings, $boards) {
+            global $config;
+            
             $board_name = $settings['overboard_location'];
 
             if (array_key_exists($board_name, $this->threadsCache)) {
@@ -371,6 +373,26 @@
             $recent_posts = $this->generateRecentPosts($threads);
 
             $this->saveForBoard($board_name, $recent_posts,  '/' . $settings['overboard_location']);
+
+            // Build the overboard JSON outputs
+            if ($config['api']['enabled']) {
+                $api = new Api();
+
+                $threads = array();
+
+                foreach ($recent_posts as $post) {
+                    $threads[] = new Thread($post);
+                }
+
+                // Page 0, the only page
+                $threads = array($threads);
+
+                $json = json_encode($api->translateCatalog($threads));
+                file_write($config['dir']['home'] . $board_name . '/catalog.json', $json);
+    
+                $json = json_encode($api->translateCatalog($threads, true));
+                file_write($config['dir']['home'] . $board_name . '/threads.json', $json);
+            }
         }
 
         private function generateRecentPosts($threads) {
@@ -457,25 +479,6 @@
                 'config' => $config,
                 'recent_posts' => $recent_posts,
                 'board' => $board
-            )));
-
-            if ($config['api']['enabled']) {
-                $api = new Api();
-
-                $threads = array();
-
-                foreach ($recent_posts as $post) {
-                    $threads[] = new Thread($post);
-                }
-
-                // Page 0, the only page
-                $threads = array($threads);
-
-                $json = json_encode($api->translateCatalog($threads));
-                file_write($config['dir']['home'] . $board_name . '/catalog.json', $json);
-    
-                $json = json_encode($api->translateCatalog($threads, true));
-                file_write($config['dir']['home'] . $board_name . '/threads.json', $json);
-            }        
+            )));        
         }
     }
