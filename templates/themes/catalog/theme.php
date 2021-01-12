@@ -378,19 +378,26 @@
             if ($config['api']['enabled']) {
                 $api = new Api();
 
-                $threads = array();
-
-                foreach ($recent_posts as $post) {
-                    $threads[] = new Thread($post);
+                // Separate the threads into pages
+                $pages = array(array());
+                $totalThreads = count($recent_posts);
+                $page = 0;
+                for ($i = 1; $i <= $totalThreads; $i++) {
+                    $pages[$page][] = new Thread($recent_posts[$i-1]);
+                    
+                    // If we have not yet visited all threads,
+                    // and we hit the limit on the current page,
+                    // skip to the next page
+                    if ($i < $totalThreads && ($i % $config['threads_per_page'] == 0)) {
+                        $page++;
+                        $pages[$page] = array();
+                    }
                 }
-
-                // Page 0, the only page
-                $threads = array($threads);
-
-                $json = json_encode($api->translateCatalog($threads));
+                
+                $json = json_encode($api->translateCatalog($pages));
                 file_write($config['dir']['home'] . $board_name . '/catalog.json', $json);
     
-                $json = json_encode($api->translateCatalog($threads, true));
+                $json = json_encode($api->translateCatalog($pages, true));
                 file_write($config['dir']['home'] . $board_name . '/threads.json', $json);
             }
         }
