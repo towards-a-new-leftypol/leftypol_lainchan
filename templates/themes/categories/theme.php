@@ -28,13 +28,15 @@
 		// Build homepage
 		public static function homepage($settings) {
 			global $config;
-
+			$query = query("SELECT * FROM ``news`` ORDER BY `time` DESC") or error(db_error());
+			$news = $query->fetchAll(PDO::FETCH_ASSOC);
 			return Element(
 				'themes/categories/frames.html',
 				Array(
 					'config' => $config,
 					'settings' => $settings,
 					'categories' => Categories::getCategories($config),
+					'news' => $news,
 					'boardlist' => createBoardlist(false)
 
 				)
