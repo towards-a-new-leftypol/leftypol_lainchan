@@ -337,8 +337,8 @@
 
         private function buildThreadsQuery($board) {
             $sql  = "SELECT *, `id` AS `thread_id`, " .
-                "(SELECT COUNT(`id`) FROM ``posts_$board`` WHERE `thread` = `thread_id`) AS `reply_count`, " .
-                "(SELECT SUM(`num_files`) FROM ``posts_$board`` WHERE `thread` = `thread_id` AND `num_files` IS NOT NULL) AS `image_count`, " .
+                "(SELECT COUNT(`id`) FROM ``posts_$board`` WHERE `thread` = `thread_id`) AS `replies`, " .
+                "(SELECT SUM(`num_files`) FROM ``posts_$board`` WHERE `thread` = `thread_id` AND `num_files` IS NOT NULL) AS `images`, " .
                 "'$board' AS `board` FROM ``posts_$board`` WHERE `thread` IS NULL";
 
             return $sql;
@@ -445,8 +445,8 @@
                     $post['file'] = $config['root'] . $config['image_deleted'];
                 }
 
-                if (empty($post['image_count']))
-                    $post['image_count'] = 0;
+                if (empty($post['images']))
+                    $post['images'] = 0;
                 $post['pubdate'] = date('r', $post['time']);
 
                 $posts[] = $post;
