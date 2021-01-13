@@ -337,8 +337,8 @@
 
         private function buildThreadsQuery($board) {
             $sql  = "SELECT *, `id` AS `thread_id`, " .
-                "(SELECT COUNT(`id`) FROM ``posts_$board`` WHERE `thread` = `thread_id`) AS `reply_count`, " .
-                "(SELECT SUM(`num_files`) FROM ``posts_$board`` WHERE `thread` = `thread_id` AND `num_files` IS NOT NULL) AS `image_count`, " .
+                "(SELECT COUNT(`id`) FROM ``posts_$board`` WHERE `thread` = `thread_id`) AS `replies`, " .
+                "(SELECT SUM(`num_files`) FROM ``posts_$board`` WHERE `thread` = `thread_id` AND `num_files` IS NOT NULL) AS `images`, " .
                 "'$board' AS `board` FROM ``posts_$board`` WHERE `thread` IS NULL";
 
             return $sql;
@@ -348,6 +348,8 @@
          * Build and save the HTML of the catalog for the overboard
          */
         public function buildOverboardCatalog($settings, $boards) {
+            global $config;
+            
             $board_name = $settings['overboard_location'];
 
             if (array_key_exists($board_name, $this->threadsCache)) {
@@ -371,6 +373,33 @@
             $recent_posts = $this->generateRecentPosts($threads);
 
             $this->saveForBoard($board_name, $recent_posts,  '/' . $settings['overboard_location']);
+
+            // Build the overboard JSON outputs
+            if ($config['api']['enabled']) {
+                $api = new Api();
+
+                // Separate the threads into pages
+                $pages = array(array());
+                $totalThreads = count($recent_posts);
+                $page = 0;
+                for ($i = 1; $i <= $totalThreads; $i++) {
+                    $pages[$page][] = new Thread($recent_posts[$i-1]);
+                    
+                    // If we have not yet visited all threads,
+                    // and we hit the limit on the current page,
+                    // skip to the next page
+                    if ($i < $totalThreads && ($i % $config['threads_per_page'] == 0)) {
+                        $page++;
+                        $pages[$page] = array();
+                    }
+                }
+                
+                $json = json_encode($api->translateCatalog($pages));
+                file_write($config['dir']['home'] . $board_name . '/catalog.json', $json);
+    
+                $json = json_encode($api->translateCatalog($pages, true));
+                file_write($config['dir']['home'] . $board_name . '/threads.json', $json);
+            }
         }
 
         private function generateRecentPosts($threads) {
@@ -416,8 +445,8 @@
                     $post['file'] = $config['root'] . $config['image_deleted'];
                 }
 
-                if (empty($post['image_count']))
-                    $post['image_count'] = 0;
+                if (empty($post['images']))
+                    $post['images'] = 0;
                 $post['pubdate'] = date('r', $post['time']);
 
                 $posts[] = $post;
@@ -457,6 +486,6 @@
                 'config' => $config,
                 'recent_posts' => $recent_posts,
                 'board' => $board
-            )));
+            )));        
         }
     }
