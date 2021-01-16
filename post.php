@@ -7,17 +7,6 @@ require_once 'inc/functions.php';
 require_once 'inc/anti-bot.php';
 require_once 'inc/bans.php';
 
-// Fix for magic quotes
-if (get_magic_quotes_gpc()) {
-    function strip_array($var) {
-        return is_array($var) ? array_map('strip_array', $var) : stripslashes($var);
-    }
-    
-    $_GET = strip_array($_GET);
-    $_POST = strip_array($_POST);
-}
-
-
 $dropped_post = false;
 
 function handle_nntpchan() {
@@ -149,7 +138,7 @@ function handle_nntpchan() {
         $idx = $id . "%";
         $query->bindValue(':rule', $idx);
         $query->execute() or error(db_error($query));
-        
+
         $ary = $query->fetchAll(PDO::FETCH_ASSOC);
         if (count($ary) == 0) {
             return ">>>>$id";
@@ -177,7 +166,7 @@ function handle_nntpchan() {
         'headers' => $headers,
         'from_nntp' => true,
     );
-     
+
 
 }
 
@@ -186,40 +175,40 @@ function handle_delete(){
     global $config,$board;
     if (!isset($_POST['board'], $_POST['password']))
         error($config['error']['bot']);
-    
+
     $password = &$_POST['password'];
-    
+
     if ($password == '')
         error($config['error']['invalidpassword']);
-    
+
     $delete = array();
     foreach ($_POST as $post => $value) {
         if (preg_match('/^delete_(\d+)$/', $post, $m)) {
             $delete[] = (int)$m[1];
         }
     }
-    
+
     checkDNSBL();
-        
+
     // Check if board exists
     if (!openBoard($_POST['board']))
         error($config['error']['noboard']);
-    
+
     // Check if banned
     checkBan($board['uri']);
 
     // Check if deletion enabled
     if (!$config['allow_delete'])
         error(_('Post deletion is not allowed!'));
-    
+
     if (empty($delete))
         error($config['error']['nodelete']);
-        
+
     foreach ($delete as &$id) {
         $query = prepare(sprintf("SELECT `thread`, `time`,`password` FROM ``posts_%s`` WHERE `id` = :id", $board['uri']));
         $query->bindValue(':id', $id, PDO::PARAM_INT);
         $query->execute() or error(db_error($query));
-        
+
         if ($post = $query->fetch(PDO::FETCH_ASSOC)) {
             $thread = false;
             if ($config['user_moderation'] && $post['thread']) {
@@ -227,7 +216,7 @@ function handle_delete(){
                 $thread_query->bindValue(':id', $post['thread'], PDO::PARAM_INT);
                 $thread_query->execute() or error(db_error($query));
 
-                $thread = $thread_query->fetch(PDO::FETCH_ASSOC);   
+                $thread = $thread_query->fetch(PDO::FETCH_ASSOC);
             }
 
             if (isset($config['allow_thread_deletion']) && !$config['allow_thread_deletion'] && !$post['thread']) {
@@ -236,11 +225,11 @@ function handle_delete(){
 
             if ($password != '' && $post['password'] != $password && (!$thread || $thread['password'] != $password))
                 error($config['error']['invalidpassword']);
-            
+
             if ($post['time'] > time() - $config['delete_time'] && (!$thread || $thread['password'] != $password)) {
                 error(sprintf($config['error']['delete_too_soon'], until($post['time'] + $config['delete_time'])));
             }
-            
+
             if (isset($_POST['file'])) {
                 // Delete just the file
                 deleteFile($id);
@@ -250,13 +239,13 @@ function handle_delete(){
                 deletePost($id);
                 modLog("User deleted his own post #$id");
             }
-            
+
             _syslog(LOG_INFO, 'Deleted post: ' .
-            '/' . $board['dir'] . $config['dir']['res'] . sprintf($config['file_page'], $post['thread'] ? $post['thread'] : $id) . ($post['thread'] ? '#' . $id : '')   
+            '/' . $board['dir'] . $config['dir']['res'] . sprintf($config['file_page'], $post['thread'] ? $post['thread'] : $id) . ($post['thread'] ? '#' . $id : '')
             );
         }
     }
-    
+
     buildIndex();
 
     $is_mod = isset($_POST['mod']) && $_POST['mod'];
@@ -281,26 +270,26 @@ function handle_report(){
     global $config,$board;
     if (!isset($_POST['board'], $_POST['reason']))
         error($config['error']['bot']);
-    
+
     $report = array();
     foreach ($_POST as $post => $value) {
         if (preg_match('/^delete_(\d+)$/', $post, $m)) {
             $report[] = (int)$m[1];
         }
     }
-    
+
     checkDNSBL();
-        
+
     // Check if board exists
     if (!openBoard($_POST['board']))
         error($config['error']['noboard']);
-    
+
     // Check if banned
     checkBan($board['uri']);
-    
+
     if (empty($report))
         error($config['error']['noreport']);
-    
+
     if (count($report) > $config['report_limit'])
         error($config['error']['toomanyreports']);
 
@@ -320,15 +309,15 @@ function handle_report(){
                         error($config['error']['captcha']);
         }
     }
-    
+
     $reason = escape_markup_modifiers($_POST['reason']);
     markup($reason);
-    
+
     foreach ($report as $id) {
         $query = prepare(sprintf("SELECT `id`,`thread` , `body_nomarkup` FROM ``posts_%s`` WHERE `id` = :id", $board['uri']));
         $query->bindValue(':id', $id, PDO::PARAM_INT);
         $query->execute() or error(db_error($query));
-        
+
         $thread = $query->fetch(PDO::FETCH_ASSOC);
 
         $error = event('report', array('ip' => $_SERVER['REMOTE_ADDR'], 'board' => $board['uri'], 'post' => $post, 'reason' => $reason, 'link' => link_for($thread)));
@@ -348,11 +337,11 @@ function handle_report(){
         $query->bindValue(':post', $id, PDO::PARAM_INT);
         $query->bindValue(':reason', $reason, PDO::PARAM_STR);
         $query->execute() or error(db_error($query));
-        
+
         if ($config['slack'])
         {
-            
-        function slack($message, $room = "reports", $icon = ":no_entry_sign:") 
+
+        function slack($message, $room = "reports", $icon = ":no_entry_sign:")
         {
         $room = ($room) ? $room : "reports";
         $data = "payload=" . json_encode(array(
@@ -362,7 +351,7 @@ function handle_report(){
         ));
 
         // You can get your webhook endpoint from your Slack settings
-        // For some reason using the configuration key doesn't work 
+        // For some reason using the configuration key doesn't work
         $ch = curl_init($config['slack_incoming_webhook_endpoint']);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -373,25 +362,25 @@ function handle_report(){
 
         return $result;
         }
-        
+
         $postcontent = mb_substr($thread['body_nomarkup'], 0, 120) . '...  _*(POST TRIMMED)*_';
         $slackmessage = '<'  .$config['domain']  . "/mod.php?/" . $board['dir'] . $config['dir']['res'] .  ( $thread['thread'] ? $thread['thread'] : $id ) . ".html"  .  ($thread['thread'] ? '#' . $id : '') . '> \n ' . $reason . '\n ' . $postcontent . '\n';
 
-        $slackresult = slack($slackmessage, $config['slack_channel']); 
-        
+        $slackresult = slack($slackmessage, $config['slack_channel']);
+
         }
 
 
     }
-    
+
     $is_mod = isset($_POST['mod']) && $_POST['mod'];
     $root = $is_mod ? $config['root'] . $config['file_mod'] . '?/' : $config['root'];
-    
+
     if (!isset($_POST['json_response'])) {
         $index = $root . $board['dir'] . $config['file_index'];
         $reported_post = $root . $board['dir']  . $config['dir']['res'] .  ( $thread['thread'] ? $thread['thread'] : $id ) . ".html"  .  ($thread['thread'] ? '#' . $id : '') ;
         //header('Location: ' . $reported_post);
-  
+
         echo Element('page.html', array('config' => $config, 'body' => '<div style="text-align:center"><a href="javascript:window.close()">[ ' . _('Close window') ." ]</a> <a href='$index'>[ " . _('Return') . ' ]</a></div>', 'title' => _('Report submitted!')));
     } else {
         header('Content-Type: text/json');
@@ -412,7 +401,7 @@ function handle_post(){
     // Check if board exists
     if (!openBoard($post['board']))
         error($config['error']['noboard']);
-    
+
     $board_locked_check = (!isset($_POST['mod']) || !$_POST['mod'])
         && ($config['board_locked']===true
         || (is_array($config['board_locked']) && in_array(strtolower($_POST['board']), $config['board_locked'])));
@@ -423,16 +412,16 @@ function handle_post(){
 
     if (!isset($_POST['name']))
         $_POST['name'] = $config['anonymous'];
-    
+
     if (!isset($_POST['email']))
         $_POST['email'] = '';
-    
+
     if (!isset($_POST['subject']))
         $_POST['subject'] = '';
-    
+
     if (!isset($_POST['password']))
-        $_POST['password'] = '';    
-    
+        $_POST['password'] = '';
+
     if (isset($_POST['thread'])) {
         $post['op'] = false;
         $post['thread'] = round($_POST['thread']);
@@ -445,7 +434,7 @@ function handle_post(){
         // Check for CAPTCHA right after opening the board so the "return" link is in there
         if ($config['recaptcha']) {
             if (!isset($_POST['g-recaptcha-response']))
-                error($config['error']['bot']); 
+                error($config['error']['bot']);
             // Check what reCAPTCHA has to say...
             $resp = json_decode(file_get_contents(sprintf('https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s&remoteip=%s',
                 $config['recaptcha_private'],
@@ -488,7 +477,7 @@ function handle_post(){
         }
 
         checkDNSBL();
-        
+
         // Check if banned
         checkBan($board['uri']);
 
@@ -498,11 +487,11 @@ function handle_post(){
                 // Liar. You're not a mod.
                 error($config['error']['notamod']);
             }
-        
+
             $post['sticky'] = $post['op'] && isset($_POST['sticky']);
             $post['locked'] = $post['op'] && isset($_POST['lock']);
             $post['raw'] = isset($_POST['raw']);
-        
+
             if ($post['sticky'] && !hasPermission($config['mod']['sticky'], $board['uri']))
                 error($config['error']['noaccess']);
             if ($post['locked'] && !hasPermission($config['mod']['lock'], $board['uri']))
@@ -522,7 +511,7 @@ function handle_post(){
                 error($config['error']['spam']);
             }
         }
-    
+
         if ($config['robot_enable'] && $config['robot_mute']) {
             checkMute();
         }
@@ -530,13 +519,13 @@ function handle_post(){
     else {
         $mod = $post['mod'] = false;
     }
-    
+
     //Check if thread exists
     if (!$post['op']) {
         $query = prepare(sprintf("SELECT `sticky`,`locked`,`cycle`,`sage`,`slug` FROM ``posts_%s`` WHERE `id` = :id AND `thread` IS NULL LIMIT 1", $board['uri']));
         $query->bindValue(':id', $post['thread'], PDO::PARAM_INT);
         $query->execute() or error(db_error());
-        
+
         if (!$thread = $query->fetch(PDO::FETCH_ASSOC)) {
             // Non-existant
             error($config['error']['nonexistant']);
@@ -546,7 +535,7 @@ function handle_post(){
         $thread = false;
     }
 
-    
+
     // Check for an embed field
     if ($config['enable_embedding'] && isset($_POST['embed']) && !empty($_POST['embed'])) {
         // yep; validate it
@@ -568,17 +557,17 @@ function handle_post(){
     if (!hasPermission($config['mod']['bypass_field_disable'], $board['uri'])) {
         if ($config['field_disable_name'])
             $_POST['name'] = $config['anonymous']; // "forced anonymous"
-    
+
         if ($config['field_disable_email'])
             $_POST['email'] = '';
-    
+
         if ($config['field_disable_password'])
             $_POST['password'] = '';
-    
+
         if ($config['field_disable_subject'] || (!$post['op'] && $config['field_disable_reply_subject']))
             $_POST['subject'] = '';
     }
-    
+
     if ($config['allow_upload_by_url'] && isset($_POST['file_url1']) && !empty($_POST['file_url1'])) {
         function unlink_tmp_file($file) {
             @unlink($file);
@@ -589,7 +578,7 @@ function handle_post(){
         $post['file_url'] = $url;
         if (!preg_match('@^https?://@', $post['file_url']))
             error($config['error']['invalidimg']);
-        
+
         if (mb_strpos($post['file_url'], '?') !== false)
             $url_without_params = mb_substr($post['file_url'], 0, mb_strpos($post['file_url'], '?'));
         else
@@ -606,9 +595,9 @@ function handle_post(){
 
         $post['file_tmp'] = tempnam($config['tmp'], 'url');
         register_shutdown_function('unlink_tmp_file', $post['file_tmp']);
-        
+
         $fp = fopen($post['file_tmp'], 'w');
-        
+
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $post['file_url']);
         curl_setopt($curl, CURLOPT_FAILONERROR, true);
@@ -619,13 +608,13 @@ function handle_post(){
         curl_setopt($curl, CURLOPT_BINARYTRANSFER, true);
         curl_setopt($curl, CURLOPT_FILE, $fp);
         curl_setopt($curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
-            curl_setopt($curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );  
+            curl_setopt($curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
 
         if (curl_exec($curl) === false)
             error($config['error']['nomove'] . '<br/>Curl says: ' . curl_error($curl));
-        
+
         curl_close($curl);
-        
+
         fclose($fp);
 
         $_FILES[$post['file_tmp']] = array(
@@ -636,14 +625,14 @@ function handle_post(){
             'size' => filesize($post['file_tmp'])
         );
         }
-            
-        for( $counter = 1; $counter <= $config['max_images']; $counter++ ) { 
+
+        for( $counter = 1; $counter <= $config['max_images']; $counter++ ) {
             $varname = "file_url". $counter;
             if (isset($_POST[$varname]) && !empty($_POST[$varname])){
                 upload_by_url($config,$post,$_POST[$varname]);
             }
         }
-            
+
     }
 
     $post['name'] = $_POST['name'] != '' ? $_POST['name'] : $config['anonymous'];
@@ -652,7 +641,7 @@ function handle_post(){
     $post['body'] = $_POST['body'];
     $post['password'] = $_POST['password'];
     $post['has_file'] = (!isset($post['embed']) && (($post['op'] && !isset($post['no_longer_require_an_image_for_op']) && $config['force_image_op']) || count($_FILES) > 0));
-    
+
     if (!$dropped_post) {
         if (!($post['has_file'] || isset($post['embed'])) || (($post['op'] && $config['force_body_op']) || (!$post['op'] && $config['force_body']))) {
             $stripped_whitespace = preg_replace('/[\s]/u', '', $post['body']);
@@ -660,23 +649,23 @@ function handle_post(){
                 error($config['error']['tooshort_body']);
             }
         }
-    
+
         if (!$post['op']) {
             // Check if thread is locked
             // but allow mods to post
             if ($thread['locked'] && !hasPermission($config['mod']['postinlocked'], $board['uri'])) {
                 error($config['error']['locked']);
             }
-        
+
             $numposts = numPosts($post['thread']);
-            
-            $replythreshold = isset($thread['cycle']) && $thread['cycle'] ? $numposts['replies'] - 1 : $numposts['replies'];    
-            $imagethreshold = isset($thread['cycle']) && $thread['cycle'] ? $numposts['images'] - 1 : $numposts['images'];  
+
+            $replythreshold = isset($thread['cycle']) && $thread['cycle'] ? $numposts['replies'] - 1 : $numposts['replies'];
+            $imagethreshold = isset($thread['cycle']) && $thread['cycle'] ? $numposts['images'] - 1 : $numposts['images'];
 
             if ($config['reply_hard_limit'] != 0 && $config['reply_hard_limit'] <= $replythreshold) {
                 error($config['error']['reply_hard_limit']);
             }
-        
+
             if ($post['has_file'] && $config['image_hard_limit'] != 0 && $config['image_hard_limit'] <= $imagethreshold) {
                 error($config['error']['image_hard_limit']);
             }
@@ -724,17 +713,17 @@ function handle_post(){
     }
 
     $post['capcode'] = false;
-    
+
     if ($mod && preg_match('/^((.+) )?## (.+)$/', $post['name'], $matches)) {
         $name = $matches[2] != '' ? $matches[2] : $config['anonymous'];
         $cap = $matches[3];
-        
+
         if (isset($config['mod']['capcode'][$mod['type']])) {
             if (    $config['mod']['capcode'][$mod['type']] === true ||
                 (is_array($config['mod']['capcode'][$mod['type']]) &&
                     in_array($cap, $config['mod']['capcode'][$mod['type']])
                 )) {
-                
+
                 $post['capcode'] = utf8tohtml($cap);
                 $post['name'] = $name;
             }
@@ -752,11 +741,11 @@ function handle_post(){
             $post['email'] = '';
         }
     }
-    
+
     $trip = generate_tripcode($post['name']);
     $post['name'] = $trip[0];
     $post['trip'] = isset($trip[1]) ? $trip[1] : ''; // XX: Dropped posts and tripcodes
-    
+
     $noko = false;
     if (strtolower($post['email']) == 'noko') {
         $noko = true;
@@ -765,7 +754,7 @@ function handle_post(){
         $noko = false;
         $post['email'] = '';
     } else $noko = $config['always_noko'];
-    
+
     if ($post['has_file']) {
         $i = 0;
         foreach ($_FILES as $key => $file) {
@@ -779,7 +768,7 @@ function handle_post(){
 
                 if (sizeof($_FILES) > 1)
                     $file['file_id'] .= "-$i";
-                
+
                 $file['file'] = $board['dir'] . $config['dir']['img'] . $file['file_id'] . '.' . $file['extension'];
                 $file['thumb'] = $board['dir'] . $config['dir']['thumb'] . $file['file_id'] . '.' . ($config['thumb_ext'] ? $config['thumb_ext'] : $file['extension']);
                 $post['files'][] = $file;
@@ -814,7 +803,7 @@ function handle_post(){
     if (!$dropped_post) {
         // Check string lengths
         if (mb_strlen($post['name']) > 35) {
-            error(sprintf($config['error']['toolong'], 'name'));    
+            error(sprintf($config['error']['toolong'], 'name'));
         }
         if (mb_strlen($post['email']) > 40) {
             error(sprintf($config['error']['toolong'], 'email'));
@@ -834,18 +823,18 @@ function handle_post(){
     }
 
     wordfilters($post['body']);
-    
+
     $post['body'] = escape_markup_modifiers($post['body']);
 
     if ($mod && isset($post['raw']) && $post['raw']) {
         $post['body'] .= "\n<tinyboard raw html>1</tinyboard>";
     }
-    
+
     if (!$dropped_post)
     if (($config['country_flags'] && !$config['allow_no_country']) || ($config['country_flags'] && $config['allow_no_country'] && !isset($_POST['no_country']))) {
         require 'inc/lib/geoip/geoip.inc';
         $gi=geoip\geoip_open('inc/lib/geoip/GeoIPv6.dat', GEOIP_STANDARD);
-    
+
         function ipv4to6($ip) {
             if (strpos($ip, ':') !== false) {
                 if (strpos($ip, '.') > 0)
@@ -857,7 +846,7 @@ function handle_post(){
             $part8 = base_convert(($iparr[2] * 256) + $iparr[3], 10, 16);
             return '::ffff:'.$part7.':'.$part8;
         }
-    
+
         if ($country_code = geoip\geoip_country_code_by_addr_v6($gi, ipv4to6($_SERVER['REMOTE_ADDR']))) {
             if (!in_array(strtolower($country_code), array('eu', 'ap', 'o1', 'a1', 'a2')))
                 $post['body'] .= "\n<tinyboard flag>".strtolower($country_code)."</tinyboard>".
@@ -867,7 +856,7 @@ function handle_post(){
 
     if ($config['user_flag'] && isset($_POST['user_flag']))
     if (!empty($_POST['user_flag']) ){
-        
+
         $user_flag = $_POST['user_flag'];
 
         if (!isset($config['user_flags'][$user_flag]))
@@ -894,7 +883,7 @@ function handle_post(){
     } else {
         // MySQL's `utf8` charset only supports up to 3-byte symbols
         // Remove anything >= 0x010000
-        
+
         $chars = preg_split('//u', $post['body'], -1, PREG_SPLIT_NO_EMPTY);
         $post['body_nomarkup'] = '';
         foreach ($chars as $char) {
@@ -923,14 +912,14 @@ function handle_post(){
             } elseif (!in_array($file['extension'], $config['allowed_ext']) && !in_array($file['extension'], $config['allowed_ext_files'])) {
                 error($config['error']['unknownext']);
             }
-            
+
             $file['is_an_image'] = !in_array($file['extension'], $config['allowed_ext_files']);
-            
+
             // Truncate filename if it is too long
             $file['filename'] = mb_substr($file['filename'], 0, $config['max_filename_len']);
-            
+
             $upload = $file['tmp_name'];
-            
+
             if (!is_readable($upload))
                 error($config['error']['nomove']);
 
@@ -972,9 +961,9 @@ function handle_post(){
                     error($config['error']['mime_exploit']);
                 }
             }
-            
+
             require_once 'inc/image.php';
-            
+
             // find dimensions of an image using GD
             if (!$size = @getimagesize($file['tmp_name'])) {
                 error($config['error']['invalidimg']);
@@ -985,7 +974,7 @@ function handle_post(){
             if ($size[0] > $config['max_width'] || $size[1] > $config['max_height']) {
                 error($config['error']['maxsize']);
             }
-            
+
             if ($config['convert_auto_orient'] && ($file['extension'] == 'jpg' || $file['extension'] == 'jpeg')) {
                 // The following code corrects the image orientation.
                 // Currently only works with the 'convert' option selected but it could easily be expanded to work with the rest if you can be bothered.
@@ -1033,13 +1022,13 @@ function handle_post(){
 
                 error($config['error']['maxsize']);
             }
-            
+
             $file['width'] = $image->size->width;
             $file['height'] = $image->size->height;
-            
+
             if ($config['spoiler_images'] && isset($_POST['spoiler'])) {
                 $file['thumb'] = 'spoiler';
-                
+
                 $size = @getimagesize($config['spoiler_image']);
                 $file['thumbwidth'] = $size[0];
                 $file['thumbheight'] = $size[1];
@@ -1047,10 +1036,10 @@ function handle_post(){
                 $image->size->width <= $config['thumb_width'] &&
                 $image->size->height <= $config['thumb_height'] &&
                 $file['extension'] == ($config['thumb_ext'] ? $config['thumb_ext'] : $file['extension'])) {
-            
+
                 // Copy, because there's nothing to resize
                 copy($file['tmp_name'], $file['thumb']);
-            
+
                 $file['thumbwidth'] = $image->size->width;
                 $file['thumbheight'] = $image->size->height;
             } else {
@@ -1059,12 +1048,12 @@ function handle_post(){
                     $post['op'] ? $config['thumb_op_width'] : $config['thumb_width'],
                     $post['op'] ? $config['thumb_op_height'] : $config['thumb_height']
                 );
-                
+
                 $thumb->to($file['thumb']);
 
                 $file['thumbwidth'] = $thumb->width;
                 $file['thumbheight'] = $thumb->height;
-            
+
                 $thumb->_destroy();
             }
 
@@ -1080,7 +1069,7 @@ function handle_post(){
             }
             $image->destroy();
         } else {
-            if (($file['extension'] == "pdf" && $config['pdf_file_thumbnail']) || 
+            if (($file['extension'] == "pdf" && $config['pdf_file_thumbnail']) ||
                 ($file['extension'] == "djvu" && $config['djvu_file_thumbnail']) ){
                 $path = $file['thumb'];
                 $error = shell_exec_error( 'convert -thumbnail x300 -background white -alpha remove ' .
@@ -1088,7 +1077,7 @@ function handle_post(){
                 escapeshellarg($file['thumb']));
 
                 if ($error){
-                    $path = sprintf($config['file_thumb'],isset($config['file_icons'][$file['extension']]) ? $config['file_icons'][$file['extension']] : $config['file_icons']['default']); 
+                    $path = sprintf($config['file_thumb'],isset($config['file_icons'][$file['extension']]) ? $config['file_icons'][$file['extension']] : $config['file_icons']['default']);
                 }
 
                 $file['thumb'] = basename($file['thumb']);
@@ -1098,28 +1087,28 @@ function handle_post(){
                 $file['width'] = $size[0];
                 $file['height'] = $size[1];
             }
-            /*if (($file['extension'] == "epub" && $config['epub_file_thumbnail'])){ 
+            /*if (($file['extension'] == "epub" && $config['epub_file_thumbnail'])){
                 $path = $file['thumb'];
                 // Open epub
                 // Get file list
                 // Check if cover file exists according to regex if it does use it
-                // Otherwise check if metadata file exists, and if does get rootfile and search for manifest for cover file name 
+                // Otherwise check if metadata file exists, and if does get rootfile and search for manifest for cover file name
                 // Otherwise Check if other image files exist and use them, based on criteria to pick the best one.
-                // Once we have filename extract said file from epub to file['thumb'] location. 
+                // Once we have filename extract said file from epub to file['thumb'] location.
                 $zip = new ZipArchive();
                 if(@$zip->open($path)){
                     $filename = "";
                     // Go looking for a file name, current implementation just uses regex but should fallback to
                     // getting all images and then choosing one.
-                    for( $i = 0; $i < $zip->numFiles; $i++ ){ 
-                        $stat = $zip->statIndex( $i ); 
+                    for( $i = 0; $i < $zip->numFiles; $i++ ){
+                        $stat = $zip->statIndex( $i );
                         $matches = array();
                         if (preg_match('/.*cover.*\.(jpg|jpeg|png)/', $stat['name'], $matches)) {
                             $filename = $matches[0];
-                                break;      
+                                break;
                         }
-                    } 
-                    // We have a cover filename to extract.         
+                    }
+                    // We have a cover filename to extract.
                     if (strlen($filename) > 0){
                         //$zip->extractTo(dirname($file['thumb']), array($filename));
                     }
@@ -1131,9 +1120,9 @@ function handle_post(){
                 else {
                     $error = 1;
                 }
-                
+
                 if ($error){
-                    $path = sprintf($config['file_thumb'],isset($config['file_icons'][$file['extension']]) ? $config['file_icons'][$file['extension']] : $config['file_icons']['default']); 
+                    $path = sprintf($config['file_thumb'],isset($config['file_icons'][$file['extension']]) ? $config['file_icons'][$file['extension']] : $config['file_icons']['default']);
                 }
 
                 $file['thumb'] = basename($file['thumb']);
@@ -1150,7 +1139,7 @@ function handle_post(){
                 escapeshellarg($file['thumb']));
 
                 if ($error){
-                    $path = sprintf($config['file_thumb'],isset($config['file_icons'][$file['extension']]) ? $config['file_icons'][$file['extension']] : $config['file_icons']['default']); 
+                    $path = sprintf($config['file_thumb'],isset($config['file_icons'][$file['extension']]) ? $config['file_icons'][$file['extension']] : $config['file_icons']['default']);
                 }
 
                 $file['thumb'] = basename($file['thumb']);
@@ -1167,7 +1156,7 @@ function handle_post(){
                 $file['thumbwidth'] = $config['thumb_width'];
                 $file['thumbheight'] = $config['thumb_height'];
                 $file['thumb'] = basename($file['thumb']);
-            
+
             }
             else {
             // not an image
@@ -1223,7 +1212,7 @@ function handle_post(){
         if ($config['image_reject_repost']) {
             if ($p = getPostByHash($post['filehash'])) {
                 undoImage($post);
-                error(sprintf($config['error']['fileexists'], 
+                error(sprintf($config['error']['fileexists'],
                     ($post['mod'] ? $config['root'] . $config['file_mod'] . '?/' : $config['root']) .
                     ($board['dir'] . $config['dir']['res'] .
                         ($p['thread'] ?
@@ -1236,7 +1225,7 @@ function handle_post(){
         } else if (!$post['op'] && $config['image_reject_repost_in_thread']) {
             if ($p = getPostByHashInThread($post['filehash'], $post['thread'])) {
                 undoImage($post);
-                error(sprintf($config['error']['fileexistsinthread'], 
+                error(sprintf($config['error']['fileexistsinthread'],
                     ($post['mod'] ? $config['root'] . $config['file_mod'] . '?/' : $config['root']) .
                     ($board['dir'] . $config['dir']['res'] .
                         ($p['thread'] ?
@@ -1263,7 +1252,7 @@ function handle_post(){
             error($config['error']['unoriginal']);
         }
     }
-    
+
     // Remove board directories before inserting them into the database.
     if ($post['has_file']) {
         foreach ($post['files'] as $key => &$file) {
@@ -1293,10 +1282,10 @@ function handle_post(){
     }
 
     $post['num_files'] = sizeof($post['files']);
-    
+
     $post['id'] = $id = post($post);
     $post['slug'] = slugify($post);
-    
+
     if ($dropped_post && $dropped_post['from_nntp']) {
             $query = prepare("INSERT INTO ``nntp_references`` (`board`, `id`, `message_id`, `message_id_digest`, `own`, `headers`) VALUES ".
                                                              "(:board , :id , :message_id , :message_id_digest , false, :headers)");
@@ -1342,11 +1331,11 @@ function handle_post(){
         $query->bindValue(':limit', $config['cycle_limit'], PDO::PARAM_INT);
         $query->execute() or error(db_error($query));
     }
-    
+
     if (isset($post['antispam_hash'])) {
         incrementSpamHash($post['antispam_hash']);
     }
-    
+
     if (isset($post['tracked_cites']) && !empty($post['tracked_cites'])) {
         $insert_rows = array();
         foreach ($post['tracked_cites'] as $cite) {
@@ -1372,13 +1361,13 @@ function handle_post(){
         // Encode and set cookie
         setcookie($config['cookies']['js'], json_encode($js), 0, $config['cookies']['jail'] ? $config['cookies']['path'] : '/', null, false, false);
     }
-    
+
     $root = $post['mod'] ? $config['root'] . $config['file_mod'] . '?/' : $config['root'];
-    
+
     if ($noko) {
         $redirect = $root . $board['dir'] . $config['dir']['res'] .
             link_for($post, false, false, $thread) . (!$post['op'] ? '#' . $id : '');
-        
+
         if (!$post['op'] && isset($_SERVER['HTTP_REFERER'])) {
             $regex = array(
                 'board' => str_replace('%s', '(\w{1,8})', preg_quote($config['board_path'], '/')),
@@ -1395,15 +1384,15 @@ function handle_post(){
         }
     } else {
         $redirect = $root . $board['dir'] . $config['file_index'];
-        
+
     }
 
     buildThread($post['op'] ? $id : $post['thread']);
-    
+
     if ($config['syslog'])
         _syslog(LOG_INFO, 'New post: /' . $board['dir'] . $config['dir']['res'] .
             link_for($post) . (!$post['op'] ? '#' . $id : ''));
-    
+
     if (!$post['mod']) header('X-Associated-Content: "' . $redirect . '"');
 
     if (!isset($_POST['json_response'])) {
@@ -1416,15 +1405,15 @@ function handle_post(){
             'id' => $id
         ));
     }
-    
+
     if ($config['try_smarter'] && $post['op'])
         $build_pages = range(1, $config['max_pages']);
-    
+
     if ($post['op'])
         clean($id);
-    
+
     event('post-after', $post);
-    
+
     buildIndex();
 
     // We are already done, let's continue our heavy-lifting work in the background (if we run off FastCGI)
@@ -1443,9 +1432,9 @@ function handle_appeal(){
     global $config;
     if (!isset($_POST['ban_id']))
         error($config['error']['bot']);
-    
+
     $ban_id = (int)$_POST['ban_id'];
-    
+
     $bans = Bans::find($_SERVER['REMOTE_ADDR']);
     foreach ($bans as $_ban) {
         if ($_ban['id'] == $ban_id) {
@@ -1453,33 +1442,33 @@ function handle_appeal(){
             break;
         }
     }
-    
+
     if (!isset($ban)) {
         error(_("That ban doesn't exist or is not for you."));
     }
-    
+
     if ($ban['expires'] && $ban['expires'] - $ban['created'] <= $config['ban_appeals_min_length']) {
         error(_("You cannot appeal a ban of this length."));
     }
-    
+
     $query = query("SELECT `denied` FROM ``ban_appeals`` WHERE `ban_id` = $ban_id") or error(db_error());
     $ban_appeals = $query->fetchAll(PDO::FETCH_COLUMN);
-    
+
     if (count($ban_appeals) >= $config['ban_appeals_max']) {
         error(_("You cannot appeal this ban again."));
     }
-    
+
     foreach ($ban_appeals as $is_denied) {
         if (!$is_denied)
             error(_("There is already a pending appeal for this ban."));
     }
-    
+
     $query = prepare("INSERT INTO ``ban_appeals`` VALUES (NULL, :ban_id, :time, :message, 0)");
     $query->bindValue(':ban_id', $ban_id, PDO::PARAM_INT);
     $query->bindValue(':time', time(), PDO::PARAM_INT);
     $query->bindValue(':message', $_POST['appeal']);
     $query->execute() or error(db_error($query));
-    
+
     displayBan($ban);
 
 }
@@ -1488,7 +1477,7 @@ function handle_appeal(){
 if (isset($_GET['Newsgroups'])) {
      if($config['nntpchan']['enabled']){
         handle_nntpchan();
-     } 
+     }
      else {
         error("NNTPChan: NNTPChan support is disabled");
      }
