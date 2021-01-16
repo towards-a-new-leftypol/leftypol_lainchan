@@ -62,7 +62,7 @@
         {
             $b->buildUkko();
         }
-        
+
         // FIXME: Check that Ukko2 is actually enabled
         if ($settings['enable_ukko2'] && (
             $action === 'all' || $action === 'post' ||
@@ -70,7 +70,7 @@
         {
             $b->buildUkko2();
         }
-        
+
         // FIXME: Check that Ukko3 is actually enabled
         if ($settings['enable_ukko3'] && (
             $action === 'all' || $action === 'post' ||
@@ -180,7 +180,7 @@
             $this->saveForBoard($ukkoSettings['uri'], $recent_posts,
                 $config['root'] . $ukkoSettings['uri']);
         }
-        
+
         /**
          * Build and save the HTML of the catalog for the Ukko3 theme
          */
@@ -220,7 +220,7 @@
             $this->saveForBoard($ukkoSettings['uri'], $recent_posts,
                 $config['root'] . $ukkoSettings['uri']);
         }
-        
+
         /**
          * Build and save the HTML of the catalog for the Ukko theme
          */
@@ -306,11 +306,11 @@
         public function build($settings, $board_name) {
             global $config, $board;
             print_err("Catalog.build");
-            if ($board['uri'] != $board_name) {         
+            if (isset($board) && ($board['uri'] != $board_name)) {
                 if (!openBoard($board_name)) {
                     error(sprintf(_("Board %s doesn't exist"), $board_name));
                 }
-            }   
+            }
             print_err("Catalog.build 1");
 
             if (array_key_exists($board_name, $this->threadsCache)) {
@@ -349,7 +349,7 @@
          */
         public function buildOverboardCatalog($settings, $boards) {
             global $config;
-            
+
             $board_name = $settings['overboard_location'];
 
             if (array_key_exists($board_name, $this->threadsCache)) {
@@ -364,7 +364,7 @@
                 $query = prepare($sql);
                 $query->bindValue(':limit', $settings['overboard_limit'], PDO::PARAM_INT);
                 $query->execute() or error(db_error($query));
-                
+
                 $threads = $query->fetchAll(PDO::FETCH_ASSOC);
                 // Save for posterity
                 $this->threadsCache[$board_name] = $threads;
@@ -384,7 +384,7 @@
                 $page = 0;
                 for ($i = 1; $i <= $totalThreads; $i++) {
                     $pages[$page][] = new Thread($recent_posts[$i-1]);
-                    
+
                     // If we have not yet visited all threads,
                     // and we hit the limit on the current page,
                     // skip to the next page
@@ -393,10 +393,10 @@
                         $pages[$page] = array();
                     }
                 }
-                
+
                 $json = json_encode($api->translateCatalog($pages));
                 file_write($config['dir']['home'] . $board_name . '/catalog.json', $json);
-    
+
                 $json = json_encode($api->translateCatalog($pages, true));
                 file_write($config['dir']['home'] . $board_name . '/threads.json', $json);
             }
@@ -407,12 +407,14 @@
 
             $posts = array();
             foreach ($threads as $post) {
-                if ($board['uri'] !== $post['board']) {
+                if (!isset($board) || $board['uri'] !== $post['board']) {
                     openBoard($post['board']);
                 }
 
-                $post['link'] = $config['root'] . $board['dir'] . $config['dir']['res'] . link_for($post);
-                $post['board_name'] = $board['name'];
+                if (isset($board)) {
+                    $post['link'] = $config['root'] . $board['dir'] . $config['dir']['res'] . link_for($post);
+                    $post['board_name'] = $board['name'];
+                }
 
                 if ($post['embed'] && preg_match('/^https?:\/\/(\w+\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9\-_]{10,11})(&.+)?$/i', $post['embed'], $matches)) {
                     $post['youtube'] = $matches[2];
@@ -438,7 +440,9 @@
                         } else if($files[0]->thumb == 'spoiler') {
                             $post['file'] = $config['root'] . $config['spoiler_image'];
                         } else {
-                            $post['file'] = $config['uri_thumb'] . $files[0]->thumb;
+                            if (isset($config['uri_thumb'])) {
+                                $post['file'] = $config['uri_thumb'] . $files[0]->thumb;
+                            }
                         }
                     }
                 } else {
@@ -458,7 +462,7 @@
         private function saveForBoard($board_name, $recent_posts, $board_link = null) {
             global $board, $config;
 
-            if ($board_link === null) {
+            if (isset($board) && $board_link === null) {
                 $board_link = $config['root'] . $board['dir'];
             }
 
@@ -486,6 +490,6 @@
                 'config' => $config,
                 'recent_posts' => $recent_posts,
                 'board' => $board
-            )));        
+            )));
         }
     }
