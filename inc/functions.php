@@ -65,7 +65,6 @@ $current_locale = 'en';
 
 function loadConfig() {
 	global $board, $config, $__ip, $debug, $__version, $microtime_start, $current_locale, $events;
-
 	$boardsuffix = isset($board['uri']) ? $board['uri'] : '';
 
 	if (!isset($_SERVER['REMOTE_ADDR']))
@@ -365,7 +364,7 @@ function define_groups() {
 	foreach ($config['mod']['groups'] as $group_value => $group_name) {
 		$group_name = strtoupper($group_name);
 		if(!defined($group_name)) {
-			define($group_name, $group_value, true);
+			define($group_name, $group_value);
 		}
 	}
 
