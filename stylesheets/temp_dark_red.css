@@ -1,0 +1,101 @@
+/* Red Bunker Theme for Leftypol.org */
+/* General */
+body {
+    background: #1d1f21 url('img/fade-yotsuba.png') repeat-x 50% 0%;
+    color: #ACACAC;
+}
+
+/* Top bar */
+/* Background, border and fade */
+.bar {
+    background-color: #151515;
+    border-color: #ffd700!important;
+    /* comment these out to remove the fade */
+    /*
+    -moz-box-shadow: 0 0 40px #FFB300;
+    -webkit-box-shadow: 0 0 40px #FFB300;
+    box-shadow: 0 0 40px #FFB300;
+    */
+}
+/* Board links */
+div.boardlist {
+    color: #acacac;
+    font-size: 14px;
+}
+
+/* Bottom bar, not visible in catalog mode */
+div.pages {
+    background: #151515;
+    border-color: #cd0000;
+}
+div.pages a.selected {
+    color: #ff0000;
+}
+/* Thread separators */
+hr {
+    border-color: #CD0000;
+}
+
+/* Link colors, might or might not work */
+a:link, a:visited, .intro a.email span.name {
+    color: #ffd700;
+}
+a:link:hover {
+    color: #d00;
+}
+
+/* Catalog grids */
+/* Background color and green border */
+.thread.grid-li.grid-size-vsmall, .thread.grid-li.grid-size-vsmall:hover,
+.thread.grid-li.grid-size-small, .thread.grid-li.grid-size-small:hover,
+.thread.grid-li.grid-size-large, .thread.grid-li.grid-size-large:hover {
+    background-color: #282A2E;
+    border: 1px solid #cd0000;
+}
+
+/* Posting form */
+/* Field names */
+form table tr th {
+    background: #282A2E;
+    color: #ACACAC;
+    border: 1px solid #cd0000;
+}
+/* Input fields */
+textarea, input:not([type="file"]):not([type="checkbox"]), [type="submit"] {
+    color: #ACACAC;
+    background: #282A2E;
+    border: 1px double #07371F;
+    border-radius: 5px;
+}
+/* Input fields, focused */
+textarea:focus, input:not([type="file"]):not([type="checkbox"]):focus, [type="submit"]:hover {
+    border: 1px solid #cd0000;
+    -moz-box-shadow: 0 0 10px #cd0000;
+    -webkit-box-shadow: 0 0 10px #cd0000;
+    box-shadow: 0 0 10px #cd0000;
+}
+
+/* OP */
+/* Subject */
+.intro span.subject {
+    color: #ffd700;
+}
+
+/* Replies */
+/* Background color and green border */
+div.post.reply {
+    background: #282A2E;
+    border-color: #cd0000;
+    border-style: solid;
+    border-width: 0.8px;
+    border-radius: 5px;
+}
+/* Highlighted replies */
+div.post.reply.highlighted {
+    background: rgba(59, 22, 43, 0.4);
+}
+/* Buggy shit */
+div.post.reply div.body a {
+    color: #ff0000;
+    text-decoration: none;
+}

@@ -284,6 +284,12 @@ $config['stylesheets']['Notsuba'] = 'notsuba.css';
 $config['stylesheets']['Photon'] = 'photon.css';
 $config['stylesheets']['Szalet'] = 'szalet.css';
 $config['stylesheets']['Tsuki'] = 'tsuki.css';
+$config['stylesheets']['DemainLight'] = 'demain_light.css';
+$config['stylesheets']['DemainDark'] = 'demain_dark.css';
+$config['stylesheets']['TempDark'] = 'temp_dark.css';
+$config['stylesheets']['TempDarkRed'] = 'temp_dark_red.css';
+$config['stylesheets']['Tomorrow'] = 'tomorrow.css';
+$config['stylesheets']['AnonsDarkRed'] = 'anons_dark_red.css';
 
 $config['default_stylesheet'] = array('Dark Red', $config['stylesheets']['Dark Red']);
 /*
