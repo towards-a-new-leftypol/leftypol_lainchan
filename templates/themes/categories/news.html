@@ -1,9 +1,10 @@
 {% filter remove_whitespace %}
-{{ boardlist.top }}
 <div class="content">
+	{{ boardlist.top }}
 	<header>
 		<h1>{{ settings.title }}</h1>
 		<div class="subtitle">{{ settings.subtitle }}</div>
+		<link rel="stylesheet" media="screen" href="{{ config.url_stylesheet }}">
 	</header>
 
 	<div class="ban">
