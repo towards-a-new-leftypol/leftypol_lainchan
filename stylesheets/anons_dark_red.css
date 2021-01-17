@@ -1,0 +1,150 @@
+/* General */
+body {
+    background: #1d1f21 url('img/fade-yotsuba.png') repeat-x 50% 0%;
+    color: #ACACAC;
+}
+/* Link colors */
+a:link, a:visited, .intro a.email span.name {
+    color: #81a2be;
+}
+a:hover, .intro a.post_no:hover {
+    color: #cc6666;
+}
+/* Board title and subtitle */
+header div.subtitle, h1 {
+    color: indianred;
+}
+/* Post number*/
+a.post_no {
+	color: #c5c8c6;
+}
+/* Replies */
+/* Background color and border */
+div.post.reply {
+    background: #282A2E;
+    border-color: #373b41;
+    border-style: solid;
+    border-width: 0.8px;
+    border-radius: 5px;
+}
+div.post.reply.highlighted {
+    background: #282A2E;
+    border-color: #5f89ac;
+    border-style: solid;
+    border-width: 0.8px;
+    border-radius: 5px;
+}
+div.post.reply div.body a {
+	color: #5f89ac;
+}
+.intro span.subject {
+	color: #b294bb;
+}
+/* Greentext */
+span.quote {
+    color: #b5bd68
+}
+/* Catalog grids */
+/* Background color and green border */
+.thread.grid-li.grid-size-vsmall, .thread.grid-li.grid-size-vsmall:hover,
+.thread.grid-li.grid-size-small, .thread.grid-li.grid-size-small:hover,
+.thread.grid-li.grid-size-large, .thread.grid-li.grid-size-large:hover {
+    background-color: #282A2E;
+    border: 1px solid #373b41;
+}
+/* Posting form */
+/* Field names */
+form table tr th {
+    background: #282A2E;
+    color: #ACACAC;
+    border: 1px solid #373b41;
+}
+/* Input fields */
+textarea, input:not([type="file"]):not([type="checkbox"]), [type="submit"] {
+    color: #ACACAC;
+    background: #282A2E;
+    border: 1px double #1d1f21;
+    border-radius: 5px;
+}
+/* Input fields, focused */
+textarea:focus, input:not([type="file"]):not([type="checkbox"]):focus, [type="submit"]:hover {
+    border: 1px solid #1d1f21;
+    -moz-box-shadow: 0 0 10px #1d1f21;
+    -webkit-box-shadow: 0 0 10px #1d1f21;
+    box-shadow: 0 0 10px #1d1f21;
+}
+/* Top bar */
+/* Background, border and fade */
+.bar {
+    background-color: #151515;
+    border-color: #81a2be!important;;
+    /* comment these out to remove the fade */
+    /*
+    -moz-box-shadow: 0 0 40px #FFB300;
+    -webkit-box-shadow: 0 0 40px #FFB300;
+    box-shadow: 0 0 40px #FFB300;
+    */
+}
+/* Bottom bar, not visible in catalog mode */
+div.pages {
+	background: #151515;
+	border-color: #81a2be;
+}
+div.pages a.selected {
+	color: #cc6666;
+}
+hr {
+	border-color: #373b41;
+}
+div.boardlist {
+    color: #81a2be;
+    font-size: 14px;
+}
+div.boardlist a {
+	color: #cc6666;
+}
+table.modlog tr th {
+	background: #1d1f21;
+}
+
+/* options.js */
+#options_div, #alert_div {
+	background: #151515;
+}
+
+.desktop-style div.boardlist:nth-child(1) {
+	background-color: #151515;
+}
+/* Red text */
+span.heading {
+    color: indianred;
+}
+/* Buggy shit */
+div.post.reply div.body a {
+    color: #5f89ac;
+    text-decoration: none;
+}
+/* OP */
+/* Subject */
+.intro span.subject {
+    color: #b294bb;
+}
+/* name */
+.intro span.name {
+    color: #5f89ac;
+}
+/* tripcode */
+.intro span.trip {
+    color: #8abeb7;
+}
+/* Quick reply */
+/* Quick reply banner */
+div.banner {background-color:#9988ee;}
+#quick-reply th, #quick-reply td {background-color:#1F1F1F;}
+#quick-reply table {border-color:#373b41}
+/* Buggy shit */
+div.post.reply div.body a {
+    color: #5f89ac;
+    text-decoration: none;
+}
+/* b5bd68*/
