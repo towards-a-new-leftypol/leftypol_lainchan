@@ -77,7 +77,6 @@ $config['db']['prefix'] = '';
 $config['db']['user'] = 'lainchan';
 $config['db']['password'] = '';
 
-$config['cache']['enabled'] = 'memcached';
 
 $config['cookies']['mod'] = 'mod';
 $config['cookies']['salt'] = 'MGYwNjhlNjU5Y2QxNWU3YjQ3MzQ1Yj';
