@@ -281,6 +281,7 @@ $config['stylesheets']['TempDark'] = 'temp_dark.css';
 $config['stylesheets']['TempDarkRed'] = 'temp_dark_red.css';
 $config['stylesheets']['Tomorrow'] = 'tomorrow.css';
 $config['stylesheets']['AnonsDarkRed'] = 'anons_dark_red.css';
+$config['stylesheets']['BunkerLike'] = 'bunker_like.css';
 
 $config['default_stylesheet'] = array('Dark Red', $config['stylesheets']['Dark Red']);
 /*
