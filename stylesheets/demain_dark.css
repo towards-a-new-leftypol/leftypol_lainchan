@@ -1,0 +1,200 @@
+/* Demain_light theme for leftypol.org adapted from Seaweed theme for 4chan*/
+/* Work in progress*/
+/* General */
+/* Main page */
+legend {
+    background: indianred
+}
+div.module, div.ban {
+    background: #1d1f21;;
+    border: 1px solid #373b41;
+    max-width: 700px;
+    margin: 30px auto;
+}
+/* Text */
+body {
+    background: #1d1f21;
+    color: #ACACAC;
+    font-size: 14pt;
+    font-family: "LiberationSansRegular";
+}
+/* Link colors */
+a:link, a:visited, .intro a.email span.name {
+    color: #81a2be;
+}
+a:hover,
+.intro a.post_no:hover {
+    color: #cc6666;
+}
+/* Board title and subtitle */
+header div.subtitle,
+h1 {
+    color: indianred;
+    font-size: 20pt; 
+    font-family: "LiberationSansRegular";
+}
+header div.subtitle {
+    font-size: 10pt;
+}
+/* Post number*/
+a.post_no {
+    color: #c5c8c6;
+}
+/* Replies */
+/* Background color and border */
+div.post.reply {
+    background: #282A2E;
+    border-color: #373b41;
+    border-style: solid;
+    border-width: 0.8px;
+    border-radius: 5px;
+}
+div.post.reply.highlighted {
+    background: #1b1c21;
+    border-color: #5f89ac;
+    border-style: solid;
+    border-width: 0.8px;
+    border-radius: 5px;
+}
+div.post.reply div.body a {
+    color: #5f89ac;
+}
+.intro span.subject {
+    color: #b294bb;
+}
+/* Greentext */
+span.quote {
+    color: #b5bd68
+}
+/* Orangetext */
+span.orangeQuote {
+    color: #b294bb
+}
+/* Catalog grids */
+/* Background color and green border */
+.thread.grid-li.grid-size-vsmall,
+.thread.grid-li.grid-size-small,
+.thread.grid-li.grid-size-large {
+    background-color: #282A2E;
+    border: 1px solid #373b41;
+}
+.thread.grid-li.grid-size-vsmall:hover, 
+.thread.grid-li.grid-size-small:hover,
+.thread.grid-li.grid-size-large:hover {
+    background: #1b1c21;
+    border-color: #5f89ac;
+    border-style: solid;
+    border-width: 0.8px;
+    border-radius: 5px;
+}
+/* Posting form */
+/* Field names */
+form table tr th {
+    background: #282A2E;
+    color: #ACACAC;
+    border: 1px solid #373b41;
+}
+/* Input fields */
+textarea, input:not([type="file"]):not([type="checkbox"]), [type="submit"] {
+    color: #ACACAC;
+    background: #282A2E;
+    border: 1px double #1d1f21;
+    border-radius: 5px;
+}
+/* Input fields, focused */
+textarea:focus, input:not([type="file"]):not([type="checkbox"]):focus, [type="submit"]:hover {
+    border: 1px solid #1d1f21;
+    -moz-box-shadow: 0 0 10px #1d1f21;
+    -webkit-box-shadow: 0 0 10px #1d1f21;
+    box-shadow: 0 0 10px #1d1f21;
+}
+/* Top bar */
+/* Background, border and fade */
+.bar {
+    background-color: #151515;
+    border-color: #81a2be!important;;
+    /* comment these out to remove the fade */
+    /*
+    -moz-box-shadow: 0 0 40px #FFB300;
+    -webkit-box-shadow: 0 0 40px #FFB300;
+    box-shadow: 0 0 40px #FFB300;
+    */
+}
+/* Bottom bar, not visible in catalog mode */
+div.pages {
+        background: #151515;
+        border-color: #81a2be;
+}
+div.pages a.selected {
+        color: #cc6666;
+}
+hr {
+        border-color: #373b41;
+}
+div.boardlist {
+    color: #81a2be;
+    font-size: 14pt;
+}
+div.boardlist a {
+        color: #cc6666;
+}
+table.modlog tr th {
+        background: #1d1f21;
+}
+/* options.js */
+#options_div, #alert_div {
+    background: #151515;
+}
+.options_tab_icon {
+    color: gray;
+}
+.desktop-style div.boardlist:nth-child(1) {
+    background-color: #151515;
+}
+/* Red text */
+span.heading {
+    color: indianred;
+}
+/* Buggy shit */
+div.post.reply div.body a {
+    color: #5f89ac;
+    text-decoration: none;
+}
+/* OP */
+/* Subject */
+.intro span.subject {
+    color: #b294bb;
+}
+/* name */
+.intro span.name {
+    color: #5f89ac;
+}
+.desktop-style div.boardlist:nth-child(1) {
+    background-color: #151515;
+}
+/* Red text */
+span.heading {
+    color: indianred;
+}
+/* Upper part of a post */
+div.post p {
+    display: block;
+    margin: 0;
+    line-height: 1.16em;
+    font-size: 13pt;
+    min-height: 1.16em;
+}
+/* Buggy shit */
+div.post.reply div.body a {
+    color: #5f89ac;
+    text-decoration: none;
+}
+/* OP */
+/* Subject */
+.intro span.subject {
+    color: #b294bb;
+}
+/* name */
+.intro span.name {
+    color: #5f89ac;
+}
