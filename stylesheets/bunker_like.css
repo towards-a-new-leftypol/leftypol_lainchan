@@ -1,0 +1,175 @@
+body {
+	background: #1D1F21;
+	color: #ACACAC;
+	font-family: Courier, monospace;
+	font-size: 13px;
+}
+
+/* LINKS */
+a, a:link, a:visited, .intro a.email span.name {
+	color: #FFB300;
+	text-decoration: none;
+}
+a:link:hover, a:visited:hover {
+	color: #FFB300;
+	text-shadow: 0px 0px 5px #117743;
+}
+div.pages a.selected {
+	color: #FFB300;
+}
+
+/* INTRO */
+h1, div.title, header div.subtitle {
+	color: #663E11;
+	font-family: Courier, monospace;
+}
+h1 {
+	font-size: 24pt;
+	font-weight: normal;
+	letter-spacing: 0px;
+}
+header div.subtitle {
+	font-size: 12pt;
+}
+
+/* FORMS AND BUTTONS */
+div.banner {
+	background-color: inherit;
+	color: #ACACAC;
+}
+form table {
+	border: 1px dashed #117743;
+	padding-right: 1px;
+}
+form table tr th {
+	background: #282A2E;
+	border: 1px solid #117743;
+	border-radius: 5px;
+}
+input[type="text"], input[type="password"], textarea, select {
+	border: 1px double #07371F;
+	border-radius: 5px;
+	background: #282A2E;
+	color: #ACACAC;
+	font-family: Courier, monospace;
+}
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+  box-shadow: 0px 0px 5px 2px #117743;
+}
+input[type="submit"] {
+	border: 3px double #07371F;
+	border-radius: 5px;
+  background: #16171A;
+	color: #ACACAC;
+	font-family: Courier, monospace;
+	font-weight: bold;
+}
+.dropzone {
+	background: #16171A;
+	border: 3px double #07371F;
+	color: #ACACAC;
+}
+.dropzone .file-hint {
+	color: #ACACAC;
+	font-weight: bold;
+}
+#quick-reply table {
+	background: #1D1F21 !important;
+}
+fieldset {
+	border: 1px dashed #117743;
+}
+
+/* POST IDENTIFIERS */
+.intro span.subject {
+	color: #34ED3A;
+}
+.intro span.name {
+	color: #117743;
+}
+.intro span.trip {
+	color: #117743;
+}
+.intro a.capcode, p.intro a.nametag {
+	color: #FF0000;
+	font-weight: bold;
+}
+.intro a.email, p.intro a.email span.name, p.intro a.email:hover, p.intro a.email:hover span.name {
+	color: #34ED97;
+}
+.intro time {
+	font-weight: bold;
+}
+.intro a.post_no {
+	color: #ACACAC;
+	font-weight: bold;
+}
+
+/* POST BOXES */
+div.post.reply {
+	background: #282A2E;
+	border: 1px solid #117743;
+	border-radius: 5px;
+}
+div.post.reply.highlighted {
+	background: rgba(59, 22, 43, 0.4);
+	border: 1px solid #117743;
+	border-radius: 5px;
+}
+
+/* POST CONTENT */
+div.post.reply div.body a {
+	color: #FFB300;
+}
+.quote {
+	color: #789922;
+}
+
+/* BARS */
+.bar {
+	background-color: #151515;
+}
+.bar.top {
+	border-bottom: 1px solid #B0790A;
+}
+.bar.bottom {
+	border-top: 1px solid #B0790A;
+}
+div.boardlist {
+	color: #ACACAC;
+}
+hr {
+	border: none;
+	border-top: 1pt solid #117743;
+}
+
+/* CATALOG */
+.theme-catalog h1 {
+	color: #ACACAC;
+	font-size: 18pt;
+	font-weight: bold;
+}
+.theme-catalog h1 a {
+	font-weight: normal;
+}
+.theme-catalog div.thread, .theme-catalog div.thread:hover {
+	background: #282A2E;
+	border: 1px solid #117743;
+	border-radius: 5px;
+	font-size: 10pt;
+}
+
+/* OPTIONS */
+#options_div, #alert_div {
+	background: #1D1F21;
+	border: 1px dashed #117743;
+}
+#options_tablist {
+	border-right: 1px dashed #117743;
+}
+.options_tab_icon {
+	color: #ACACAC;
+}
+.options_tab_icon.active {
+	color: #FFB300;
+}
