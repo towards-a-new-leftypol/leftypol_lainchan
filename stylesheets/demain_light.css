@@ -1,12 +1,22 @@
 /* Demain_light theme for leftypol.org adapted from Seaweed theme for 4chan*/
 /* Work in progress*/
 /* General */
-/* General */
+/* Main page */
+legend {
+    background: #477085
+}
+div.module, div.ban {
+    background: #e9eced;
+    border: 1px solid #cccccc;
+    max-width: 700px;
+    margin: 30px auto;
+}
+/* Text */
 body {
-    background: #e9eced url('img/fade-yotsuba.png') repeat-x 50% 0%;
+    background: #e9eced;
     color: #4c4c4c;
-    font-size: 11pt;
-    font-family: liberation.sans
+    font-size: 13pt;
+    font-family: "Open Sans", sans-serif;
 }
 /* Link colors */
 a:link,
@@ -22,6 +32,11 @@ a:hover,
 header div.subtitle,
 h1 {
     color: #d93f42;
+    font-size: 20pt; 
+    font-family: "Open Sans", sans-serif;
+}
+header div.subtitle {
+    font-size: 10pt;
 }
 /* Post number*/
 a.post_no {
@@ -57,20 +72,38 @@ div.post.reply div.body a {
 .intro span.subject {
     color: #6b7a1e;
 }
+/* Upper part of a post */
+div.post p {
+    display: block;
+    margin: 0;
+    line-height: 1.16em;
+    font-size: 13pt;
+    min-height: 1.16em;
+}
 /* Greentext */
 span.quote {
     color: #6b7a1e
 }
-/* Catalog grids */
+/* Orangetext */
+orangeText {
+    color: #ffb854
+}
+* Catalog grids */
 /* Background color and green border */
 .thread.grid-li.grid-size-vsmall,
-.thread.grid-li.grid-size-vsmall:hover,
 .thread.grid-li.grid-size-small,
-.thread.grid-li.grid-size-small:hover,
-.thread.grid-li.grid-size-large,
-.thread.grid-li.grid-size-large:hover {
+.thread.grid-li.grid-size-large {
     background-color: #e9eced;
     border: 1px solid #cccccc;
+}
+.thread.grid-li.grid-size-vsmall:hover, 
+.thread.grid-li.grid-size-small:hover,
+.thread.grid-li.grid-size-large:hover {
+    background: #d5dada;
+    border-color: #477085;
+    border-style: solid;
+    border-width: 0.8px;
+    border-radius: 5px;
 }
 /* Posting form */
 /* Field names */
@@ -123,7 +156,7 @@ hr {
 }
 div.boardlist {
     color: #81a2be;
-    font-size: 14px;
+    font-size: 14pt;
 }
 div.boardlist a {
     color: #477085;
@@ -145,11 +178,6 @@ table.modlog tr th {
 span.heading {
     color: #d93f42;
 }
-/* Buggy shit */
-div.post.reply div.body a {
-    color: #5f89ac;
-    text-decoration: none;
-}
 /* OP */
 /* Subject */
 .intro span.subject {
@@ -163,17 +191,14 @@ div.post.reply div.body a {
 .intro span.trip {
     color: #5d6678;
 }
+/* Fix OP file bleeding out of the border*/
+.post-image {
+    margin: 37px 
+}
 /* Quick reply */
 /* Quick reply banner */
 div.banner {
     background-color: #477085;
-}
-#quick-reply th,
-#quick-reply td {
-    background-color: #d5dada;
-}
-#quick-reply table {
-    border-color: #cccccc
 }
 /* Buggy shit */
 div.post.reply div.body a {
