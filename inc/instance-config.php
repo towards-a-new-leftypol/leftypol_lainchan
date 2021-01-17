@@ -81,9 +81,9 @@ $config['db']['password'] = '';
 $config['cookies']['mod'] = 'mod';
 $config['cookies']['salt'] = 'MGYwNjhlNjU5Y2QxNWU3YjQ3MzQ1Yj';
 
-$config['flood_time'] = 0;
-$config['flood_time_ip'] = 0;
-$config['flood_time_same'] = 0;
+$config['flood_time'] = 30;
+$config['flood_time_ip'] = 60;
+$config['flood_time_same'] = 60;
 $config['max_body'] = 100000;
 $config['reply_limit'] = 250;
 $config['max_links'] = 40;
@@ -284,6 +284,13 @@ $config['stylesheets']['Notsuba'] = 'notsuba.css';
 $config['stylesheets']['Photon'] = 'photon.css';
 $config['stylesheets']['Szalet'] = 'szalet.css';
 $config['stylesheets']['Tsuki'] = 'tsuki.css';
+$config['stylesheets']['DemainLight'] = 'demain_light.css';
+$config['stylesheets']['DemainDark'] = 'demain_dark.css';
+$config['stylesheets']['TempDark'] = 'temp_dark.css';
+$config['stylesheets']['TempDarkRed'] = 'temp_dark_red.css';
+$config['stylesheets']['Tomorrow'] = 'tomorrow.css';
+$config['stylesheets']['AnonsDarkRed'] = 'anons_dark_red.css';
+$config['stylesheets']['BunkerLike'] = 'bunker_like.css';
 
 $config['default_stylesheet'] = array('Dark Red', $config['stylesheets']['Dark Red']);
 /*
