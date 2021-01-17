@@ -8,6 +8,10 @@
 *  You can copy values from config.php (defaults) and paste them here.
  */
 
+if (file_exists("instance-config.secret.php")) {
+    require_once "instance-config.secret.php";
+}
+
 /*
  * Front page configurations.
  */
@@ -67,19 +71,7 @@ $config['custom_categories'] = array(
     ),
 );
 
-/*
- * Database and site wide configurations
- */
-
-$config['db']['server'] = 'localhost';
-$config['db']['database'] = 'lainchan';
-$config['db']['prefix'] = '';
-$config['db']['user'] = 'lainchan';
-$config['db']['password'] = '';
-
-
 $config['cookies']['mod'] = 'mod';
-$config['cookies']['salt'] = 'MGYwNjhlNjU5Y2QxNWU3YjQ3MzQ1Yj';
 
 $config['flood_time'] = 30;
 $config['flood_time_ip'] = 60;
@@ -96,7 +88,6 @@ $config['threads_per_page'] = 10;
 $config['max_pages'] = 36;
 $config['threads_preview'] = 5;
 $config['root'] = '/';
-$config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
 
 //Banners
 $config['url_banner'] = '/banners.php';
