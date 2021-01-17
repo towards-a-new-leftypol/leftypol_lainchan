@@ -27,7 +27,7 @@
                     $b->build($settings, $board);
                 }
             }
-            if(isset($settings['has_overboard'] && $settings['has_overboard']) {
+            if(isset($settings['has_overboard']) && $settings['has_overboard']) {
                 $board = $settings['overboard_location'];
                 $action = generation_strategy("sb_catalog", array($board));
                 if ($action == 'delete') {
