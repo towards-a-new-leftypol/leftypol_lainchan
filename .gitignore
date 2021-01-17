@@ -61,9 +61,9 @@ tf/
 [._]s[a-w][a-z]
 
 # special boards
-all/
-mod/
-random/
+/all/
+/mod/
+/random/
 
 # Banners
 banners/*
