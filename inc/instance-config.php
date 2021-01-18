@@ -159,6 +159,13 @@ $config['image_reject_repost'] = false;
 
 $config['thumb_method'] = 'gm+gifsicle';
 $config['gnu_md5'] = '1';
+
+
+// Strip EXIF metadata from JPEG files.
+$config['strip_exif'] = true;
+// Use the command-line `exiftool` tool to strip EXIF metadata without decompressing/recompressing JPEGs.
+$config['use_exiftool'] = true;
+
 // $config['update_on_posts'] = true;
 $config['referer_match'] = false;
 
