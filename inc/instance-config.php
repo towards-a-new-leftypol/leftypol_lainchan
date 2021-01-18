@@ -110,6 +110,7 @@ $config['mod']['editpost'] = MOD;
 // Raw HTML posting
 $config['mod']['rawhtml'] = MOD;
 $config['mod']['mod_board_log'] = MOD;
+$config['mod']['ip_recentposts'] = 300;
 
 $config['allow_thread_deletion'] = false;
 
