@@ -6,9 +6,9 @@
 	 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<script type='text/javascript'>
 		var active_page = "catalog"
-		  , board_name = "{{ board }}";
+		  , board_name = "{{ board.uri }}";
 	</script>
-		<title>{{ settings.title }} ( /{{ board }}/ )</title>
+		<title>{{ settings.title }} ( /{{ board.title|e }}/ )</title>
 	{% include 'header.html' %}
 </head>
 <body class="8chan vichan {% if mod %}is-moderator{% else %}is-not-moderator{% endif %} theme-catalog active-catalog" data-stylesheet="{% if config.default_stylesheet.1 != '' %}{{ config.default_stylesheet.1 }}{% else %}default{% endif %}">
@@ -16,10 +16,15 @@
 		{{ boardlist.top }}
 	</div>
 	<header>
-		<h1 class="glitch" data-text="{{ settings.title }} /{{ board }}/"> {{ settings.title }}  (<a href="{{link}}">/{{ board }}/</a>)</h1>
+		<h1 class="glitch" data-text="{{ settings.title }} /{{ board.title|e }}/"> {{ settings.title }}  (<a href="{{link}}">/{{ board.title|e }}/</a>)</h1>
 		<div class="subtitle">{{ settings.subtitle }}</div>
 	</header>
-
+        {% if not no_post_form %}
+                <center><a href="#" id="post-form-opener">[ {% trans 'Create new thread' %} ]</a></center>
+                <div id="post-form-container" style="display:none;">
+		  {% include 'post_form.html' %}
+                </div>
+        {% endif %}
 	<div class="controls">
 		<ul style="display: none">
 			<li id="sort-bump-order" class="sort" data-sort="data-bump" data-order="asc">{% trans 'Bump order' %}</li>
@@ -55,12 +60,12 @@
 				 data-sticky="{% if post.sticky %}true{% else %}false{% endif %}"
 				 data-locked="{% if post.locked %}true{% else %}false{% endif %}"
 			>
-                                <div class="thread grid-li grid-size-small">  
-                                        <a href="{{post.link}}">  
+                                <div class="thread grid-li grid-size-small">
+                                        <a href="{{post.link}}">
 						{% if post.youtube %}
-							<img src="//img.youtube.com/vi/{{ post.youtube }}/0.jpg" 
+							<img src="//img.youtube.com/vi/{{ post.youtube }}/0.jpg"
 						{% else %}
-							<img src="{{post.file}}" 
+							<img src="{{post.file}}"
 						{% endif %}
                                                  id="img-{{ post.id }}" data-subject="{% if post.subject %}{{ post.subject|e }}{% endif %}" data-name="{{ post.name|e }}" data-muhdifference="{{ post.muhdifference }}" class="{{post.board}} thread-image" title="{{post.bump|date('%b %d %H:%M')}}">
                                         </a>
@@ -83,12 +88,12 @@
                 {% endfor %}
                 </div>
         </div>
-	
+
 	<hr/>
 	<footer>
 		<p class="unimportant" style="margin-top:20px;text-align:center;">- <a href="http://tinyboard.org/">Tinyboard</a> +
 			<a href='https://int.vichan.net/devel/'>vichan</a> {{ config.version }} -
-		<br><a href="http://tinyboard.org/">Tinyboard</a> Copyright &copy; 2010-2014 Tinyboard Development Group    
+		<br><a href="http://tinyboard.org/">Tinyboard</a> Copyright &copy; 2010-2014 Tinyboard Development Group
 		<br><a href="https://engine.vichan.net/">vichan</a> Copyright &copy; 2012-2015 vichan-devel</p>
 	</footer>
 	<div class="pages"></div>

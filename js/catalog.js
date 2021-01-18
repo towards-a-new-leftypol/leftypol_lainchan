@@ -45,4 +45,9 @@ if (active_page == 'catalog') $(function(){
 			$(this).css('width', 'auto');
 		}
 	});
+
+    $('#post-form-opener').on('click', function(e) {
+        $('#post-form-container').css('display', 'unset');
+        $('#post-form-opener').css('display', 'none');
+    });
 });
