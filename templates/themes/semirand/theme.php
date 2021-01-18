@@ -101,7 +101,7 @@
 		 * Retrieve count of images and posts in a thread
 		 */
 		private function fetchThreadCount($board, $thread_id, $preview_count) {
-			$query = prepare("SELECT COUNT(NULLIF(TRIM(files), '')) as file_count, COUNT(id) as post_count FROM (SELECT *  FROM ``posts_$board`` WHERE `thread` = :id ORDER BY `time` DESC LIMIT :offset , 18446744073709551615);");
+			$query = prepare("SELECT SUM(t.num_files) as file_count, COUNT(t.id) as post_count FROM (SELECT *  FROM ``posts_$board`` WHERE `thread` = :id ORDER BY `time` DESC LIMIT :offset , 18446744073709551615) as t;");
 			$query->bindValue(':id', $thread_id, PDO::PARAM_INT);
 			$query->bindValue(':offset', $preview_count, PDO::PARAM_INT);
 			$query->execute() or error(db_error($query));
