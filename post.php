@@ -213,12 +213,16 @@ function handle_delete(){
     // Check if board exists
     if (!openBoard($_POST['board']))
         error($config['error']['noboard']);
+
+    // Check if mod has permission to delete posts in this board
+    if ($is_mod && !hasPermission($config['mod']['delete'], $board))
+        error($config['error']['noaccess']);
     
     // Check if banned
     checkBan($board['uri']);
 
-    // Check if deletion enabled
-    if (!$config['allow_delete'])
+    // Check if deletion is enabled
+    if (!$is_mod && !$config['allow_delete'])
         error(_('Post deletion is not allowed!'));
     
     if (empty($delete))
