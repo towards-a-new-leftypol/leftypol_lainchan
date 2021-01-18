@@ -63,7 +63,7 @@ $config['custom_categories'] = array(
         'Michael Roberts\' blog' => 'https://thenextrecession.wordpress.com/',
         'A Critique Of Crisis Theory blog' => 'https://critiqueofcrisistheory.wordpress.com/',
         'Leftypedia' => 'https://leftypedia.org/',
-        'Marxis Internet Archive' => 'https://www.marxists.org/'
+        'Marxist Internet Archive' => 'https://www.marxists.org/'
     ),
 );
 
@@ -119,6 +119,7 @@ $config['mod']['editpost'] = MOD;
 // Raw HTML posting
 $config['mod']['rawhtml'] = MOD;
 $config['mod']['mod_board_log'] = MOD;
+$config['mod']['ip_recentposts'] = 350;
 
 $config['allow_thread_deletion'] = false;
 
