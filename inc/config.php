@@ -1567,7 +1567,7 @@
 	// Create a user
 	$config['mod']['createusers'] = ADMIN;
 	// View the moderation log
-	$config['mod']['modlog'] = ADMIN;
+	$config['mod']['modlog'] = MOD;
 	// View IP addresses of other mods in ?/log
 	$config['mod']['show_ip_modlog'] = ADMIN;
 	// View relevant moderation log entries on IP address pages (ie. ban history, etc.) Warning: Can be
