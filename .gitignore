@@ -74,6 +74,3 @@ stylesheets/fonts
 
 #Images from twemoji
 js/twemoji/16x16/
-
-#Secrets
-*.secret.php
