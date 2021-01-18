@@ -183,9 +183,18 @@ function handle_nntpchan() {
 
 function handle_delete(){
     // Delete
-    global $config,$board;
+    global $config, $board, $mod;
     if (!isset($_POST['board'], $_POST['password']))
         error($config['error']['bot']);
+
+    check_login(false);
+    $is_mod = !!$mod;
+
+    if (isset($_POST['mod']) && $_POST['mod'] && !$mod) {
+        // Mismatched claims. (As stated below "Liar, you are not a mod.")
+        error($config['error']['notamod']);
+    }
+
     
     $password = &$_POST['password'];
     
@@ -234,10 +243,14 @@ function handle_delete(){
                 error($config['error']['nodeletethread']);
             }
 
-            if ($password != '' && $post['password'] != $password && (!$thread || $thread['password'] != $password))
+            if ($password != '' 
+                && $post['password'] != $password 
+                && (!$thread || $thread['password'] != $password)
+                && !$is_mod) {
                 error($config['error']['invalidpassword']);
+            }
             
-            if ($post['time'] > time() - $config['delete_time'] && (!$thread || $thread['password'] != $password)) {
+            if ($post['time'] > time() - $config['delete_time']) {
                 error(sprintf($config['error']['delete_too_soon'], until($post['time'] + $config['delete_time'])));
             }
             
@@ -259,7 +272,7 @@ function handle_delete(){
     
     buildIndex();
 
-    $is_mod = isset($_POST['mod']) && $_POST['mod'];
+    
     $root = $is_mod ? $config['root'] . $config['file_mod'] . '?/' : $config['root'];
 
     if (!isset($_POST['json_response'])) {
