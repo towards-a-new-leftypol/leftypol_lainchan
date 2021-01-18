@@ -8,8 +8,8 @@
 *  You can copy values from config.php (defaults) and paste them here.
  */
 
-if (file_exists("instance-config.secret.php")) {
-    require_once "instance-config.secret.php";
+if (file_exists("inc/instance-config.secret.php")) {
+    require_once "inc/instance-config.secret.php";
 }
 
 /*
