@@ -100,9 +100,10 @@
 		/**
 		 * Retrieve count of images and posts in a thread
 		 */
-		private function fetchThreadCount($board, $thread_id) {
-			$query = prepare("SELECT COUNT(NULLIF(TRIM(files), '')) as file_count, COUNT(id) as post_count FROM ``posts_$board`` WHERE `thread` = :id");
+		private function fetchThreadCount($board, $thread_id, $preview_count) {
+			$query = prepare("SELECT COUNT(NULLIF(TRIM(files), '')) as file_count, COUNT(id) as post_count FROM ``posts_$board`` WHERE `thread` = :id ORDER BY `time` DESC OFFSET :offset");
 			$query->bindValue(':id', $thread_id, PDO::PARAM_INT);
+			$query->bindValue(':offset', $preview_count, PDO::PARAM_INT);
 			$query->execute() or error(db_error($query));
 
 			return $query->fetch(PDO::FETCH_ASSOC);
@@ -155,7 +156,7 @@
 				$thread->add(new Post($reply, $mod ? '?/' : $config['root'], $mod));
 			}
 
-			$threadCount = $this->fetchThreadCount($post['board'], $post['id']);
+			$threadCount = $this->fetchThreadCount($post['board'], $post['id'], $preview_count);
 			$thread->omitted = $threadCount['post_count'];
 			$thread->omitted_images = $threadCount['file_count'];
 
