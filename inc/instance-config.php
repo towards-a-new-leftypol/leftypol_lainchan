@@ -302,6 +302,7 @@ $config['default_stylesheet'] = array('Dark Red', $config['stylesheets']['Dark R
 $config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
 $config['additional_javascript'][] = 'js/ajax.js';
 
+$config['additional_javascript'][] = 'js/options.js';
 $config['additional_javascript'][] = 'js/local-time.js';
 $config['additional_javascript'][] = 'js/auto-reload.js';
 $config['additional_javascript'][] = 'js/auto-scroll.js';
@@ -321,7 +322,6 @@ $config['additional_javascript'][] = 'js/quick-reply.js';
 $config['additional_javascript'][] = 'js/post-menu.js';
 $config['additional_javascript'][] = 'js/post-filter.js';
 
-$config['additional_javascript'][] = 'js/options.js';
 $config['additional_javascript'][] = 'js/options/general.js';
 $config['additional_javascript'][] = 'js/options/user-css.js';
 $config['additional_javascript'][] = 'js/options/user-js.js';
