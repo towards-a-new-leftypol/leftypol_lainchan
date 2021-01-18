@@ -372,7 +372,7 @@
             // Generate data for the template
             $recent_posts = $this->generateRecentPosts($threads);
 
-            $this->saveForBoard($board_name, $recent_posts,  '/' . $settings['overboard_location']);
+            $this->saveForBoard($board_name, $recent_posts,  '/' . $settings['overboard_location'], true);
 
             // Build the overboard JSON outputs
             if ($config['api']['enabled']) {
@@ -455,7 +455,7 @@
             return $posts;
         }
 
-        private function saveForBoard($board_name, $recent_posts, $board_link = null) {
+        private function saveForBoard($board_name, $recent_posts, $board_link = null, $is_overboard = false) {
             global $board, $config;
 
             if ($board_link === null) {
@@ -471,16 +471,31 @@
                     $config['additional_javascript'][] = $s;
             }
 
-            file_write($config['dir']['home'] . $board_name . '/catalog.html', Element('themes/catalog/catalog.html', Array(
+            $template_config = Array(
                 'settings' => $this->settings,
                 'config' => $config,
                 'boardlist' => createBoardlist(),
                 'recent_images' => array(),
                 'recent_posts' => $recent_posts,
                 'stats' => array(),
-                'board' => $board_name,
-                'link' => $board_link
-            )));
+                'board' => $board,
+                'link' => $board_link,
+                'no_post_form' => false,
+            );
+
+            if ($is_overboard) {
+                // fake board, I vomit
+                $template_config['board'] = Array(
+                    'uri' => $board_name,
+                    'title' => $board_name,
+                    'name' => $board_name,
+                    'dir' => $board_name . '/',
+                    'url' => '/' . $board_name . '/'
+                );
+                $template_config['no_post_form'] = true;
+            }
+
+            file_write($config['dir']['home'] . $board_name . '/catalog.html', Element('themes/catalog/catalog.html', $template_config));
 
             file_write($config['dir']['home'] . $board_name . '/index.rss', Element('themes/catalog/index.rss', Array(
                 'config' => $config,
