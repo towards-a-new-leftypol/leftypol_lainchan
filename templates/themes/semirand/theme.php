@@ -105,7 +105,7 @@
 			$query->bindValue(':id', $thread_id, PDO::PARAM_INT);
 			$query->execute() or error(db_error($query));
 
-			return $query->fetchAll(PDO::FETCH_ASSOC);
+			return $query->fetch(PDO::FETCH_ASSOC);
 		}
 
 		/**
