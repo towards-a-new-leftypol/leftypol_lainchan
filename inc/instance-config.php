@@ -122,6 +122,9 @@ $config['mod']['rawhtml'] = MOD;
 $config['mod']['mod_board_log'] = MOD;
 $config['mod']['ip_recentposts'] = 350;
 
+// Allow everyone to see bumplocks
+$config['mod']['view_bumplock'] = -1;
+
 $config['allow_thread_deletion'] = false;
 
 // Max attachments per post
