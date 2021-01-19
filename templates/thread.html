@@ -34,7 +34,10 @@
 	{% if config.url_banner %}<img class="board_image" src="{{ config.url_banner }}" {% if config.banner_width or config.banner_height %}style="{% if config.banner_width %}width:{{ config.banner_width }}px{% endif %};{% if config.banner_width %}height:{{ config.banner_height }}px{% endif %}" {% endif %}alt="" />{% endif %}
 	<div id="pagewrap">
 	<header>
-		<h1 class="glitch" data-text="{{ board.url }} - {{ board.title|e }}">{{ board.url }} - {{ board.title|e }}</h1>
+		<h1
+            class="glitch"
+            data-text="{{ board.url }} - {{ board.title|e }}"
+            >{{ board.url }} <span class="i18n_doable" data-i18n-key="{{ board.url }}_tagline">{{ board.title|e }}</span></h1>
 		<div class="subtitle">
 			{% if board.subtitle %}
 				{% if config.allow_subtitle_html %}

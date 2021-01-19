@@ -292,9 +292,12 @@ $config['default_stylesheet'] = array('Dark Red', $config['stylesheets']['Dark R
  * ====================
  */
 
-$config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
-$config['additional_javascript'][] = 'js/ajax.js';
+$config['additional_javascript'][] = 'js/i18n.js';
+$config['additional_javascript'][] = 'js/lang-support.js';
 
+$config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
+
+$config['additional_javascript'][] = 'js/ajax.js';
 $config['additional_javascript'][] = 'js/local-time.js';
 $config['additional_javascript'][] = 'js/auto-reload.js';
 $config['additional_javascript'][] = 'js/auto-scroll.js';

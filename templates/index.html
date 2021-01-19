@@ -26,13 +26,16 @@
 	{% if config.url_banner %}<img class="board_image" src="{{ config.url_banner }}" {% if config.banner_width or config.banner_height %}style="{% if config.banner_width %}width:{{ config.banner_width }}px{% endif %};{% if config.banner_width %}height:{{ config.banner_height }}px{% endif %}" {% endif %}alt="" />{% endif %}
 	<div id="pagewrap">
 	<header>
-		<h1 class="glitch" data-text="{{ board.url }} - {{ board.title|e }}">{{ board.url }} - {{ board.title|e }}</h1>
+		<h1
+            class="glitch"
+            data-text="{{ board.url }} - {{ board.title|e }}"
+            >{{ board.url }} <span class="i18n_doable" data-i18n-key="{{ board.url }}_tagline">{{ board.title|e }}</span></h1>
 		<div class="subtitle">
 			{% if board.subtitle %}
 				{% if config.allow_subtitle_html %}
 					{{ board.subtitle }}
 				{% else %}
-					{{ board.subtitle|e }}
+                    <span class="i18n_doable" data-i18n-key="{{ board.url }}_subtitle">{{ board.subtitle|e }}<span>
 				{% endif %}
 			{% endif %}
 			{% if mod %}
@@ -62,11 +65,19 @@
 	{% if config.global_message %}<hr /><div class="blotter">{{ config.global_message }}</div>{% endif %}
 	<hr />
 		{% if config.catalog_link %}
-		 |  <a href="{{ config.root }}{{ board.dir }}{{ config.catalog_link }}">Catalog</a>
+		 |  <a
+                href="{{ config.root }}{{ board.dir }}{{ config.catalog_link }}"
+                class="i18n_doable"
+                data-i18n-key="catalog_link"
+             >Catalog</a>
 		{% endif %}
 
 		{% if config.home_link %}
-		 |  <a href="{{ config.root }}">Home</a>
+		 |  <a
+                href="{{ config.root }}"
+                class="i18n_doable"
+                data-i18n-key="home_link"
+                >Home</a>
 		{% endif %}
 	<hr />
 
@@ -102,10 +113,18 @@
 			 <a {% if page.selected %}class="selected"{% endif %}{% if not page.selected %}href="{{ page.link }}"{% endif %}>{{ page.num }}</a>{% if not loop.last %} /{% endif %}
 			{% endfor %} ] {{ btn.next }}
 			{% if config.catalog_link %}
-			 |  <a href="{{ config.root }}{{ board.dir }}{{ config.catalog_link }}">Catalog</a>
+			 |  <a
+                    href="{{ config.root }}{{ board.dir }}{{ config.catalog_link }}"
+                    class="i18n_doable"
+                    data-i18n-key="catalog_link"
+                    >Catalog</a>
 			{% endif %}
 			{% if config.home_link %}
-			 |  <a href="{{ config.root }}">Home</a>
+			 |  <a
+                    href="{{ config.root }}"
+                    class="i18n_doable"
+                    data-i18n-key="home_link"
+                    >Home</a>
 			{% endif %}
 		</div>
 	</div>
