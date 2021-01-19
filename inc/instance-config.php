@@ -26,6 +26,7 @@ $config['boards'] = array(
 
 $config['prepended_foreign_boards'] = array(
     'overboard' => '/overboard/',
+    'cytube' => 'https://tv.leftypol.org/'
 );
 
 $config['foreign_boards'] = array(
