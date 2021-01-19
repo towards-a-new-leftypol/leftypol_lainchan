@@ -154,8 +154,11 @@ $config['allowed_ext_files'][] = 'mp3';
 $config['allowed_ext_files'][] = 'mp4';
 $config['allowed_ext_files'][] = 'pdf';
 $config['allowed_ext_files'][] = 'txt';
-$config['allowed_ext_files'][] = 'zip';
 $config['allowed_ext_files'][] = 'epub';
+// Compressed files
+$config['allowed_ext_files'][] = 'zip';
+$config['allowed_ext_files'][] = 'gz';
+$config['allowed_ext_files'][] = 'bz2';
 
 /*
  * Flags
