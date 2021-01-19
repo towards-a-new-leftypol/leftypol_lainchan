@@ -288,7 +288,6 @@ $config['stylesheets']['DemainLight'] = 'demain_light.css';
 $config['stylesheets']['DemainDark'] = 'demain_dark.css';
 $config['stylesheets']['TempDark'] = 'temp_dark.css';
 $config['stylesheets']['TempDarkRed'] = 'temp_dark_red.css';
-$config['stylesheets']['Tomorrow'] = 'tomorrow.css';
 $config['stylesheets']['AnonsDarkRed'] = 'anons_dark_red.css';
 $config['stylesheets']['BunkerLike'] = 'bunker_like.css';
 
