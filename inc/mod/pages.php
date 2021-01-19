@@ -2209,9 +2209,11 @@ function mod_deletebyip($boardName, $post, $global = false) {
 
     @set_time_limit($config['mod']['rebuild_timelimit']);
 
+    $boards_to_rebuild = array();
     $threads_to_rebuild = array();
     $threads_deleted = array();
     while ($post = $query->fetch(PDO::FETCH_ASSOC)) {
+        $boards_to_rebuild[$post['board']] = true;
         openBoard($post['board']);
         if ($config['autotagging']){
             $query2 = prepare(sprintf("SELECT *  FROM ``posts_%s`` WHERE id = :id", $post['board']));
@@ -2257,8 +2259,6 @@ function mod_deletebyip($boardName, $post, $global = false) {
 
         deletePost($post['id'], false, false);
 
-        rebuildThemes('post-delete', $board['uri']);
-
         if ($post['thread'])
             $threads_to_rebuild[$post['board']][$post['thread']] = true;
         else
@@ -2266,11 +2266,16 @@ function mod_deletebyip($boardName, $post, $global = false) {
     }
 
     foreach ($threads_to_rebuild as $_board => $_threads) {
-        openBoard($_board);
+        openBoard($_board); // Set $board which is globally referenced by buildThread()
         foreach ($_threads as $_thread => $_dummy) {
             if ($_dummy && !isset($threads_deleted[$_board][$_thread]))
                 buildThread($_thread);
         }
+    }
+
+    foreach(array_keys($boards_to_rebuild) as $_board) {
+        openBoard($_board);
+        rebuildThemes('post-delete', $board['uri']);
         buildIndex();
     }
 
