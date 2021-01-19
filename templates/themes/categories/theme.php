@@ -1,12 +1,12 @@
 <?php
 	require 'info.php';
-	
+
 	function categories_build($action, $settings, $board) {
 		// Possible values for $action:
 		//	- all (rebuild everything, initialization)
 		//	- news (news has been updated)
 		//	- boards (board list changed)
-		
+
 		Categories::build($action, $settings);
 	}
 
@@ -14,22 +14,23 @@
 	class Categories {
 		public static function build($action, $settings) {
 			global $config;
-			
+
 			if ($action == 'all')
 				file_write($config['dir']['home'] . $settings['file_main'], Categories::homepage($settings));
-			
+
 			if ($action == 'all' || $action == 'boards')
 				file_write($config['dir']['home'] . $settings['file_sidebar'], Categories::sidebar($settings));
-			
+
 			if ($action == 'all' || $action == 'news')
 				file_write($config['dir']['home'] . $settings['file_news'], Categories::news($settings));
 		}
-		
+
 		// Build homepage
 		public static function homepage($settings) {
 			global $config;
 			$query = query("SELECT * FROM ``news`` ORDER BY `time` DESC") or error(db_error());
 			$news = $query->fetchAll(PDO::FETCH_ASSOC);
+            $stats = Categories::getPostStatistics($settings);
 			return Element(
 				'themes/categories/frames.html',
 				Array(
@@ -37,19 +38,20 @@
 					'settings' => $settings,
 					'categories' => Categories::getCategories($config),
 					'news' => $news,
+                    'stats' => $stats,
 					'boardlist' => createBoardlist(false)
 
 				)
 			);
 		}
-		
+
 		// Build news page
 		public static function news($settings) {
 			global $config;
-			
+
 			$query = query("SELECT * FROM ``news`` ORDER BY `time` DESC") or error(db_error());
 			$news = $query->fetchAll(PDO::FETCH_ASSOC);
-			
+
 			return Element('themes/categories/news.html', Array(
 				'settings' => $settings,
 				'config' => $config,
@@ -57,11 +59,11 @@
 				'boardlist' => createBoardlist(false)
 			));
 		}
-		
+
 		// Build sidebar
 		public static function sidebar($settings) {
 			global $config, $board;
-			
+
 			return Element('themes/categories/sidebar.html', Array(
 				'settings' => $settings,
 				'config' => $config,
@@ -71,7 +73,7 @@
 
 		private static function getCategories($config) {
 			$categories = $config['categories'];
-			
+
 			foreach ($categories as &$boards) {
 				foreach ($boards as &$board) {
 					$title = boardTitle($board);
@@ -83,6 +85,38 @@
 
 			return $categories;
 		}
+
+        private static function getPostStatistics($settings) {
+            $boards = query("SELECT uri FROM ``boards``");
+            $unique = Array();
+            $pph = 0;
+
+            foreach ($boards->fetchAll() as $_board) {
+                $pph_query = query(
+                    sprintf("SELECT COUNT(*) AS count FROM ``posts_%s`` WHERE time > %d",
+                            $_board['uri'],
+                            time()-3600)
+                ) or error(db_error());
+
+                $pph += $pph_query->fetch()['count'];
+
+                $unique_query = query(
+                    sprintf("SELECT ip FROM ``posts_%s`` WHERE time > %d",
+                            $_board['uri'],
+                            time()-3600)
+                ) or error(db_error());
+
+                foreach ($unique_query->fetchAll() as $_k => $row) {
+                    $unique[$row['ip']] = true;
+                }
+            }
+
+            $unique_ip_count = count($unique);
+
+            return Array('pph' => $pph, 'unique_ip_count' => $unique_ip_count);
+        }
+
+
 	};
-	
+
 ?>
