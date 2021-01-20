@@ -126,7 +126,7 @@
                 $unique_ips = $unique_query->fetchAll();
                 $boardStat['recent_ips'] = count($unique_ips);
 
-                foreach ( as $_k => $row) {
+                foreach ($unique_ips as $_k => $row) {
                     $unique[$row['ip']] = true;
                 }
 
