@@ -136,7 +136,7 @@
             }
 
             $stats['recent_ips'] = count($unique);
-            $stats['pph'] = count(array_column($stats['board'], 'pph'));
+            $stats['pph'] = count(array_column($stats['boards'], 'pph'));
 
             return $stats;
         }
