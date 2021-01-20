@@ -30,8 +30,8 @@
             {% trans "Post Statistics" %}
           </h2>
           <p>
-            {% stats.pph %} {% trans "posts in the last hour." %}
-            {% stats.unique_ip_count %} {% trans "unique posters in the last hour." %}
+            {{ stats.pph }} {% trans "posts in the last hour." %}
+            {{ stats.unique_ip_count }} {% trans "unique posters in the last hour." %}
           </p>
         </div>
 

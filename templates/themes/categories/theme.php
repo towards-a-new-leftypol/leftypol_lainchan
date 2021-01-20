@@ -14,23 +14,29 @@
 	class Categories {
 		public static function build($action, $settings) {
 			global $config;
-
-			if ($action == 'all')
+			
+			if ($action == 'all' ||
+				$action == 'boards' ||
+				$action == 'news' ||
+				$action == 'post' ||
+				$action == 'post-thread' ||
+	 			$action == 'post-delete'){
 				file_write($config['dir']['home'] . $settings['file_main'], Categories::homepage($settings));
-
-			if ($action == 'all' || $action == 'boards')
-				file_write($config['dir']['home'] . $settings['file_sidebar'], Categories::sidebar($settings));
-
-			if ($action == 'all' || $action == 'news')
 				file_write($config['dir']['home'] . $settings['file_news'], Categories::news($settings));
+			}
+			
+			if ($action == 'all'){
+				file_write($config['dir']['home'] . $settings['file_sidebar'], Categories::sidebar($settings));
+			}
 		}
+
 
 		// Build homepage
 		public static function homepage($settings) {
 			global $config;
 			$query = query("SELECT * FROM ``news`` ORDER BY `time` DESC") or error(db_error());
 			$news = $query->fetchAll(PDO::FETCH_ASSOC);
-            $stats = Categories::getPostStatistics($settings);
+			$stats = Categories::getPostStatistics($settings);
 			return Element(
 				'themes/categories/frames.html',
 				Array(
@@ -38,7 +44,7 @@
 					'settings' => $settings,
 					'categories' => Categories::getCategories($config),
 					'news' => $news,
-                    'stats' => $stats,
+					'stats' => $stats,
 					'boardlist' => createBoardlist(false)
 
 				)
@@ -51,11 +57,12 @@
 
 			$query = query("SELECT * FROM ``news`` ORDER BY `time` DESC") or error(db_error());
 			$news = $query->fetchAll(PDO::FETCH_ASSOC);
-
+			$stats = Categories::getPostStatistics($settings);
 			return Element('themes/categories/news.html', Array(
 				'settings' => $settings,
 				'config' => $config,
 				'news' => $news,
+				'stats' => $stats,
 				'boardlist' => createBoardlist(false)
 			));
 		}
