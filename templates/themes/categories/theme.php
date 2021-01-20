@@ -101,6 +101,7 @@
         	}
 
         	$stats = [];
+        	$unique = [];
 
             foreach (array_merge(... $config['boards']) as $uri) {
             	$_board = getBoardInfo($uri);
