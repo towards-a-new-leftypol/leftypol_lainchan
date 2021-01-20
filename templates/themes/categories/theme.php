@@ -24,7 +24,7 @@
 				file_write($config['dir']['home'] . $settings['file_main'], Categories::homepage($settings));
 				file_write($config['dir']['home'] . $settings['file_news'], Categories::news($settings));
 			}
-			
+
 			if ($action == 'all'){
 				file_write($config['dir']['home'] . $settings['file_sidebar'], Categories::sidebar($settings));
 			}
@@ -94,33 +94,49 @@
 		}
 
         private static function getPostStatistics($settings) {
-            $boards = query("SELECT uri FROM ``boards``");
-            $unique = Array();
-            $pph = 0;
+        	if (!isset($config['boards'])) {
+        		return null;
+        	}
 
-            foreach ($boards->fetchAll() as $_board) {
+        	$stats = [];
+
+            foreach (array_merge(... $config['boards']) as $_board) {
+            	$title = boardTitle($board);
+            	if (!$title) {
+            		// board doesn't exist. 
+            		continue;
+            	}
+
+            	$boardStat['title'] = $title;
+
                 $pph_query = query(
                     sprintf("SELECT COUNT(*) AS count FROM ``posts_%s`` WHERE time > %d",
                             $_board['uri'],
                             time()-3600)
                 ) or error(db_error());
 
-                $pph += $pph_query->fetch()['count'];
+                $boardStat['pph'] = $pph_query->fetch()['count'];
 
                 $unique_query = query(
-                    sprintf("SELECT ip FROM ``posts_%s`` WHERE time > %d",
+                    sprintf("SELECT DISTINCT ip FROM ``posts_%s`` WHERE time > %d",
                             $_board['uri'],
                             time()-3600)
                 ) or error(db_error());
 
-                foreach ($unique_query->fetchAll() as $_k => $row) {
+                $unique_ips = $unique_query->fetchAll();
+                $boardStat['recent_ips'] = count($unique_ips);
+
+                foreach ( as $_k => $row) {
                     $unique[$row['ip']] = true;
                 }
+
+                $stats['boards'][] = $boardStat;
             }
 
-            $unique_ip_count = count($unique);
+            $stats['recent_ips'] = count($unique);
+            $stats['pph'] = count(array_column($stats['board'], 'pph'));
 
-            return Array('pph' => $pph, 'unique_ip_count' => $unique_ip_count);
+            return $stats;
         }
 
 
