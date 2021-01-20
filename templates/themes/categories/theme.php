@@ -94,20 +94,22 @@
 		}
 
         private static function getPostStatistics($settings) {
+        	global $config;
+
         	if (!isset($config['boards'])) {
         		return null;
         	}
 
         	$stats = [];
 
-            foreach (array_merge(... $config['boards']) as $_board) {
-            	$title = boardTitle($board);
-            	if (!$title) {
+            foreach (array_merge(... $config['boards']) as $uri) {
+            	$_board = getBoardInfo($uri);
+            	if (!$_board) {
             		// board doesn't exist. 
             		continue;
             	}
 
-            	$boardStat['title'] = $title;
+            	$boardStat['title'] = $_board['title'];
 
                 $pph_query = query(
                     sprintf("SELECT COUNT(*) AS count FROM ``posts_%s`` WHERE time > %d",
