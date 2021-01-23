@@ -98,6 +98,18 @@
 		}
 
 		/**
+		 * Retrieve count of images and posts in a thread
+		 */
+		private function fetchThreadCount($board, $thread_id, $preview_count) {
+			$query = prepare("SELECT SUM(t.num_files) as file_count, COUNT(t.id) as post_count FROM (SELECT *  FROM ``posts_$board`` WHERE `thread` = :id ORDER BY `time` DESC LIMIT :offset , 18446744073709551615) as t;");
+			$query->bindValue(':id', $thread_id, PDO::PARAM_INT);
+			$query->bindValue(':offset', $preview_count, PDO::PARAM_INT);
+			$query->execute() or error(db_error($query));
+
+			return $query->fetch(PDO::FETCH_ASSOC);
+		}
+
+		/**
 		 * Intersperse random threads between those in bump order
 		 */
 		private function shuffleThreads($threads) {
@@ -138,27 +150,15 @@
 				$config['threads_preview'];
 			$replies = $this->fetchReplies($post['board'], $post['id'], $preview_count);
 
-			// Chomp the last few replies
 			$disp_replies   = $replies;
-			$disp_img_count = 0;
 			foreach ($disp_replies as $reply) {
-				if ($reply['files'] !== '')
-					++$disp_img_count;
-
 				// Append the reply to the thread as it's being built
 				$thread->add(new Post($reply, $mod ? '?/' : $config['root'], $mod));
 			}
 
-			// Count the number of omitted image replies
-			$omitted_img_count = count(array_filter($replies, function($p) {
-				return $p['files'] !== '';
-			}));
-
-			// Set the corresponding omitted numbers on the thread
-			if (!empty($replies)) {
-				$thread->omitted = count($replies);
-				$thread->omitted_images = $omitted_img_count;
-			}
+			$threadCount = $this->fetchThreadCount($post['board'], $post['id'], $preview_count);
+			$thread->omitted = $threadCount['post_count'];
+			$thread->omitted_images = $threadCount['file_count'];
 
 			// Board name and link
 			$html  = '<h2><a href="' . $config['root'] . $post['board'] . '/">/' .

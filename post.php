@@ -1374,7 +1374,7 @@ function handle_post(){
         query('INSERT INTO ``cites`` VALUES ' . implode(', ', $insert_rows)) or error(db_error());
     }
 
-    if (!$post['op'] && strtolower($post['email']) != 'sage' && !$thread['sage'] && ($config['reply_limit'] == 0 || $numposts['replies']+1 < $config['reply_limit'])) {
+    if (!$post['op'] && strtolower($post['email']) != 'sage' && !$thread['sage'] && ($config['reply_limit'] == 0 || $numposts['replies'] < $config['reply_limit'])) {
         bumpThread($post['thread']);
     }
 

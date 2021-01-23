@@ -2020,18 +2020,18 @@ function mod_edit_post($board, $edit_raw_html, $postID) {
         header('Location: ?/' . sprintf($config['board_path'], $board) . $config['dir']['res'] . link_for($post) . '#' . $postID, true, $config['redirect_http']);
     } else {
         // Remove modifiers
-        //$post['body_nomarkup'] = remove_modifiers($post['body_nomarkup']);
+        $post['body_nomarkup'] = remove_modifiers($post['body_nomarkup']);
 
-        //$post['body_nomarkup'] = utf8tohtml($post['body_nomarkup']);
-        //$post['body'] = utf8tohtml($post['body']);
-        /*if ($config['minify_html']) {
+        $post['body_nomarkup'] = utf8tohtml($post['body_nomarkup']);
+        $post['body'] = utf8tohtml($post['body']);
+        if ($config['minify_html']) {
             $post['body_nomarkup'] = str_replace("\n", '&#010;', $post['body_nomarkup']);
             $post['body'] = str_replace("\n", '&#010;', $post['body']);
             $post['body_nomarkup'] = str_replace("\r", '', $post['body_nomarkup']);
             $post['body'] = str_replace("\r", '', $post['body']);
             $post['body_nomarkup'] = str_replace("\t", '&#09;', $post['body_nomarkup']);
             $post['body'] = str_replace("\t", '&#09;', $post['body']);
-            }*/
+            }
 
         mod_page(_('Edit post'), 'mod/edit_post_form.html', array('token' => $security_token, 'board' => $board, 'raw' => $edit_raw_html, 'post' => $post));
     }
@@ -3219,7 +3219,7 @@ function mod_theme_uninstall($theme_name) {
 
     // Clean cache
     Cache::delete("themes");
-    Cache::delete("theme_settings_".$theme);
+    Cache::delete("theme_settings_".$theme_name);
 
     header('Location: ?/themes', true, $config['redirect_http']);
 }
