@@ -68,10 +68,18 @@ class Filter {
 					$flood_check_matched[] = $flood_post;
 				}
 				
+                // is there any reason for this assignment?
 				$this->flood_check = $flood_check_matched;
 				
 				return !empty($this->flood_check);
 			case 'flood-time':
+				foreach ($this->flood_check as $flood_post) {
+					if (time() - $flood_post['time'] <= $match) {
+						return true;
+					}
+				}
+				return false;
+			case 'flood-time-any':
 				foreach ($this->flood_check as $flood_post) {
 					if (time() - $flood_post['time'] <= $match) {
 						return true;
@@ -178,7 +186,9 @@ class Filter {
 			if ($condition[0] == '!') {
 				$NOT = true;
 				$condition = substr($condition, 1);
-			} else $NOT = false;
+            } else {
+                $NOT = false;
+            }
 			
 			if ($this->match($condition, $value) == $NOT)
 				return false;
@@ -216,12 +226,18 @@ function do_filters(array $post) {
 	
 	if (!isset($config['filters']) || empty($config['filters']))
 		return;
+
+    // look at the flood table regardless of IP
+    $noip = false;
 	
 	foreach ($config['filters'] as $filter) {
-		if (isset($filter['condition']['flood-match'])) {
+		if (isset($filter['condition']['flood-match']) && (!isset($filter['noip']) || $filter['noip'] == false)) {
 			$has_flood = true;
 			break;
-		}
+        } else if ($filter['noip'] == true) {
+            $noip = true;
+            $find_time = time() - $filter['find-time'];
+        }
 	}
 	
 	if (isset($has_flood)) {
@@ -235,6 +251,11 @@ function do_filters(array $post) {
 			$query->bindValue(':ip', $_SERVER['REMOTE_ADDR']);
 			$query->bindValue(':posthash', make_comment_hex($post['body_nomarkup']));
 		}
+		$query->execute() or error(db_error($query));
+		$flood_check = $query->fetchAll(PDO::FETCH_ASSOC);
+	} else if ($noip) {
+        print_err("SELECT * FROM flood WHERE time > " . strval($find_time));
+        $query = prepare("SELECT * FROM ``flood`` WHERE `time` > $find_time");
 		$query->execute() or error(db_error($query));
 		$flood_check = $query->fetchAll(PDO::FETCH_ASSOC);
 	} else {

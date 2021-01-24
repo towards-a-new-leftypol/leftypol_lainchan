@@ -340,6 +340,8 @@
 	 * Read more: http://tinyboard.org/docs/index.php?p=Config/Filters
 	 */
 
+	// Minimum time between between each post.
+	$config['flood_time_any'] = 40;
 	// Minimum time between between each post by the same IP address.
 	$config['flood_time'] = 10;
 	// Minimum time between between each post with the exact same content AND same IP address.
@@ -376,6 +378,17 @@
 		),
 		'action' => 'reject',
 		'message' => &$config['error']['flood']
+	);
+
+	$config['filters'][] = array(
+		'condition' => array(
+            'OP' => true,
+            'flood-time-any' => &$config['flood_time_any']
+		),
+        'noip' => true,
+        'find-time' => 60 * 60 * 1,
+		'action' => 'reject',
+		'message' => 'Hmmm'
 	);
 
 	// Example: Minimum time between posts with the same file hash.

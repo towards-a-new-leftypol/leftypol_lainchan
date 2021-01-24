@@ -96,9 +96,12 @@ $config['db']['password'] = '';
 $config['cookies']['mod'] = 'mod';
 $config['cookies']['salt'] = 'MGYwNjhlNjU5Y2QxNWU3YjQ3MzQ1Yj';
 
-$config['flood_time'] = 30;
-$config['flood_time_ip'] = 60;
-$config['flood_time_same'] = 60;
+
+$config['flood_cache'] = 60 * 60 * 1; // 1 hours
+$config['flood_time_any'] = 20; // in seconds
+$config['flood_time'] = 0;
+$config['flood_time_ip'] = 0;
+$config['flood_time_same'] = 0;
 $config['max_body'] = 100000;
 $config['reply_limit'] = 250;
 $config['max_links'] = 40;
