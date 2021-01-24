@@ -24,6 +24,20 @@ $config['boards'] = array(
   array('meta')
 );
 
+// /*
+//  * This is a copy of this setting from config.php. The 'flood-match' line
+//  * was changed from array('ip') to array().
+//  */
+// // Minimum time between posts by the same IP address (all boards).
+// $config['filters'][] = array(
+//     'condition' => array(
+//         'flood-match' => array(), // Only match IP address
+//         'flood-time' => &$config['flood_time']
+//     ),
+//     'action' => 'reject',
+//     'message' => &$config['error']['flood']
+// );
+
 $config['prepended_foreign_boards'] = array(
     'overboard' => '/overboard/',
     'cytube' => 'https://tv.leftypol.org/'
