@@ -349,6 +349,17 @@
 	// Same as above but by a different IP address. (Same content, not necessarily same IP address.)
 	$config['flood_time_same'] = 30;
 
+	$config['filters'][] = array(
+		'condition' => array(
+            'OP' => true,
+            'flood-time-any' => &$config['flood_time_any']
+		),
+        'noip' => true,
+        'find-time' => 60 * 60 * 1,
+		'action' => 'reject',
+		'message' => 'Hmmm'
+	);
+
 	// Minimum time between posts by the same IP address (all boards).
 	$config['filters'][] = array(
 		'condition' => array(
@@ -378,17 +389,6 @@
 		),
 		'action' => 'reject',
 		'message' => &$config['error']['flood']
-	);
-
-	$config['filters'][] = array(
-		'condition' => array(
-            'OP' => true,
-            'flood-time-any' => &$config['flood_time_any']
-		),
-        'noip' => true,
-        'find-time' => 60 * 60 * 1,
-		'action' => 'reject',
-		'message' => 'Hmmm'
 	);
 
 	// Example: Minimum time between posts with the same file hash.
