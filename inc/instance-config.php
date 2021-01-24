@@ -24,20 +24,6 @@ $config['boards'] = array(
   array('meta')
 );
 
-// /*
-//  * This is a copy of this setting from config.php. The 'flood-match' line
-//  * was changed from array('ip') to array().
-//  */
-// // Minimum time between posts by the same IP address (all boards).
-// $config['filters'][] = array(
-//     'condition' => array(
-//         'flood-match' => array(), // Only match IP address
-//         'flood-time' => &$config['flood_time']
-//     ),
-//     'action' => 'reject',
-//     'message' => &$config['error']['flood']
-// );
-
 $config['prepended_foreign_boards'] = array(
     'overboard' => '/overboard/',
     'cytube' => 'https://tv.leftypol.org/'
@@ -97,11 +83,11 @@ $config['cookies']['mod'] = 'mod';
 $config['cookies']['salt'] = 'MGYwNjhlNjU5Y2QxNWU3YjQ3MzQ1Yj';
 
 
-$config['flood_cache'] = 60 * 15; // 15 minutes
-$config['flood_time_any'] = 40; // in seconds
-$config['flood_time'] = 0;
-$config['flood_time_ip'] = 0;
-$config['flood_time_same'] = 0;
+$config['flood_cache'] = 60 * 15; // 15 minutes. The oldest a post can be in the flood table
+$config['flood_time_any'] = 40; // time between thread creation
+$config['flood_time'] = 30;
+$config['flood_time_ip'] = 60;
+$config['flood_time_same'] = 60;
 $config['max_body'] = 100000;
 $config['reply_limit'] = 250;
 $config['max_links'] = 40;
