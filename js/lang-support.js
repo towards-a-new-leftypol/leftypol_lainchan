@@ -1,7 +1,7 @@
 (function() {
 
-    /*
-     * UTILS
+    /**
+     * Util Functions
      * - this should go into a separate file but it won't right now
      */
 
@@ -49,9 +49,10 @@
     }
 
 
-    /*
+    /**
      * Internationalization implementation
      */
+
 
     var LANGUAGE_CODES = {
         en: 'English',
@@ -59,12 +60,6 @@
     }
 
     var FALLBACK_LANG_CODE = 'en';
-
-    /*
-     * Valid translation keys:
-     *  - leftypol_tagline
-     */
-
 
     /*
      * Loads the appopriate json file over the network and creates
@@ -78,7 +73,7 @@
             return;
         }
 
-        console.log('Changing the current language to:', LANGUAGE_CODES[langCode]);
+        console.log('Initializing', LANGUAGE_CODES[langCode], "language.");
         return get('/data/' + langCode + '.json')
             .then(JSON.parse.bind(this))
             .then(i18n.create.bind(this));
@@ -89,6 +84,9 @@
 
         document.querySelectorAll(".i18n_doable")
             .forEach(translateElement.bind(this, i18nFallback, i18n));
+
+        document.querySelectorAll(".i18n_not_doable")
+            .forEach(setTitleAttrToElem.bind(this, i18nFallback, i18n));
     }
 
 
@@ -96,18 +94,20 @@
      * Replaces the text content of element with the a translation, or a
      * fallback translation.
      */
-    function translateElement(i18nFallback, i18n, element) {
-        console.log("translate element: element", element);
+    var translateElement =
+        modifyElement.bind(this, (e, txt) => { e.textContent = txt });
 
+    var setTitleAttrToElem =
+        modifyElement.bind(this, (e, txt) => { e.title = txt });
+
+    function modifyElement(fmodify, i18nFallback, i18n, element) {
+        // For the canonical list of all possible translationKey values,
+        // see the file data/en.json
         var translationKey = element.dataset.i18nKey;
-        console.log("translation key:", translationKey);
-        var currentText = element.textContent;
-        console.log("current text:", translationKey);
-        element.textContent = i18n(translationKey, i18nFallback(translationKey));
+        fmodify(element, i18n(translationKey, i18nFallback(translationKey)));
     }
 
     function main() {
-        console.log("Hello World");
         Promise.all([initLang("en"), initLang("ru")])
             .then(translateElements);
     }

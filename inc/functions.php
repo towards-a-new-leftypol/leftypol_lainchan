@@ -1432,7 +1432,7 @@ function getPageButtons($pages, $mod=false) {
 						'<input type="hidden" name="status" value="301" />' .
 						'<input type="hidden" name="r" value="' . htmlentities($loc) . '" />'
 					:'') .
-				'<input type="submit" value="' . _('Previous') . '" /></form>';
+				'<input type="submit" class="i18n_not_doable" data-i18n-key="previous" value="' . _('Previous') . '" /></form>';
 			}
 
 			if ($num == count($pages) - 1) {
@@ -1446,7 +1446,7 @@ function getPageButtons($pages, $mod=false) {
 						'<input type="hidden" name="status" value="301" />' .
 						'<input type="hidden" name="r" value="' . htmlentities($loc) . '" />'
 					:'') .
-				'<input type="submit" value="' . _('Next') . '" /></form>';
+				'<input type="submit" class="i18n_not_doable" data-i18n-key="next" value="' . _('Next') . '" /></form>';
 			}
 		}
 	}

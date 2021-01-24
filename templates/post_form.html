@@ -13,11 +13,29 @@
 {% endif %}
 	<table>
 		{% if id %}<tr>
-			<td colspan="2"><div class="banner">{% trans %}Posting mode: Reply{% endtrans %} <a class="unimportant" href="{{ return }}">[{% trans %}Return{% endtrans %}]</a></div></td>
+			<td colspan="2">
+                <div class="banner">
+                    <span
+                        class="i18n_doable"
+                        data-i18n-key="posting_mode_reply"
+                        >{% trans %}Posting mode: Reply{% endtrans %}
+                    </span><a
+                        class="unimportant"
+                        href="{{ return }}">[<span
+                            class="i18n_doable"
+                            data-i18n-key="return"
+                            >{% trans %}Return{% endtrans %}</span>]</a>
+                </div>
+            </td>
 		</tr>{% endif %}
 		{% if not config.field_disable_name or (mod and post.mod|hasPermission(config.mod.bypass_field_disable, board.uri)) %}<tr>
 			<th>
-				{% trans %}Name{% endtrans %}
+				<span
+                    class="i18n_doable"
+                    data-i18n-key="name"
+                    >
+                    {% trans %}Name{% endtrans %}
+                </span>
 				{{ antibot.html() }}
 			</th>
 			<td>
@@ -27,7 +45,12 @@
 		</tr>{% endif %}
 		{% if not config.field_disable_email or (mod and post.mod|hasPermission(config.mod.bypass_field_disable, board.uri)) %}<tr>
 			<th>
-				{% trans %}Email{% endtrans %}
+				<span
+                    class="i18n_doable"
+                    data-i18n-key="email"
+                    >
+                    {% trans %}Email{% endtrans %}
+				</span>
 				{{ antibot.html() }}
 			</th>
 			<td>
@@ -49,13 +72,37 @@
 		</tr>{% endif %}
 		{% if not (config.field_disable_subject or (id and config.field_disable_reply_subject)) or (mod and post.mod|hasPermission(config.mod.bypass_field_disable, board.uri)) %}<tr>
 			<th>
-				{% trans %}Subject{% endtrans %}
+				<span
+                    class="i18n_doable"
+                    data-i18n-key="subject"
+                    >
+				    {% trans %}Subject{% endtrans %}
+				</span>
 				{{ antibot.html() }}
 			</th>
 			<td>
-				<input style="float:left;" type="text" name="subject" size="25" maxlength="100" autocomplete="off">
-				<input accesskey="s" style="margin-left:2px;" type="submit" name="post" value="{% if id %}{{ config.button_reply }}{% else %}{{ config.button_newtopic }}{% endif %}" />
-				<input id="spoiler" name="spoiler" type="checkbox"><label for="spoiler">Spoiler Image</label>
+				<input
+                    style="float:left;"
+                    type="text"
+                    name="subject"
+                    size="25"
+                    maxlength="100"
+                    autocomplete="off">
+				<input
+                    accesskey="s"
+                    style="margin-left:2px;"
+                    type="submit"
+                    name="post"
+                    class="i18n_not_doable"
+                    data-i18n-key="{% if id %}new_reply{% else %}new_topic{% endif %}"
+                    value="{% if id %}{{ config.button_reply }}{% else %}{{ config.button_newtopic }}{% endif %}"
+                    /><!-- This field cannot be translated by javascript because backend will look at the value here for its logic. This is a bug. -->
+				<input id="spoiler" name="spoiler" type="checkbox">
+                <label
+                    for="spoiler"
+                    class="i18n_doable"
+                    data-i18n-key="spoiler_image"
+                    >Spoiler Image</label>
 			</td>
 		</tr>
 		{% endif %}
@@ -70,7 +117,12 @@
 		{% endif %}
 		{% if not config.field_disable_comment or (mod and post.mod|hasPermission(config.mod.bypass_field_disable, board.uri)) %}<tr>
 			<th>
-				{% trans %}Comment{% endtrans %}
+				<span
+                    class="i18n_doable"
+                    data-i18n-key="comment"
+                    >
+				    {% trans %}Comment{% endtrans %}
+				</span>
 				{{ antibot.html() }}
 			</th>
 			<td>
@@ -98,12 +150,23 @@
 		{% endif %}
 		{% if config.user_flag %}
 			<tr>
-				<th>{% trans %}Flag{% endtrans %}</th>
+				<th
+                    class="i18n_doable"
+                    data-i18n-key="flag"
+                    >
+                    {% trans %}Flag{% endtrans %}
+                </th>
 				<td>
 					<select name="user_flag" id="user_flag">
-						<option value="">{% trans %}None{% endtrans %}</option>
+						<option
+                            value=""
+                            class="i18n_doable"
+                            data-i18n-key="none">{% trans %}None{% endtrans %}</option>
 						{% for flag, text in config.user_flags %}
-							<option value="{{ flag }}">{{ text }}</option>
+							<option
+                                value="{{ flag }}"
+                                class="i18n_doable"
+                                data-i18n-key="{{ flag }}">{{ text }}</option>
 						{% endfor %}
 					</select>
 				</td>
@@ -123,7 +186,12 @@
 		{% endif %}
 		<tr id="upload">
 			<th>
-				{% trans %}File{% endtrans %}
+				<span
+                    class="i18n_doable"
+                    data-i18n-key="file"
+                    >
+				    {% trans %}File{% endtrans %}
+				</span>
 			</th>
 			<td>
 				<input type="file" name="file" id="upload_file">
@@ -145,7 +213,12 @@
 		{% if config.enable_embedding %}
 		<tr id="upload_embed">
 			<th>
-				{% trans %}Embed{% endtrans %}
+				<span
+                    class="i18n_doable"
+                    data-i18n-key="embed"
+                    >
+				    {% trans %}Embed{% endtrans %}
+				</span>
 				{{ antibot.html() }}
 			</th>
 			<td>
@@ -176,7 +249,12 @@
 		{% endif %}
 		{% if not config.field_disable_password or (mod and post.mod|hasPermission(config.mod.bypass_field_disable, board.uri)) %}<tr>
 			<th>
-				{% trans %}Password{% endtrans %}
+				<span
+                    class="i18n_doable"
+                    data-i18n-key="password"
+                    >
+				    {% trans %}Password{% endtrans %}
+				</span>
 				{{ antibot.html() }}
 			</th>
 			<td>
