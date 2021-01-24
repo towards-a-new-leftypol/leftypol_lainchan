@@ -72,14 +72,14 @@ class Filter {
 				$this->flood_check = $flood_check_matched;
 				
 				return !empty($this->flood_check);
-			case 'flood-time':
+			case 'flood-time-any':
 				foreach ($this->flood_check as $flood_post) {
 					if (time() - $flood_post['time'] <= $match) {
 						return true;
 					}
 				}
 				return false;
-			case 'flood-time-any':
+			case 'flood-time':
 				foreach ($this->flood_check as $flood_post) {
 					if (time() - $flood_post['time'] <= $match) {
 						return true;
@@ -240,7 +240,12 @@ function do_filters(array $post) {
         }
 	}
 	
-	if (isset($has_flood)) {
+    if ($noip) {
+        print_err("SELECT * FROM flood WHERE time > " . strval($find_time));
+        $query = prepare("SELECT * FROM ``flood`` WHERE `time` > $find_time");
+		$query->execute() or error(db_error($query));
+		$flood_check = $query->fetchAll(PDO::FETCH_ASSOC);
+    } else if (isset($has_flood)) {
 		if ($post['has_file']) {
 			$query = prepare("SELECT * FROM ``flood`` WHERE `ip` = :ip OR `posthash` = :posthash OR `filehash` = :filehash");
 			$query->bindValue(':ip', $_SERVER['REMOTE_ADDR']);
@@ -251,11 +256,6 @@ function do_filters(array $post) {
 			$query->bindValue(':ip', $_SERVER['REMOTE_ADDR']);
 			$query->bindValue(':posthash', make_comment_hex($post['body_nomarkup']));
 		}
-		$query->execute() or error(db_error($query));
-		$flood_check = $query->fetchAll(PDO::FETCH_ASSOC);
-	} else if ($noip) {
-        print_err("SELECT * FROM flood WHERE time > " . strval($find_time));
-        $query = prepare("SELECT * FROM ``flood`` WHERE `time` > $find_time");
 		$query->execute() or error(db_error($query));
 		$flood_check = $query->fetchAll(PDO::FETCH_ASSOC);
 	} else {
