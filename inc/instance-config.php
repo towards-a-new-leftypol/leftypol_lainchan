@@ -97,8 +97,8 @@ $config['cookies']['mod'] = 'mod';
 $config['cookies']['salt'] = 'MGYwNjhlNjU5Y2QxNWU3YjQ3MzQ1Yj';
 
 
-$config['flood_cache'] = 60 * 60 * 1; // 1 hours
-$config['flood_time_any'] = 20; // in seconds
+$config['flood_cache'] = 60 * 15; // 15 minutes
+$config['flood_time_any'] = 40; // in seconds
 $config['flood_time'] = 0;
 $config['flood_time_ip'] = 0;
 $config['flood_time_same'] = 0;
