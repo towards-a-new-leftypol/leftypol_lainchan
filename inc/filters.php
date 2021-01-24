@@ -19,6 +19,7 @@ class Filter {
 	}
 	
 	public function match($condition, $match) {
+        print_err("Filter condition: " . $condition);
 		$condition = strtolower($condition);
 
 		$post = &$this->post;
@@ -75,6 +76,7 @@ class Filter {
 			case 'flood-time-any':
 				foreach ($this->flood_check as $flood_post) {
 					if (time() - $flood_post['time'] <= $match) {
+                        print_err("rejecting post with flood id: " . $flood_post['id']);
 						return true;
 					}
 				}
@@ -235,6 +237,7 @@ function do_filters(array $post) {
 			$has_flood = true;
 			break;
         } else if ($filter['noip'] == true) {
+            print_err("filters noip is true");
             $noip = true;
             $find_time = time() - $filter['find-time'];
         }
@@ -263,10 +266,12 @@ function do_filters(array $post) {
 	}
 	
 	foreach ($config['filters'] as $filter_array) {
+        print_err("creating new filter, running check");
 		$filter = new Filter($filter_array);
 		$filter->flood_check = $flood_check;
-		if ($filter->check($post))
+		if ($filter->check($post)) {
 			$filter->action();
+        }
 	}
 	
 	purge_flood_table();
