@@ -36,7 +36,7 @@ onready(function(){
 				'?autoplay=1&html5=1" allowfullscreen frameborder="0"/>')
 		span.click(function() {
 			if (span.text() == ON){
-				videoNode.remove("iframe");
+				embedNode.remove();
 				span.text(OFF);
 			} else{
 				videoNode.append(embedNode);
