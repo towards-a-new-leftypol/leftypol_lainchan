@@ -40,7 +40,7 @@ onready(function(){
 				span.text(OFF);
 			} else{
 				videoNode.append(embedNode);
-				span.innerHTML = ON;
+				span.text(ON);
 			}
 		});
 
