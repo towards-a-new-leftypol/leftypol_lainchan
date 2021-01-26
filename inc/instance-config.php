@@ -346,7 +346,6 @@ $config['enable_embedding'] = true;
 
 $config['youtube_js_html'] = '<div class="video-container" data-video="$2">'.
 '<a href="https://youtu.be/$2" target="_blank" class="file">'.
-'<img style="width:255px;height:190px;" src="//img.youtube.com/vi/$2/0.jpg" class="post-image"/>'.
 '</a></div>';
 
 $config['embedding'] = array();
