@@ -358,7 +358,7 @@
         'noip' => true,
         'find-time' => 60 * 60 * 1,
         'action' => 'reject',
-        'message' => 'Hmmm'
+        'message' => 'New threads are being created too quickly. Hmmm'
     );
 
     // Minimum time between posts by the same IP address (all boards).
