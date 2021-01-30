@@ -60,8 +60,24 @@
 	{% if config.global_message %}<hr /><div class="blotter">{{ config.global_message }}</div>{% endif %}
 	<hr />
 	<div class="threadlinks-noup">
-		<span class="threadlink">[ <a href="{{ return }}">{% trans %}Return{% endtrans %}</a> /</span>
-		<span class="threadlink"><a href="#bottom" style="padding-left: 10px"> {% trans %}Go to bottom{% endtrans %}</a> ]</span>
+        <span
+            class="threadlink"
+            >
+             [ 
+             <a
+                 class="i18n_doable"
+                 data-i18n-key="return"
+                 href="{{ return }}"
+                >
+                 {% trans %}Return{% endtrans %} 
+             </a>
+                  /
+        </span>
+		<span
+            class="threadlink i18n_doable"
+            data-i18n-key="go_to_bottom"
+            ><a href="#bottom" style="padding-left: 10px"> {% trans %}Go to bottom{% endtrans %}</a> ]
+        </span>
 	</div>
 	<hr />
 	<form name="postcontrols" action="{{ config.post_url }}" method="post">
@@ -73,7 +89,12 @@
 		<div id="thread-interactions">
 			<span id="thread-links">
 				<a id="thread-return" href="{{ return }}">[{% trans %}Return{% endtrans %}]</a>
-				<a id="thread-top" href="#top">[{% trans %}Go to top{% endtrans %}]</a>
+				<a
+                    id="thread-top"
+                    class="i18n_doable"
+                    data-i18n-key="go_to_top"
+                    href="#top">[{% trans %}Go to top{% endtrans %}]
+                </a>
                 		{% if config.catalog_link %}
 					<a id="thread-catalog" href="{{ config.root }}{{ board.dir }}{{ config.catalog_link }}">[{% trans %}Catalog{% endtrans %}]</a>
 		                {% endif %}
