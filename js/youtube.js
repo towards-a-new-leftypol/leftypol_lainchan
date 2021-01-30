@@ -25,32 +25,21 @@
 
 onready(function(){
 	var do_embed_yt = function(tag) {
-		const ON = "[Remove]";
-		const OFF = "[Embed]";
+		$('div.video-container a', tag).click(function() {
+			var videoID = $(this.parentNode).data('video');
+		
+			$(this.parentNode).html('<iframe style="float:left;margin: 10px 20px" type="text/html" '+
+				'width="360" height="270" src="//www.youtube.com/embed/' + videoID +
+				'?autoplay=1&html5=1" allowfullscreen frameborder="0"/>');
 
-		var videoNode = $('div.video-container', tag);
-		var videoId = videoNode.data('video');
-		var span = $("<span>[Embed]</span>");
-		var embedNode = $('<iframe style="float:left;margin: 10px 20px" type="text/html" '+
-				'width="360" height="270" src="//www.youtube.com/embed/' + videoId +
-				'?autoplay=1&html5=1" allowfullscreen frameborder="0"/>')
-		span.click(function() {
-			if (span.text() == ON){
-				embedNode.remove();
-				span.text(OFF);
-			} else{
-				videoNode.append(embedNode);
-				span.text(ON);
-			}
+			return false;
 		});
-
-		videoNode.append(span);
 	};
 	do_embed_yt(document);
 
-	// allow to work with auto-reload.js, etc.
-	$(document).on('new_post', function(e, post) {
-			do_embed_yt(post);
-	});
+        // allow to work with auto-reload.js, etc.
+        $(document).on('new_post', function(e, post) {
+                do_embed_yt(post);
+        });
 });
 
