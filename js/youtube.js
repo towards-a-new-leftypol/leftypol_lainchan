@@ -28,6 +28,7 @@ onready(function(){
 	const OFF = "[Embed]";
 
 	function addEmbedButton(index, videoNode) {
+		videoNode = $(videoNode);
 		var videoId = videoNode.data('video');
 		var span = $("<span>[Embed]</span>");
 		var embedNode = $('<iframe style="float:left;margin: 10px 20px" type="text/html" '+
