@@ -1,12 +1,12 @@
 <?php
 	require 'info.php';
-	
+
 	function categories_build($action, $settings, $board) {
 		// Possible values for $action:
 		//	- all (rebuild everything, initialization)
 		//	- news (news has been updated)
 		//	- boards (board list changed)
-		
+
 		Categories::build($action, $settings);
 	}
 
@@ -15,21 +15,28 @@
 		public static function build($action, $settings) {
 			global $config;
 			
-			if ($action == 'all')
+			if ($action == 'all' ||
+				$action == 'boards' ||
+				$action == 'news' ||
+				$action == 'post' ||
+				$action == 'post-thread' ||
+	 			$action == 'post-delete'){
 				file_write($config['dir']['home'] . $settings['file_main'], Categories::homepage($settings));
-			
-			if ($action == 'all' || $action == 'boards')
-				file_write($config['dir']['home'] . $settings['file_sidebar'], Categories::sidebar($settings));
-			
-			if ($action == 'all' || $action == 'news')
 				file_write($config['dir']['home'] . $settings['file_news'], Categories::news($settings));
+			}
+
+			if ($action == 'all'){
+				file_write($config['dir']['home'] . $settings['file_sidebar'], Categories::sidebar($settings));
+			}
 		}
-		
+
+
 		// Build homepage
 		public static function homepage($settings) {
 			global $config;
 			$query = query("SELECT * FROM ``news`` ORDER BY `time` DESC") or error(db_error());
 			$news = $query->fetchAll(PDO::FETCH_ASSOC);
+			$stats = Categories::getPostStatistics($settings);
 			return Element(
 				'themes/categories/frames.html',
 				Array(
@@ -37,31 +44,33 @@
 					'settings' => $settings,
 					'categories' => Categories::getCategories($config),
 					'news' => $news,
+					'stats' => $stats,
 					'boardlist' => createBoardlist(false)
 
 				)
 			);
 		}
-		
+
 		// Build news page
 		public static function news($settings) {
 			global $config;
-			
+
 			$query = query("SELECT * FROM ``news`` ORDER BY `time` DESC") or error(db_error());
 			$news = $query->fetchAll(PDO::FETCH_ASSOC);
-			
+			$stats = Categories::getPostStatistics($settings);
 			return Element('themes/categories/news.html', Array(
 				'settings' => $settings,
 				'config' => $config,
 				'news' => $news,
+				'stats' => $stats,
 				'boardlist' => createBoardlist(false)
 			));
 		}
-		
+
 		// Build sidebar
 		public static function sidebar($settings) {
 			global $config, $board;
-			
+
 			return Element('themes/categories/sidebar.html', Array(
 				'settings' => $settings,
 				'config' => $config,
@@ -71,7 +80,7 @@
 
 		private static function getCategories($config) {
 			$categories = $config['categories'];
-			
+
 			foreach ($categories as &$boards) {
 				foreach ($boards as &$board) {
 					$title = boardTitle($board);
@@ -83,6 +92,57 @@
 
 			return $categories;
 		}
+
+        private static function getPostStatistics($settings) {
+        	global $config;
+
+        	if (!isset($config['boards'])) {
+        		return null;
+        	}
+
+        	$stats = [];
+        	$unique = [];
+
+            foreach (array_merge(... $config['boards']) as $uri) {
+            	$_board = getBoardInfo($uri);
+            	if (!$_board) {
+            		// board doesn't exist. 
+            		continue;
+            	}
+
+            	$boardStat['title'] = $_board['title'];
+
+                $pph_query = query(
+                    sprintf("SELECT COUNT(*) AS count FROM ``posts_%s`` WHERE time > %d",
+                            $_board['uri'],
+                            time()-3600)
+                ) or error(db_error());
+
+                $boardStat['pph'] = $pph_query->fetch()['count'];
+
+                $unique_query = query(
+                    sprintf("SELECT DISTINCT ip FROM ``posts_%s`` WHERE time > %d",
+                            $_board['uri'],
+                            time()-3600)
+                ) or error(db_error());
+
+                $unique_ips = $unique_query->fetchAll();
+                $boardStat['recent_ips'] = count($unique_ips);
+
+                foreach ($unique_ips as $_k => $row) {
+                    $unique[$row['ip']] = true;
+                }
+
+                $stats['boards'][] = $boardStat;
+            }
+
+            $stats['recent_ips'] = count($unique);
+            $stats['pph'] = array_sum(array_column($stats['boards'], 'pph'));
+
+            return $stats;
+        }
+
+
 	};
-	
+
 ?>

@@ -24,12 +24,53 @@
 			{% endfor %}
 		{% endif %}
 	</div>
-		
+		{% if stats %}
+			<div class="ban" style="border: none; background: none;">
+				<h1 id="post-statistics">
+				{% trans "Post Statistics" %}
+				</h1>
+			</div>
+			<table class="modlog" style="width: 50%; text-align: left;">
+				<thead>
+					<tr>
+						<th>{% trans "Board" %}</th>
+						<th>{% trans "PPH" %}</th>
+						<th>{% trans "Recent IPs" %}</th>
+					</tr>
+					</thead>
+				<tbody>
+					<tr>
+						<td class="minimal">
+							<span>{% trans "Total" %}</span>
+						</td>
+						<td class="minimal">
+							<span>{{ stats.pph }}</span>
+						</td>
+						<td class="minimal">
+							<span>{{ stats.recent_ips }}</span>
+						</td>
+					</tr>
+					{% for boardStat in stats.boards %}
+						<tr>
+							<td class="minimal">
+								<span>{{ boardStat.title }}</span>
+							</td>
+							<td class="minimal">
+								<span>{{ boardStat.pph }}</span>
+							</td>
+							<td class="minimal">
+								<span>{{ boardStat.recent_ips }}</span>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
 	<footer>
-	        <p class="unimportant" style="margin-top:20px;text-align:center;">- Tinyboard + 
-	                <a href="https://engine.vichan.net/">vichan</a> {{ config.version }} -
-	        <br>Tinyboard Copyright &copy; 2010-2014 Tinyboard Development Group    
-	        <br><a href="https://engine.vichan.net/">vichan</a> Copyright &copy; 2012-2016 vichan-devel
+			<p class="unimportant" style="margin-top:20px;text-align:center;">- Tinyboard +
+					<a href="https://engine.vichan.net/">vichan</a> {{ config.version }} -
+			<br>Tinyboard Copyright &copy; 2010-2014 Tinyboard Development Group
+			<br><a href="https://engine.vichan.net/">vichan</a> Copyright &copy; 2012-2016 vichan-devel
 		<br><br>
 		<br><b>Leftypol.org is not currently under investigation by any Federal, State, or Local Authorities.</b></p>
 	</footer>
