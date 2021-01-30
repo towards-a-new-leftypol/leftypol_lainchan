@@ -24,16 +24,15 @@
 
 
 onready(function(){
-	var do_embed_yt = function(tag) {
-		const ON = "[Remove]";
-		const OFF = "[Embed]";
+	const ON = "[Remove]";
+	const OFF = "[Embed]";
 
-		var videoNode = $('div.video-container', tag);
+	function addEmbedButton(index, videoNode) {
 		var videoId = videoNode.data('video');
 		var span = $("<span>[Embed]</span>");
 		var embedNode = $('<iframe style="float:left;margin: 10px 20px" type="text/html" '+
 				'width="360" height="270" src="//www.youtube.com/embed/' + videoId +
-				'?autoplay=1&html5=1" allowfullscreen frameborder="0"/>')
+				'?autoplay=1&html5=1" allowfullscreen frameborder="0"/>');
 		span.click(function() {
 			if (span.text() == ON){
 				embedNode.remove();
@@ -45,12 +44,14 @@ onready(function(){
 		});
 
 		videoNode.append(span);
-	};
-	do_embed_yt(document);
+	}
+
+	$('div.video-container', document).each(addEmbedButton);
+	
 
 	// allow to work with auto-reload.js, etc.
 	$(document).on('new_post', function(e, post) {
-			do_embed_yt(post);
+			$('div.video-container', post).each(addEmbedButton);
 	});
 });
 
