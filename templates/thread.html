@@ -73,10 +73,16 @@
              </a>
                   /
         </span>
-        <span
-            class="threadlink i18n_doable"
-            data-i18n-key="go_to_bottom"
-            ><a href="#bottom" style="padding-left: 10px"> {% trans %}Go to bottom{% endtrans %}</a> ]
+        <span>
+            <a
+                href="#bottom"
+                class="threadlink i18n_doable"
+                data-i18n-key="go_to_bottom"
+                style="padding-left: 10px"
+                >
+                {% trans %}Go to bottom{% endtrans %}
+            </a>
+                ]
         </span>
     </div>
     <hr />
@@ -88,16 +94,38 @@
         
         <div id="thread-interactions">
             <span id="thread-links">
-                <a id="thread-return" href="{{ return }}">[{% trans %}Return{% endtrans %}]</a>
+                [
+                <a
+                    id="thread-return"
+                    class="i18n_doable"
+                    data-i18n-key="return"
+                    href="{{ return }}"
+                    >
+                    {% trans %}Return{% endtrans %}
+                </a>
+                    ]
+                    [
                 <a
                     id="thread-top"
                     class="i18n_doable"
                     data-i18n-key="go_to_top"
-                    href="#top">[{% trans %}Go to top{% endtrans %}]
+                    href="#"
+                    >
+                    {% trans %}Go to top{% endtrans %}
                 </a>
-                        {% if config.catalog_link %}
-                    <a id="thread-catalog" href="{{ config.root }}{{ board.dir }}{{ config.catalog_link }}">[{% trans %}Catalog{% endtrans %}]</a>
-                        {% endif %}
+                    ]
+                {% if config.catalog_link %}
+                [
+                <a
+                    id="thread-catalog"
+                    class="i18n_doable"
+                    data-i18n-key="catalog"
+                    href="{{ config.root }}{{ board.dir }}{{ config.catalog_link }}"
+                    >
+                    {% trans %}Catalog{% endtrans %}
+                </a>
+                    ]
+                {% endif %}
                 {% if config.home_link %}
                 |  <a id="thread-home" href="{{ config.root }}">[{% trans %}Home{% endtrans %}]</a>
                 {% endif %}
@@ -130,8 +158,22 @@
         </div>
     <div class="bar bottom">
         <div class="threadlinks">
-            <span class="threadlink">[ <a href="{{ return }}">{% trans %}Return{% endtrans %}</a> /</span>
-                <span class="threadlink"><a href="#" style="padding-left: 10px"> {% trans %}Go to top{% endtrans %}</a> /</span>
+            <span class="threadlink">[ <a
+                    href="{{ return }}"
+                    class="i18n_doable"
+                    data-i18n-key="return"
+                    >{% trans %}Return{% endtrans %}</a> /</span>
+                <span class="threadlink">
+                    <a
+                        href="#"
+                        class="i18n_doable"
+                        data-i18n-key="go_to_top"
+                        style="padding-left: 10px"
+                        >
+                        {% trans %}Go to top{% endtrans %}
+                    </a>
+                         /
+                </span>
         </div>
         <div class=pages></div>
     </div>
