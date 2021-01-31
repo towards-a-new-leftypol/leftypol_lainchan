@@ -50,7 +50,7 @@
             elseif ($action == 'rebuild') {
                 print_err("catalog_build calling Catalog.build 2");
                 $b->build($settings, $board);
-                if($settings['has_overboard']) {
+                if(isset($settings['has_overboard']) && $settings['has_overboard']) {
                     $b->buildOverboardCatalog($settings, $boards);
                 }
             }
