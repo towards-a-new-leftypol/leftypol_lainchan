@@ -127,7 +127,14 @@
                     ]
                 {% endif %}
                 {% if config.home_link %}
-                |  <a id="thread-home" href="{{ config.root }}">[{% trans %}Home{% endtrans %}]</a>
+                |  <a id="thread-home" href="{{ config.root }}">
+                    [<span
+                         class="i18n_doable"
+                         data-i18n-key="home_link"
+                         >
+                         {% trans %}Home{% endtrans %}
+                    </span>]
+                </a>
                 {% endif %}
             </span>
             

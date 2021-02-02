@@ -1,0 +1,34 @@
+{
+    "values": {
+        "/leftypol/_tagline": "Левых Политически Некорректное",
+        "/leftypol/_subtitle": "Левых Политически Некорректное",
+        "catalog_link": "Каталог",
+        "home_link": "Домой",
+        "posting_mode_reply": "Posting mode: Reply",
+        "return": "Обратно",
+        "name": "Имя",
+        "email": "Email",
+        "subject": "Тема",
+        "comment": "Коммент",
+        "flag": "Флажок",
+        "none": "Ничто",
+        "file": "Файл",
+        "new_reply": "Новый Ответ",
+        "new_topic": "Новая Тема",
+        "embed": "Ввести",
+        "password": "Пароль",
+        "previous": "Предыдущая",
+        "next": "Следующая",
+        "go_to_bottom": "Вниз",
+        "go_to_top": "Наверх",
+        "catalog": "Каталог",
+        "reply": "Ответить",
+        "delete_post": "Удалить Сообщение",
+        "file_only": "Только Файл",
+        "password": "Пароль",
+        "reason": "Причина",
+        "report": "Настучать",
+        "delete": "Удалить"
+
+    }
+}

@@ -36,7 +36,13 @@
 <td>{% include 'post/time.html' %}
 <td>{{ post.omitted }}
 <td>{% include 'post/post_controls.html' %}
-    <a href="{{ post.root }}{{ board.dir }}{{ config.dir.res }}{{ link_for(post) }}">[{% trans %}Reply{% endtrans %}]</a>
+    <a
+        href="{{ post.root }}{{ board.dir }}{{ config.dir.res }}{{ link_for(post) }}"
+        class="i18n_doable"
+        data-i18n-key="reply"
+        >[<span
+            >{% trans %}Reply{% endtrans %}</span>]
+    </a>
 
 </tr>
 {% endfilter %}

@@ -10,6 +10,8 @@
 /vendor/*
 /vendor
 
+!/data/*json
+
 # include some files though
 !/templates/*.html
 !/inc/config.php

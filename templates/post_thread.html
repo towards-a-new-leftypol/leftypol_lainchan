@@ -46,7 +46,14 @@
 		{% endif %}
 	{% endif %}
 	{% if index %}
-		<a href="{{ post.root }}{{ board.dir }}{{ config.dir.res }}{{ link_for(post) }}">[{% trans %}Reply{% endtrans %}]</a>
+		<a
+            href="{{ post.root }}{{ board.dir }}{{ config.dir.res }}{{ link_for(post) }}"
+            >
+            [<span
+                class="i18n_doable"
+                data-i18n-key="reply"
+                >{% trans %}Reply{% endtrans %}</span>]
+        </a>
 	{% endif %}
 	{% if isnoko50 %}
 		<a href="{{ post.root }}{{ board.dir }}{{ config.dir.res }}{{ link_for(post) }}">[{% trans %}View All{% endtrans %}]</a>
