@@ -283,6 +283,9 @@ $config['stylesheets']['Dark Red'] = 'dark_red.css';
 $config['always_noko'] = true;
 $config['spoiler_images'] = true;
 
+//Changes made by Coma
+$config['markup_code'] = ("/\[code\](.*?)\[\/code\]/is");
+
 //more themes (issue#26)
 $config['stylesheets']['Burichan'] = 'burichan.css';
 $config['stylesheets']['Futaba'] = 'futaba.css';
