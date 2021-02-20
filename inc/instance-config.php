@@ -143,9 +143,9 @@ $config['allowed_ext'][] = 'mp4';
 $config['allowed_ext'][] = 'webm';
 $config['allowed_ext_files'][] = 'webm';
 $config['webm']['use_ffmpeg'] = true;
-$config['max_filesize'] = 50 * 1024 * 1024; // 50MB
+$config['max_filesize'] = 80 * 1024 * 1024; // 50MB
 $config['webm']['allow_audio'] = true;
-$config['webm']['max_length'] = 1000;
+$config['webm']['max_length'] = 7200;
 
 $config['pdf_file_thumbnail'] = true;
 $config['djvu_file_thumbnail'] = true;
@@ -283,9 +283,6 @@ $config['stylesheets']['Dark Red'] = 'dark_red.css';
 $config['always_noko'] = true;
 $config['spoiler_images'] = true;
 
-//Changes made by Coma
-$config['markup_code'] = ("/\[code\](.*?)\[\/code\]/is");
-
 //more themes (issue#26)
 $config['stylesheets']['Burichan'] = 'burichan.css';
 $config['stylesheets']['Futaba'] = 'futaba.css';
@@ -370,3 +367,7 @@ $config['additional_javascript'][] = 'js/youtube.js';
 $config['markup'][] = array("/^\s*&lt;.*$/m", '<span class="orangeQuote">$0</span>');
 $config['markup'][] = array("/__(.+?)__/", "<span class=\"underline\">\$1</span>");
 $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</span>");
+
+// Changes made via web editor by "zul_admin" @ Fri, 19 Feb 2021 15:06:33 -0800:
+$config['reply_limit'] = 800;
+
