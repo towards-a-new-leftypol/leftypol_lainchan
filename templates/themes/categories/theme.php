@@ -102,10 +102,11 @@
 
         	$HOUR = 3600;
         	$DAY = $HOUR * 24;
+        	$BIDAY = $DAY * 2;
         	$TRIDAY = $DAY * 3;
 
         	$stats = [];
-        	$unique = [];
+        	$hourly = [];
         	$daily = [];
         	$tridaily = [];
 
@@ -118,9 +119,10 @@
 
             	$boardStat['title'] = $_board['title'];
 
-            	$boardStat['hourly_ips'] = Categories::countUniqueIps($unique, $HOUR, $_board);
-            	$boardStat['daily_ips'] = Categories::countUniqueIps($unique, $DAY, $_board);
-            	$boardStat['tridaily_ips'] = Categories::countUniqueIps($unique, $TRIDAY, $_board);
+            	$boardStat['hourly_ips'] = Categories::countUniqueIps($hourly, $HOUR, $_board);
+            	$boardStat['daily_ips'] = Categories::countUniqueIps($daily, $DAY, $_board);
+            	$boardStat['bidaily_ips'] = Categories::countUniqueIps($bidaily, $BIDAY, $_board);
+            	$boardStat['tridaily_ips'] = Categories::countUniqueIps($tridaily, $TRIDAY, $_board);
 
                 $pph_query = query(
                     sprintf("SELECT COUNT(*) AS count FROM ``posts_%s`` WHERE time > %d",
@@ -133,9 +135,10 @@
                 $stats['boards'][] = $boardStat;
             }
 
-            $stats['hourly_ips'] = count($unique);
-            $stats['daily_ips'] = count($unique);
-            $stats['tridaily_ips'] = count($unique);
+            $stats['hourly_ips'] = count($hourly);
+            $stats['daily_ips'] = count($daily);
+            $stats['bidaily_ips'] = count($bidaily);
+            $stats['tridaily_ips'] = count($tridaily);
             $stats['pph'] = array_sum(array_column($stats['boards'], 'pph'));
 
             return $stats;

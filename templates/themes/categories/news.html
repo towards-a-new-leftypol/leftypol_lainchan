@@ -37,8 +37,9 @@
 						<th>{% trans "Board" %}</th>
 						<th>{% trans "PPH" %}</th>
 						<th>{% trans "IPs last hour" %}</th>
-						<th>{% trans "IPs last 24 hours (lynxchan-style)" %}</th>
-						<th>{% trans "IPs last 72 hours (8ch-style)" %}</th>
+						<th>{% trans "IPs last 24 hours <br> (lynxchan-style)" %}</th>
+						<th>{% trans "IPs last 48 hours" %}</th>
+						<th>{% trans "IPs last 72 hours <br>(8ch-style)" %}</th>
 					</tr>
 					</thead>
 				<tbody>
@@ -50,10 +51,13 @@
 							<span>{{ stats.pph }}</span>
 						</td>
 						<td class="minimal">
-							<span>{{ stats.recent_ips }}</span>
+							<span>{{ stats.hourly_ips }}</span>
 						</td>
 						<td class="minimal">
 							<span>{{ stats.daily_ips }}</span>
+						</td>
+						<td class="minimal">
+							<span>{{ stats.bidaily_ips }}</span>
 						</td>
 						<td class="minimal">
 							<span>{{ stats.tridaily_ips }}</span>
@@ -68,10 +72,13 @@
 								<span>{{ boardStat.pph }}</span>
 							</td>
 							<td class="minimal">
-								<span>{{ boardStat.recent_ips }}</span>
+								<span>{{ boardStat.hourly_ips }}</span>
 							</td>
 							<td class="minimal">
 								<span>{{ board.daily_ips }}</span>
+							</td>
+							<td class="minimal">
+								<span>{{ board.bidaily_ips }}</span>
 							</td>
 							<td class="minimal">
 								<span>{{ board.tridaily_ips }}</span>
