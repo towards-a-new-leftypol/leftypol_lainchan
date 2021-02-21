@@ -152,7 +152,7 @@
                 $markAsCounted[$row['ip']] = true;
             }
 
-            return count($unique_ips);
+            return count($uniqueIps);
         }
 
 
