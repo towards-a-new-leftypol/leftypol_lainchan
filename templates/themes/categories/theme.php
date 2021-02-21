@@ -148,10 +148,10 @@
                             time()-$timespan)
                 ) or error(db_error());
         	$uniqueIps = $unique_query->fetchAll();
-        	foreach ($unique_ips as $_k => $row) {
+        	foreach ($uniqueIps as $_k => $row) {
                 $markAsCounted[$row['ip']] = true;
             }
-            
+
             return count($unique_ips);
         }
 
