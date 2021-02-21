@@ -108,6 +108,7 @@
         	$stats = [];
         	$hourly = [];
         	$daily = [];
+        	$bidaily = [];
         	$tridaily = [];
 
             foreach (array_merge(... $config['boards']) as $uri) {
