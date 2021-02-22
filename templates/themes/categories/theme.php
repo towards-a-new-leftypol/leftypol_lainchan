@@ -162,7 +162,7 @@
 	            			SELECT HOUR(FROM_UNIXTIME(time)) AS hour, DAYOFYEAR(FROM_UNIXTIME(time)) AS day, COUNT(*) AS count 
 	            			FROM ``posts_%s`` 
 	            			WHERE time > %d 
-	            			GROUP BY hour, day",
+	            			GROUP BY hour, day)",
 	                    $_board['uri'],
 	                    time()-$timespan)
 	        ) or error(db_error());
