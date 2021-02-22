@@ -39,6 +39,7 @@
 						<th>{% trans "IPs last hour" %}</th>
 						<th>{% trans "IPs last day" %}</th>
 						<th>{% trans "IPs last week" %}</th>
+						<th>{% trans "7 day PPH moving average" %}</th>
 					</tr>
 					</thead>
 				<tbody>
@@ -75,6 +76,9 @@
 							</td>
 							<td class="minimal">
 								<span>{{ boardStat.weekly_ips }}</span>
+							</td>
+							<td class="minimal">
+								<span>{{ boardStat.rolling_average }}</span>
 							</td>
 						</tr>
 					{% endfor %}

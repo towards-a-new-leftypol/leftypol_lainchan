@@ -121,6 +121,7 @@
             	$boardStat['hourly_ips'] = Categories::countUniqueIps($hourly, $HOUR, $_board);
             	$boardStat['daily_ips'] = Categories::countUniqueIps($daily, $DAY, $_board);
             	$boardStat['weekly_ips'] = Categories::countUniqueIps($weekly, $WEEK, $_board);
+            	$boardStat['rolling_average'] = Categories::rollingAveragePPH($WEEK, $_board);
 
                 $pph_query = query(
                     sprintf("SELECT COUNT(*) AS count FROM ``posts_%s`` WHERE time > %d",
@@ -155,6 +156,19 @@
             return count($uniqueIps);
         }
 
+        private static function rollingAveragePPH($timespan, $_board) {
+            $pph_query = query(
+	            sprintf("SELECT AVG(count) as rolling FROM (
+	            			SELECT HOUR(FROM_UNIXTIME(time)) AS hour, DAYOFYEAR(FROM_UNIXTIME(time)) AS day, COUNT(*) AS count 
+	            			FROM ``posts_%s`` 
+	            			WHERE time > %d 
+	            			GROUP BY hour, day",
+	                    $_board['uri'],
+	                    time()-$timespan)
+	        ) or error(db_error());
+
+	        return $pph_query->fetch()['rolling'];
+        }
 
 	};
 
