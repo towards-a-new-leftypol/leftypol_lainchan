@@ -24,22 +24,35 @@
 
 
 onready(function(){
-	var do_embed_yt = function(tag) {
-		$('div.video-container a', tag).click(function() {
-			var videoID = $(this.parentNode).data('video');
-		
-			$(this.parentNode).html('<iframe style="float:left;margin: 10px 20px" type="text/html" '+
-				'width="360" height="270" src="//www.youtube.com/embed/' + videoID +
+	const ON = "[Remove]";
+	const OFF = "[Embed]";
+
+	function addEmbedButton(index, videoNode) {
+		videoNode = $(videoNode);
+		var videoId = videoNode.data('video');
+		var span = $("<span>[Embed]</span>");
+		var embedNode = $('<iframe style="float:left;margin: 10px 20px" type="text/html" '+
+				'width="360" height="270" src="//www.youtube.com/embed/' + videoId +
 				'?autoplay=1&html5=1" allowfullscreen frameborder="0"/>');
-
-			return false;
+		span.click(function() {
+			if (span.text() == ON){
+				embedNode.remove();
+				span.text(OFF);
+			} else{
+				videoNode.append(embedNode);
+				span.text(ON);
+			}
 		});
-	};
-	do_embed_yt(document);
 
-        // allow to work with auto-reload.js, etc.
-        $(document).on('new_post', function(e, post) {
-                do_embed_yt(post);
-        });
+		videoNode.append(span);
+	}
+
+	$('div.video-container', document).each(addEmbedButton);
+	
+
+	// allow to work with auto-reload.js, etc.
+	$(document).on('new_post', function(e, post) {
+			$('div.video-container', post).each(addEmbedButton);
+	});
 });
 
