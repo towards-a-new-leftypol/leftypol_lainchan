@@ -137,6 +137,9 @@
             $stats['daily_ips'] = count($daily);
             $stats['weekly_ips'] = count($weekly);
             $stats['pph'] = array_sum(array_column($stats['boards'], 'pph'));
+            $stats['hourly_ips'] = array_sum(array_column($stats['boards'], 'hourly_ips'));
+            $stats['daily_ips'] = array_sum(array_column($stats['boards'], 'daily_ips'));
+            $stats['weekly_ips'] = array_sum(array_column($stats['boards'], 'weekly_ips'));
 
             return $stats;
         }
