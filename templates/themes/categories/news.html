@@ -36,7 +36,9 @@
 					<tr>
 						<th>{% trans "Board" %}</th>
 						<th>{% trans "PPH" %}</th>
-						<th>{% trans "Recent IPs" %}</th>
+						<th>{% trans "IPs last hour" %}</th>
+						<th>{% trans "IPs last day" %}</th>
+						<th>{% trans "IPs last week" %}</th>
 					</tr>
 					</thead>
 				<tbody>
@@ -48,7 +50,13 @@
 							<span>{{ stats.pph }}</span>
 						</td>
 						<td class="minimal">
-							<span>{{ stats.recent_ips }}</span>
+							<span>{{ stats.hourly_ips }}</span>
+						</td>
+						<td class="minimal">
+							<span>{{ stats.daily_ips }}</span>
+						</td>
+						<td class="minimal">
+							<span>{{ stats.weekly_ips }}</span>
 						</td>
 					</tr>
 					{% for boardStat in stats.boards %}
@@ -60,7 +68,13 @@
 								<span>{{ boardStat.pph }}</span>
 							</td>
 							<td class="minimal">
-								<span>{{ boardStat.recent_ips }}</span>
+								<span>{{ boardStat.hourly_ips }}</span>
+							</td>
+							<td class="minimal">
+								<span>{{ boardStat.daily_ips }}</span>
+							</td>
+							<td class="minimal">
+								<span>{{ boardStat.weekly_ips }}</span>
 							</td>
 						</tr>
 					{% endfor %}
