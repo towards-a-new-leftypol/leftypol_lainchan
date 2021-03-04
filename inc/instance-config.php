@@ -185,6 +185,7 @@ $config['user_flags'] = array (
     'anarcho-communism' => 'Anarcho-Communism',
     'anarcho-nihilism' => 'Anarcho-Nihilism',
     'anarcho-primitivism' => 'Anarcho-Primitivism',
+    'antifa' => 'Antifa',
     'athiesm' => 'Athiesm',
     'bolshevik' => 'Bolshevik',
     'brocialism' => 'Brocialism',
@@ -193,16 +194,21 @@ $config['user_flags'] = array (
     'chavismo' => 'Chavismo',
     'che' => 'Che',
     'china' => 'China',
+    'christian_anarchism' => 'Christian Anarchism',
     'christian_communism' => 'Christian Communism',
     'cockshott' => 'Cockshott',
+    'council_communism' => 'Council Communism',
     'cuba' => 'Cuba',
     'ddr' => 'DDR',
     'democrap' => 'Democrap',
     'democratic_socialism' => 'Democratic Socialism',
     'dprk' => 'DPRK',
+    'egoism' => 'Egoism',
+    'eureka' => 'Eureka',
     'eurocommunism' => 'Eurocommunism',
     'farc' => 'Las FARC',
     'fed' => 'Fed',
+    'flq' => 'Front de libération du Québec',
     'freud' => 'Freud',
     'gadsden' => 'Gadsden',
     'gay_nazi' => 'Gay Nazi',
@@ -250,7 +256,6 @@ $config['user_flags'] = array (
     'viet_cong' => 'Viet Cong',
     'yugoslavia' => 'Yugoslavia',
     'zapatista' => 'Zapatista'
-
 );
 
 
