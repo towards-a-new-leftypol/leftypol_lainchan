@@ -19,7 +19,8 @@ $config['boards'] = array(
          'tech',
          'edu',
          'games',
-         'anime'
+         'anime',
+         'music'
    ) ,
   array('meta')
 );
@@ -41,7 +42,8 @@ $config['categories'] = array(
         'tech',
         'edu',
         'games',
-        'anime'
+        'anime',
+        'music'
     ),
     'Meta' => array('meta')
 );
@@ -124,6 +126,13 @@ $config['mod']['editpost'] = MOD;
 $config['mod']['rawhtml'] = MOD;
 $config['mod']['mod_board_log'] = MOD;
 $config['mod']['ip_recentposts'] = 350;
+
+// Post news entries
+$config['mod']['news'] = MOD;
+// Custom name when posting news
+$config['mod']['news_custom'] = MOD;
+// Delete news entries
+$config['mod']['news_delete'] = MOD;
 
 // Allow everyone to see bumplocks
 $config['mod']['view_bumplock'] = -1;
@@ -375,6 +384,39 @@ $config['additional_javascript'][] = 'js/youtube.js';
 $config['markup'][] = array("/^\s*&lt;.*$/m", '<span class="orangeQuote">$0</span>');
 $config['markup'][] = array("/__(.+?)__/", "<span class=\"underline\">\$1</span>");
 $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</span>");
+
+$config['wordfilters'][] = array('/Stalin/i', 'Stalin (he/him)', true);
+$config['wordfilters'][] = array('/Capitalism/i', 'Crony Capitalism', true);
+$config['wordfilters'][] = array('/April fool\'s/i', 'Marx\'s birthday', true);
+$config['wordfilters'][] = array('/April fools/i', 'Marx\'s birthday', true);
+$config['wordfilters'][] = array('/China/i', 'Taiwan', true);
+$config['wordfilters'][] = array('/Retard/i', 'smart', true);
+$config['wordfilters'][] = array('/Communism/i', 'social democracy', true);
+$config['wordfilters'][] = array('/revolution/i', 'reforms', true);
+$config['wordfilters'][] = array('/revolutionary/i', 'reformist', true);
+$config['wordfilters'][] = array('/Karl Marx/i', 'Ferdinand Lassalle', true);
+$config['wordfilters'][] = array('/jewish nigger/i', 'dear friend', true);
+$config['wordfilters'][] = array('/Lenin/i', 'Kautsky', true);
+$config['wordfilters'][] = array('/Bourgeois/i', 'job creators', true);
+$config['wordfilters'][] = array('/anarchists/i', 'vaushists', true);
+$config['wordfilters'][] = array('/anarchy|anarchism/i', 'vaushism', true);
+$config['wordfilters'][] = array('/Bourgeoisie/i', 'job creators', true);
+$config['wordfilters'][] = array('/kulak|koulak/i', 'martyr', true);
+$config['wordfilters'][] = array('/breadtube/i', 'basedtube', true);
+$config['wordfilters'][] = array('/tranny jannies/i', 'insanely based mods', true);
+$config['wordfilters'][] = array('/tranny janny/i', 'a respectable member of the jannguard', true);
+$config['wordfilters'][] = array('/anglo/i', 'black', true);
+$config['wordfilters'][] = array('/Trotksy/i', 'Lenin\'s rightful heir', true);
+$config['wordfilters'][] = array('/Bookchin/i', 'Postchin', true);
+$config['wordfilters'][] = array('/infrared/i', 'the cult', true);
+$config['wordfilters'][] = array('/ pill/i', ' vaccine', true);
+$config['wordfilters'][] = array('/crisis/i', 'christmas', true);
+$config['wordfilters'][] = array('/trannies/i', 'those that are advancing the dialectic of the human body and it\'s limitation', true);
+$config['wordfilters'][] = array('/dialectical materialism/i', 'magic', true);
+$config['wordfilters'][] = array('/dialectical/i', 'magic', true);
+$config['wordfilters'][] = array('/cope/i', 'i agreeing', true);
+$config['wordfilters'][] = array('/seethe/i', 'i agreeing', true);
+$config['wordfilters'][] = array('/liberal/i', 'leninist', true);
 
 // Changes made via web editor by "zul_admin" @ Fri, 19 Feb 2021 15:06:33 -0800:
 $config['reply_limit'] = 800;
