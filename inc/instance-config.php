@@ -133,6 +133,8 @@ $config['mod']['news'] = MOD;
 $config['mod']['news_custom'] = MOD;
 // Delete news entries
 $config['mod']['news_delete'] = MOD;
+// Number of news entries to display per page.
+$config['mod']['news_page'] = 5;
 
 // Allow everyone to see bumplocks
 $config['mod']['view_bumplock'] = -1;
