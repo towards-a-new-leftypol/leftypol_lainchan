@@ -2,7 +2,14 @@
     "values": {
         "/leftypol/_tagline": "Левых Политически Некорректное",
         "/leftypol/_subtitle": "Левых Политически Некорректное",
+        "/b/_tagline": "Бред",
         "catalog_link": "Каталог",
+        "/hobby/_tagline": "Хобби",
+        "/tech/_tagline": "Технология",
+        "/edu/_tagline": "Образование",
+        "/games/_tagline": "Игры",
+        "/anime/_tagline": "Аниме",
+        "/meta/_tagline": "Ruthless criticism of all that exists (in leftypol.org).",
         "home_link": "Домой",
         "posting_mode_reply": "Posting mode: Reply",
         "return": "Обратно",
@@ -28,7 +35,11 @@
         "password": "Пароль",
         "reason": "Причина",
         "report": "Настучать",
-        "delete": "Удалить"
+        "delete": "Удалить",
+        "title": "Leftypol",
+        "news": "Новости",
+        "boards-Leftypol": "Доски",
+        "boards-Meta": "Мета"
 
     }
 }

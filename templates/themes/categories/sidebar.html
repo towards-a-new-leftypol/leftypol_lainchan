@@ -1,22 +1,37 @@
 {% filter remove_whitespace %}
 <div class="sidebar">
 	<fieldset>
-		<legend>{{ settings.title }}</legend>
+		<legend
+            class="i18n_doable"
+            data-i18n-key="title"
+            >{{ settings.title }}</legend>
 		<ul>
 			<li>
-				<a class="system" href="{{ settings.file_news }}">[News]</a>
+				<a class="system" href="{{ settings.file_news }}">[<span
+                                  class="i18n_doable"
+                                  data-i18n-key="news"
+                                  >News</span>]</a>
 			</li>
 		</ul>
 	</fieldset>
 	
 	{% for category, boards in categories %}
 		<fieldset>
-			<legend>
+			<legend
+                class="i18n_doable"
+                data-i18n-key="boards-{{ category }}"
+                >
 				{{ category }}
 			</legend>
 			{% for board in boards %}
 				<li>
-					<a href="{{ board.uri }}">{{ board.title|e }}</a>
+					<a
+                        class="i18n_doable"
+                        data-i18n-key="/{{ board.uri }}_tagline"
+                        href="{{ board.uri }}"
+                        >
+                        {{ board.title|e }}
+                    </a>
 				</li>
 			{% endfor %}
 		</fieldset>
@@ -24,7 +39,10 @@
 	
 	{% for category, links in config.custom_categories %}
 		<fieldset>
-			<legend>
+			<legend
+                class="i18n_doable"
+                data-i18n-key="{{ category|replace({' ': '_'})|lower }}"
+                >
 				{{ category }}
 			</legend>
 			{% for title, uri in links %}

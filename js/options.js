@@ -103,12 +103,13 @@ options_tablist = $("<div id='options_tablist'></div>").appendTo(options_div);
 
 
 $(function(){
-  options_button = $("<a href='javascript:void(0)' title='"+_("Options")+"'>["+_("Options")+"]</a>");
+  options_button = $("<a href='javascript:void(0)' class='i18n-doable' data-i18n-key='options' title='"+_("Options")+"'>["+_("Options")+"]</a>");
 
   if ($(".boardlist.compact-boardlist").length) {
     options_button.addClass("cb-item cb-fa").html("<i class='fa fa-gear'></i>");
   }
 
+    console.log("appending options button", options_button);
   if ($(".boardlist:first").length) {
     options_button.css('float', 'right').appendTo($(".boardlist:first"));
   }
@@ -117,7 +118,7 @@ $(function(){
     options_button.appendTo(optsdiv);
     optsdiv.prependTo($(document.body));
   }
-
+    console.log("Options button created");
   options_button.on("click", Options.show);
 
   options_handler.appendTo($(document.body));

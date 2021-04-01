@@ -79,13 +79,13 @@
             .then(i18n.create.bind(this));
     }
 
-    function translateElements(i18ns) {
+    function translateElements(i18ns, root) {
         var [i18nFallback, i18n] = i18ns;
 
-        document.querySelectorAll(".i18n_doable")
+        root.querySelectorAll(".i18n_doable")
             .forEach(translateElement.bind(this, i18nFallback, i18n));
 
-        document.querySelectorAll(".i18n_not_doable")
+        root.querySelectorAll(".i18n_not_doable")
             .forEach(setTitleAttrToElem.bind(this, i18nFallback, i18n));
     }
 
@@ -101,15 +101,49 @@
         modifyElement.bind(this, (e, txt) => { e.title = txt });
 
     function modifyElement(fmodify, i18nFallback, i18n, element) {
+        if (element.classList.contains(TEMP_CLASSNAME)) {
+            return;
+        }
+
+        console.log("mu", element);
+        element.classList.add(TEMP_CLASSNAME);
         // For the canonical list of all possible translationKey values,
         // see the file data/en.json
         var translationKey = element.dataset.i18nKey;
         fmodify(element, i18n(translationKey, i18nFallback(translationKey)));
     }
 
+    var i = 0;
+    var TEMP_CLASSNAME = 'i18n-just-translated';
+    function onDomChange(i18ns, mutations) {
+        mutations.forEach(mutation => {
+            if (i > 1000) {
+                console.error("killed");
+                return;
+            }
+            if (mutation.target.parentElement != null) {
+                translateElements.call(this, i18ns, mutation.target.parentElement);
+                i++;
+            }
+            if (mutation.target.tagName == "A") {
+                console.log(mutation.target);
+            }
+        });
+    }
+
+    function watchDom(i18ns) {
+        var mutationObserver = new MutationObserver(onDomChange.bind(this, i18ns));
+        console.log(mutationObserver);
+        mutationObserver.observe(document, { childList: true, subtree: true });
+    }
+
     function main() {
+        console.log("Hello lang-support!");
         Promise.all([initLang("en"), initLang("ru")])
-            .then(translateElements);
+            .then((i18ns) => {
+                translateElements.call(this, i18ns, document);
+                watchDom(i18ns);
+            });
     }
 
     this.onload = main;
