@@ -321,7 +321,7 @@ $config['stylesheets']['TempDarkRed'] = 'temp_dark_red.css';
 $config['stylesheets']['AnonsDarkRed'] = 'anons_dark_red.css';
 $config['stylesheets']['BunkerLike'] = 'bunker_like.css';
 
-$config['default_stylesheet'] = array('Jungle', $config['stylesheets']['Jungle']);
+$config['default_stylesheet'] = array('Dark Red', $config['stylesheets']['Dark Red']);
 /*
  * ====================
  *  Javascript
