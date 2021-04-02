@@ -8,13 +8,13 @@ if (active_page == 'catalog') $(function(){
 
 	$("#sort_by").change(function(){
 		var value = this.value;
-		$('#Grid').mixItUp('sort', (value == "random" ? value : "sticky:desc " + value));
+		$('#Grid').mixItUp('sort', (((value == "random") || (board_name == "overboard")) ? value : "sticky:desc " + value));
 		catalog.sort_by = value;
 		localStorage.catalog = JSON.stringify(catalog);
 	});
 
 	$("#image_size").change(function(){
-		var value = this.value, old;
+		var value = this.value;
 		$(".grid-li").removeClass("grid-size-vsmall");
 		$(".grid-li").removeClass("grid-size-small");
 		$(".grid-li").removeClass("grid-size-large");
