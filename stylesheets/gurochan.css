@@ -153,3 +153,18 @@ div.banner a, textarea {
 a.selected:nth-child(1) {
         color:#800;
 }
+/* Fixes the top bar not matching the bottom bar. */
+div.boardlist {
+	color: #880000;
+}
+.bar.top {
+	border-bottom: 1px solid #CA927B;
+}
+/* Fixes outline for input boxes that aren't the comment box. */
+input[type="text"], input[type="password"], textarea {
+	border: 1px solid #CA927B;
+}
+/* Optional: Red tripcodes. */
+span.trip {
+	color: #AF0A0F;
+}
