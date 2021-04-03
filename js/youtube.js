@@ -29,6 +29,7 @@ onready(function(){
 
 	function addEmbedButton(index, videoNode) {
 		videoNode = $(videoNode);
+		var contents = videoNode.contents();
 		var videoId = videoNode.data('video');
 		var span = $("<span>[Embed]</span>");
 		var embedNode = $('<iframe style="float:left;margin: 10px 20px" type="text/html" '+
@@ -36,9 +37,11 @@ onready(function(){
 				'?autoplay=1&html5=1" allowfullscreen frameborder="0"/>');
 		span.click(function() {
 			if (span.text() == ON){
+				videoNode.append(contents);
 				embedNode.remove();
 				span.text(OFF);
 			} else{
+				contents.detach();
 				videoNode.append(embedNode);
 				span.text(ON);
 			}
