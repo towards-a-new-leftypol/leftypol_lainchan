@@ -373,7 +373,7 @@ $config['youtube_js_html']
     . '</a></div>';
 
 $config['ogg_embed_html']
-    = '<figure><audio controls src="$2">'
+    = '<figure><audio controls src="$1">'
     .       'Your browser does not support the'
     .       '<code>audio</code> element.</audio></figure>';
 
@@ -386,7 +386,7 @@ $config['embedding'][0] =
     );
 $config['embedding'][1] =
     array(
-        '/^https?:\/\/.*\.ogg$/i',
+        '/^(https?:\/\/.*\.ogg)$/i',
         $config['ogg_embed_html']
     );
 $config['additional_javascript'][] = 'js/youtube.js';
