@@ -35,7 +35,9 @@ onready(function(){
 		var embedNode = $('<iframe style="float:left;margin: 10px 20px" type="text/html" '+
 				'width="360" height="270" src="//www.youtube.com/embed/' + videoId +
 				'?autoplay=1&html5=1" allowfullscreen frameborder="0"/>');
-		span.click(function() {
+		videoNode.click(function(e) {
+		    	e.preventDefault();
+
 			if (span.text() == ON){
 				videoNode.append(contents);
 				embedNode.remove();
