@@ -321,7 +321,7 @@ $config['stylesheets']['TempDarkRed'] = 'temp_dark_red.css';
 $config['stylesheets']['AnonsDarkRed'] = 'anons_dark_red.css';
 $config['stylesheets']['BunkerLike'] = 'bunker_like.css';
 
-$config['default_stylesheet'] = array('Jungle', $config['stylesheets']['Jungle']);
+$config['default_stylesheet'] = array('Dark Red', $config['stylesheets']['Dark Red']);
 /*
  * ====================
  *  Javascript
@@ -371,6 +371,7 @@ $config['youtube_js_html']
     . '<a href="https://youtu.be/$2" target="_blank" class="file">'
     . '<img style="width:255px;height:190px;" src="/vi/$2/0.jpg" class="post-image"/>'
     . '</a></div>';
+
 
 $config['ogg_embed_html']
     = '<figure><audio controls src="$1">'
