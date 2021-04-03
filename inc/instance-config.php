@@ -372,11 +372,23 @@ $config['youtube_js_html']
     . '<img style="width:255px;height:190px;" src="/vi/$2/0.jpg" class="post-image"/>'
     . '</a></div>';
 
+
+$config['ogg_embed_html']
+    = '<figure><audio controls src="$1">'
+    .       'Your browser does not support the'
+    .       '<code>audio</code> element.</audio></figure>';
+
+
 $config['embedding'] = array();
 $config['embedding'][0] =
     array(
         '/^https?:\/\/(\w+\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9\-_]{10,11})(&.+)?$/i',
         $config['youtube_js_html']
+    );
+$config['embedding'][1] =
+    array(
+        '/^(https?:\/\/.*\.ogg)$/i',
+        $config['ogg_embed_html']
     );
 $config['additional_javascript'][] = 'js/youtube.js';
 
