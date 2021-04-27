@@ -398,7 +398,7 @@ $config['markup'][] = array("/^\s*&lt;.*$/m", '<span class="orangeQuote">$0</spa
 $config['markup'][] = array("/__(.+?)__/", "<span class=\"underline\">\$1</span>");
 $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</span>");
 
-$config['wordfilters'][] = array('/trann(y|ie)/i', 'transhumanist', true);
+$config['wordfilters'][] = array('/trann(y|ie)?/i', 'transhumanist', true);
 $config['wordfilters'][] = array('/nigger/i', 'uyghur', true);
 $config['wordfilters'][] = array('/nigg/i', 'uygh', true);
 
