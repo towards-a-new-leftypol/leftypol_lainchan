@@ -398,24 +398,40 @@ $config['markup'][] = array("/^\s*&lt;.*$/m", '<span class="orangeQuote">$0</spa
 $config['markup'][] = array("/__(.+?)__/", "<span class=\"underline\">\$1</span>");
 $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</span>");
 
-// Original wordfilters
+/*
+ * Original wordfilters
+ */
 // $config['wordfilters'][] = array('/trann(y|ie)?/i', 'transhumanist', true);
 // $config['wordfilters'][] = array('/nigger/i', 'uyghur', true);
 // $config['wordfilters'][] = array('/nigg/i', 'uygh', true);
 
-// board's proposed wordfilters - let's try them out (not committed yet)
+/*
+ * board's proposed wordfilters - let's try them out (not committed yet)
+ */
 
-// Traditional word filters. Expires 31-12-2021.
-// so, there are too flags at the end of each regex pattern, the "im" at the end. Case Insensitive and Multiline
-// let's take the third one as an example. n+ [^a-z]* [il1|]+ [^a-z]* g+ [^a-z]* g+
-// Basic regex syntax: * means the preceeding element will be matched if it repeats 0 or more times. + will match 1 or more times
-// so a+ matches cat or caaat
-// [] denotes a set of possible matches, so c[au]t matches 'cat' and 'cut'
-// if the first character in the set is ^, that inverts, so [^a-z] means any character that isn't in the alphabet
-// (we have the case insensitive flag so captials are included)
-// so the [^a-z]* means that if someone does 'n..i..g..g', then the 0 or more non-alphabet
-// characters between the n, i, g, g are still matching. Note that it's 0 or more, not 1 or more, so 'nigg' still matches.
-// the [il1|] set is just common replacement characters for i that will be used in evasion. I'll add accents later.
+/*
+ * Traditional word filters. Expires 31-12-2021.
+ *
+ * So, there are too flags at the end of each regex pattern, the "im" at the end. Case Insensitive and Multiline
+ * let's take the third one as an example.
+ *
+ * n+ [^a-z]* [il1|]+ [^a-z]* g+ [^a-z]* g+
+ *
+ * Basic regex syntax: * means the preceeding element will be matched if it repeats 0 or more times. + will match 1 or more times
+ *
+ * so a+ matches cat or caaat
+ * [] denotes a set of possible matches, so c[au]t matches 'cat' and 'cut'
+ * if the first character in the set is ^, that inverts, so [^a-z] means any character that isn't in the alphabet
+ * (we have the case insensitive flag so captials are included)
+ *
+ * so the [^a-z]* means that if someone does 'n..i..g..g', then the 0 or more non-alphabet
+ * characters between the n, i, g, g are still matching. Note that it's 0 or more, not 1 or more, so 'nigg' still matches.
+ * the [il1|] set is just common replacement characters for i that will be used in evasion. I'll add accents later.
+ *
+ * Example:
+ * https://regex101.com/r/sZpAUf/1
+ *
+ */
 $config['wordfilters'][] = array('/t+[^a-z]*r+[^a-z]*[a@4]+[^a-z]*n+[^a-z]*n+[^a-z]*(y+|[il1|]+[^a-z]*e+)?/im', 'transhumanist', true);
 $config['wordfilters'][] = array('/n+[^a-z]*[i1l|]+[^a-z]*g+[^a-z]*g+[^a-z]*e+[^a-z]*r+/im', 'uyghur', true);
 $config['wordfilters'][] = array('/n+[^a-z]*[il1|]+[^a-z]*g+[^a-z]*g+/im', 'uygh', true);
