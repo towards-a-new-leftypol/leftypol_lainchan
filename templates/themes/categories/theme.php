@@ -14,7 +14,7 @@
   class Categories {
     public static function build($action, $settings) {
       global $config;
-      
+
       if ($action == 'all' ||
         $action == 'boards' ||
         $action == 'news' ||
@@ -93,75 +93,75 @@
       return $categories;
     }
 
-        private static function getPostStatistics($settings) {
-          global $config;
+    private static function getPostStatistics($settings) {
+      global $config;
 
-          if (!isset($config['boards'])) {
-            return null;
-          }
+      if (!isset($config['boards'])) {
+        return null;
+      }
 
-          $HOUR = 3600;
-          $DAY = $HOUR * 24;
-          $WEEK = $DAY * 7;
+      $HOUR = 3600;
+      $DAY = $HOUR * 24;
+      $WEEK = $DAY * 7;
 
-          $stats = [];
-          $hourly = [];
-          $daily = [];
-          $weekly = [];
+      $stats = [];
+      $hourly = [];
+      $daily = [];
+      $weekly = [];
 
-            foreach (array_merge(... $config['boards']) as $uri) {
-              $_board = getBoardInfo($uri);
-              if (!$_board) {
-                // board doesn't exist. 
-                continue;
-              }
-
-              $boardStat['title'] = $_board['title'];
-
-              $boardStat['hourly_ips'] = Categories::countUniqueIps($hourly, $HOUR, $_board);
-              $boardStat['daily_ips'] = Categories::countUniqueIps($daily, $DAY, $_board);
-              $boardStat['weekly_ips'] = Categories::countUniqueIps($weekly, $WEEK, $_board);
-
-                $pph_query = query(
-                    sprintf("SELECT COUNT(*) AS count FROM ``posts_%s`` WHERE time > %d",
-                            $_board['uri'],
-                            time()-3600)
-                ) or error(db_error());
-
-                $boardStat['pph'] = $pph_query->fetch()['count'];
-
-                $stats['boards'][] = $boardStat;
-            }
-
-            $stats['hourly_ips'] = count($hourly);
-            $stats['daily_ips'] = count($daily);
-            $stats['weekly_ips'] = count($weekly);
-            $stats['pph'] = array_sum(array_column($stats['boards'], 'pph'));
-            $stats['hourly_ips'] = array_sum(array_column($stats['boards'], 'hourly_ips'));
-            $stats['daily_ips'] = array_sum(array_column($stats['boards'], 'daily_ips'));
-            $stats['weekly_ips'] = array_sum(array_column($stats['boards'], 'weekly_ips'));
-
-            return $stats;
+      foreach (array_merge(... $config['boards']) as $uri) {
+        $_board = getBoardInfo($uri);
+        if (!$_board) {
+          // board doesn't exist. 
+          continue;
         }
 
+        $boardStat['title'] = $_board['title'];
+
+        $boardStat['hourly_ips'] = Categories::countUniqueIps($hourly, $HOUR, $_board);
+        $boardStat['daily_ips'] = Categories::countUniqueIps($daily, $DAY, $_board);
+        $boardStat['weekly_ips'] = Categories::countUniqueIps($weekly, $WEEK, $_board);
+
+        $pph_query = query(
+          sprintf("SELECT COUNT(*) AS count FROM ``posts_%s`` WHERE time > %d",
+          $_board['uri'],
+          time()-3600)
+        ) or error(db_error());
+
+        $boardStat['pph'] = $pph_query->fetch()['count'];
+
+        $stats['boards'][] = $boardStat;
+      }
+
+      $stats['hourly_ips'] = count($hourly);
+      $stats['daily_ips'] = count($daily);
+      $stats['weekly_ips'] = count($weekly);
+      $stats['pph'] = array_sum(array_column($stats['boards'], 'pph'));
+      $stats['hourly_ips'] = array_sum(array_column($stats['boards'], 'hourly_ips'));
+      $stats['daily_ips'] = array_sum(array_column($stats['boards'], 'daily_ips'));
+      $stats['weekly_ips'] = array_sum(array_column($stats['boards'], 'weekly_ips'));
+
+      return $stats;
+    }
+
     private static function countUniqueIps($markAsCounted, $timespan, $_board) {
-        return -1;
+      return -1;
     }
 
     private static function countUniqueIps2($markAsCounted, $timespan, $_board) {
-        $unique_query = query(
-            sprintf("SELECT DISTINCT ip FROM ``posts_%s`` WHERE time > %d",
-            $_board['uri'],
-            time()-$timespan)
-        ) or error(db_error());
+      $unique_query = query(
+        sprintf("SELECT DISTINCT ip FROM ``posts_%s`` WHERE time > %d",
+        $_board['uri'],
+        time()-$timespan)
+      ) or error(db_error());
 
-        $uniqueIps = $unique_query->fetchAll();
+      $uniqueIps = $unique_query->fetchAll();
 
-        foreach ($uniqueIps as $_k => $row) {
-            $markAsCounted[$row['ip']] = true;
-        }
+      foreach ($uniqueIps as $_k => $row) {
+        $markAsCounted[$row['ip']] = true;
+      }
 
-        return count($uniqueIps);
+      return count($uniqueIps);
     }
   };
 
