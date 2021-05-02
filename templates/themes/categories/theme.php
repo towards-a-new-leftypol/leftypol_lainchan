@@ -144,19 +144,25 @@
             return $stats;
         }
 
-        private static function countUniqueIps($markAsCounted, $timespan, $_board) {
-          $unique_query = query(
-              sprintf("SELECT DISTINCT ip FROM ``posts_%s`` WHERE time > %d",
-                            $_board['uri'],
-                            time()-$timespan)
-                ) or error(db_error());
-          $uniqueIps = $unique_query->fetchAll();
-          foreach ($uniqueIps as $_k => $row) {
-                $markAsCounted[$row['ip']] = true;
-            }
+    private static function countUniqueIps($markAsCounted, $timespan, $_board) {
+        return -1;
+    }
 
-            return count($uniqueIps);
+    private static function countUniqueIps2($markAsCounted, $timespan, $_board) {
+        $unique_query = query(
+            sprintf("SELECT DISTINCT ip FROM ``posts_%s`` WHERE time > %d",
+            $_board['uri'],
+            time()-$timespan)
+        ) or error(db_error());
+
+        $uniqueIps = $unique_query->fetchAll();
+
+        foreach ($uniqueIps as $_k => $row) {
+            $markAsCounted[$row['ip']] = true;
         }
+
+        return count($uniqueIps);
+    }
   };
 
 ?>
