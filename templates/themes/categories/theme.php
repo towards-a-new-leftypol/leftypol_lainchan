@@ -94,6 +94,19 @@
     }
 
     private static function getPostStatistics($settings) {
+      $stats = [];
+
+      $stats['hourly_ips'] = -1;
+      $stats['daily_ips'] = -1;
+      $stats['weekly_ips'] = -1;
+      $stats['pph'] = -1;
+      $stats['hourly_ips'] = -1;
+      $stats['daily_ips'] = -1;
+      $stats['weekly_ips'] = -1;
+      return $stats;
+    }
+
+    private static function getPostStatistics2($settings) {
       global $config;
 
       if (!isset($config['boards'])) {
@@ -145,10 +158,6 @@
     }
 
     private static function countUniqueIps($markAsCounted, $timespan, $_board) {
-      return -1;
-    }
-
-    private static function countUniqueIps2($markAsCounted, $timespan, $_board) {
       $unique_query = query(
         sprintf("SELECT DISTINCT ip FROM ``posts_%s`` WHERE time > %d",
         $_board['uri'],
