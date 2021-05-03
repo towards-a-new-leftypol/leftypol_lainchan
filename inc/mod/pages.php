@@ -1382,8 +1382,12 @@ function mod_move($originBoard, $postID) {
                 $post['files'] = json_decode($post['files'], TRUE);
                 $post['has_file'] = true;
                 foreach ($post['files'] as $i => &$file) {
-                    $file['file_path'] = sprintf($config['board_path'], $board['uri']) . $config['dir']['img'] . $file['file'];
-                    $file['thumb_path'] = sprintf($config['board_path'], $board['uri']) . $config['dir']['thumb'] . $file['thumb'];
+                    if ($file['file'] !== 'deleted') {
+                        $file['file_path'] = sprintf($config['board_path'], $board['uri']) . $config['dir']['img'] . $file['file'];
+                    }
+                    if (isset($file['thumb']) && !in_array($file['thumb'], array('spoiler', 'deleted', 'file'))) {
+                        $file['thumb_path'] = sprintf($config['board_path'], $board['uri']) . $config['dir']['thumb'] . $file['thumb'];
+                    }
                 }
             } else {
                 $post['has_file'] = false;
@@ -1422,8 +1426,12 @@ function mod_move($originBoard, $postID) {
             if ($post['has_file']) {
                 // copy image
                 foreach ($post['files'] as $i => &$file) {
-                    clone_wrapped_with_exist_check($clone, $file['file_path'], sprintf($config['board_path'], $board['uri']) . $config['dir']['img'] . $file['file']);
-                    clone_wrapped_with_exist_check($clone, $file['thumb_path'], sprintf($config['board_path'], $board['uri']) . $config['dir']['thumb'] . $file['thumb']);
+                    if ($file['file'] !== 'deleted') {
+                        clone_wrapped_with_exist_check($clone, $file['file_path'], sprintf($config['board_path'], $board['uri']) . $config['dir']['img'] . $file['file']);
+                    }
+                    if (isset($file['thumb']) && !in_array($file['thumb'], array('spoiler', 'deleted', 'file'))) {
+                        clone_wrapped_with_exist_check($clone, $file['thumb_path'], sprintf($config['board_path'], $board['uri']) . $config['dir']['thumb'] . $file['thumb']);
+                    }
                 }
             }
             // insert reply
