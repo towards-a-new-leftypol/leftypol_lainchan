@@ -402,6 +402,16 @@ $config['wordfilters'][] = array('/trann(y|ie)?/i', 'transhumanist', true);
 $config['wordfilters'][] = array('/nigger/i', 'uyghur', true);
 $config['wordfilters'][] = array('/nigg/i', 'uygh', true);
 
+// Filter for a soyjak bot
+$config['filters'][] = array(
+	'condition' => array(
+		'!body' => '/(^[^>]|[\r\n][^>])/', // Greentexting only (does not contain non-greentext)
+		'filename' => '/[a-z]{6}.jpg/' // Six lowercase letters, .jpg
+	),
+	'action' => 'reject',
+	'message' => 'Flood detected; Post discarded.'
+);
+
 // Changes made via web editor by "zul_admin" @ Fri, 19 Feb 2021 15:06:33 -0800:
 $config['reply_limit'] = 800;
 
