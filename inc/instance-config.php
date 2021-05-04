@@ -402,6 +402,33 @@ $config['wordfilters'][] = array('/trann(y|ie)?/i', 'transhumanist', true);
 $config['wordfilters'][] = array('/nigger/i', 'uyghur', true);
 $config['wordfilters'][] = array('/nigg/i', 'uygh', true);
 
+// Basic spam filters for diverting anorectal violence spammer
+$fakereason1 = 'Due to automated child pornography and gore spam by /pol/, all posting now requires a pass.<br>To receive a one-week pass, email a short explanation of the Labor Theory of Value to space@national.shitposting.agency .';
+$config['filters'][] = array(
+   'condition' => array(
+      'subject'  => '/anorectal/i', // Typical thread subject used. Case insensitive.
+   ),
+   'action' => 'reject',
+   'message' => "$fakereason1" 
+);
+$config['filters'][] = array(
+   'condition' => array(
+      'filename'  => '/(TAKE ACTION v|trends.*associations|anusporn|anal insanity|anorectal risks|TAv[0-9]+|arisks)/', // Typical opening filename format. Their usual evasion strategy is to post only the image.
+   ),
+   'action' => 'reject',
+   'message' => "$fakereason1"
+);
+
+// Favorite names and buzzterms
+$config['filters'][] = array(
+   'condition' => array(
+      'body'  => '/(Rocco Siff|Evil Angel|Xavier Becerra|AdultDVDTalk|painal|Roughanal|anoreceptive|ltimately this is not about me|Logically-fallacious diversionary tactics)/', // Reasonably unique buzzwords
+   ),
+   'action' => 'reject',
+   'message' => "$fakereason1"
+);
+
+
 // Changes made via web editor by "zul_admin" @ Fri, 19 Feb 2021 15:06:33 -0800:
 $config['reply_limit'] = 800;
 
