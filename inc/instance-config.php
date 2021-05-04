@@ -406,7 +406,7 @@ $config['wordfilters'][] = array('/nigg/i', 'uygh', true);
 $config['filters'][] = array(
 	'condition' => array(
 		'!body' => '/(^[^>]|[\r\n][^>])/', // Greentexting only (does not contain non-greentext)
-		'filename' => '/[a-z]{6}.jpg/' // Six lowercase letters, .jpg
+		'filename' => '/[a-z]{6,12}.jpg/' // Six to 12 lowercase letters, .jpg
 	),
 	'action' => 'reject',
 	'message' => 'Flood detected; Post discarded.'
