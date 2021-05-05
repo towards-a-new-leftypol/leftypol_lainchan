@@ -1786,7 +1786,7 @@
 	$config['error']['securimage']=array(
 		'missing'=>'The captcha field was missing. Please try again',
 		'empty'=>'Please fill out the captcha',
-		'bad'=>'Incorrect captcha',
+		'bad'=>'Incorrect or expired captcha',
 	);
 
     // Meta keywords. It's probably best to include these in per-board configurations.

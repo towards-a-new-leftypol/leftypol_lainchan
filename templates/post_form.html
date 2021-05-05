@@ -102,8 +102,8 @@
 				Captcha
 			</th>
 			<td>
-				<img src="{{ config.root }}/captcha.php"><br />
-				<input type="text" name="captcha" size="25" maxlength="10" autocomplete="off">
+		        <img name="captcha-img" id="captcha-img" src="/captcha.php" onClick="this.src='/captcha.php?'+Date.now();document.getElementById('captcha').value = '';"><br />
+				<input type="text" name="captcha" id="captcha" size="25" maxlength="10" autocomplete="off">
 			</td>
 		</tr>
 		{% endif %}

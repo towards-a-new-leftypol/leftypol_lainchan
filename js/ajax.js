@@ -56,6 +56,7 @@ $(window).ready(function() {
                     return xhr;
                 },
                 success: function(post_response) {
+                    reloadCaptcha(); // For securimage captcha. TODO doesn't always need reloading
                     if (post_response.error) {
                         if (post_response.banned) {
                             // You are banned. Must post the form normally so the user can see the ban message.
