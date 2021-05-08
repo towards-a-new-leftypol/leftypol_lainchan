@@ -59,7 +59,7 @@ return array(
     'session_name'     => null,
 
     // change to true to store codes in a database
-    'use_database'     => false,
+    'use_database'     => true,
 
     // database engine to use for storing codes.  must have the PDO extension loaded
     // Values choices are:
