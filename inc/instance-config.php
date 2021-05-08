@@ -436,15 +436,6 @@ $config['wordfilters'][] = array('/t+[^a-z]*r+[^a-z]*[a@4]+[^a-z]*n+[^a-z]*n+[^a
 $config['wordfilters'][] = array('/n+[^a-z]*[i1l|]+[^a-z]*g+[^a-z]*g+[^a-z]*e+[^a-z]*r+/im', 'uyghur', true);
 $config['wordfilters'][] = array('/n+[^a-z]*[il1|]+[^a-z]*g+[^a-z]*g+/im', 'uygh', true);
 
-// Filter for a soyjak bot
-$config['filters'][] = array(
-	'condition' => array(
-		'!body' => '/(^[^>]|[\r\n][^>])/', // Greentexting only (does not contain non-greentext)
-		'filename' => '/^[a-z]+\.jpg/' // Only lowercase letters, .jpg
-	),
-	'action' => 'reject',
-	'message' => 'Flood detected; Post discarded.'
-);
 
 // Changes made via web editor by "zul_admin" @ Fri, 19 Feb 2021 15:06:33 -0800:
 $config['reply_limit'] = 800;
