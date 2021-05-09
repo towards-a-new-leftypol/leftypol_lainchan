@@ -183,7 +183,7 @@ $config['allowed_ext_files'][] = 'bz2';
  */
 $config['country_flags_condensed'] = false;
 $config['user_flag'] = true;
-$config['flag_style'] = 'width:auto;height:11px;';
+$config['flag_style'] = 'width:auto;max-height:16px;';
 $config['user_flags'] = array (
     '4th_international' => '4th International',
     'acceleration' => 'Acceleration',
