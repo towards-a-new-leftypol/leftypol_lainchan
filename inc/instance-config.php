@@ -118,6 +118,11 @@ $config['url_banner'] = '/banners.php';
 $config['spam']['enabled'] = false;
 
 /*
+ * Basic captcha. See also: captchaconfig.php
+ */
+$config['securimage'] = false;
+
+/*
  * Permissions
  */
 $config['mod']['move'] = MOD;

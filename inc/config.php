@@ -1779,6 +1779,16 @@
  * ====================
  */
 
+	//Securimage captcha
+	//Note from lainchan PR: "TODO move a bunch of things here"
+
+	$config['spam']['valid_inputs'][]='captcha';
+	$config['error']['securimage']=array(
+		'missing'=>'The captcha field was missing. Please try again',
+		'empty'=>'Please fill out the captcha',
+		'bad'=>'Incorrect or expired captcha',
+	);
+
     // Meta keywords. It's probably best to include these in per-board configurations.
     // $config['meta_keywords'] = 'chan,anonymous discussion,imageboard,tinyboard';
 

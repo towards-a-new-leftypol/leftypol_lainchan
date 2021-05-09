@@ -286,6 +286,17 @@ function dopost(form) {
 	return form.elements['body'].value != "" || (form.elements['file'] && form.elements['file'].value != "") || (form.elements.file_url && form.elements['file_url'].value != "");
 }
 
+function reloadCaptcha() {
+	// Reload captcha images (date reduces chance of caching)
+	// If no securimage captcha is enabled, no elements will be found
+	captchaImgs = document.querySelectorAll('[id=captcha-img]');
+	for (var i = 0; i < captchaImgs.length; ++i)
+		captchaImgs[i].src = "/captcha.php?"+Date.now();
+	captchas = document.querySelectorAll('[id=captcha]');
+	for (var i = 0; i < captchas.length; ++i)
+		captchas[i].value = "";
+}
+
 function citeReply(id, with_link) {
 	var textarea = document.getElementById('body');
 
