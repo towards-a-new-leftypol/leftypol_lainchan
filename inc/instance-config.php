@@ -399,15 +399,11 @@ $config['markup'][] = array("/__(.+?)__/", "<span class=\"underline\">\$1</span>
 $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</span>");
 
 /*
- * Original wordfilters
+ * Original wordfilters (Obsolete, this is the basic form of the newer version below)
  */
 // $config['wordfilters'][] = array('/trann(y|ie)?/i', 'transhumanist', true);
 // $config['wordfilters'][] = array('/nigger/i', 'uyghur', true);
 // $config['wordfilters'][] = array('/nigg/i', 'uygh', true);
-
-/*
- * board's proposed wordfilters - let's try them out (not committed yet)
- */
 
 /*
  * Traditional word filters. Expires 31-12-2021.
@@ -415,36 +411,88 @@ $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</s
  * So, there are too flags at the end of each regex pattern, the "im" at the end. Case Insensitive and Multiline
  * let's take the third one as an example.
  *
- * n+ [^a-z]* [il1|]+ [^a-z]* g+ [^a-z]* g+
+ * n+ [^a-z]* i+ [^a-z]* g+ [^a-z]* g+  ( [$x_alias] is just a set of common lookalike characters for x)
  *
  * Basic regex syntax: * means the preceeding element will be matched if it repeats 0 or more times. + will match 1 or more times
- *
  * so a+ matches cat or caaat
- * [] denotes a set of possible matches, so c[au]t matches 'cat' and 'cut'
- * if the first character in the set is ^, that inverts, so [^a-z] means any character that isn't in the alphabet
- * (we have the case insensitive flag so captials are included)
  *
- * so the [^a-z]* means that if someone does 'n..i..g..g', then the 0 or more non-alphabet
+ * [] denotes a set of possible matches, so c[au]t matches 'cat' and 'cut'
+ * [a-z] means any character from a to z and [^a-z] means any character that isn't in the alphabet (the starting ^ inverts the set)
+ * We have the case insensitive flag so captials are included.
+ *
+ * The [$n_alias]+ means that nnnnnnigg still matches due to repetition
+ * The [^a-z]* means that if someone does 'n..i..g..g', then the 0 or more non-alphabet padding
  * characters between the n, i, g, g are still matching. Note that it's 0 or more, not 1 or more, so 'nigg' still matches.
- * the [il1|] set is just common replacement characters for i that will be used in evasion. I'll add accents later.
  *
  * Example:
- * https://regex101.com/r/sZpAUf/1
+ * https://regex101.com/r/31wYx0/2
  *
  */
-$config['wordfilters'][] = array('/t+[^a-z]*r+[^a-z]*[a@4]+[^a-z]*n+[^a-z]*n+[^a-z]*(y+|[il1|]+[^a-z]*e+)?/im', 'transhumanist', true);
-$config['wordfilters'][] = array('/n+[^a-z]*[i1l|]+[^a-z]*g+[^a-z]*g+[^a-z]*e+[^a-z]*r+/im', 'uyghur', true);
-$config['wordfilters'][] = array('/n+[^a-z]*[il1|]+[^a-z]*g+[^a-z]*g+/im', 'uygh', true);
+$a_alias = 'a4@ÁÀȦÂÄǞǍĂĀÃÅǺǼǢáàȧâäǟǎăāãåǻǽǣĄA̧Ą̊ąa̧ą̊æɑÆⱭ';
+$g_alias = 'g6ǵġĝǧğg̃ǥɠǤƓǴĠĜǦĞG̃Ģ';
+$i_alias = 'i1L|ıɩįi̧ɨɨ̧ĮI̧ƗƗ̧íìiîïǐĭīĩịÍÌİÎÏǏĬĪĨỊĺļľŀḷḽ';
+$n_alias = 'nŋŉńn̂ṅn̈ňn̄ñņṋNŃN̂ṄN̈ŇN̄ÑŅṊ';
 
-// Filter for a soyjak bot
+$config['wordfilters'][] = array("/t+[^a-z]*r+[^a-z]*[$a_alias]+[^a-z]*[$n_alias]+[^a-z]*[$n_alias]+[^a-z]*(y+|[$i_alias]+[^a-z]*e+)?/im", 'transhumanist', true);
+$config['wordfilters'][] = array("/[$n_alias]+[^a-z]*[$i_alias]+[^a-z]*[$g_alias]+[^a-z]*[$g_alias]+[^a-z]*e+[^a-z]*r+/im", 'uyghur', true);
+$config['wordfilters'][] = array("/[$n_alias]+[^a-z]*[$i_alias]+[^a-z]*[$g_alias]+[^a-z]*[$g_alias]+/im", 'uygh', true);
+$config['wordfilters'][] = array('/troony?/im', 'transhumanist', true);
+
+
+/*
+ * Filters for diverting anorectal violence spammer
+ */
+$fakereason_ano = 'Due to automated child pornography and gore spam by /pol/, all posting now requires a pass.<br>To receive a one-week pass, email a short explanation of the Labor Theory of Value to space@national.shitposting.agency .';
 $config['filters'][] = array(
 	'condition' => array(
-		'!body' => '/(^[^>]|[\r\n][^>])/', // Greentexting only (does not contain non-greentext)
-		'filename' => '/^[a-z]+\.jpg/' // Only lowercase letters, .jpg
+		'subject'  => '/anorectal/i', // Typical thread subject used
 	),
 	'action' => 'reject',
-	'message' => 'Flood detected; Post discarded.'
+	'message' => "$fakereason_ano" 
 );
+$config['filters'][] = array(
+	'condition' => array(
+		'filename'  => '/(TAKE ACTION v|trends.*associations|anusporn|anal insanity|anorectal risks|TAv[0-9]+|arisks)/', // Typical opening filename format. Their usual evasion strategy is to post only the image.
+	),
+	'action' => 'reject',
+	'message' => "$fakereason_ano"
+);
+
+// Favorite names and buzzterms
+$config['filters'][] = array(
+	'condition' => array(
+		'body'  => '/(Rocco Siff|Evil Angel|Xavier Becerra|AdultDVDTalk|painal|Roughanal|anoreceptive|ltimately this is not about me|Logically-fallacious diversionary tactics)/',
+	),
+	'action' => 'reject',
+	'message' => "$fakereason_ano"
+);
+
+/*
+ * Filters for diverting TheThingN0ticer ban evader
+ */
+$fakereason_thing = 'Due to automated child pornography and gore spam by /pol/, all posting now requires a pass.<br>To receive a one-week pass, email a short explanation of the Labor Theory of Value to space@national.shitposting.agency .';
+event_handler('post', function($post) {
+	$fakereason_thing = 'Due to automated child pornography and gore spam by /pol/, all posting now requires a pass.<br>To receive a one-week pass, email a short explanation of the Labor Theory of Value to space@national.shitposting.agency .';
+
+	// Detects posts in the /ITG/ with the filename "Untitled.png" and a Nazi flag
+	if (!$post->op && $post->board == 'leftypol' && $post->thread == 110463 && $post->has_file &&
+		$post->files[0]->filename == 'Untitled.png' &&
+		strpos($post->body_nomarkup, "Nazi</tinyboard>") !== false) {  /* has Nazi flag, hack */
+		return $fakereason_thing;
+    // Detects posts with the Nazi flag and their favorite Twitter links
+	} else if (strpos($post->body_nomarkup, "Nazi</tinyboard>") !== false && /* has Nazi flag, hack */
+		preg_match('/\/(WokeCapital|NickJFuentes|af_clips)/', $post->body)) {
+		return $fakereason_thing;	
+	}
+});
+$config['filters'][] = array(
+	'condition' => array(
+		'name'  => '/Chauvinist/', // Current name as of April.
+	),
+	'action' => 'reject',
+	'message' => $fakereason_thing
+);
+
 
 // Changes made via web editor by "zul_admin" @ Fri, 19 Feb 2021 15:06:33 -0800:
 $config['reply_limit'] = 800;
