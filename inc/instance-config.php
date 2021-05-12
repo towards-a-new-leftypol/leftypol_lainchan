@@ -434,14 +434,16 @@ $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</s
  *
  */
 $a_alias = 'a4@ÁÀȦÂÄǞǍĂĀÃÅǺǼǢáàȧâäǟǎăāãåǻǽǣĄA̧Ą̊ąa̧ą̊æɑÆⱭ';
-$g_alias = 'g6ǵġĝǧğg̃ǥɠǤƓǴĠĜǦĞG̃Ģ';
+$g_alias = 'gǵġĝǧğg̃ǥɠǤƓǴĠĜǦĞG̃Ģ';
 $i_alias = 'i1L|ıɩįi̧ɨɨ̧ĮI̧ƗƗ̧íìiîïǐĭīĩịÍÌİÎÏǏĬĪĨỊĺļľŀḷḽ';
 $n_alias = 'nŋŉńn̂ṅn̈ňn̄ñņṋNŃN̂ṄN̈ŇN̄ÑŅṊ';
 
-$config['wordfilters'][] = array("/t+[^a-z]*r+[^a-z]*[$a_alias]+[^a-z]*[$n_alias]+[^a-z]*[$n_alias]+[^a-z]*(y+|[$i_alias]+[^a-z]*e+)?/im", 'transhumanist', true);
-$config['wordfilters'][] = array("/[$n_alias]+[^a-z]*[$i_alias]+[^a-z]*[$g_alias]+[^a-z]*[$g_alias]+[^a-z]*e+[^a-z]*r+/im", 'uyghur', true);
-$config['wordfilters'][] = array("/[$n_alias]+[^a-z]*[$i_alias]+[^a-z]*[$g_alias]+[^a-z]*[$g_alias]+/im", 'uygh', true);
-$config['wordfilters'][] = array('/troony?/im', 'transhumanist', true);
+$config['wordfilters'][] = array('/TRANN(Y|IE)?/', 'TRANSHUMANIST', true);
+$config['wordfilters'][] = array('/NIGGA/', 'UYGHA', true);
+$config['wordfilters'][] = array('/NIGGER/', 'UYGHUR', true);
+$config['wordfilters'][] = array("/t+[^a-z]*r+[^a-z0-9]*[$a_alias]+[^a-z0-9]*[$n_alias]+[^a-z0-9]*[$n_alias]+[^a-z0-9]*(y+|[$i_alias]+[^a-z0-9]*[e3]+)?/im", 'transhumanist', true);
+$config['wordfilters'][] = array("/[$n_alias]+[^a-z0-9]*[$i_alias]+[^a-z0-9]*[$g_alias]+[^a-z0-9]*[$g_alias]+[^a-z0-9]*[e3]+[^a-z0-9]*r+/im", 'uyghur', true);
+$config['wordfilters'][] = array("/[$n_alias]+[^a-z0-9]*[$i_alias]+[^a-z0-9]*[$g_alias]+[^a-z0-9]*[$g_alias]+/im", 'uygh', true);
 
 
 /*
