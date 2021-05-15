@@ -49,6 +49,22 @@ Requires $config[\'categories\'].';
 		'default' => 'news.html',
 		'comment' => '(eg. "news.html")'
 	);
+
+	$theme['config'][] = Array(
+		'title' => 'FAQ file',
+		'name' => 'file_faq',
+		'type' => 'text',
+		'default' => 'faq.html',
+		'comment' => '(eg. "faq.html")'
+	);
+
+	$theme['config'][] = Array(
+		'title' => 'Rules file',
+		'name' => 'file_rules',
+		'type' => 'text',
+		'default' => 'rules.html',
+		'comment' => '(eg. "rules.html")'
+	);
 	
 	// Unique function name for building everything
 	$theme['build_function'] = 'categories_build';
