@@ -31,6 +31,7 @@
  * =======================
  */
 
+    // Enables captcha
     $config['securimage'] = false;
 
     // Global announcement -- the very simple version.
