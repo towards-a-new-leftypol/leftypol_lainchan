@@ -444,6 +444,7 @@ $config['wordfilters'][] = array('/NIGGER/', 'UYGHUR', true);
 $config['wordfilters'][] = array("/t[^\p{L}0-9]*r+[^\p{L}0-9]*[$a_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*(y|[$i_alias]+[^\p{L}0-9]*[e3]+)?/im", 'transhumanist', true);
 $config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[e3]+[^\p{L}0-9]*r/im", 'uyghur', true);
 $config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+/im", 'uygh', true);
+$config['wordfilters'][] = array('/ewish uyghur/i', 'ewish nigger', true);
 
 
 /*
