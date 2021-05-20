@@ -441,9 +441,9 @@ $n_alias = 'nŋŉńn̂ṅn̈ňn̄ñņṋNŃN̂ṄN̈ŇN̄ÑŅṊ';
 $config['wordfilters'][] = array('/TRANN(Y|IE)?/', 'TRANSHUMANIST', true);
 $config['wordfilters'][] = array('/NIGGA/', 'UYGHA', true);
 $config['wordfilters'][] = array('/NIGGER/', 'UYGHUR', true);
-$config['wordfilters'][] = array("/t[^a-z0-9]*r+[^a-z0-9]*[$a_alias]+[^a-z0-9]*[$n_alias]+[^a-z0-9]*[$n_alias]+[^a-z0-9]*(y|[$i_alias]+[^a-z0-9]*[e3]+)?/im", 'transhumanist', true);
-$config['wordfilters'][] = array("/[$n_alias][^a-z0-9]*[$i_alias]+[^a-z0-9]*[$g_alias]+[^a-z0-9]*[$g_alias]+[^a-z0-9]*[e3]+[^a-z0-9]*r/im", 'uyghur', true);
-$config['wordfilters'][] = array("/[$n_alias][^a-z0-9]*[$i_alias]+[^a-z0-9]*[$g_alias]+[^a-z0-9]*[$g_alias]+/im", 'uygh', true);
+$config['wordfilters'][] = array("/t[^\p{L}0-9]*r+[^\p{L}0-9]*[$a_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*(y|[$i_alias]+[^\p{L}0-9]*[e3]+)?/im", 'transhumanist', true);
+$config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[e3]+[^\p{L}0-9]*r/im", 'uyghur', true);
+$config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+/im", 'uygh', true);
 
 
 /*
