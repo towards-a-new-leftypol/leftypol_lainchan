@@ -413,8 +413,9 @@ $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</s
 /*
  * Traditional word filters. Expires 31-12-2021.
  *
- * So, there are too flags at the end of each regex pattern, the "im" at the end. Case Insensitive and Multiline
- * let's take the third one as an example.
+ * So, there are three flags at the end of each regex pattern, the "imu" at the end:
+ * Case Insensitive, Multiline and UTF-8 (to avoid breaking non-English posts)
+ * Let's take the nigg filter as an example.
  *
  * n+ [^a-z]* i+ [^a-z]* g+ [^a-z]* g+  ( [$x_alias] is just a set of common lookalike characters for x)
  *
@@ -429,21 +430,24 @@ $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</s
  * The [^a-z]* means that if someone does 'n..i..g..g', then the 0 or more non-alphabet padding
  * characters between the n, i, g, g are still matching. Note that it's 0 or more, not 1 or more, so 'nigg' still matches.
  *
+ * [\p{L}] is a pre-made class of unicode letters (so for example an a with an accent is included)
+ *
  * Example:
  * https://regex101.com/r/31wYx0/2
  *
  */
-$a_alias = 'a4@ÁÀȦÂÄǞǍĂĀÃÅǺǼǢáàȧâäǟǎăāãåǻǽǣĄA̧Ą̊ąa̧ą̊æɑÆⱭ';
-$g_alias = 'gǵġĝǧğg̃ǥɠǤƓǴĠĜǦĞG̃Ģ';
-$i_alias = 'i1L|ıɩįi̧ɨɨ̧ĮI̧ƗƗ̧íìiîïǐĭīĩịÍÌİÎÏǏĬĪĨỊĺļľŀḷḽ';
-$n_alias = 'nŋŉńn̂ṅn̈ňn̄ñņṋNŃN̂ṄN̈ŇN̄ÑŅṊ';
+$a_alias = 'a4@ÁÀȦÂÄǞǍĂĀÃÅǺǼǢáàȧâäǟǎăāãåǻǽǣĄĄ̊ąą̊æɑÆⱭ';
+$g_alias = 'gǵġĝǧğǥɠǤƓǴĠĜǦĞĢ';
+$i_alias = 'i1L||ıɩįɨɨ̧ĮƗƗ̧íìîïǐĭīĩịÍÌİÎÏǏĬĪĨỊĺļľŀḷḽ';
+$n_alias = 'nŋŉńṅňñņṋŃṄŇÑŅṊ';
 
 $config['wordfilters'][] = array('/TRANN(Y|IE)?/', 'TRANSHUMANIST', true);
 $config['wordfilters'][] = array('/NIGGA/', 'UYGHA', true);
 $config['wordfilters'][] = array('/NIGGER/', 'UYGHUR', true);
-$config['wordfilters'][] = array("/t[^a-z0-9]*r+[^a-z0-9]*[$a_alias]+[^a-z0-9]*[$n_alias]+[^a-z0-9]*[$n_alias]+[^a-z0-9]*(y|[$i_alias]+[^a-z0-9]*[e3]+)?/im", 'transhumanist', true);
-$config['wordfilters'][] = array("/[$n_alias][^a-z0-9]*[$i_alias]+[^a-z0-9]*[$g_alias]+[^a-z0-9]*[$g_alias]+[^a-z0-9]*[e3]+[^a-z0-9]*r/im", 'uyghur', true);
-$config['wordfilters'][] = array("/[$n_alias][^a-z0-9]*[$i_alias]+[^a-z0-9]*[$g_alias]+[^a-z0-9]*[$g_alias]+/im", 'uygh', true);
+$config['wordfilters'][] = array("/t[^\p{L}0-9]*r+[^\p{L}0-9]*[$a_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*(y|[$i_alias]+[^\p{L}0-9]*[e3]+)?/imu", 'transhumanist', true);
+$config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[e3]+[^\p{L}0-9]*r/imu", 'uyghur', true);
+$config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+/imu", 'uygh', true);
+$config['wordfilters'][] = array('/ewish uyghur/i', 'ewish nigger', true);
 
 
 /*
