@@ -92,6 +92,14 @@
         {
             $b->buildRand();
         }
+        // FIXME: Check that sfwoverboard is actually enabled
+        if ($settings['enable_sfwoverboard'] && (
+            $action === 'all' || $action === 'post' ||
+            $action === 'post-thread' || $action === 'post-delete' || $action === 'rebuild'))
+        {
+            $b->buildsfwoverboard();
+        }
+
     }
 
     // Wrap functions in a class so they don't interfere with normal Tinyboard operations
@@ -297,7 +305,43 @@
             $recent_posts = $this->generateRecentPosts($threads);
 
             $this->saveForBoard($randSettings['uri'], $recent_posts,
-                $config['root'] . $randSettings['uri']);
+                $config['root'] . $randSettings['uri'], true);
+        }
+        public function buildsfwoverboard() {
+            global $config;
+            print_err("Catalog.buildsfwoverboard");
+
+            $sfwoverboardSettings = themeSettings('sfwoverboard');
+            $queries = array();
+            $threads = array();
+
+            $exclusions = explode(' ', $sfwoverboardSettings['exclude']);
+            $boards = array_diff(listBoards(true), $exclusions);
+
+            foreach ($boards as $b) {
+                if (array_key_exists($b, $this->threadsCache)) {
+                    $threads = array_merge($threads, $this->threadsCache[$b]);
+                } else {
+                    $queries[] = $this->buildThreadsQuery($b);
+                }
+            }
+
+            // Fetch threads from boards that haven't beenp processed yet
+            if (!empty($queries)) {
+                $sql = implode(' UNION ALL ', $queries);
+                $res = query($sql) or error(db_error());
+                $threads = array_merge($threads, $res->fetchAll(PDO::FETCH_ASSOC));
+            }
+
+            // Sort in bump order
+            usort($threads, function($a, $b) {
+                return strcmp($b['bump'], $a['bump']);
+            });
+            // Generate data for the template
+            $recent_posts = $this->generateRecentPosts($threads);
+
+            $this->saveForBoard($sfwoverboardSettings['uri'], $recent_posts,
+                $config['root'] . $sfwoverboardSettings['uri'], true);
         }
 
         /**
