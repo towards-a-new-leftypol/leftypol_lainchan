@@ -353,6 +353,7 @@ $config['additional_javascript'][] = 'js/auto-scroll.js';
 $config['additional_javascript'][] = 'js/thread-stats.js';
 $config['additional_javascript'][] = 'js/post-hover.js';
 $config['additional_javascript'][] = 'js/style-select.js';
+$config['additional_javascript'][] = 'js/flag-preview.js';
 
 $config['additional_javascript'][] = 'js/hide-threads.js';
 $config['additional_javascript'][] = 'js/hide-images.js';
@@ -376,6 +377,8 @@ $config['additional_javascript'][] = 'js/save-user_flag.js';
 $config['additional_javascript'][] = 'js/webm-settings.js';
 $config['additional_javascript'][] = 'js/expand-video.js';
 $config['additional_javascript'][] = 'js/download-original.js';
+
+$config['flag_preview'] = true;
 
 $config['enable_embedding'] = true;
 
