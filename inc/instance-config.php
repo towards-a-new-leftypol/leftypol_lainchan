@@ -224,6 +224,7 @@ $config['user_flags'] = array (
     'dprk' => 'DPRK',
     'egalitarianism' => 'Egalitarianism',
     'egoism' => 'Egoism',
+    'eristocracy' => 'Έριστοκρατία',
     'eureka' => 'Eureka',
     'eurocommunism' => 'Eurocommunism',
     'farc' => 'Las FARC',
