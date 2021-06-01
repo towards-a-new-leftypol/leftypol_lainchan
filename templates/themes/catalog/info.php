@@ -77,13 +77,6 @@
 		'comment' => 'Enable catalog for the Rand theme. This requires the Rand theme to be enabled.'
 	);
 	$theme['config'][] = Array(
-		'title' => 'Enable SFW overboard catalog',
-		'name' => 'enable_sfwoverboard',
-		'type' => 'checkbox',
-		'default' => false,
-		'comment' => 'Enable catalog for the sfwoverboard theme. This requires the sfwoverboard theme to be enabled.'
-	);
-	$theme['config'][] = Array(
 		'title' => 'Use tooltipster',
 		'name' => 'use_tooltipster',
 		'type' => 'checkbox',
