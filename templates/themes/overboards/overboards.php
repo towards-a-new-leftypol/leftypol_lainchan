@@ -1,7 +1,8 @@
 <?php
 
-/* When adding a new board, rebuild this theme. If necessary, reconfigure the catalog theme.
- *
+/*
+ * When adding a new board, rebuild this theme. If necessary, reconfigure the catalog theme.
+ * Exclude list is space-separated (e.g. 'exclude' => 'b games music' )
  */
 	$thread_limit = 15;
 
