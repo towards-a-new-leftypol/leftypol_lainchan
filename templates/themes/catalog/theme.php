@@ -60,7 +60,7 @@
                 $b->build($settings, $board);
                 if(isset($settings['has_overboard']) && $settings['has_overboard']) {
                     foreach ($overboards_config as &$overboard) {
-                        if ($overboard['uri'] == board) {
+                        if ($overboard['uri'] == $board) {
                             $exclusions = explode(' ', $overboard['exclude']);
                             $included_boards = array_diff(listBoards(true), $exclusions);
                             $b->buildOverboardCatalog($board, $settings, $included_boards);
