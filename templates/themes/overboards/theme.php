@@ -39,8 +39,8 @@
 	 */
 	class overboards {
 		private $settings;
-//TODO review if appropriate uses of pass by ref (&$)
-		function __construct(&$settings) {
+
+		function __construct($settings) {
 			$this->settings = $this->parseSettings($settings);
 		}
 
@@ -54,7 +54,6 @@
 					error('Invalid configuration parameters.', true);
 				}
 
-				$overboard['exclude']      = explode(' ', $overboard['exclude']);
 				$overboard['thread_limit'] = intval($overboard['thread_limit']);
 
 				if ($overboard['thread_limit'] < 1)
@@ -229,4 +228,5 @@
 			return $result;
 		}
 	}
+
 
