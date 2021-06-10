@@ -49,17 +49,20 @@
 		 */
 		private function parseSettings(&$settings) {
 			foreach ($settings as &$overboard) {
-				if (!is_numeric($overboard['thread_limit']))
+				if (!is_int($overboard['thread_limit']) || $overboard['thread_limit'] < 1)
 				{
-					error('Invalid configuration parameters.', true);
+					error('thread_limit must be an integer above 1.', true);
 				}
-
-				$overboard['thread_limit'] = intval($overboard['thread_limit']);
-
-				if ($overboard['thread_limit'] < 1)
+				if (!is_array($overboard['exclude'])) 
 				{
-					error('Invalid configuration parameters.', true);
+					error('Exclude list must be array of strings.', true);
 				}
+				foreach ($overboard['exclude'] as &$board) {
+					if (!is_string($board)){
+						error('Exclude list must be array of strings.', true);
+					}
+				}
+					
 			}
 
 			return $settings;
