@@ -1,10 +1,8 @@
 <?php
     require 'info.php';
-    require_once 'inc/anti-bot.php'; // DELETE ME THIS IS FOR print_err function only!
 
     function catalog_build($action, $settings, $board) {
         global $config;
-        print_err("catalog_build!");
 
         $b = new Catalog($settings);
         $boards = explode(' ', $settings['boards']);
@@ -21,9 +19,7 @@
         //  - post (a reply has been made)
         //  - post-thread (a thread has been made)
         if ($action === 'all') {
-            print_err("action is all");
             foreach ($boards as $board) {
-                print_err("board " . $board);
                 $action = generation_strategy("sb_catalog", array($board));
                 if ($action == 'delete') {
                     file_unlink($config['dir']['home'] . $board . '/catalog.html');
@@ -48,26 +44,17 @@
             }
         } elseif ($action == 'post-thread' || ($settings['update_on_posts'] && $action == 'post') || ($settings['update_on_posts'] && $action == 'post-delete')
         || $action == 'sticky' || ($action == 'lock' && in_array($board, $boards))) {
-            print_err("action is " . $action);
             $b = new Catalog($settings);
 
             $action = generation_strategy("sb_catalog", array($board));
-            print_err("action (new) is " . $action);
             if ($action == 'delete') {
                 file_unlink($config['dir']['home'] . $board . '/catalog.html');
                 file_unlink($config['dir']['home'] . $board . '/index.rss');
             }
             elseif ($action == 'rebuild') {
                 $b->build($settings, $board);
-                print_err("action is rebuild. board is: " . $board);
-                print_err("has_overboard is set: " . isset($settings['has_overboard']));
-                print_err("has_overboard:" . $settings['has_overboard']);
                 if(isset($settings['has_overboard']) && $settings['has_overboard']) {
                     foreach ($overboards_config as &$overboard) {
-                        print_err("current overboard:");
-                        print_err(json_encode($overboard));
-                        print_err($overboard['uri']);
-                        print_err($board);
                         $included_boards = array_diff(listBoards(true), $overboard['exclude']);
                         $b->buildOverboardCatalog($overboard['uri'], $settings, $included_boards);
                     }
@@ -121,7 +108,6 @@
 
         public function __construct($settings) {
             $this->settings = $settings;
-            print_err("Catalog constructor");
         }
 
         /**
@@ -357,7 +343,6 @@
          */
         public function buildOverboardCatalog($board_name, $settings, $boards) {
             global $config;
-            print_err("buildOverboardCatalog!");
 
             if (array_key_exists($board_name, $this->threadsCache)) {
                 $threads = $this->threadsCache[$board_name];
@@ -379,7 +364,6 @@
             // Generate data for the template
             $recent_posts = $this->generateRecentPosts($threads);
 
-            print_err("calling saveForBoard");
             $this->saveForBoard($board_name, $recent_posts,  '/' . $board_name, true);
 
             // Build the overboard JSON outputs
@@ -503,7 +487,6 @@
                 $template_config['no_post_form'] = true;
             }
 
-            print_err("writing file " . $config['dir']['home'] . $board_name . '/catalog.html');
             file_write($config['dir']['home'] . $board_name . '/catalog.html', Element('themes/catalog/catalog.html', $template_config));
 
             file_write($config['dir']['home'] . $board_name . '/index.rss', Element('themes/catalog/index.rss', Array(
