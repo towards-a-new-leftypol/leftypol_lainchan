@@ -84,18 +84,11 @@
 		'comment' => 'Check this if you wish to show a nice tooltip with info about the thread on mouse over.'
 	);
 	$theme['config'][] = Array(
-		'title' => 'Build overboard catalog',
+		'title' => 'Build overboard catalogs',
 		'name' => 'has_overboard',
 		'type' => 'checkbox',
 		'default' => false,
-		'comment' => 'Check this if you wish to create a catalog for the overboard.'
-	);
-	$theme['config'][] = Array(
-		'title' => 'Overboard location (default \'overboard\')',
-		'name' => 'overboard_location',
-		'type' => 'text',
-		'default' => 'overboard',
-		'comment' => 'Fill in the location of the overboard directory. Default is \'overboard\' which corresponds to ./overboard'
+		'comment' => 'Check this if you wish to create a catalog for the overboard. Requires Overboards theme.'
 	);
 	$theme['config'][] = Array(
 		'title' => 'Max posts in catalog overboard',
