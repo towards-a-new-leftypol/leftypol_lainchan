@@ -9,6 +9,11 @@
         $b = new Catalog($settings);
         $boards = explode(' ', $settings['boards']);
 
+        if (isset($settings['has_overboard']) && $settings['has_overboard']) {
+            // Include overboard settings so that we can find them all and process exclusions
+            require "templates/themes/overboards/overboards.php";
+        }
+
         // Possible values for $action:
         //  - all (rebuild everything, initialization)
         //  - news (news has been updated)
@@ -28,14 +33,16 @@
                 }
             }
             if(isset($settings['has_overboard']) && $settings['has_overboard']) {
-                $board = $settings['overboard_location'];
-                $action = generation_strategy("sb_catalog", array($board));
-                if ($action == 'delete') {
-                    file_unlink($config['dir']['home'] . $board . '/catalog.html');
-                    file_unlink($config['dir']['home'] . $board . '/index.rss');
-                }
-                elseif ($action == 'rebuild') {
-                    $b->buildOverboardCatalog($settings, $boards);
+                foreach ($overboards_config as &$overboard) {
+                    $included_boards = array_diff(listBoards(true), $overboard['exclude']);
+                    $action = generation_strategy("sb_catalog", array($overboard));
+                    if ($action == 'delete') {
+                        file_unlink($config['dir']['home'] . $overboard . '/catalog.html');
+                        file_unlink($config['dir']['home'] . $overboard . '/index.rss');
+                    }
+                    elseif ($action == 'rebuild') {
+                        $b->buildOverboardCatalog($overboard['uri'], $settings, $included_boards);
+                    }
                 }
             }
         } elseif ($action == 'post-thread' || ($settings['update_on_posts'] && $action == 'post') || ($settings['update_on_posts'] && $action == 'post-delete')
@@ -51,7 +58,12 @@
                 print_err("catalog_build calling Catalog.build 2");
                 $b->build($settings, $board);
                 if(isset($settings['has_overboard']) && $settings['has_overboard']) {
-                    $b->buildOverboardCatalog($settings, $boards);
+                    foreach ($overboards_config as &$overboard) {
+                        if ($overboard['uri'] == $board) {
+                            $included_boards = array_diff(listBoards(true), $overboard['exclude']);
+                            $b->buildOverboardCatalog($board, $settings, $included_boards);
+                        }
+                    }
                 }
             }
         }
@@ -297,7 +309,7 @@
             $recent_posts = $this->generateRecentPosts($threads);
 
             $this->saveForBoard($randSettings['uri'], $recent_posts,
-                $config['root'] . $randSettings['uri']);
+                $config['root'] . $randSettings['uri'], true);
         }
 
         /**
@@ -347,10 +359,8 @@
        /**
          * Build and save the HTML of the catalog for the overboard
          */
-        public function buildOverboardCatalog($settings, $boards) {
+        public function buildOverboardCatalog($board_name, $settings, $boards) {
             global $config;
-            
-            $board_name = $settings['overboard_location'];
 
             if (array_key_exists($board_name, $this->threadsCache)) {
                 $threads = $this->threadsCache[$board_name];
@@ -372,7 +382,7 @@
             // Generate data for the template
             $recent_posts = $this->generateRecentPosts($threads);
 
-            $this->saveForBoard($board_name, $recent_posts,  '/' . $settings['overboard_location'], true);
+            $this->saveForBoard($board_name, $recent_posts,  '/' . $board_name, true);
 
             // Build the overboard JSON outputs
             if ($config['api']['enabled']) {
