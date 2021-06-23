@@ -1,0 +1,59 @@
+/**
+ * dead.css, gray extension
+ * Clumps all rules into a few rules to determine the new accent color
+ */
+
+@import url("/stylesheets/dark.css");
+
+div.blotter, h1, h2, header div.subtitle, div.title, a:link:hover, a:visited:hover p.intro a.post_no:hover, 
+div.post.reply div.body a:link:hover, div.post.reply div.body a:visited:hover, p.intro span.name,
+p.intro a.email, p.intro a.email span.name, p.intro a.email:hover, p.intro a.email:hover span.name,
+input[type="submit"]:hover, div.ban h2 {
+	font-family: 'Times';
+	color: #888888;
+}
+
+p.intro span.subject {
+	color: #5C5C5C;
+}
+
+.quote, span.orangeQuote, span.heading {
+	color:#CDCDCD;
+}
+
+input[type="submit"]:hover {
+	background: #555555;
+	border: #888888 1px solid;
+	color: #CCCCCC;
+}
+
+div.banner {
+	background: #DDDDDD;
+}
+
+a:link {
+  font-family: 'Times';
+}
+
+body, div.pages {
+  font-family: 'Times';
+}
+
+button, input, input[type="submit"], input[type="text"], textarea, select {
+  font-family: 'Times';
+}
+
+input, textarea {
+	-webkit-filter: grayscale(100%) contrast(1.25); /* Chrome, Safari, Opera */
+	filter: grayscale(100%) contrast(1.25);
+}
+
+img {
+	-webkit-filter: grayscale(100%) contrast(1.25); /* Chrome, Safari, Opera */
+	filter: grayscale(100%) contrast(1.25);
+}
+
+video {
+	-webkit-filter: grayscale(100%) contrast(1.25); /* Chrome, Safari, Opera */
+	filter: grayscale(100%) contrast(1.25);
+}
