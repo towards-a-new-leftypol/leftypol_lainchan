@@ -110,6 +110,9 @@ $config['url_banner'] = '/banners.php';
 //Date format
 $config['post_date'] = '%F (%a) %T';
 
+//Page title
+$config['thread_subject_in_title'] = true;
+
 /*
  * Some users are having trouble posting when this is on,
  * with the message 'Your request looks automated; Post discarded.'
