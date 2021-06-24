@@ -48,7 +48,7 @@ input, textarea {
 	filter: grayscale(100%) contrast(1.25);
 }
 
-img {
+img, .file-tmb {
 	-webkit-filter: grayscale(100%) contrast(1.25); /* Chrome, Safari, Opera */
 	filter: grayscale(100%) contrast(1.25);
 }
