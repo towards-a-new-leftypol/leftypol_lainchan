@@ -440,16 +440,16 @@ $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</s
  * https://regex101.com/r/31wYx0/2
  *
  */
-$a_alias = 'a4@ÁÀȦÂÄǞǍĂĀÃÅǺǼǢáàȧâäǟǎăāãåǻǽǣĄĄ̊ąą̊æɑÆⱭ';
+$a_alias = 'a4@ÁÀȦÂÄǞǍĂĀÃÅǺǼǢáàȧâäǟǎăāãåǻǽǣĄĄ̊ąą̊æɑÆⱭАа';
 $g_alias = 'gǵġĝǧğǥɠǤƓǴĠĜǦĞĢ';
-$i_alias = 'i1L||ıɩįɨɨ̧ĮƗƗ̧íìîïǐĭīĩịÍÌİÎÏǏĬĪĨỊĺļľŀḷḽ';
+$i_alias = 'i1L||ıɩįɨɨ̧ĮƗƗ̧íìîïǐĭīĩịÍÌİÎÏǏĬĪĨỊĺļľŀḷḽІії';
 $n_alias = 'nŋŉńṅňñņṋŃṄŇÑŅṊ';
 
 $config['wordfilters'][] = array('/TRANN(Y|IE)?/', 'TRANSHUMANIST', true);
 $config['wordfilters'][] = array('/NIGGA/', 'UYGHA', true);
 $config['wordfilters'][] = array('/NIGGER/', 'UYGHUR', true);
-$config['wordfilters'][] = array("/t[^\p{L}0-9]*r+[^\p{L}0-9]*[$a_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*(y|[$i_alias]+[^\p{L}0-9]*[e3]+)?/imu", 'transhumanist', true);
-$config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[e3]+[^\p{L}0-9]*r/imu", 'uyghur', true);
+$config['wordfilters'][] = array("/t[^\p{L}0-9]*r+[^\p{L}0-9]*[$a_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*(y|[$i_alias]+[^\p{L}0-9]*[e3е]+)?/imu", 'transhumanist', true);
+$config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[e3е]+[^\p{L}0-9]*r/imu", 'uyghur', true);
 $config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+/imu", 'uygh', true);
 $config['wordfilters'][] = array('/ewish uyghur/i', 'ewish nigger', true);
 
@@ -459,27 +459,27 @@ $config['wordfilters'][] = array('/ewish uyghur/i', 'ewish nigger', true);
  */
 $fakereason_ano = 'Due to automated child pornography and gore spam by /pol/, all posting now requires a pass.<br>To receive a one-week pass, email a short explanation of the Labor Theory of Value to space@national.shitposting.agency .';
 $config['filters'][] = array(
-	'condition' => array(
-		'subject'  => '/anorectal/i', // Typical thread subject used
-	),
-	'action' => 'reject',
-	'message' => "$fakereason_ano" 
+    'condition' => array(
+        'subject'  => '/anorectal/i', // Typical thread subject used
+    ),
+    'action' => 'reject',
+    'message' => "$fakereason_ano" 
 );
 $config['filters'][] = array(
-	'condition' => array(
-		'filename'  => '/(TAKE ACTION v|trends.*associations|anusporn|anal insanity|anorectal risks|TAv[0-9]+|arisks)/', // Typical opening filename format. Their usual evasion strategy is to post only the image.
-	),
-	'action' => 'reject',
-	'message' => "$fakereason_ano"
+    'condition' => array(
+        'filename'  => '/(TAKE ACTION v|trends.*associations|anusporn|anal insanity|anorectal risks|TAv[0-9]+|arisks)/', // Typical opening filename format. Their usual evasion strategy is to post only the image.
+    ),
+    'action' => 'reject',
+    'message' => "$fakereason_ano"
 );
 
 // Favorite names and buzzterms
 $config['filters'][] = array(
-	'condition' => array(
-		'body'  => '/(Rocco Siff|Evil Angel|Xavier Becerra|AdultDVDTalk|painal|Roughanal|anoreceptive|ltimately this is not about me|Logically-fallacious diversionary tactics)/',
-	),
-	'action' => 'reject',
-	'message' => "$fakereason_ano"
+    'condition' => array(
+        'body'  => '/(Rocco Siff|Evil Angel|Xavier Becerra|AdultDVDTalk|painal|Roughanal|anoreceptive|ltimately this is not about me|Logically-fallacious diversionary tactics)/',
+    ),
+    'action' => 'reject',
+    'message' => "$fakereason_ano"
 );
 
 /*
@@ -488,19 +488,19 @@ $config['filters'][] = array(
 event_handler('post', function($post, $tor) {
     if($post->board == 'leftypol'){
     // note: just posting nazi flag with name doesn't trigger, on purpose
-	$n = 0;
-	// body is just a twitter account
-	if(preg_match('/^https:\/\/twitter\.com\/[a-zA-Z0-9_-]+\/?(<tinyboard[^>]*>[^<]*<\/tinyboard>|<[^>]*>|\s)*$/',
-	                $post->body_nomarkup)){$n+=2;}
-	if($post->has_file && $post->files[0]->filename == 'Untitled.png'){$n+=2;}
-	if($post->name != 'Anonymous'){$n++;}
-	if(strpos($post->body_nomarkup,'<tinyboard flag>nazi</tinyboard>')){$n++;}
-	
-	if($n > 2){
-		if($tor){return 'Your IP address is posting too quickly.';}
-		return 'Your IP address is listed in multirbl.efnetrbl.org.';
-	}
-	}
+    $n = 0;
+    // body is just a twitter account
+    if(preg_match('/^https:\/\/twitter\.com\/[a-zA-Z0-9_-]+\/?(<tinyboard[^>]*>[^<]*<\/tinyboard>|<[^>]*>|\s)*$/',
+                    $post->body_nomarkup)){$n+=2;}
+    if($post->has_file && $post->files[0]->filename == 'Untitled.png'){$n+=2;}
+    if($post->name != 'Anonymous'){$n++;}
+    if(strpos($post->body_nomarkup,'<tinyboard flag>nazi</tinyboard>')){$n++;}
+    
+    if($n > 2){
+        if($tor){return 'Your IP address is posting too quickly.';}
+        return 'Your IP address is listed in multirbl.efnetrbl.org.';
+    }
+    }
 });
 
 
