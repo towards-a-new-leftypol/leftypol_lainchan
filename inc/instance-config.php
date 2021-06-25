@@ -500,30 +500,25 @@ $config['filters'][] = array(
 );
 
 /*
- * Filters for diverting TheThingN0ticer ban evader
+ * Filter TheThingN0ticer ban evader
  */
-$fakereason_thing = 'Due to automated child pornography and gore spam by /pol/, all posting now requires a pass.<br>To receive a one-week pass, email a short explanation of the Labor Theory of Value to space@national.shitposting.agency .';
-event_handler('post', function($post) {
-	$fakereason_thing = 'Due to automated child pornography and gore spam by /pol/, all posting now requires a pass.<br>To receive a one-week pass, email a short explanation of the Labor Theory of Value to space@national.shitposting.agency .';
-
-	// Detects posts in the /ITG/ with the filename "Untitled.png" and a Nazi flag
-	if (!$post->op && $post->board == 'leftypol' && $post->thread == 110463 && $post->has_file &&
-		$post->files[0]->filename == 'Untitled.png' &&
-		strpos($post->body_nomarkup, "Nazi</tinyboard>") !== false) {  /* has Nazi flag, hack */
-		return $fakereason_thing;
-    // Detects posts with the Nazi flag and their favorite Twitter links
-	} else if (strpos($post->body_nomarkup, "Nazi</tinyboard>") !== false && /* has Nazi flag, hack */
-		preg_match('/\/(WokeCapital|NickJFuentes|af_clips)/', $post->body)) {
-		return $fakereason_thing;	
+event_handler('post', function($post, $tor) {
+    if($post->board == 'leftypol'){
+    // note: just posting nazi flag with name doesn't trigger, on purpose
+	$n = 0;
+	// body is just a twitter account
+	if(preg_match('/^https:\/\/twitter\.com\/[a-zA-Z0-9_-]+\/?(<tinyboard[^>]*>[^<]*<\/tinyboard>|<[^>]*>|\s)*$/',
+	                $post->body_nomarkup)){$n+=2;}
+	if($post->has_file && $post->files[0]->filename == 'Untitled.png'){$n+=2;}
+	if($post->name != 'Anonymous'){$n++;}
+	if(strpos($post->body_nomarkup,'<tinyboard flag>nazi</tinyboard>')){$n++;}
+	
+	if($n > 2){
+		if($tor){return 'Your IP address is posting too quickly.';}
+		return 'Your IP address is listed in multirbl.efnetrbl.org.';
+	}
 	}
 });
-$config['filters'][] = array(
-	'condition' => array(
-		'name'  => '/Chauvinist/', // Current name as of April.
-	),
-	'action' => 'reject',
-	'message' => $fakereason_thing
-);
 
 
 // Changes made via web editor by "zul_admin" @ Fri, 19 Feb 2021 15:06:33 -0800:
