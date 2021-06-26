@@ -351,6 +351,7 @@ $config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
 $config['additional_javascript'][] = 'js/ajax.js';
 
 $config['additional_javascript'][] = 'js/options.js';
+$config['additional_javascript'][] = 'js/strftime.min.js';
 $config['additional_javascript'][] = 'js/local-time.js';
 $config['additional_javascript'][] = 'js/auto-reload.js';
 $config['additional_javascript'][] = 'js/auto-scroll.js';
