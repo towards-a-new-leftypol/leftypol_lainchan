@@ -26,7 +26,7 @@ function updatePreviewWithSelected(img, select) {
 	img.attr("src", getFlagUrl(select.find(":selected").val()));
 }
 
-onready(function(){
+$(document).ready(function(){
 	var flagImg = $('#flag_preview');
 	var flagSelect = $('#user_flag');
 	var loaded = loadFlag();

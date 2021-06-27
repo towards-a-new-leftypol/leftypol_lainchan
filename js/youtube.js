@@ -23,7 +23,7 @@
 */
 
 
-onready(function(){
+$(document).ready(function(){
 	const ON = "[Remove]";
 	const OFF = "[Embed]";
 

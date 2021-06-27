@@ -13,7 +13,7 @@
  *
  */
 
-onready(function(){
+$(document).ready(function () {
 	var dont_fetch_again = [];
 	init_hover = function() {
 		var $link = $(this);

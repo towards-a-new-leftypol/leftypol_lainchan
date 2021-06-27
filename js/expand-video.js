@@ -216,7 +216,7 @@ function setupVideosIn(element) {
     }
 }
 
-onready(function(){
+$(document).ready(function(){
     // Insert menu from settings.js
     if (typeof settingsMenu != "undefined" && typeof Options == "undefined") {
 	var firsthr = document.getElementsByTagName("hr")[0];
