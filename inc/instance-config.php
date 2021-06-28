@@ -489,16 +489,16 @@ event_handler('post', function($post, $tor) {
     if($post->board == 'leftypol'){
     // note: just posting nazi flag with name doesn't trigger, on purpose
     $n = 0;
-    // body is just a twitter account
-    if(preg_match('/^https:\/\/twitter\.com\/[a-zA-Z0-9_-]+\/?(<tinyboard[^>]*>[^<]*<\/tinyboard>|<[^>]*>|\s)*$/',
+    // body is just a twitter account (or has ?lang=en or something)
+    if(preg_match('/^(https:\/\/)?(www.|m(obile)?.)?twitter\.com\/[a-zA-Z0-9_-]+\/?[#?&a-zA-Z0-9=_-]*(<tinyboard[^>]*>[^<]*<\/tinyboard>|<[^>]*>|\s)*$/',
                     $post->body_nomarkup)){$n+=2;}
-    if($post->has_file && $post->files[0]->filename == 'Untitled.png'){$n+=2;}
-    if($post->name != 'Anonymous'){$n++;}
+    if($post->has_file && preg_match('/^Untitled[0-9]*.png/', $post->files[0]->filename)){$n+=2;}
+    if($post->name != 'Anonymous'){$n++; if($post->name == 'NasheedsSeedAndFeed'){$n+=2;}}
     if(strpos($post->body_nomarkup,'<tinyboard flag>nazi</tinyboard>')){$n++;}
     
     if($n > 2){
-        if($tor){return 'Your IP address is posting too quickly.';}
-        return 'Your IP address is listed in multirbl.efnetrbl.org.';
+        if($tor){return 'Flood detected; Post discarded.';}
+        return 'Your IP address is listed in multirbl or rbl.efnetrbl.org.';
     }
     }
 });
