@@ -151,6 +151,7 @@ $config['max_images'] = 5;
 $config['image_reject_repost'] = false;
 
 $config['thumb_method'] = 'gm+gifsicle';
+$config['thumb_ext'] = 'webp';
 $config['gnu_md5'] = '1';
 // $config['update_on_posts'] = true;
 $config['referer_match'] = false;
