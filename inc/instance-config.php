@@ -109,6 +109,9 @@ $config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
 //Banners
 $config['url_banner'] = '/banners.php';
 
+//Logo location for themes
+$config['logo'] = 'static/leftypol_logo.png';
+
 //Date format
 $config['post_date'] = '%F (%a) %T';
 
