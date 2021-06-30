@@ -370,6 +370,7 @@ $config['additional_javascript'][] = 'js/auto-reload.js';
 $config['additional_javascript'][] = 'js/auto-scroll.js';
 $config['additional_javascript'][] = 'js/thread-stats.js';
 $config['additional_javascript'][] = 'js/post-hover.js';
+$config['additional_javascript'][] = 'js/image-hover.js';
 $config['additional_javascript'][] = 'js/style-select.js';
 $config['additional_javascript'][] = 'js/flag-preview.js';
 
