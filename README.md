@@ -9,12 +9,14 @@ improvements.
 
 Requirements
 ------------
-1.	PHP >= 5.4 (we still try to keep compatibility with php 5.3 as much as possible)
-        PHP 7.0 is explicitly supported.
+1.	PHP >= 5.4 (we do not actively check if this is still supported)
+		PHP 7.4 is explicitly supported, soon to be PHP 8.0.
 2.	MySQL/MariaDB server
-3.	[mbstring](http://www.php.net/manual/en/mbstring.installation.php) 
-4.	[PHP GD](http://www.php.net/manual/en/intro.image.php)
-5.	[PHP PDO](http://www.php.net/manual/en/intro.pdo.php)
+3.	[Composer](https://getcomposer.org/) (To install various packages)
+4.	[mbstring](http://www.php.net/manual/en/mbstring.installation.php)
+5.	[PHP GD](http://www.php.net/manual/en/intro.image.php)
+6.	[PHP PDO](http://www.php.net/manual/en/intro.pdo.php)
+
 
 We try to make sure lainchan is compatible with all major web servers and
 operating systems. lainchan does not include an Apache ```.htaccess``` file nor does
@@ -44,10 +46,11 @@ Installation
 	development version with:
 
         git clone git://github.com/lainchan/lainchan.git
-	
-2.	Navigate to ```install.php``` in your web browser and follow the
+
+2.	run ```composer install``` inside the directory
+3.	Navigate to ```install.php``` in your web browser and follow the
 	prompts.
-3.	lainchan should now be installed. Log in to ```mod.php``` with the
+4.	lainchan should now be installed. Log in to ```mod.php``` with the
 	default username and password combination: **admin / password**.
 
 Please remember to change the administrator account password.

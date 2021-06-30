@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 function error_handler($errno,$errstr,$errfile, $errline, $errcontext){
 	if(error_reporting() & $errno){
@@ -22,6 +22,8 @@ function fatal_error_handler(){
 
 register_shutdown_function('fatal_error_handler');
 
+// Due to composer autoload, this isn't implicitly global anymore
+global $error_recursion;
 $error_recursion=false;
 
 function error($message, $priority = true, $debug_stuff = false) {

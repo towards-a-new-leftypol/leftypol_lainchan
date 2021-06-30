@@ -306,8 +306,8 @@
          * Build and save the HTML of the catalog for the given board
          */
         public function build($settings, $board_name) {
-            global $config, $board;
-            if ($board['uri'] != $board_name) {         
+            global $board;
+            if (is_null($board) || $board['uri'] != $board_name) {        
                 if (!openBoard($board_name)) {
                     error(sprintf(_("Board %s doesn't exist"), $board_name));
                 }

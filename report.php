@@ -1,5 +1,5 @@
 <?php
-include 'inc/functions.php';
+include 'inc/bootstrap.php';
 $global = isset($_GET['global']);
 $post = (isset($_GET['post']) ? $_GET['post'] : false);
 $board = (isset($_GET['board']) ? $_GET['board'] : false);

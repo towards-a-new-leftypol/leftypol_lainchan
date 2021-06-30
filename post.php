@@ -3,20 +3,7 @@
  *  Copyright (c) 2010-2014 Tinyboard Development Group
  */
 
-require_once 'inc/functions.php';
-require_once 'inc/anti-bot.php';
-require_once 'inc/bans.php';
-
-// Fix for magic quotes
-if (get_magic_quotes_gpc()) {
-    function strip_array($var) {
-        return is_array($var) ? array_map('strip_array', $var) : stripslashes($var);
-    }
-    
-    $_GET = strip_array($_GET);
-    $_POST = strip_array($_POST);
-}
-
+require_once 'inc/bootstrap.php';
 
 $dropped_post = false;
 
@@ -863,8 +850,7 @@ function handle_post(){
     
     if (!$dropped_post)
     if (($config['country_flags'] && !$config['allow_no_country']) || ($config['country_flags'] && $config['allow_no_country'] && !isset($_POST['no_country']))) {
-        require 'inc/lib/geoip/geoip.inc';
-        $gi=geoip\geoip_open('inc/lib/geoip/GeoIPv6.dat', GEOIP_STANDARD);
+        $gi=geoip_open('inc/lib/geoip/GeoIPv6.dat', GEOIP_STANDARD);
     
         function ipv4to6($ip) {
             if (strpos($ip, ':') !== false) {
@@ -878,10 +864,10 @@ function handle_post(){
             return '::ffff:'.$part7.':'.$part8;
         }
     
-        if ($country_code = geoip\geoip_country_code_by_addr_v6($gi, ipv4to6($_SERVER['REMOTE_ADDR']))) {
+        if ($country_code = geoip_country_code_by_addr_v6($gi, ipv4to6($_SERVER['REMOTE_ADDR']))) {
             if (!in_array(strtolower($country_code), array('eu', 'ap', 'o1', 'a1', 'a2')))
                 $post['body'] .= "\n<tinyboard flag>".strtolower($country_code)."</tinyboard>".
-                "\n<tinyboard flag alt>".geoip\geoip_country_name_by_addr_v6($gi, ipv4to6($_SERVER['REMOTE_ADDR']))."</tinyboard>";
+                "\n<tinyboard flag alt>".geoip_country_name_by_addr_v6($gi, ipv4to6($_SERVER['REMOTE_ADDR']))."</tinyboard>";
         }
     }
 
