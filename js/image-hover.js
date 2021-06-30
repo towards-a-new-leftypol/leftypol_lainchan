@@ -4,22 +4,20 @@
  * I also changed initHover() to also bind on new_post.
  * Thanks Pashe for using WTFPL.
  */
-
+ 
 if (active_page === "catalog" || active_page === "thread" || active_page === "index" ||  active_page === "ukko") {
-$(document).on('ready', function(){
-
+$(document).ready(function () {
 if (window.Options && Options.get_tab('general')) {
 	Options.extend_tab("general", 
 	"<fieldset><legend>Image hover</legend>"
 	+ ("<label class='image-hover' id='imageHover'><input type='checkbox' /> "+_('Image hover')+"</label>")
 	+ ("<label class='image-hover' id='catalogImageHover'><input type='checkbox' /> "+_('Image hover on catalog')+"</label>")
 	+ ("<label class='image-hover' id='imageHoverFollowCursor'><input type='checkbox' /> "+_('Image hover should follow cursor')+"</label>")
-	+ "</fieldset>");
+	+ "</fieldset>");console.log("aaa");
 }
 
 $('.image-hover').on('change', function(){
 	var setting = $(this).attr('id');
-
 	localStorage[setting] = $(this).children('input').is(':checked');
 });
 
@@ -34,6 +32,7 @@ if (getSetting('catalogImageHover')) $('#catalogImageHover>input').prop('checked
 if (getSetting('imageHoverFollowCursor')) $('#imageHoverFollowCursor>input').prop('checked', 'checked');
 
 function getFileExtension(filename) { //Pashe, WTFPL
+	if (filename == undefined) {return "unknown";} // catalog
 	if (filename.match(/\.([a-z0-9]+)(&loop.*)?$/i) !== null) {
 		return filename.match(/\.([a-z0-9]+)(&loop.*)?$/i)[1];
 	} else if (filename.match(/https?:\/\/(www\.)?youtube.com/)) {
@@ -71,7 +70,7 @@ function initImageHover() { //Pashe, influenced by tux, et al, WTFPL
 	if (!getSetting("imageHover") && !getSetting("catalogImageHover")) {return;}
 	
 	var selectors = [];
-	
+		console.log("image-hover");
 	if (getSetting("imageHover")) {selectors.push("img.post-image", "canvas.post-image");}
 	if (getSetting("catalogImageHover") && isOnCatalog()) {
 		selectors.push(".thread-image");
@@ -96,38 +95,41 @@ function initImageHover() { //Pashe, influenced by tux, et al, WTFPL
 	});
 }
 
+function followCursor(e, hoverImage) {
+	var scrollTop = $(window).scrollTop();
+	var imgWidth = Number(hoverImage.css("max-width").slice(0,-2))
+	var imgHeight = Number(hoverImage.css("max-height").slice(0,-2))
+	var imgTop = e.pageY - (imgHeight/2);
+	var windowWidth = $(window).width();
+	var imgEnd = imgWidth + e.pageX;
+	
+	if (imgTop < scrollTop + 15) {
+		imgTop = scrollTop + 15;
+	} else if (imgTop > scrollTop + $(window).height() - imgHeight - 15) {
+		imgTop = scrollTop + $(window).height() - imgHeight - 15;
+	}
+	
+	if (imgEnd > windowWidth) {
+		hoverImage.css({
+			'left': (e.pageX + (windowWidth - imgEnd)),
+			'top' : imgTop,
+		});
+	} else {
+		hoverImage.css({
+			'left': e.pageX,
+			'top' : imgTop,
+		});
+	}
+}
+
 function imageHoverStart(e) { //Pashe, anonish, WTFPL
 	var hoverImage = $("#chx_hoverImage");
-	
-	if (hoverImage.length) {
+
+	if (hoverImage.length){
 		if (getSetting("imageHoverFollowCursor")) {
-			var scrollTop = $(window).scrollTop();
-			var imgY = e.pageY;
-			var imgTop = imgY;
-			var windowWidth = $(window).width();
-			var imgWidth = hoverImage.width() + e.pageX;
-			
-			if (imgY < scrollTop + 15) {
-				imgTop = scrollTop;
-			} else if (imgY > scrollTop + $(window).height() - hoverImage.height() - 15) {
-				imgTop = scrollTop + $(window).height() - hoverImage.height() - 15;
-			}
-			
-			if (imgWidth > windowWidth) {
-				hoverImage.css({
-					'left': (e.pageX + (windowWidth - imgWidth)),
-					'top' : imgTop,
-				});
-			} else {
-				hoverImage.css({
-					'left': e.pageX,
-					'top' : imgTop,
-				});
-			}
-			
+			followCursor(e, hoverImage);
 			hoverImage.appendTo($("body"));
-		}
-		
+		}	
 		return;
 	}
 	
@@ -145,8 +147,8 @@ function imageHoverStart(e) { //Pashe, anonish, WTFPL
 	
 	hoverImage = $('<img id="chx_hoverImage" src="'+fullUrl+'" />');
 
-	if (getSetting("imageHoverFollowCursor")) {
-		var size = $this.parents('.file').find('.unimportant').text().match(/\b(\d+)x(\d+)\b/),
+	if (getSetting("imageHoverFollowCursor") && active_page !== "catalog") {
+		var size = $this.parents('.file').find('.details').text().match(/\b(\d+)x(\d+)\b/),
 			maxWidth = $(window).width(),
 			maxHeight = $(window).height();
 
@@ -159,8 +161,6 @@ function imageHoverStart(e) { //Pashe, anonish, WTFPL
 			"height"        : size[2] + "px",
 			"max-width"     : (size[1] * scale) + "px",
 			"max-height"    : (size[2] * scale) + "px",
-			'left'          : e.pageX,
-			'top'           : imgTop,
 		});
 	} else {
 		hoverImage.css({
@@ -173,7 +173,13 @@ function imageHoverStart(e) { //Pashe, anonish, WTFPL
 			"max-height"    : "100%",
 		});
 	}
+	
+	if (getSetting("imageHoverFollowCursor")) {
+		followCursor(e, hoverImage);
+	}
+	
 	hoverImage.appendTo($("body"));
+	
 	if (isOnThread()) {$this.css("cursor", "none");}
 }
 
@@ -184,4 +190,5 @@ function imageHoverEnd() { //Pashe, WTFPL
 initImageHover();
 });
 }
+
 
