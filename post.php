@@ -280,7 +280,8 @@ function handle_delete(){
     $root = $is_mod ? $config['root'] . $config['file_mod'] . '?/' : $config['root'];
 
     if (!isset($_POST['json_response'])) {
-        header('Location: ' . $root . $board['dir'] . $config['file_index'], true, $config['redirect_http']);
+        // If only deleting a post in a thread, redirect to the current thread
+        header('Location: ' . $root . $board['dir'] . ($post['thread'] ? $config['dir']['res'] . sprintf($config['file_page'], $post['thread']) : $config['file_index']), true, $config['redirect_http']);
     } else {
         header('Content-Type: text/json');
         echo json_encode(array('success' => true));
