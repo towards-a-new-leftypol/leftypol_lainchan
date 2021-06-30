@@ -14,8 +14,46 @@
  *
  */
 
-onready(function(){
+$(document).ready(function () {
 	var stylesDiv = $('div.styles');
+	var pages = $('div.pages');
+	var stylesSelect = $('<select></select>').css({float:"none"});
+	var options = [];
+	
+	var i = 1;
+	stylesDiv.children().each(function() {
+		var name = this.innerHTML.replace(/(^\[|\]$)/g, '');
+		var opt = $('<option></option>')
+			.html(name)
+			.val(i);
+		if ($(this).hasClass('selected'))
+			opt.attr('selected', true);
+		options.push ([name.toUpperCase (), opt]);
+		$(this).attr('id', 'style-select-' + i);
+		i++;
+	});
+
+	options.sort ((a, b) => {
+		const keya = a [0];
+		const keyb = b [0];
+		if (keya < keyb) { return -1; }
+		if (keya > keyb) { return  1; }
+		return 0;
+	}).forEach (([key, opt]) => {
+		stylesSelect.append(opt);
+	});
+	
+	stylesSelect.change(function() {
+		$('#style-select-' + $(this).val()).click();
+	});
+	
+	stylesDiv.hide()	
+	pages.after(
+		$('<div id="style-select"></div>')
+			.append(_('Select theme: '), stylesSelect)
+	);
+});
+stylesDiv = $('div.styles');
 	var pages = $('div.pages');
 	var stylesSelect = $('<select></select>');
 	
@@ -42,4 +80,5 @@ onready(function(){
 			.append(stylesSelect)
 	);
 });
+
 
