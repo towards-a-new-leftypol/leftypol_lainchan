@@ -193,5 +193,5 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     var maxImages = document.querySelector("form[name=post]").dataset.maxImages;
-    init_file_selector(new Number(maxImages));
+    init_file_selector(Number(maxImages));
 });
