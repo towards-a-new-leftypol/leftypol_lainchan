@@ -13,7 +13,7 @@ if (window.Options && Options.get_tab('general')) {
 	+ ("<label class='image-hover' id='imageHover'><input type='checkbox' /> "+_('Image hover')+"</label>")
 	+ ("<label class='image-hover' id='catalogImageHover'><input type='checkbox' /> "+_('Image hover on catalog')+"</label>")
 	+ ("<label class='image-hover' id='imageHoverFollowCursor'><input type='checkbox' /> "+_('Image hover should follow cursor')+"</label>")
-	+ "</fieldset>");console.log("aaa");
+	+ "</fieldset>");
 }
 
 $('.image-hover').on('change', function(){
@@ -70,7 +70,7 @@ function initImageHover() { //Pashe, influenced by tux, et al, WTFPL
 	if (!getSetting("imageHover") && !getSetting("catalogImageHover")) {return;}
 	
 	var selectors = [];
-		console.log("image-hover");
+	
 	if (getSetting("imageHover")) {selectors.push("img.post-image", "canvas.post-image");}
 	if (getSetting("catalogImageHover") && isOnCatalog()) {
 		selectors.push(".thread-image");
