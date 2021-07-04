@@ -53,32 +53,3 @@ $(document).ready(function() {
 			.append(_('Select theme: '), stylesSelect)
 	);
 });
-stylesDiv = $('div.styles');
-	var pages = $('div.pages');
-	var stylesSelect = $('<select></select>');
-	
-	var i = 1;
-	stylesDiv.children().each(function() {
-		var opt = $('<option></option>')
-			.html(this.innerHTML.replace(/(^\[|\]$)/g, ''))
-			.val(i);
-		if ($(this).hasClass('selected'))
-			opt.attr('selected', true);
-		stylesSelect.append(opt);
-		$(this).attr('id', 'style-select-' + i);
-		i++;
-	});
-	
-	stylesSelect.change(function() {
-		$('#style-select-' + $(this).val()).click();
-	});
-	
-	stylesDiv.hide()	
-	pages.after(
-		$('<div id="style-select"></div>')
-			/*.text(_('Style: '))*/
-			.append(stylesSelect)
-	);
-});
-
-
