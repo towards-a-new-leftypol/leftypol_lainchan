@@ -6,7 +6,7 @@
  *
  * Released under the MIT license
  * Copyright (c) 2013 Michael Save <savetheinternet@tinyboard.org>
- * Copyright (c) 2013-2014 Marcin Łabanowski <marcin@6irc.net> 
+ * Copyright (c) 2013-2014 Marcin Å�abanowski <marcin@6irc.net> 
  *
  * Usage:
  *   $config['additional_javascript'][] = 'js/jquery.min.js';
@@ -14,7 +14,7 @@
  *
  */
 
-$(document).ready(function () {
+$(document).ready(function(){
 	var stylesDiv = $('div.styles');
 	var pages = $('div.pages');
 	var stylesSelect = $('<select></select>').css({float:"none"});
@@ -49,36 +49,7 @@ $(document).ready(function () {
 	
 	stylesDiv.hide()	
 	pages.after(
-		$('<div id="style-select"></div>')
+        $('<div id="style-select" style="display:none;"></div>')
 			.append(_('Select theme: '), stylesSelect)
 	);
 });
-stylesDiv = $('div.styles');
-	var pages = $('div.pages');
-	var stylesSelect = $('<select></select>');
-	
-	var i = 1;
-	stylesDiv.children().each(function() {
-		var opt = $('<option></option>')
-			.html(this.innerHTML.replace(/(^\[|\]$)/g, ''))
-			.val(i);
-		if ($(this).hasClass('selected'))
-			opt.attr('selected', true);
-		stylesSelect.append(opt);
-		$(this).attr('id', 'style-select-' + i);
-		i++;
-	});
-	
-	stylesSelect.change(function() {
-		$('#style-select-' + $(this).val()).click();
-	});
-	
-	stylesDiv.hide()	
-	pages.after(
-		$('<div id="style-select"></div>')
-			/*.text(_('Style: '))*/
-			.append(stylesSelect)
-	);
-});
-
-
