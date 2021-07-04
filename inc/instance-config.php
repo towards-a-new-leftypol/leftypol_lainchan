@@ -273,6 +273,7 @@ $config['user_flags'] = array (
     'ndfp' => 'NDFP',
     'palestine' => 'Palestine',
     'pan-africanism' => 'Pan-Africanism',
+    'cenzopapa' => 'Papież',
     'phrygian_cap' => 'Phrygian Cap',
     'pirate' => 'Pirate',
     'porky' => 'Porky',
