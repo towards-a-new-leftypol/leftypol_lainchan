@@ -1,14 +1,13 @@
 <?php
 
 require_once 'inc/functions.php';
+require_once 'templates/themes/overboards/overboards.php';
 
-function endsWith( $haystack, $needle ) {
-    $length = strlen( $needle );
-    if( !$length ) {
-        return true;
-    }
-    return substr( $haystack, -$length ) === $needle;
-}
+// List of regexes that blacklist boards
+$blacklist = [
+    '/^.*_archive$/', // b_archive, leftypol_archive, ...
+    '/^b_.*$/', // b_anime, b_leftypol, ...
+];
 
 // Boards that are nsfw
 $nsfw_boards = ['b', 'overboard'];
@@ -20,23 +19,25 @@ $readonly_boards = ['overboard', 'sfw', 'alt'];
 $board_list = listBoards();
 
 // Add objects that are not boards but are treated as such
-$board_list[] = ['uri' => 'overboard', 'title' => 'Overboard'];
-$board_list[] = ['uri' => 'sfw', 'title' => 'SFW Overboard'];
-$board_list[] = ['uri' => 'alt', 'title' => 'Alternate Overboard'];
+foreach ($overboards_config as $overboard) {
+    $board_list[] = $overboard;
+}
 
 /**
  * Allowed fields for the board object:
  * - code<string>: The board code ('b', 'tech', ...)
  * - name<string>: The board user-readable name ('Siberia', ...)
- * - description<string>: The board description ('Leftist Politically Incorrect', ...)
  * - sfw<boolean>: Is this board sfw?
  * - alternate_spoilers<boolean>: Does this board use the alunya spoiler?
+ * - posting_enabled<boolean>: Can new posts be created belonging to this board?
  */
 $boards = [];
 foreach ($board_list as $board) {
-    // Skip archives
-    if (endsWith($board['uri'], '_archive')) {
-        continue;
+    // Skip blacklisted boards
+    foreach ($blacklist as $regex) {
+        if (preg_match($regex, $board['uri'])) {
+            continue 2; // Skip to the next board
+        }
     }
 
     $boards[] = [
