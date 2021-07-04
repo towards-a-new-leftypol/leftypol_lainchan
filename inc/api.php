@@ -108,18 +108,19 @@ class Api {
 		$apiPost['file_path'] = $config['uri_img'] . $file->file;
 
 		// Pick the correct thumbnail
-		if (isset($file->thumb)) {
-			if ($file->thumb === 'spoiler') {
-				$apiPost['thumb_path'] = $config['root'] . $config['spoiler_image'];
-			} else if ($file->thumb === 'file') {
-				$thumbFile = $config['file_icons']['default'];
-				if (isset($file->extension) && isset($config['file_icons'][$file->extension])) {
-					$thumbFile = $config['file_icons'][$file->extension];
-				}
-
-				$apiPost['thumb_path'] = $config['root'] . sprintf($config['file_thumb'], $thumbFile);
+		if (isset($file->thumb) && $file->thumb === 'spoiler') {
+			// Spoiler
+			$apiPost['thumb_path'] = $config['root'] . $config['spoiler_image'];
+		} else if (!isset($file->thumb) || $file->thumb === 'file') {
+			// Default file format image
+			$thumbFile = $config['file_icons']['default'];
+			if (isset($file->extension) && isset($config['file_icons'][$file->extension])) {
+				$thumbFile = $config['file_icons'][$file->extension];
 			}
+
+			$apiPost['thumb_path'] = $config['root'] . sprintf($config['file_thumb'], $thumbFile);
 		} else {
+			// The file's own thumbnail
 			$apiPost['thumb_path'] = $config['uri_thumb'] . $file->thumb;
 		}
 	}
