@@ -107,7 +107,7 @@ class Api {
 		}
 
 		// Pick the correct thumbnail
-		if ($file->thumb_path === 'file') {
+		if ($file->thumb === 'file') {
 			$ext = $file->extension;
 			$thumbFile = $config['file_icons']['default'];
 			if (isset($config['file_icons'][$ext])) {
@@ -116,7 +116,7 @@ class Api {
 
 			$apiPost['thumb_path'] = sprintf($config['file_thumb'], $thumbFile);
 		} else {
-			$apiPost['thumb_path'] = $file->thumb_path;
+			$apiPost['thumb_path'] = $config['uri_thumb'] . $file->thumb;
 		}
 	}
 
