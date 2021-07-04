@@ -1295,10 +1295,13 @@ function handle_post(){
         }
     }
 
+    // Custom /leftypol/ var to check if Tor
+    $tor = ($_SERVER['REMOTE_ADDR'] == '127.0.0.1');
+
     $post = (object)$post;
     $post->files = array_map(function($a) { return (object)$a; }, $post->files);
 
-    $error = event('post', $post);
+    $error = event('post', $post, $tor);
     $post->files = array_map(function($a) { return (array)$a; }, $post->files);
 
     if ($error) {

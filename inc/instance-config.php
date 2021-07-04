@@ -158,7 +158,15 @@ $config['max_images'] = 5;
 $config['image_reject_repost'] = false;
 
 $config['thumb_method'] = 'gm+gifsicle';
+$config['thumb_ext'] = 'webp';
 $config['gnu_md5'] = '1';
+
+
+// Strip EXIF metadata from JPEG files.
+$config['strip_exif'] = true;
+// Use the command-line `exiftool` tool to strip EXIF metadata without decompressing/recompressing JPEGs.
+$config['use_exiftool'] = true;
+
 // $config['update_on_posts'] = true;
 $config['referer_match'] = false;
 
@@ -386,7 +394,6 @@ $config['additional_javascript'][] = 'js/file-selector.js';
 $config['additional_javascript'][] = 'js/save-user_flag.js';
 $config['additional_javascript'][] = 'js/webm-settings.js';
 $config['additional_javascript'][] = 'js/expand-video.js';
-$config['additional_javascript'][] = 'js/download-original.js';
 
 $config['flag_preview'] = true;
 
@@ -449,16 +456,16 @@ $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</s
  * https://regex101.com/r/31wYx0/2
  *
  */
-$a_alias = 'a4@ÁÀȦÂÄǞǍĂĀÃÅǺǼǢáàȧâäǟǎăāãåǻǽǣĄĄ̊ąą̊æɑÆⱭ';
+$a_alias = 'a4@ÁÀȦÂÄǞǍĂĀÃÅǺǼǢáàȧâäǟǎăāãåǻǽǣĄĄ̊ąą̊æɑÆⱭАа';
 $g_alias = 'gǵġĝǧğǥɠǤƓǴĠĜǦĞĢ';
-$i_alias = 'i1L||ıɩįɨɨ̧ĮƗƗ̧íìîïǐĭīĩịÍÌİÎÏǏĬĪĨỊĺļľŀḷḽ';
+$i_alias = 'i1L||ıɩįɨɨ̧ĮƗƗ̧íìîïǐĭīĩịÍÌİÎÏǏĬĪĨỊĺļľŀḷḽІії';
 $n_alias = 'nŋŉńṅňñņṋŃṄŇÑŅṊ';
 
 $config['wordfilters'][] = array('/TRANN(Y|IE)?/', 'TRANSHUMANIST', true);
 $config['wordfilters'][] = array('/NIGGA/', 'UYGHA', true);
 $config['wordfilters'][] = array('/NIGGER/', 'UYGHUR', true);
-$config['wordfilters'][] = array("/t[^\p{L}0-9]*r+[^\p{L}0-9]*[$a_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*(y|[$i_alias]+[^\p{L}0-9]*[e3]+)?/imu", 'transhumanist', true);
-$config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[e3]+[^\p{L}0-9]*r/imu", 'uyghur', true);
+$config['wordfilters'][] = array("/t[^\p{L}0-9]*r+[^\p{L}0-9]*[$a_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*(y|[$i_alias]+[^\p{L}0-9]*[e3е]+)?/imu", 'transhumanist', true);
+$config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[e3е]+[^\p{L}0-9]*r/imu", 'uyghur', true);
 $config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+/imu", 'uygh', true);
 $config['wordfilters'][] = array('/ewish uyghur/i', 'ewish nigger', true);
 
@@ -468,54 +475,49 @@ $config['wordfilters'][] = array('/ewish uyghur/i', 'ewish nigger', true);
  */
 $fakereason_ano = 'Due to automated child pornography and gore spam by /pol/, all posting now requires a pass.<br>To receive a one-week pass, email a short explanation of the Labor Theory of Value to space@national.shitposting.agency .';
 $config['filters'][] = array(
-	'condition' => array(
-		'subject'  => '/anorectal/i', // Typical thread subject used
-	),
-	'action' => 'reject',
-	'message' => "$fakereason_ano" 
+    'condition' => array(
+        'subject'  => '/anorectal/i', // Typical thread subject used
+    ),
+    'action' => 'reject',
+    'message' => "$fakereason_ano" 
 );
 $config['filters'][] = array(
-	'condition' => array(
-		'filename'  => '/(TAKE ACTION v|trends.*associations|anusporn|anal insanity|anorectal risks|TAv[0-9]+|arisks)/', // Typical opening filename format. Their usual evasion strategy is to post only the image.
-	),
-	'action' => 'reject',
-	'message' => "$fakereason_ano"
+    'condition' => array(
+        'filename'  => '/(TAKE ACTION v|trends.*associations|anusporn|anal insanity|anorectal risks|TAv[0-9]+|arisks)/', // Typical opening filename format. Their usual evasion strategy is to post only the image.
+    ),
+    'action' => 'reject',
+    'message' => "$fakereason_ano"
 );
 
 // Favorite names and buzzterms
 $config['filters'][] = array(
-	'condition' => array(
-		'body'  => '/(Rocco Siff|Evil Angel|Xavier Becerra|AdultDVDTalk|painal|Roughanal|anoreceptive|ltimately this is not about me|Logically-fallacious diversionary tactics)/',
-	),
-	'action' => 'reject',
-	'message' => "$fakereason_ano"
+    'condition' => array(
+        'body'  => '/(Rocco Siff|Evil Angel|Xavier Becerra|AdultDVDTalk|painal|Roughanal|anoreceptive|ltimately this is not about me|Logically-fallacious diversionary tactics)/',
+    ),
+    'action' => 'reject',
+    'message' => "$fakereason_ano"
 );
 
 /*
- * Filters for diverting TheThingN0ticer ban evader
+ * Filter TheThingN0ticer ban evader
  */
-$fakereason_thing = 'Due to automated child pornography and gore spam by /pol/, all posting now requires a pass.<br>To receive a one-week pass, email a short explanation of the Labor Theory of Value to space@national.shitposting.agency .';
-event_handler('post', function($post) {
-	$fakereason_thing = 'Due to automated child pornography and gore spam by /pol/, all posting now requires a pass.<br>To receive a one-week pass, email a short explanation of the Labor Theory of Value to space@national.shitposting.agency .';
-
-	// Detects posts in the /ITG/ with the filename "Untitled.png" and a Nazi flag
-	if (!$post->op && $post->board == 'leftypol' && $post->thread == 110463 && $post->has_file &&
-		$post->files[0]->filename == 'Untitled.png' &&
-		strpos($post->body_nomarkup, "Nazi</tinyboard>") !== false) {  /* has Nazi flag, hack */
-		return $fakereason_thing;
-    // Detects posts with the Nazi flag and their favorite Twitter links
-	} else if (strpos($post->body_nomarkup, "Nazi</tinyboard>") !== false && /* has Nazi flag, hack */
-		preg_match('/\/(WokeCapital|NickJFuentes|af_clips)/', $post->body)) {
-		return $fakereason_thing;	
-	}
+event_handler('post', function($post, $tor) {
+    if($post->board == 'leftypol'){
+    // note: just posting nazi flag with name doesn't trigger, on purpose
+    $n = 0;
+    // body is just a twitter account (or has ?lang=en or something)
+    if(preg_match('/^(https:\/\/)?(www.|m(obile)?.)?twitter\.com\/[a-zA-Z0-9_-]+\/?[#?&a-zA-Z0-9=_-]*(<tinyboard[^>]*>[^<]*<\/tinyboard>|<[^>]*>|\s)*$/',
+                    $post->body_nomarkup)){$n+=2;}
+    if($post->has_file && preg_match('/^Untitled[0-9]*.png/', $post->files[0]->filename)){$n+=2;}
+    if($post->name != 'Anonymous'){$n++; if($post->name == 'NasheedsSeedAndFeed'){$n+=2;}}
+    if(strpos($post->body_nomarkup,'<tinyboard flag>nazi</tinyboard>')){$n++;}
+    
+    if($n > 2){
+        if($tor){return 'Flood detected; Post discarded.';}
+        return 'Your IP address is listed in multirbl or rbl.efnetrbl.org.';
+    }
+    }
 });
-$config['filters'][] = array(
-	'condition' => array(
-		'name'  => '/Chauvinist/', // Current name as of April.
-	),
-	'action' => 'reject',
-	'message' => $fakereason_thing
-);
 
 
 // Changes made via web editor by "zul_admin" @ Fri, 19 Feb 2021 15:06:33 -0800:
