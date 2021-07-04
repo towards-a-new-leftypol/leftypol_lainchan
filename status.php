@@ -3,6 +3,11 @@
 require_once 'inc/functions.php';
 require_once 'templates/themes/overboards/overboards.php';
 
+// Boards that are nsfw
+$nsfw_boards = ['b', 'overboard'];
+// Boards where posts are not allowed to be created
+$readonly_boards = [];
+
 // Allowed boards
 $whitelist = [];
 foreach ($config['boards'] as $boards) {
@@ -12,14 +17,8 @@ foreach ($config['boards'] as $boards) {
 }
 foreach ($overboards_config as $board) {
     $whitelist[] = $board['uri'];
+    $readonly_boards[] = $board['uri'];
 }
-
-// Boards that are nsfw
-$nsfw_boards = ['b', 'overboard'];
-// Boards that use spoiler_alunya.png as their spoiler
-$alunya_spoiler = ['leftypol', 'anime'];
-// Boards where posts are not allowed to be created
-$readonly_boards = ['overboard', 'sfw', 'alt'];
 
 $board_list = listBoards();
 
@@ -33,7 +32,6 @@ foreach ($overboards_config as $overboard) {
  * - code<string>: The board code ('b', 'tech', ...)
  * - name<string>: The board user-readable name ('Siberia', ...)
  * - sfw<boolean>: Is this board sfw?
- * - alternate_spoilers<boolean>: Does this board use the alunya spoiler?
  * - posting_enabled<boolean>: Can new posts be created belonging to this board?
  */
 $boards = [];
@@ -47,7 +45,6 @@ foreach ($board_list as $board) {
         'code' => $board['uri'],
         'name' => $board['title'],
         'sfw' => !in_array($board['uri'], $nsfw_boards),
-        'alternate_spoilers' => in_array($board['uri'], $alunya_spoiler),
         'posting_enabled' => !in_array($board['uri'], $readonly_boards),
     ];
 }

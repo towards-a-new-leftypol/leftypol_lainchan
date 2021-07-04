@@ -108,7 +108,11 @@ class Api {
 		$apiPost['file_path'] = $config['uri_img'] . $file->file;
 
 		// Pick the correct thumbnail
-		if (!isset ($file->thumb) || $file->thumb === 'file') {
+		if (isset($file->thumb) && $file->thumb === 'spoiler') {
+			// Spoiler
+			$apiPost['thumb_path'] = $config['root'] . $config['spoiler_image'];
+		} else if (!isset($file->thumb) || $file->thumb === 'file') {
+			// Default file format image
 			$thumbFile = $config['file_icons']['default'];
 			if (isset($file->extension) && isset($config['file_icons'][$file->extension])) {
 				$thumbFile = $config['file_icons'][$file->extension];
@@ -116,6 +120,7 @@ class Api {
 
 			$apiPost['thumb_path'] = $config['root'] . sprintf($config['file_thumb'], $thumbFile);
 		} else {
+			// The file's own thumbnail
 			$apiPost['thumb_path'] = $config['uri_thumb'] . $file->thumb;
 		}
 	}
@@ -128,6 +133,11 @@ class Api {
 
 		if (isset($config['poster_ids']) && $config['poster_ids']) $apiPost['id'] = poster_id($post->ip, $post->thread, $board['uri']);
 		if ($threadsPage) return $apiPost;
+
+		// Load board info
+		if (isset($post->board)) {
+			openBoard($post->board);
+		}
 
 		// Handle special fields
 		if (isset($post->body_nomarkup) && ($this->config['country_flags'] || $this->config['user_flag'])) {
