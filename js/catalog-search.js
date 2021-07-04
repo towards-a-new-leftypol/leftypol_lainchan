@@ -59,7 +59,8 @@ var searchThreads = function($threads, query) {
 
 // Only load in the catalog
 if (active_page == 'catalog') {
-	onready(catalogSearch);
+
+    $(document).ready(catalogSearch);
 }
 
 }());

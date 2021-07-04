@@ -13,7 +13,7 @@
  *
  */
 
-onready(function(){
+$(document).ready(function(){
 	var inline_expanding_filename = function() {
 		$(this).find(".fileinfo > a").click(function(){
 			var imagelink = $(this).parent().parent().find('a[target="_blank"]:first');

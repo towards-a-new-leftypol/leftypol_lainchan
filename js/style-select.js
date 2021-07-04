@@ -14,7 +14,7 @@
  *
  */
 
-$(document).ready(function () {
+$(document).ready(function() {
 	var stylesDiv = $('div.styles');
 	var pages = $('div.pages');
 	var stylesSelect = $('<select></select>').css({float:"none"});
