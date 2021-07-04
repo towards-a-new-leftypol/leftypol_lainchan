@@ -109,6 +109,9 @@ $config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
 //Banners
 $config['url_banner'] = '/banners.php';
 
+//Logo location for themes
+$config['logo'] = 'static/leftypol_logo.png';
+
 //Date format
 $config['post_date'] = '%F (%a) %T';
 
@@ -370,6 +373,7 @@ $config['additional_javascript'][] = 'js/auto-reload.js';
 $config['additional_javascript'][] = 'js/auto-scroll.js';
 $config['additional_javascript'][] = 'js/thread-stats.js';
 $config['additional_javascript'][] = 'js/post-hover.js';
+$config['additional_javascript'][] = 'js/image-hover.js';
 $config['additional_javascript'][] = 'js/style-select.js';
 $config['additional_javascript'][] = 'js/flag-preview.js';
 
@@ -394,7 +398,6 @@ $config['additional_javascript'][] = 'js/file-selector.js';
 $config['additional_javascript'][] = 'js/save-user_flag.js';
 $config['additional_javascript'][] = 'js/webm-settings.js';
 $config['additional_javascript'][] = 'js/expand-video.js';
-$config['additional_javascript'][] = 'js/download-original.js';
 
 $config['flag_preview'] = true;
 

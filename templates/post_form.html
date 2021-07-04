@@ -1,4 +1,10 @@
-<form name="post" onsubmit="return dopost(this);" enctype="multipart/form-data" action="{{ config.post_url }}" method="post">
+<form
+    name="post" onsubmit="return dopost(this);"
+    enctype="multipart/form-data"
+    action="{{ config.post_url }}"
+    method="post"
+    data-max-images="{{ config.max_images }}"
+    >
 {{ antibot.html() }}
 {% if id %}<input type="hidden" name="thread" value="{{ id }}">{% endif %}
 {{ antibot.html() }}
@@ -141,8 +147,6 @@
 			</th>
 			<td>
 				<input type="file" name="file" id="upload_file">
-
-				<script type="text/javascript">if (typeof init_file_selector !== 'undefined') init_file_selector({{ config.max_images }});</script>
 
 				{% if config.allow_upload_by_url %}
 					<div style="float:none;text-align:left" id="upload_url">

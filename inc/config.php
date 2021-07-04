@@ -1921,3 +1921,7 @@
 
     //Empty board alias
     $config['boards_alias'] = array();
+
+    //Logo location for themes
+    $config['logo'] = 'static/logo.png';
+

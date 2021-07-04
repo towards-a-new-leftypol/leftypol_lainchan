@@ -1,13 +1,30 @@
 {% filter remove_whitespace %}
-<div class="content">
+<div class="introduction">
+  <style style="display:none;">
+    .home-logo {
+      display: block;
+      margin: auto;
+      min-width: 100px;
+      width: 15%;
+    }
+
+    .home-description {
+      margin: 20px auto 0 auto;
+      text-align: center;
+      max-width: 700px;"
+    }
+  </style>
 	{{ boardlist.top }}
 	<header>
 		<h1>{{ settings.title }}</h1>
+    <img src="{{ config.logo }}" alt="logo" class="home-logo">
 		<div class="subtitle">{{ settings.subtitle }}</div>
 		<link rel="stylesheet" media="screen" href="{{ config.url_stylesheet }}">
 		<link rel="stylesheet" media="screen" href="/stylesheets/dark_red.css">
+		<p class="home-description" >{{ description }}</p>
 	</header>
-
+</div>
+<div class="content">
 	<div class="ban">
 		{% if not news %}
 			<p style="text-align:center" class="unimportant">{% trans %}(No news to show.){% endtrans %}</p>
@@ -31,7 +48,7 @@
 				{% trans "Post Statistics" %}
 				</h1>
 			</div>
-			<table class="modlog" style="width: 50%; text-align: left;">
+			<table class="modlog">
 				<thead>
 					<tr>
 						<th>{% trans "Board" %}</th>
@@ -91,3 +108,4 @@
 	</footer>
 </div>
 {% endfilter %}
+

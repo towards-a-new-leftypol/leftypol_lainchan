@@ -34,6 +34,9 @@
 		// Build homepage
 		public static function homepage($settings) {
 			global $config;
+			$description = 'Leftypol is a fun and enjoyable space where users can post anonymously.<br>' .
+			               'We engage in both serious political discourse and less serious informal discussions ' .
+			               'on various topics related to leftist thought.';
 			$query = query("SELECT * FROM ``news`` ORDER BY `time` DESC") or error(db_error());
 			$news = $query->fetchAll(PDO::FETCH_ASSOC);
 			$stats = Categories::getPostStatistics($settings);
@@ -42,6 +45,7 @@
 				Array(
 					'config' => $config,
 					'settings' => $settings,
+					'description' => $description,
 					'categories' => Categories::getCategories($config),
 					'news' => $news,
 					'stats' => $stats,
@@ -160,3 +164,4 @@
 	};
 
 ?>
+

@@ -8,24 +8,6 @@
  */
 function init_file_selector(max_images) {
 
-$(document).ready(function () {
-	// add options panel item
-	if (window.Options && Options.get_tab('general')) {
-		Options.extend_tab('general', '<label id="file-drag-drop"><input type="checkbox">' + _('Drag and drop file selection') + '</label>');
-
-		$('#file-drag-drop>input').on('click', function() {
-			if ($('#file-drag-drop>input').is(':checked')) {
-				localStorage.file_dragdrop = 'true';
-			} else {
-				localStorage.file_dragdrop = 'false';
-			}
-		});
-
-		if (typeof localStorage.file_dragdrop === 'undefined') localStorage.file_dragdrop = 'true';
-		if (localStorage.file_dragdrop === 'true') $('#file-drag-drop>input').prop('checked', true);
-	}
-});
-
 // disabled by user, or incompatible browser.
 if (localStorage.file_dragdrop == 'false' || !(window.URL.createObjectURL && window.File))
 	return;
@@ -190,3 +172,26 @@ $(document).on('paste', function (e) {
 });
 
 }
+
+$(document).ready(function () {
+	// add options panel item
+	if (window.Options && Options.get_tab('general')) {
+		Options.extend_tab('general', '<label id="file-drag-drop"><input type="checkbox">' + _('Drag and drop file selection') + '</label>');
+
+		$('#file-drag-drop>input').on('click', function() {
+			if ($('#file-drag-drop>input').is(':checked')) {
+				localStorage.file_dragdrop = 'true';
+			} else {
+				localStorage.file_dragdrop = 'false';
+			}
+		});
+
+		if (typeof localStorage.file_dragdrop === 'undefined') localStorage.file_dragdrop = 'true';
+		if (localStorage.file_dragdrop === 'true') $('#file-drag-drop>input').prop('checked', true);
+	}
+});
+
+$(document).ready(function () {
+    var maxImages = document.querySelector("form[name=post]").dataset.maxImages;
+    init_file_selector(Number(maxImages));
+});

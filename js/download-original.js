@@ -15,7 +15,7 @@
  *
  */
 
-onready(function(){
+$(document).ready(function(){
 	var do_original_filename = function() {
 		var filename, truncated;
 		if ($(this).attr('title')) {

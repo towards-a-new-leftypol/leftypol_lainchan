@@ -8,20 +8,37 @@
     <link rel="stylesheet" media="screen" href="/stylesheets/dark_red.css">
     <style type="text/css">
         .sidebar {
+          grid-column: 1;
+          grid-row: 1 / 3;
             width: 200px;
             border-right-color: gray;
             border-right-style: solid;
             border-width: 2px;
             margin-right: 15px;
         }
-
+        
+        .introduction {
+          grid-column: 2 / 9;
+          grid-row: 1;
+          width: 100%;
+         }
+         
         .content {
+          grid-column: 2 / 9;
+          grid-row: 2;
             width: 100%;
         }
 
         body {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fill,minmax(200px, 1fr));
+            gap: 20px;
             height: 100vh;
+        }
+        
+        .modlog {
+            width: 50%;
+            text-align: left;
         }
 
         fieldset {
@@ -54,13 +71,45 @@
         }
         
         @media (max-width:768px) {
-            .sidebar {
-                width: 80vw;
-                border: none;
+            body{
+                display: grid;
+                grid-template-columns: none;
+                gap: 20px;
+                height: 100vh;
+                width: 100%;
             }
-            .main {
-                flex-direction: column;
-                align-items: center;
+            
+             .introduction {
+              grid-column: 1;
+              grid-row: 1;
+              width: 100%;
+             }
+
+            .sidebar {
+              grid-column: 1;
+              grid-row: 2;
+              width: 100%;
+              border-width: 2px;
+            }
+
+            .content {
+              grid-column: 1;
+              grid-row: 3;
+              width: 100%;
+            }
+            
+            .modlog {
+                width: 100%;
+                text-align: center;
+            }
+            
+            table {
+                table-layout: fixed;
+            }
+            
+            table.modlog tr th {
+                white-space: normal;
+                word-wrap: break-word;
             }
 
             .boardlist {
@@ -73,9 +122,11 @@
         }
     </style>
     <title>{{ settings.title }}</title>
+    <meta name="description" content="{{ description }}">
 </head>
 <body>
     {% include 'themes/categories/' ~ settings.file_sidebar %}
     {% include 'themes/categories/' ~ settings.file_news %}
 </body>
 </html>
+
