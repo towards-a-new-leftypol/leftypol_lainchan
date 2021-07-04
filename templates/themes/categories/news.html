@@ -4,8 +4,6 @@
     .home-logo {
       display: block;
       margin: auto;
-      margin-top: 1em;
-      margin-bottom: 1em;
       min-width: 100px;
       width: 15%;
     }
@@ -17,9 +15,9 @@
     }
   </style>
 	{{ boardlist.top }}
-	<img src="{{ config.logo }}" alt="logo" class="home-logo">
 	<header>
 		<h1>{{ settings.title }}</h1>
+    <img src="{{ config.logo }}" alt="logo" class="home-logo">
 		<div class="subtitle">{{ settings.subtitle }}</div>
 		<link rel="stylesheet" media="screen" href="{{ config.url_stylesheet }}">
 		<link rel="stylesheet" media="screen" href="/stylesheets/dark_red.css">
