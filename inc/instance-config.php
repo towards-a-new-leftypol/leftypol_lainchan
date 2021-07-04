@@ -227,6 +227,7 @@ $config['user_flags'] = array (
     'burkina_faso' => 'Burkina Faso',
     'ca' => 'Canadien',
     'carlism' => 'Carlism',
+    'cenzopapa' => 'Papież',
     'chavismo' => 'Chavismo',
     'che' => 'Che',
     'china' => 'China',
