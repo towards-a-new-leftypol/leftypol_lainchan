@@ -46,7 +46,6 @@ class Api {
 
 		$this->fileFields = array(
 			'file_id' => 'id',
-			'file_path' => 'file_path',
 			'type' => 'mime',
 			'extension' => 'ext',
 			'height' => 'h',
@@ -106,15 +105,16 @@ class Api {
 			$apiPost['md5'] = base64_encode(hex2bin($post->filehash));
 		}
 
+		$apiPost['file_path'] = $config['uri_img'] . $file->file;
+
 		// Pick the correct thumbnail
-		if ($file->thumb === 'file') {
-			$ext = $file->extension;
+		if (!isset ($file->thumb) || $file->thumb === 'file') {
 			$thumbFile = $config['file_icons']['default'];
-			if (isset($config['file_icons'][$ext])) {
-				$thumbFile = $config['file_icons'][$ext];
+			if (isset($file->extension) && isset($config['file_icons'][$file->extension])) {
+				$thumbFile = $config['file_icons'][$file->extension];
 			}
 
-			$apiPost['thumb_path'] = sprintf($config['file_thumb'], $thumbFile);
+			$apiPost['thumb_path'] = $config['root'] . sprintf($config['file_thumb'], $thumbFile);
 		} else {
 			$apiPost['thumb_path'] = $config['uri_thumb'] . $file->thumb;
 		}
