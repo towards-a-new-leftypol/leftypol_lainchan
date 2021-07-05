@@ -4,7 +4,7 @@
  *  Copyright (c) 2010-2014 Tinyboard Development Group
  */
 
-require_once 'inc/functions.php';
+require_once 'inc/bootstrap.php';
 
 if ($config['debug'])
 	$parse_start_time = microtime(true);
@@ -191,7 +191,12 @@ foreach ($pages as $uri => $handler) {
 			);
 			$debug['time']['parse_mod_req'] = '~' . round((microtime(true) - $parse_start_time) * 1000, 2) . 'ms';
 		}
-		
+
+		if (is_array($matches)) {
+			// we don't want to call named parameters (PHP 8)
+			$matches = array_values($matches);
+		}
+
 		if (is_string($handler)) {
 			if ($handler[0] == ':') {
 				header('Location: ' . substr($handler, 1),  true, $config['redirect_http']);

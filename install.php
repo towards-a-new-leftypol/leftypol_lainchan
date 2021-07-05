@@ -8,8 +8,7 @@ if (fopen('inc/instance-config.php' , 'a') === false) {
 	exit();
 }
 
-require 'inc/functions.php';
-require_once 'inc/anti-bot.php'; // DELETE ME THIS IS FOR print_err function only!
+require 'inc/bootstrap.php';
 
 loadConfig();
 

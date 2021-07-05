@@ -537,3 +537,4 @@ $config['reply_limit'] = 600;
 // Changes made via web editor by "zul_admin" @ Tue, 27 Apr 2021 15:39:19 -0700:
 $config['max_body'] = 80000;
 
+$config['global_message'] = 'From Discomrade: Im currently trying to make this PHP7.4 compatible.';
