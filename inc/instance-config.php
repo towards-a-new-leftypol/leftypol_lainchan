@@ -387,6 +387,7 @@ $config['additional_javascript_init'][] = 'js/style-select.js';
 $config['additional_javascript_init'][] = 'js/flag-preview.js';
 $config['additional_javascript_init'][] = 'js/file-selector.js';
 $config['additional_javascript_init'][] = 'js/post-hover.js';
+$config['additional_javascript_init'][] = 'js/download-original.js';
 $config['additional_javascript_defer'][] = 'js/auto-reload.js';
 $config['additional_javascript_defer'][] = 'js/thread-stats.js';
 $config['additional_javascript_defer'][] = 'js/image-hover.js';
