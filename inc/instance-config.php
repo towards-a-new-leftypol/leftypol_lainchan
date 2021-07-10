@@ -108,6 +108,9 @@ $config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
 
 //Banners
 $config['url_banner'] = '/banners.php';
+// Fixed size prevents things moving as page loads
+$config['banner_width'] = 300;
+$config['banner_height'] = 100;
 
 //Logo location for themes
 $config['logo'] = 'static/leftypol_logo.png';
