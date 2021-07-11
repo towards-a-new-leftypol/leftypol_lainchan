@@ -436,6 +436,8 @@ $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</s
 // $config['wordfilters'][] = array('/nigger/i', 'uyghur', true);
 // $config['wordfilters'][] = array('/nigg/i', 'uygh', true);
 
+$config['wordfilters'][] = array('/chud/i', 'FAGGOT', true);
+
 /*
  * Traditional word filters. Expires 31-12-2021.
  *
