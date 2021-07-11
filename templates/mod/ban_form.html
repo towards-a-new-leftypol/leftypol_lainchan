@@ -24,7 +24,7 @@
 			</th>
 			<td>
 				{% if not hide_ip %}
-					<input type="text" name="ip" id="ip" size="30" maxlength="40" value="{{ ip|e }}">
+					<input type="text" name="ip" id="ip" size="30" maxlength="43" value="{{ ip|e }}">
 				{% else %}
 					<em>{% trans 'hidden' %}</em>
 				{% endif %}
@@ -61,7 +61,7 @@
 				<label for="length">{% trans 'Length' %}</label>
 			</th>
 			<td>
-				<input type="text" name="length" id="length" size="20" maxlength="40"> 
+				<input type="text" name="length" id="length" size="20" maxlength="43"> 
 					<span class="unimportant">(eg. "2d1h30m" or "2 days")</span></td>
 			</tr>
 		<tr>
