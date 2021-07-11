@@ -368,42 +368,46 @@ $config['default_stylesheet'] = array('Dark Red', $config['stylesheets']['Dark R
  * ====================
  */
 
-$config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
-$config['additional_javascript'][] = 'js/ajax.js';
+$config['deferred_javascript'] = true;
+$config['additional_javascript_init'][] = 'js/jquery.min.js';
+$config['additional_javascript_init'][] = 'js/inline-expanding.js';
+$config['additional_javascript_init'][] = 'js/ajax.js';
 
-$config['additional_javascript'][] = 'js/options.js';
-$config['additional_javascript'][] = 'js/strftime.min.js';
-$config['additional_javascript'][] = 'js/local-time.js';
-$config['additional_javascript'][] = 'js/auto-reload.js';
-$config['additional_javascript'][] = 'js/auto-scroll.js';
-$config['additional_javascript'][] = 'js/thread-stats.js';
-$config['additional_javascript'][] = 'js/post-hover.js';
-$config['additional_javascript'][] = 'js/image-hover.js';
-$config['additional_javascript'][] = 'js/style-select.js';
-$config['additional_javascript'][] = 'js/flag-preview.js';
+$config['additional_javascript_init'][] = 'js/post-menu.js';
+$config['additional_javascript_init'][] = 'js/hide-images.js';
+$config['additional_javascript_init'][] = 'js/show-backlinks.js';
+$config['additional_javascript_init'][] = 'js/show-op.js';
+$config['additional_javascript_init'][] = 'js/show-own-posts.js';
+$config['additional_javascript_init'][] = 'js/post-filter.js';
 
-$config['additional_javascript'][] = 'js/hide-threads.js';
-$config['additional_javascript'][] = 'js/hide-images.js';
-$config['additional_javascript'][] = 'js/show-backlinks.js';
-$config['additional_javascript'][] = 'js/show-op.js';
-$config['additional_javascript'][] = 'js/show-own-posts.js';
+$config['additional_javascript_init'][] = 'js/strftime.min.js';
+$config['additional_javascript_init'][] = 'js/local-time.js';
+$config['additional_javascript_init'][] = 'js/save-user_flag.js';
+$config['additional_javascript_init'][] = 'js/auto-scroll.js';
+$config['additional_javascript_init'][] = 'js/options.js';
+$config['additional_javascript_init'][] = 'js/options/general.js';
+$config['additional_javascript_init'][] = 'js/options/user-css.js';
+$config['additional_javascript_init'][] = 'js/options/user-js.js';
+$config['additional_javascript_init'][] = 'js/style-select.js';
+$config['additional_javascript_init'][] = 'js/flag-preview.js';
+$config['additional_javascript_init'][] = 'js/file-selector.js';
+$config['additional_javascript_init'][] = 'js/post-hover.js';
+$config['additional_javascript_init'][] = 'js/download-original.js';
+$config['additional_javascript_defer'][] = 'js/auto-reload.js';
+$config['additional_javascript_defer'][] = 'js/thread-stats.js';
+$config['additional_javascript_defer'][] = 'js/image-hover.js';
 
-$config['additional_javascript'][] = 'js/quick-reply.js';
-$config['additional_javascript'][] = 'js/post-menu.js';
-$config['additional_javascript'][] = 'js/post-filter.js';
+$config['additional_javascript_init'][] = 'js/jquery-ui.custom.min.js';
+$config['additional_javascript_init'][] = 'js/quick-reply.js';
 
-$config['additional_javascript'][] = 'js/options/general.js';
-$config['additional_javascript'][] = 'js/options/user-css.js';
-$config['additional_javascript'][] = 'js/options/user-js.js';
-$config['additional_javascript'][] = 'js/thread-watcher.js';
-$config['additional_javascript'][] = 'js/catalog-search.js';
-$config['additional_javascript'][] = 'js/gallery-view.js';
-$config['additional_javascript'][] = 'js/expand.js';
-$config['additional_javascript'][] = 'js/file-selector.js';
-$config['additional_javascript'][] = 'js/save-user_flag.js';
-$config['additional_javascript'][] = 'js/webm-settings.js';
-$config['additional_javascript'][] = 'js/expand-video.js';
-$config['additional_javascript'][] = 'js/download-original.js';
+$config['additional_javascript_init'][] = 'js/gallery-view.js';
+$config['additional_javascript_init'][] = 'js/catalog-search.js';
+$config['additional_javascript_defer'][] = 'js/thread-watcher.js';
+$config['additional_javascript_defer'][] = 'js/expand.js';
+$config['additional_javascript_defer'][] = 'js/webm-settings.js';
+$config['additional_javascript_defer'][] = 'js/expand-video.js';
+
+$config['additional_javascript'] = array_merge($config['additional_javascript_init'], $config['additional_javascript_defer']);
 
 $config['flag_preview'] = true;
 

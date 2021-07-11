@@ -1051,6 +1051,13 @@
     // $config['additional_javascript'][] = 'js/auto-reload.js';
     // $config['additional_javascript'][] = 'js/post-hover.js';
     // $config['additional_javascript'][] = 'js/style-select.js';
+    
+    // Defer some additional Javascript for faster initial page load times. Defering may break some scripts.
+    // To enable, replace the $config['additional_javascript'] array with $config['additional_javascript_init']
+    // and $config['additional_javascript_defer'] arrays, then merge them to with array_merge() to generate
+    // the $config['additional_javascript'] array. This is incompatible with additional_javascript_compile.
+    // Remember to add the two scripts above into ['additional_javascript_init']!
+    $config['deferred_javascript'] = false;
 
     // Where these script files are located on the web. Defaults to $config['root'].
     // $config['additional_javascript_url'] = 'http://static.example.org/tinyboard-javascript-stuff/';

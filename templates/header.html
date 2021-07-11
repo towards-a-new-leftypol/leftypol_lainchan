@@ -17,7 +17,12 @@
 		{% if not nojavascript %}
 			<script type="text/javascript" src="{{ config.url_javascript }}"></script>
 			{% if not config.additional_javascript_compile %}
-			{% for javascript in config.additional_javascript %}<script defer type="text/javascript" src="{{ config.additional_javascript_url }}{{ javascript }}"></script>{% endfor %}
+				{% if not config.deferred_javascript %}
+					{% for javascript in config.additional_javascript %}<script type="text/javascript" src="{{ config.additional_javascript_url }}{{ javascript }}"></script>{% endfor %}
+				{% else %}
+					{% for javascript in config.additional_javascript_init %}<script type="text/javascript" src="{{ config.additional_javascript_url }}{{ javascript }}"></script>{% endfor %}
+					{% for javascript in config.additional_javascript_defer %}<script defer type="text/javascript" src="{{ config.additional_javascript_url }}{{ javascript }}"></script>{% endfor %}
+				{% endif %}
 			{% endif %}
 		{% endif %}
 		{% if config.recaptcha %}
