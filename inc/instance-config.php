@@ -106,6 +106,10 @@ $config['threads_preview'] = 5;
 $config['root'] = '/';
 $config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
 
+$config['strip_combining_chars'] = true;
+// Maximum number of combining characters in a row allowed so that they can still be used in moderation.
+$config['max_combining_chars'] = 3;
+
 //Banners
 $config['url_banner'] = '/banners.php';
 
