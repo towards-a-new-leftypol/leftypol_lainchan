@@ -25,10 +25,9 @@
 		</video>
 	{% else %}
 		{% macro tag(doLazy, config, post) %}
-			<img class="post-image" 
-			{% if doLazy %}
-				loading="lazy"
-			{% endif %}
+			<img 
+			class="post-image {{ doLazy ? 'no-script-no-display'}}" 
+			{{ doLazy ? loading="lazy" }}
 			src="
 				{% if post.thumb == 'file' %}
 					{{ config.root }}
@@ -48,9 +47,7 @@
 		{% endmacro %}
 		{% import _self as image %}
 		{% if 'js/remove-lazy-loading.js' in config.additional_javascript or 'js/remove-lazy-loading.js' in config.additional_javascript_defer %}
-			<script>
-				{{image.tag(true, config, post)}}
-			</script>
+			{{image.tag(true, config, post)}}
 			<noscript>
 				{{image.tag(false, config, post)}}
 			</noscript>
