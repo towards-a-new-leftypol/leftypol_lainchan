@@ -9,7 +9,7 @@ $nsfw_boards = ['b', 'overboard'];
 $readonly_boards = [];
 
 // Allowed boards
-$whitelist = [];
+$whitelist = ['dead'];
 foreach ($config['boards'] as $boards) {
     foreach ($boards as $board) {
         $whitelist[] = $board;
