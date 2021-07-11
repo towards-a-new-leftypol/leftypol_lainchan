@@ -1092,8 +1092,13 @@ function handle_post(){
             if ($config['redraw_image'] || (!@$file['exif_stripped'] && $config['strip_exif'] && ($file['extension'] == 'jpg' || $file['extension'] == 'jpeg'))) {
                 if (!$config['redraw_image'] && $config['use_exiftool']) {
                     if($error = shell_exec_error('exiftool -overwrite_original -ignoreMinorErrors -q -q -all= ' .
-                        escapeshellarg($file['tmp_name'])))
+                        escapeshellarg($file['tmp_name']))) {
                         error(_('Could not strip EXIF metadata!'), null, $error);
+                    } else {
+                        clearstatcache(true, $file['tmp_name']);
+                        if (($newfilesize = filesize($file['tmp_name'])) !== false)
+                            $file['size'] = $newfilesize;
+                    }
                 } else {
                     $image->to($file['file']);
                     $dont_copy_file = true;
