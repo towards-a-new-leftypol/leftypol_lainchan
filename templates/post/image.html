@@ -24,8 +24,9 @@
 		>
 		</video>
 	{% else %}
-		<img class="post-image" 
-			{% if 'js/remove-lazy-loading.js' in config.additional_javascript or 'js/remove-lazy-loading.js' in config.additional_javascript_defer %}
+		{% macro image(isScript) %}
+			<img class="post-image" 
+			{% if isScript and 'js/remove-lazy-loading.js' in config.additional_javascript or 'js/remove-lazy-loading.js' in config.additional_javascript_defer %}
 				loading="lazy"
 			{% endif %}
 			src="
@@ -43,6 +44,13 @@
 				{% endif %}
 			"
 			 style="width:{{ post.thumbwidth }}px;height:{{ post.thumbheight }}px" alt="" 
-		/>
+			/>
+		{% endmacro %}
+		<script>
+			{{image(true)}}
+		</script>
+		<noscript>
+			{{image(false)}}
+		</noscript>
 	{% endif %}
 </a>
