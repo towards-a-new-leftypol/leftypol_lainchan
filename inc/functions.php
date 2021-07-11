@@ -1737,7 +1737,7 @@ function buildJavascript() {
 	}
 
 	if ($config['additional_javascript_compile']) {
-		foreach ($config['additional_javascript'] as $file) {
+		foreach (array_merge($config['additional_javascript'], $config['additional_javascript_defer']) as $file) {
 			$script .= file_get_contents($file);
 		}
 	}
