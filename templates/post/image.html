@@ -27,7 +27,7 @@
 		{% macro tag(doLazy, config, post) %}
 			<img 
 			class="post-image {{ doLazy ? 'no-script-no-display'}}" 
-			{{ doLazy ? loading="lazy" }}
+			{{ doLazy ? 'loading="lazy"' }}
 			src="
 				{% if post.thumb == 'file' %}
 					{{ config.root }}
