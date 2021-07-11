@@ -261,7 +261,7 @@
 						if ($(this).attr('name') == 'spoiler') {
 							$td.find('label').remove();
 							$(this).attr('id', 'q-spoiler-image');
-							$postForm.find('input[type="file"]').parent()
+                                                       $postForm.find('#upload')
 								.removeAttr('colspan')
 								.after($('<td class="spoiler"></td>').append(this, ' ', $('<label for="q-spoiler-image">').text(_('Spoiler Image'))));
 						} else if ($(this).attr('name') == 'no_country') {
