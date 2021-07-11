@@ -1053,10 +1053,13 @@
     // $config['additional_javascript'][] = 'js/style-select.js';
     
     // Defer some additional Javascript for faster initial page load times. Defering may break some scripts.
-    // To enable, replace the $config['additional_javascript'] array with $config['additional_javascript_init']
-    // and $config['additional_javascript_defer'] arrays, then merge them to with array_merge() to generate
-    // the $config['additional_javascript'] array. This is incompatible with additional_javascript_compile.
-    // Remember to add the two scripts above into ['additional_javascript_init']!
+    // To enable, set this to true and add the scripts you want to defer to $config['additional_javascript_defer'].
+    // If using $config['additional_javascript_compile'], this will be ignored and no files will be deferred.
+    // eg.
+    // inc/instance-config.php:
+    // $config['deferred_javascript'] = true;
+    // $config['additional_javascript_defer'][] = 'js/style-select.js';
+    $config['additional_javascript_defer'] = [];
     $config['deferred_javascript'] = false;
 
     // Where these script files are located on the web. Defaults to $config['root'].
