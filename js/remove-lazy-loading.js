@@ -20,7 +20,9 @@
 
 function removeLazyLoading(){
 	if(document.readyState === "complete"){
-		$(".post-image").removeAttr("loading")
+		setTimeOut(
+			() => $(".post-image").removeAttr("loading")
+			, 500)
 	} else {
 		$(window).on("load", removeLazyLoading)
 	}
