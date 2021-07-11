@@ -2196,8 +2196,8 @@ function markup(&$body, $track_cites = false, $op = false) {
 
 			$code = rtrim(ltrim($code, "\r\n"));
 
-			$code = "<pre class='code lang-$code_lang'>".str_replace(array("\n","\t"), array("&#10;","&#9;"), htmlspecialchars($code))."</pre>";
-
+			$code = "<pre class='code lang-$code_lang'>".str_replace(array("\n","\t"), array("&#10;","&#9;"), htmlspecialchars($code, ENT_COMPAT, "UTF-8", false))."</pre>";
+			
 			$body = str_replace("<code $id>", $code, $body);
 		}
 	}
