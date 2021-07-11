@@ -106,6 +106,10 @@ $config['threads_preview'] = 5;
 $config['root'] = '/';
 $config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
 
+$config['strip_combining_chars'] = true;
+// Maximum number of combining characters in a row allowed so that they can still be used in moderation.
+$config['max_combining_chars'] = 3;
+
 //Banners
 $config['url_banner'] = '/banners.php';
 
@@ -273,6 +277,7 @@ $config['user_flags'] = array (
     'ndfp' => 'NDFP',
     'palestine' => 'Palestine',
     'pan-africanism' => 'Pan-Africanism',
+    'cenzopapa' => 'Papież',
     'phrygian_cap' => 'Phrygian Cap',
     'pirate' => 'Pirate',
     'porky' => 'Porky',
@@ -438,6 +443,8 @@ $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</s
 // $config['wordfilters'][] = array('/trann(y|ie)?/i', 'transhumanist', true);
 // $config['wordfilters'][] = array('/nigger/i', 'uyghur', true);
 // $config['wordfilters'][] = array('/nigg/i', 'uygh', true);
+
+$config['wordfilters'][] = array('/chud/i', 'FAGGOT', true);
 
 /*
  * Traditional word filters. Expires 31-12-2021.

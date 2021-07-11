@@ -1,9 +1,9 @@
-/* Demain_light theme for leftypol.org adapted from Seaweed theme for 4chan*/
+/* Demain_light theme for leftypol.org adapted from "Tomorrow" theme for 4chan*/
 /* Work in progress*/
 /* General */
 /* Main page */
 legend {
-    background: indianred
+    color: indianred
 }
 div.module, div.ban {
     background: #1d1f21;;
@@ -154,6 +154,7 @@ table.modlog tr th {
 /* Red text */
 span.heading {
     color: indianred;
+    font-size: 14pt;
 }
 /* Buggy shit */
 div.post.reply div.body a {
@@ -172,10 +173,6 @@ div.post.reply div.body a {
 .desktop-style div.boardlist:nth-child(1) {
     background-color: #151515;
 }
-/* Red text */
-span.heading {
-    color: indianred;
-}
 /* Upper part of a post */
 div.post p {
     display: block;
@@ -189,12 +186,28 @@ div.post.reply div.body a {
     color: #5f89ac;
     text-decoration: none;
 }
-/* OP */
-/* Subject */
-.intro span.subject {
-    color: #b294bb;
+/* Watchlist options */
+#watchlist-toggle, .watchThread, .watchlist-remove, #clearList, #clearGhosts {
+  color: indianred
 }
-/* name */
-.intro span.name {
-    color: #5f89ac;
+/* Mod things */
+div.report {
+    color: grey;
+}
+.banlist-opts .checkboxes label {
+    display: block;
+    color: grey;
+}
+tr.tblhead > th {
+    color: grey;
+}
+.desktop-style div.boardlist:not(.bottom) {
+    background-color: #151515;
+}
+.banlist-opts .checkboxes label {
+    display: block;
+    color: grey;
+}
+tr.tblhead > th {
+    color: indianred
 }

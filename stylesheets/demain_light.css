@@ -3,7 +3,7 @@
 /* General */
 /* Main page */
 legend {
-    background: #477085
+    color: #477085
 }
 div.module, div.ban {
     background: #e9eced;
@@ -86,7 +86,7 @@ span.quote {
 }
 /* Orangetext */
 orangeText {
-    color: #ffb854
+    color: ##bb8359
 }
 * Catalog grids */
 /* Background color and green border */
@@ -177,13 +177,14 @@ table.modlog tr th {
 /* Red text */
 span.heading {
     color: #d93f42;
+    font-size: 14pt;
 }
 /* OP */
 /* Subject */
 .intro span.subject {
     color: #617d6f;
 }
-/* name */
+/* Name */
 .intro span.name {
     color: #4c4c4c;
 }
@@ -204,4 +205,19 @@ div.banner {
 div.post.reply div.body a {
     color: #477085;
     text-decoration: none;
+}
+/* WatchList options */
+#watchlist-toggle, .watchThread, .watchlist-remove, #clearList, #clearGhosts {
+  color: #617d6f
+}
+/* Mod tools */
+div.report {
+    color: black;
+}
+.banlist-opts .checkboxes label {
+    display: block;
+    color: black;
+}
+.desktop-style div.boardlist:not(.bottom) {
+    background-color: #e9eced;
 }

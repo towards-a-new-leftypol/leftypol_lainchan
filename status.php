@@ -1,41 +1,43 @@
 <?php
 
 require_once 'inc/functions.php';
-
-function endsWith( $haystack, $needle ) {
-    $length = strlen( $needle );
-    if( !$length ) {
-        return true;
-    }
-    return substr( $haystack, -$length ) === $needle;
-}
+require_once 'templates/themes/overboards/overboards.php';
 
 // Boards that are nsfw
 $nsfw_boards = ['b', 'overboard'];
-// Boards that use spoiler_alunya.png as their spoiler
-$alunya_spoiler = ['leftypol', 'anime'];
 // Boards where posts are not allowed to be created
-$readonly_boards = ['overboard', 'sfw', 'alt'];
+$readonly_boards = [];
+
+// Allowed boards
+$whitelist = [];
+foreach ($config['boards'] as $boards) {
+    foreach ($boards as $board) {
+        $whitelist[] = $board;
+    }
+}
+foreach ($overboards_config as $board) {
+    $whitelist[] = $board['uri'];
+    $readonly_boards[] = $board['uri'];
+}
 
 $board_list = listBoards();
 
 // Add objects that are not boards but are treated as such
-$board_list[] = ['uri' => 'overboard', 'title' => 'Overboard'];
-$board_list[] = ['uri' => 'sfw', 'title' => 'SFW Overboard'];
-$board_list[] = ['uri' => 'alt', 'title' => 'Alternate Overboard'];
+foreach ($overboards_config as $overboard) {
+    $board_list[] = $overboard;
+}
 
 /**
  * Allowed fields for the board object:
  * - code<string>: The board code ('b', 'tech', ...)
  * - name<string>: The board user-readable name ('Siberia', ...)
- * - description<string>: The board description ('Leftist Politically Incorrect', ...)
  * - sfw<boolean>: Is this board sfw?
- * - alternate_spoilers<boolean>: Does this board use the alunya spoiler?
+ * - posting_enabled<boolean>: Can new posts be created belonging to this board?
  */
 $boards = [];
 foreach ($board_list as $board) {
-    // Skip archives
-    if (endsWith($board['uri'], '_archive')) {
+    // Skip non-whitelisted boards
+    if (!in_array($board['uri'], $whitelist)) {
         continue;
     }
 
@@ -43,7 +45,6 @@ foreach ($board_list as $board) {
         'code' => $board['uri'],
         'name' => $board['title'],
         'sfw' => !in_array($board['uri'], $nsfw_boards),
-        'alternate_spoilers' => in_array($board['uri'], $alunya_spoiler),
         'posting_enabled' => !in_array($board['uri'], $readonly_boards),
     ];
 }

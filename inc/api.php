@@ -45,8 +45,9 @@ class Api {
 		);
 
 		$this->fileFields = array(
-			'thumbheight' => 'tn_h',
-			'thumbwidth' => 'tn_w',
+			'file_id' => 'id',
+			'type' => 'mime',
+			'extension' => 'ext',
 			'height' => 'h',
 			'width' => 'w',
 			'size' => 'fsize',
@@ -90,19 +91,37 @@ class Api {
 	}
 
 	private function translateFile($file, $post, &$apiPost) {
+		global $config;
+
 		$this->translateFields($this->fileFields, $file, $apiPost);
 		$apiPost['filename'] = @substr($file->name, 0, strrpos($file->name, '.'));
-		$dotPos = strrpos($file->file, '.');
-		$apiPost['ext'] = substr($file->file, $dotPos);
-		$apiPost['tim'] = substr($file->file, 0, $dotPos);
 		if (isset ($file->thumb) && $file->thumb) {
-			$apiPost['spoiler'] = $file->thumb === 'spoiler' ? 1 : 0;
+			$apiPost['spoiler'] = $file->thumb === 'spoiler';
  		}
 		if (isset ($file->hash) && $file->hash) {
 			$apiPost['md5'] = base64_encode(hex2bin($file->hash));
 		}
 		else if (isset ($post->filehash) && $post->filehash) {
 			$apiPost['md5'] = base64_encode(hex2bin($post->filehash));
+		}
+
+		$apiPost['file_path'] = $config['uri_img'] . $file->file;
+
+		// Pick the correct thumbnail
+		if (isset($file->thumb) && $file->thumb === 'spoiler') {
+			// Spoiler
+			$apiPost['thumb_path'] = $config['root'] . $config['spoiler_image'];
+		} else if (!isset($file->thumb) || $file->thumb === 'file') {
+			// Default file format image
+			$thumbFile = $config['file_icons']['default'];
+			if (isset($file->extension) && isset($config['file_icons'][$file->extension])) {
+				$thumbFile = $config['file_icons'][$file->extension];
+			}
+
+			$apiPost['thumb_path'] = $config['root'] . sprintf($config['file_thumb'], $thumbFile);
+		} else {
+			// The file's own thumbnail
+			$apiPost['thumb_path'] = $config['uri_thumb'] . $file->thumb;
 		}
 	}
 
@@ -114,6 +133,11 @@ class Api {
 
 		if (isset($config['poster_ids']) && $config['poster_ids']) $apiPost['id'] = poster_id($post->ip, $post->thread, $board['uri']);
 		if ($threadsPage) return $apiPost;
+
+		// Load board info
+		if (isset($post->board)) {
+			openBoard($post->board);
+		}
 
 		// Handle special fields
 		if (isset($post->body_nomarkup) && ($this->config['country_flags'] || $this->config['user_flag'])) {
@@ -138,21 +162,13 @@ class Api {
 		}
 
 		// Handle files
-		// Note: 4chan only supports one file, so only the first file is taken into account for 4chan-compatible API.
 		if (isset($post->files) && $post->files && !$threadsPage) {
-			$file = $post->files[0];
-			$this->translateFile($file, $post, $apiPost);
-			if (sizeof($post->files) > 1) {
-				$extra_files = array();
-				foreach ($post->files as $i => $f) {
-					if ($i == 0) continue;
+			$apiPost['files'] = [];
+			foreach ($post->files as $f) {
+				$file = array();
+				$this->translateFile($f, $post, $file);
 
-					$extra_file = array();
-					$this->translateFile($f, $post, $extra_file);
-
-					$extra_files[] = $extra_file;
-				}
-				$apiPost['extra_files'] = $extra_files;
+				$apiPost['files'][] = $file;
 			}
 		}
 
