@@ -373,8 +373,11 @@ $config['default_stylesheet'] = array('Dark Red', $config['stylesheets']['Dark R
 
 $config['deferred_javascript'] = true;
 $config['additional_javascript'][] = 'js/jquery.min.js';
+$config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
 $config['additional_javascript'][] = 'js/inline-expanding.js';
 $config['additional_javascript'][] = 'js/ajax.js';
+$config['additional_javascript'][] = 'js/quick-reply.js';
+$config['additional_javascript'][] = 'js/post-hover.js';
 
 $config['additional_javascript'][] = 'js/post-menu.js';
 $config['additional_javascript'][] = 'js/hide-images.js';
@@ -394,14 +397,11 @@ $config['additional_javascript'][] = 'js/options/user-js.js';
 $config['additional_javascript'][] = 'js/style-select.js';
 $config['additional_javascript'][] = 'js/flag-preview.js';
 $config['additional_javascript'][] = 'js/file-selector.js';
-$config['additional_javascript'][] = 'js/post-hover.js';
 $config['additional_javascript'][] = 'js/download-original.js';
 $config['additional_javascript_defer'][] = 'js/auto-reload.js';
 $config['additional_javascript_defer'][] = 'js/thread-stats.js';
 $config['additional_javascript_defer'][] = 'js/image-hover.js';
 
-$config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
-$config['additional_javascript'][] = 'js/quick-reply.js';
 
 $config['additional_javascript'][] = 'js/gallery-view.js';
 $config['additional_javascript'][] = 'js/catalog-search.js';
@@ -547,4 +547,5 @@ $config['reply_limit'] = 600;
 
 // Changes made via web editor by "zul_admin" @ Tue, 27 Apr 2021 15:39:19 -0700:
 $config['max_body'] = 80000;
-
+$config['additional_javascript_compile'] = true;
+$config['minify_js'] = true;
