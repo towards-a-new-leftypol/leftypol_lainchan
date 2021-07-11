@@ -24,7 +24,10 @@
 		>
 		</video>
 	{% else %}
-		<img class="post-image" loading="lazy"
+		<img class="post-image" 
+			{% if 'js/remove-lazy-loading.js' in config.additional_javascript|merge(config.additional_javascript_defer) %}
+				loading="lazy"
+			{% endif %}
 			src="
 				{% if post.thumb == 'file' %}
 					{{ config.root }}

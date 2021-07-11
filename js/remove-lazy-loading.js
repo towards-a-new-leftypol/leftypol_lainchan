@@ -9,11 +9,7 @@
  * Copyleft (ɔ) 2021 Leftypol Moderation Team
  *
  * Usage:
- *	// if deferred js is implemented and enabled:
- *	// (see: https://github.com/towards-a-new-leftypol/leftypol_lainchan/pull/308/commits/dca55a16431591b3e8615320e7b78ee3e0e747b7 ):
- *   $config['additional_javascript_defer'][] = 'js/webm-settings.js';
- *	// otherwise:
- * 	$config['additional_javascript'][] = 'js/style-select.js'
+ * 	$config['additional_javascript'][] = 'js/remove-lazy-loading.js'
  *
  */
 
