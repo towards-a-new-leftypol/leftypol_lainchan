@@ -409,6 +409,7 @@ $config['additional_javascript_defer'][] = 'js/thread-watcher.js';
 $config['additional_javascript_defer'][] = 'js/expand.js';
 $config['additional_javascript_defer'][] = 'js/webm-settings.js';
 $config['additional_javascript_defer'][] = 'js/expand-video.js';
+$config['additional_javascript_defer'][] = 'js/webp-fix.js';
 
 $config['flag_preview'] = true;
 
