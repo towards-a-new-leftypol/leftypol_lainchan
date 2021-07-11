@@ -410,6 +410,8 @@ $config['additional_javascript_defer'][] = 'js/expand.js';
 $config['additional_javascript_defer'][] = 'js/webm-settings.js';
 $config['additional_javascript_defer'][] = 'js/expand-video.js';
 
+$config['additional_javascript_defer'][] = 'js/remove-lazy-loading.js';
+
 $config['additional_javascript'] = array_merge($config['additional_javascript_init'], $config['additional_javascript_defer']);
 
 $config['flag_preview'] = true;
