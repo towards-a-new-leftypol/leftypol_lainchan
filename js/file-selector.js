@@ -23,7 +23,7 @@ $('<div class="dropzone-wrap" style="display: none;">'+
 			'<div class="file-thumbs"></div>'+
 		'</div>'+
 	'</div>'+
-'</div>').prependTo('#upload td');
+'</div>').prependTo('#upload td.upload-area');
 
 var files = [];
 $('#upload_file').remove();  // remove the original file selector
