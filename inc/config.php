@@ -900,6 +900,9 @@
     // Number of reports you can create at once.
     $config['report_limit'] = 3;
 
+    // Maximum character length of report.
+    $config['report_max_length'] = 50;
+
     // Allow unfiltered HTML in board subtitle. This is useful for placing icons and links.
     $config['allow_subtitle_html'] = false;
 
