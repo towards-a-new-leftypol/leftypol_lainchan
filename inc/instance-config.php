@@ -161,6 +161,9 @@ $config['mod']['news_page'] = 5;
 // Allow everyone to see bumplocks
 $config['mod']['view_bumplock'] = -1;
 
+// Include public logs with names
+$config['public_logs'] = 1;
+
 $config['allow_thread_deletion'] = false;
 
 // Max attachments per post

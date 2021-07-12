@@ -700,8 +700,11 @@
  * ====================
  */
     // Maximum number of images allowed. Increasing this number enabled multi image.
-    // If you make it more than 1, make sure to enable the below script for the post form to change.
-    $config['max_images'] = 4;
+    // If you make it more than 1, make sure to enable one of the below scripts for the post form to change.
+    // $config['additional_javascript'][] = 'js/multi-image.js';
+    // or
+    // $config['additional_javascript'][] = 'js/file-selector.js';
+    $config['max_images'] = 1;
 
     // Method to use for determing the max filesize. 
     // "split" means that your max filesize is split between the images. For example, if your max filesize
@@ -1714,7 +1717,7 @@
     //$config['search']['boards'] = array('a', 'b', 'c', 'd', 'e');
 
     // Enable public logs? 0: NO, 1: YES, 2: YES, but drop names
-    $config['public_logs'] = 1;
+    $config['public_logs'] = 0;
 
 /*
  * ====================
