@@ -319,8 +319,8 @@ function handle_report(){
     if (empty($report))
         error($config['error']['noreport']);
     
-    if (strlen($report) > 30)
-		error($config['error']['invalidreport']);
+    if (strlen($_POST['reason']) > $config['report_max_length'])
+        error($config['error']['reporttoolong']);
     
     if (count($report) > $config['report_limit'])
         error($config['error']['toomanyreports']);
