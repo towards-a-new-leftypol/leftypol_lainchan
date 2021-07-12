@@ -593,10 +593,10 @@ if (file_exists($config['has_installed'])) {
 		case '5.1.0':
 			query('CREATE TABLE IF NOT EXISTS ``pages`` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `board` varchar(255) DEFAULT NULL,
-			  `name` varchar(255) NOT NULL,
-			  `title` varchar(255) DEFAULT NULL,
-			  `type` varchar(255) DEFAULT NULL,
+			  `board` varchar(58) DEFAULT NULL,
+			  `name` varchar(150) NOT NULL,
+			  `title` varchar(150) DEFAULT NULL,
+			  `type` varchar(150) DEFAULT NULL,
 			  `content` text,
 			  PRIMARY KEY (`id`),
 			  UNIQUE KEY `u_pages` (`name`,`board`)
@@ -607,9 +607,9 @@ if (file_exists($config['has_installed'])) {
                         }
 		case '5.1.2':
 			query('CREATE TABLE IF NOT EXISTS ``nntp_references`` (
-				  `board` varchar(60) NOT NULL,
+				  `board` varchar(30) NOT NULL,
 				  `id` int(11) unsigned NOT NULL,
-				  `message_id` varchar(255) CHARACTER SET ascii NOT NULL,
+				  `message_id` varchar(190) CHARACTER SET ascii NOT NULL,
 				  `message_id_digest` varchar(40) CHARACTER SET ascii NOT NULL,
 				  `own` tinyint(1) NOT NULL,
 				  `headers` text,
