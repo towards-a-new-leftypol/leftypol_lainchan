@@ -14,7 +14,6 @@
  */
 
 $(document).ready(function(){
-	if($('body').hasClass('active-ukko')) return;
 	var showBackLinks = function() {
 		var reply_id = $(this).attr('id').replace(/(^reply_)|(^op_)/, '');
 		
@@ -28,6 +27,8 @@ $(document).ready(function(){
 		
 			$post = $('#reply_' + id);
 			if($post.length == 0){
+				// Disable OP backlinks outside of thread page, they're broken
+				if(!$('body').hasClass('active-thread')) return;
 				$post = $('#op_' + id);
 				if($post.length == 0)
 					return;
