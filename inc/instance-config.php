@@ -87,6 +87,7 @@ $config['cookies']['mod'] = 'mod';
 $config['cookies']['salt'] = 'MGYwNjhlNjU5Y2QxNWU3YjQ3MzQ1Yj';
 
 $config['search']['enable'] = true;
+$config['board_search'] = true;
 $config['flood_cache'] = 60 * 15; // 15 minutes. The oldest a post can be in the flood table
 $config['flood_time_any'] = 20; // time between thread creation
 $config['flood_time'] = 5;

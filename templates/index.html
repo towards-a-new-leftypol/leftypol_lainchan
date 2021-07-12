@@ -4,15 +4,15 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-        <script type="text/javascript">
+	<script type="text/javascript">
 	  var
-          {% if not no_post_form %}
-              active_page = "index"
-            , board_name = "{{ board.uri }}";
-	  {% else %}
-              active_page = "ukko";
-          {% endif %}
-        </script>
+		  {% if not no_post_form %}
+			  active_page = "index"
+			, board_name = "{{ board.uri }}";
+		  {% else %}
+			  active_page = "ukko";
+		  {% endif %}
+	</script>
 
 	{% include 'header.html' %}
 	<title>{{ board.url }} - {{ board.title|e }}</title>
@@ -68,19 +68,15 @@
 		{% if config.home_link %}
 		 |  <a href="{{ config.root }}">Home</a>
 		{% endif %}
+			{% if board.uri %}
+		  		<form style="display:inline" action="/search.php">
+					 |  <input type="text" name="search" placeholder=" /{{ board.uri }}/ search">
+						<input type="hidden" name="board" value="{{ board.uri }}">
+						<input type="submit" value="Search">
+				</form>
+			{% endif %}
 	<hr />
-
-	<!-- Start Search Form -->
-	{% if config.board_search %}
-        	<form style="display:inline" action="/search.php">
-                	<p style="margin: 10px;">
-                    		<input type="text" name="search" placeholder="{{ board.uri }} search">
-                    		<input type="hidden" name="board" value="{{ board.uri }}">
-                    		<input type="submit" value="Search">
-                	</p>
-        	</form>
-    	{% endif %}
-    	<!-- End Search Form -->
+	
 	<form name="postcontrols" action="{{ config.post_url }}" method="post">
 	<input type="hidden" name="board" value="{{ board.uri }}" />
 	{% if mod %}<input type="hidden" name="mod" value="1" />{% endif %}
