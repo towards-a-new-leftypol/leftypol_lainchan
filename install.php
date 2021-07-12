@@ -591,7 +591,7 @@ if (file_exists($config['has_installed'])) {
 			query('ALTER TABLE ``mods`` CHANGE `salt` `version` VARCHAR(64) NOT NULL;') or error(db_error());
 		case '5.0.1':
 		case '5.1.0':
-			query('CREATE TABLE ``pages`` (
+			query('CREATE TABLE IF NOT EXISTS ``pages`` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `board` varchar(255) DEFAULT NULL,
 			  `name` varchar(255) NOT NULL,
@@ -606,7 +606,7 @@ if (file_exists($config['has_installed'])) {
                                 query(sprintf("ALTER TABLE ``posts_%s`` ADD `cycle` int(1) NOT NULL AFTER `locked`", $board['uri'])) or error(db_error());
                         }
 		case '5.1.2':
-			query('CREATE TABLE ``nntp_references`` (
+			query('CREATE TABLE IF NOT EXISTS ``nntp_references`` (
 				  `board` varchar(60) NOT NULL,
 				  `id` int(11) unsigned NOT NULL,
 				  `message_id` varchar(255) CHARACTER SET ascii NOT NULL,

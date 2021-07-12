@@ -303,7 +303,7 @@ CREATE TABLE IF NOT EXISTS `ban_appeals` (
 -- Table structure for table `pages`
 --
 
-CREATE TABLE `pages` (
+CREATE TABLE IF NOT EXISTS `pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `board` varchar(58) CHARACTER SET utf8 DEFAULT NULL,
   `name` varchar(150) CHARACTER SET utf8 NOT NULL,
@@ -320,7 +320,7 @@ CREATE TABLE `pages` (
 -- Table structure for table `nntp_references`
 --
 
-CREATE TABLE `nntp_references` (
+CREATE TABLE IF NOT EXISTS `nntp_references` (
   `board` varchar(30) NOT NULL,
   `id` int(11) unsigned NOT NULL,
   `message_id` varchar(190) CHARACTER SET ascii NOT NULL,
