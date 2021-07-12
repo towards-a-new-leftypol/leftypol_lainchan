@@ -342,21 +342,21 @@ function handle_report(){
     $reason = escape_markup_modifiers($_POST['reason']);
     markup($reason);
     
-    foreach ($report as $id) {
-        $query = prepare(sprintf("SELECT `id`,`thread` , `body_nomarkup` FROM ``posts_%s`` WHERE `id` = :id", $board['uri']));
+    foreach ($report as &$id) {
+        $query = prepare(sprintf("SELECT `id`,`thread`,`body_nomarkup` FROM ``posts_%s`` WHERE `id` = :id", $board['uri']));
         $query->bindValue(':id', $id, PDO::PARAM_INT);
         $query->execute() or error(db_error($query));
         
-        $thread = $query->fetch(PDO::FETCH_ASSOC);
+        $post = $query->fetch(PDO::FETCH_ASSOC);
 
-        $error = event('report', array('ip' => $_SERVER['REMOTE_ADDR'], 'board' => $board['uri'], 'post' => $post, 'reason' => $reason, 'link' => link_for($thread)));
+        $error = event('report', array('ip' => $_SERVER['REMOTE_ADDR'], 'board' => $board['uri'], 'post' => $post, 'reason' => $reason, 'link' => link_for($post)));
         if ($error) {
             error($error);
         }
 
         if ($config['syslog'])
             _syslog(LOG_INFO, 'Reported post: ' .
-                '/' . $board['dir'] . $config['dir']['res'] . link_for($thread) . ($thread['thread'] ? '#' . $id : '') .
+                '/' . $board['dir'] . $config['dir']['res'] . link_for($post) . ($post['thread'] ? '#' . $id : '') .
                 ' for "' . $reason . '"'
             );
         $query = prepare("INSERT INTO ``reports`` VALUES (NULL, :time, :ip, :board, :post, :reason)");
@@ -392,8 +392,8 @@ function handle_report(){
         return $result;
         }
         
-        $postcontent = mb_substr($thread['body_nomarkup'], 0, 120) . '...  _*(POST TRIMMED)*_';
-        $slackmessage = '<'  .$config['domain']  . "/mod.php?/" . $board['dir'] . $config['dir']['res'] .  ( $thread['thread'] ? $thread['thread'] : $id ) . ".html"  .  ($thread['thread'] ? '#' . $id : '') . '> \n ' . $reason . '\n ' . $postcontent . '\n';
+        $postcontent = mb_substr($post['body_nomarkup'], 0, 120) . '...  _*(POST TRIMMED)*_';
+        $slackmessage = '<'  .$config['domain']  . "/mod.php?/" . $board['dir'] . $config['dir']['res'] .  ( $post['thread'] ? $post['thread'] : $id ) . ".html"  .  ($post['thread'] ? '#' . $id : '') . '> \n ' . $reason . '\n ' . $postcontent . '\n';
 
         $slackresult = slack($slackmessage, $config['slack_channel']); 
         
@@ -407,7 +407,7 @@ function handle_report(){
     
     if (!isset($_POST['json_response'])) {
         $index = $root . $board['dir'] . $config['file_index'];
-        $reported_post = $root . $board['dir']  . $config['dir']['res'] .  ( $thread['thread'] ? $thread['thread'] : $id ) . ".html"  .  ($thread['thread'] ? '#' . $id : '') ;
+        $reported_post = $root . $board['dir']  . $config['dir']['res'] .  ( $post['thread'] ? $post['thread'] : $id ) . ".html"  .  ($post['thread'] ? '#' . $id : '') ;
         //header('Location: ' . $reported_post);
   
         echo Element('page.html', array('config' => $config, 'body' => '<div style="text-align:center"><a href="javascript:window.close()">[ ' . _('Close window') ." ]</a> <a href='$index'>[ " . _('Return') . ' ]</a></div>', 'title' => _('Report submitted!')));
