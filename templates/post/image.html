@@ -24,22 +24,35 @@
 		>
 		</video>
 	{% else %}
-		<img class="post-image" 
-			src="
-				{% if post.thumb == 'file' %}
-					{{ config.root }}
-					{% if config.file_icons[post.filename|extension] %}
-						{{ config.file_thumb|sprintf(config.file_icons[post.filename|extension]) }}
+		{% macro tag(doLazy, config, post) %}
+			<img 
+				class="post-image {{ doLazy ? 'no-script-no-display'}}" 
+				{{ doLazy ? 'loading="lazy"' }}
+				src="
+					{% if post.thumb == 'file' %}
+						{{ config.root }}
+						{% if config.file_icons[post.filename|extension] %}
+							{{ config.file_thumb|sprintf(config.file_icons[post.filename|extension]) }}
+						{% else %}
+							{{ config.file_thumb|sprintf(config.file_icons.default) }}
+						{% endif %}
+					{% elseif post.thumb == 'spoiler' %}
+						{{ config.root }}{{ config.spoiler_image }}
 					{% else %}
-						{{ config.file_thumb|sprintf(config.file_icons.default) }}
+						{{ config.uri_thumb }}{{ post.thumb }}
 					{% endif %}
-				{% elseif post.thumb == 'spoiler' %}
-					{{ config.root }}{{ config.spoiler_image }}
-				{% else %}
-					{{ config.uri_thumb }}{{ post.thumb }}
-				{% endif %}
-			"
-			 style="width:{{ post.thumbwidth }}px;height:{{ post.thumbheight }}px" alt="" 
-		/>
+				"
+				style="width:{{ post.thumbwidth }}px;height:{{ post.thumbheight }}px" alt="" 
+			/>
+		{% endmacro %}
+		{% import _self as image %}
+		{% if 'js/remove-lazy-loading.js' in config.additional_javascript or 'js/remove-lazy-loading.js' in config.additional_javascript_defer %}
+			{{image.tag(true, config, post)}}
+			<noscript>
+				{{image.tag(false, config, post)}}
+			</noscript>
+		{% else %}
+			{{image.tag(false, config, post)}}
+		{% endif %}
 	{% endif %}
 </a>
