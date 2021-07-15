@@ -110,11 +110,11 @@ var saved = {};
 
 
 var selectedstyle = '{% endraw %}{{ config.default_stylesheet.0|addslashes }}{% raw %}';
-var styles = {
+var styles = [
 	{% endraw %}
-	{% for stylesheet in stylesheets %}{% raw %}'{% endraw %}{{ stylesheet.name|addslashes }}{% raw %}' : '{% endraw %}{{ stylesheet.uri|addslashes }}{% raw %}',
+	{% for stylesheet in stylesheets %}{% raw %}['{% endraw %}{{ stylesheet.name|addslashes }}{% raw %}', '{% endraw %}{{ stylesheet.uri|addslashes }}{% raw %}'],
 	{% endraw %}{% endfor %}{% raw %}
-};
+];
 var codestyles = {
 	{% endraw %}
 	{% for stylesheet in code_stylesheets %}{% raw %}'{% endraw %}{{ stylesheet.name|addslashes }}{% raw %}' : '{% endraw %}{{ stylesheet.uri|addslashes }}{% raw %}',
@@ -125,7 +125,7 @@ if (typeof board_name === 'undefined') {
 	var board_name = false;
 }
 
-function changeStyle(styleName, link) {
+function changeStyle(styleName) {
 	{% endraw %}
 	{% if config.stylesheets_board %}{% raw %}
 		if (board_name) {
@@ -136,6 +136,17 @@ function changeStyle(styleName, link) {
 		localStorage.stylesheet = styleName;
 	{% endif %}
 	{% raw %}
+
+    var styleUrl;
+
+    // Don't store all styles in an object, it's harder to iterate over to build dom elements later
+    for (var i=0; i < styles.length; i++) {
+        var nameUrlPair = styles[i];
+
+        if (nameUrlPair[0] == styleName) {
+            styleUrl = nameUrlPair[1];
+        }
+    }
 	
 	// Main stylesheet
 	if (!document.getElementById('stylesheet')) {
@@ -147,8 +158,8 @@ function changeStyle(styleName, link) {
 		x.appendChild(s);
 	}
 
-	document.getElementById('stylesheet').href = styles[styleName];
-        selectedstyle = styleName;
+	document.getElementById('stylesheet').href = styleUrl;
+    selectedstyle = styleName;
 
 	// Code stylesheet
 	if (!document.getElementById('code_stylesheet')) {
@@ -161,17 +172,6 @@ function changeStyle(styleName, link) {
 	}
 
 	document.getElementById('code_stylesheet').href = codestyles[styleName];
-	
-	if (document.getElementsByClassName('styles').length != 0) {
-		var styleLinks = document.getElementsByClassName('styles')[0].childNodes;
-		for (var i = 0; i < styleLinks.length; i++) {
-			styleLinks[i].className = '';
-		}
-	}
-	
-	if (link) {
-		link.className = 'selected';
-	}
 	
 	if (typeof $ != 'undefined')
 		$(window).trigger('stylesheet', styleName);
@@ -199,36 +199,11 @@ function changeStyle(styleName, link) {
 {% else %}
 	{% raw %}
 	if (localStorage.stylesheet) {
-		for (var styleName in styles) {
-			if (styleName == localStorage.stylesheet) {
-				changeStyle(styleName);
-				break;
-			}
-		}
+        changeStyle(localStorage.stylesheet);
 	}
 	{% endraw %}
 {% endif %}
 {% raw %}
-
-function init_stylechooser() {
-	var newElement = document.createElement('div');
-	newElement.className = 'styles';
-	
-	for (styleName in styles) {
-		var style = document.createElement('a');
-		style.innerHTML = '[' + styleName + ']';
-		style.onclick = function() {
-			changeStyle(this.innerHTML.substring(1, this.innerHTML.length - 1), this);
-		};
-		if (styleName == selectedstyle) {
-			style.className = 'selected';
-		}
-		style.href = 'javascript:void(0);';
-		newElement.appendChild(style);
-	}	
-	
-	document.getElementsByTagName('body')[0].insertBefore(newElement, document.getElementsByTagName('body')[0].lastChild.nextSibling);
-}
 
 function get_cookie(cookie_name) {
 	var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)');
@@ -386,8 +361,6 @@ var script_settings = function(script_name) {
 };
 
 function init() {
-	init_stylechooser();
-
 	{% endraw %}	
 	{% if config.allow_delete %}
 	if (document.forms.postcontrols) {
