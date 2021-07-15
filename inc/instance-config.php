@@ -394,7 +394,6 @@ $config['additional_javascript'][] = 'js/options.js';
 $config['additional_javascript'][] = 'js/options/general.js';
 $config['additional_javascript'][] = 'js/options/user-css.js';
 $config['additional_javascript'][] = 'js/options/user-js.js';
-$config['additional_javascript'][] = 'js/style-select.js';
 $config['additional_javascript'][] = 'js/flag-preview.js';
 $config['additional_javascript'][] = 'js/file-selector.js';
 $config['additional_javascript'][] = 'js/download-original.js';
