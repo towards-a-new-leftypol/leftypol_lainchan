@@ -7,7 +7,7 @@
  * Witaj!
  */
 function _(s) {
-	return (typeof l10n != 'undefined' && typeof l10n[s] != 'undefined') ? l10n[s] : s;
+    return (typeof l10n != 'undefined' && typeof l10n[s] != 'undefined') ? l10n[s] : s;
 }
 
 /* printf-like formatting function, example of usage:
@@ -19,7 +19,7 @@ function _(s) {
  * 3 uzytkownikow
  */
 function fmt(s,a) {
-	return s.replace(/\{([0-9]+)\}/g, function(x) { return a[x[1]]; });
+    return s.replace(/\{([0-9]+)\}/g, function(x) { return a[x[1]]; });
 }
 
 function until($timestamp) {
@@ -111,31 +111,31 @@ var saved = {};
 
 var selectedstyle = '{% endraw %}{{ config.default_stylesheet.0|addslashes }}{% raw %}';
 var styles = [
-	{% endraw %}
-	{% for stylesheet in stylesheets %}{% raw %}['{% endraw %}{{ stylesheet.name|addslashes }}{% raw %}', '{% endraw %}{{ stylesheet.uri|addslashes }}{% raw %}'],
-	{% endraw %}{% endfor %}{% raw %}
+    {% endraw %}
+    {% for stylesheet in stylesheets %}{% raw %}['{% endraw %}{{ stylesheet.name|addslashes }}{% raw %}', '{% endraw %}{{ stylesheet.uri|addslashes }}{% raw %}'],
+    {% endraw %}{% endfor %}{% raw %}
 ];
 var codestyles = {
-	{% endraw %}
-	{% for stylesheet in code_stylesheets %}{% raw %}'{% endraw %}{{ stylesheet.name|addslashes }}{% raw %}' : '{% endraw %}{{ stylesheet.uri|addslashes }}{% raw %}',
-	{% endraw %}{% endfor %}{% raw %}
+    {% endraw %}
+    {% for stylesheet in code_stylesheets %}{% raw %}'{% endraw %}{{ stylesheet.name|addslashes }}{% raw %}' : '{% endraw %}{{ stylesheet.uri|addslashes }}{% raw %}',
+    {% endraw %}{% endfor %}{% raw %}
 };
 
 if (typeof board_name === 'undefined') {
-	var board_name = false;
+    var board_name = false;
 }
 
 function changeStyle(styleName) {
-	{% endraw %}
-	{% if config.stylesheets_board %}{% raw %}
-		if (board_name) {
-			stylesheet_choices[board_name] = styleName;
-			localStorage.board_stylesheets = JSON.stringify(stylesheet_choices);
-		}
-	{% endraw %}{% else %}
-		localStorage.stylesheet = styleName;
-	{% endif %}
-	{% raw %}
+    {% endraw %}
+    {% if config.stylesheets_board %}{% raw %}
+        if (board_name) {
+            stylesheet_choices[board_name] = styleName;
+            localStorage.board_stylesheets = JSON.stringify(stylesheet_choices);
+        }
+    {% endraw %}{% else %}
+        localStorage.stylesheet = styleName;
+    {% endif %}
+    {% raw %}
 
     var styleUrl;
 
@@ -147,245 +147,245 @@ function changeStyle(styleName) {
             styleUrl = nameUrlPair[1];
         }
     }
-	
-	// Main stylesheet
-	if (!document.getElementById('stylesheet')) {
-		var s = document.createElement('link');
-		s.rel = 'stylesheet';
-		s.type = 'text/css';
-		s.id = 'stylesheet';
-		var x = document.getElementsByTagName('head')[0];
-		x.appendChild(s);
-	}
+    
+    // Main stylesheet
+    if (!document.getElementById('stylesheet')) {
+        var s = document.createElement('link');
+        s.rel = 'stylesheet';
+        s.type = 'text/css';
+        s.id = 'stylesheet';
+        var x = document.getElementsByTagName('head')[0];
+        x.appendChild(s);
+    }
 
-	document.getElementById('stylesheet').href = styleUrl;
+    document.getElementById('stylesheet').href = styleUrl;
     selectedstyle = styleName;
 
-	// Code stylesheet
-	if (!document.getElementById('code_stylesheet')) {
-		var s = document.createElement('link');
-		s.rel = 'stylesheet';
-		s.type = 'text/css';
-		s.id = 'code_stylesheet';
-		var x = document.getElementsByTagName('head')[0];
-		x.appendChild(s);
-	}
+    // Code stylesheet
+    if (!document.getElementById('code_stylesheet')) {
+        var s = document.createElement('link');
+        s.rel = 'stylesheet';
+        s.type = 'text/css';
+        s.id = 'code_stylesheet';
+        var x = document.getElementsByTagName('head')[0];
+        x.appendChild(s);
+    }
 
-	document.getElementById('code_stylesheet').href = codestyles[styleName];
-	
-	if (typeof $ != 'undefined')
-		$(window).trigger('stylesheet', styleName);
+    document.getElementById('code_stylesheet').href = codestyles[styleName];
+    
+    if (typeof $ != 'undefined')
+        $(window).trigger('stylesheet', styleName);
 }
 
 
 {% endraw %}
 {% if config.stylesheets_board %}
-	{% raw %}
-	
-	if (!localStorage.board_stylesheets) {
-		localStorage.board_stylesheets = '{}';
-	}
-	
-	var stylesheet_choices = JSON.parse(localStorage.board_stylesheets);
-	if (board_name && stylesheet_choices[board_name]) {
-		for (var styleName in styles) {
-			if (styleName == stylesheet_choices[board_name]) {
-				changeStyle(styleName);
-				break;
-			}
-		}
-	}
-	{% endraw%}
+    {% raw %}
+    
+    if (!localStorage.board_stylesheets) {
+        localStorage.board_stylesheets = '{}';
+    }
+    
+    var stylesheet_choices = JSON.parse(localStorage.board_stylesheets);
+    if (board_name && stylesheet_choices[board_name]) {
+        for (var styleName in styles) {
+            if (styleName == stylesheet_choices[board_name]) {
+                changeStyle(styleName);
+                break;
+            }
+        }
+    }
+    {% endraw%}
 {% else %}
-	{% raw %}
-	if (localStorage.stylesheet) {
+    {% raw %}
+    if (localStorage.stylesheet) {
         changeStyle(localStorage.stylesheet);
-	}
-	{% endraw %}
+    }
+    {% endraw %}
 {% endif %}
 {% raw %}
 
 function get_cookie(cookie_name) {
-	var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)');
-	if (results)
-		return (unescape(results[2]));
-	else
-		return null;
+    var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)');
+    if (results)
+        return (unescape(results[2]));
+    else
+        return null;
 }
 
 function highlightReply(id) {
-	if (typeof window.event != "undefined" && event.which == 2) {
-		// don't highlight on middle click
-		return true;
-	}
-	
-	var divs = document.getElementsByTagName('div');
-	for (var i = 0; i < divs.length; i++)
-	{
-		if (divs[i].className.indexOf('post') != -1)
-			divs[i].className = divs[i].className.replace(/highlighted/, '');
-	}
-	if (id) {
-		var post = document.getElementById('reply_'+id);
-		if (post)
-			post.className += ' highlighted';
-			window.location.hash = id;
-	}
-	return true;
+    if (typeof window.event != "undefined" && event.which == 2) {
+        // don't highlight on middle click
+        return true;
+    }
+    
+    var divs = document.getElementsByTagName('div');
+    for (var i = 0; i < divs.length; i++)
+    {
+        if (divs[i].className.indexOf('post') != -1)
+            divs[i].className = divs[i].className.replace(/highlighted/, '');
+    }
+    if (id) {
+        var post = document.getElementById('reply_'+id);
+        if (post)
+            post.className += ' highlighted';
+            window.location.hash = id;
+    }
+    return true;
 }
 
 function generatePassword() {
-	var pass = '';
-	var chars = '{% endraw %}{{ config.genpassword_chars }}{% raw %}';
-	for (var i = 0; i < 8; i++) {
-		var rnd = Math.floor(Math.random() * chars.length);
-		pass += chars.substring(rnd, rnd + 1);
-	}
-	return pass;
+    var pass = '';
+    var chars = '{% endraw %}{{ config.genpassword_chars }}{% raw %}';
+    for (var i = 0; i < 8; i++) {
+        var rnd = Math.floor(Math.random() * chars.length);
+        pass += chars.substring(rnd, rnd + 1);
+    }
+    return pass;
 }
 
 function dopost(form) {
-	if (form.elements['name']) {
-		localStorage.name = form.elements['name'].value.replace(/( |^)## .+$/, '');
-	}
-	if (form.elements['password']) {
-		localStorage.password = form.elements['password'].value;
-	}
-	if (form.elements['email'] && form.elements['email'].value != 'sage') {
-		localStorage.email = form.elements['email'].value;
-	}
-	
-	saved[document.location] = form.elements['body'].value;
-	sessionStorage.body = JSON.stringify(saved);
-	
-	return form.elements['body'].value != "" || (form.elements['file'] && form.elements['file'].value != "") || (form.elements.file_url && form.elements['file_url'].value != "");
+    if (form.elements['name']) {
+        localStorage.name = form.elements['name'].value.replace(/( |^)## .+$/, '');
+    }
+    if (form.elements['password']) {
+        localStorage.password = form.elements['password'].value;
+    }
+    if (form.elements['email'] && form.elements['email'].value != 'sage') {
+        localStorage.email = form.elements['email'].value;
+    }
+    
+    saved[document.location] = form.elements['body'].value;
+    sessionStorage.body = JSON.stringify(saved);
+    
+    return form.elements['body'].value != "" || (form.elements['file'] && form.elements['file'].value != "") || (form.elements.file_url && form.elements['file_url'].value != "");
 }
 
 function reloadCaptcha() {
-	// Reload captcha images (date reduces chance of caching)
-	// If no securimage captcha is enabled, no elements will be found
-	captchaImgs = document.querySelectorAll('[id=captcha-img]');
-	for (var i = 0; i < captchaImgs.length; ++i)
-		captchaImgs[i].src = "/captcha.php?"+Date.now();
-	captchas = document.querySelectorAll('[id=captcha]');
-	for (var i = 0; i < captchas.length; ++i)
-		captchas[i].value = "";
+    // Reload captcha images (date reduces chance of caching)
+    // If no securimage captcha is enabled, no elements will be found
+    captchaImgs = document.querySelectorAll('[id=captcha-img]');
+    for (var i = 0; i < captchaImgs.length; ++i)
+        captchaImgs[i].src = "/captcha.php?"+Date.now();
+    captchas = document.querySelectorAll('[id=captcha]');
+    for (var i = 0; i < captchas.length; ++i)
+        captchas[i].value = "";
 }
 
 function citeReply(id, with_link) {
-	var textarea = document.getElementById('body');
+    var textarea = document.getElementById('body');
 
-	if (!textarea) return false;
-	
-	if (document.selection) {
-		// IE
-		textarea.focus();
-		var sel = document.selection.createRange();
-		sel.text = '>>' + id + '\n';
-	} else if (textarea.selectionStart || textarea.selectionStart == '0') {
-		var start = textarea.selectionStart;
-		var end = textarea.selectionEnd;
-		textarea.value = textarea.value.substring(0, start) + '>>' + id + '\n' + textarea.value.substring(end, textarea.value.length);
-		
-		textarea.selectionStart += ('>>' + id).length + 1;
-		textarea.selectionEnd = textarea.selectionStart;
-	} else {
-		// ???
-		textarea.value += '>>' + id + '\n';
-	}
-	if (typeof $ != 'undefined') {
-		var select = document.getSelection().toString();
-		if (select) {
-			var body = $('#reply_' + id + ', #op_' + id).find('div.body');  // TODO: support for OPs
-			var index = body.text().indexOf(select.replace('\n', ''));  // for some reason this only works like this
-			if (index > -1) {
-				textarea.value += '>' + select + '\n';
-			}
-		}
+    if (!textarea) return false;
+    
+    if (document.selection) {
+        // IE
+        textarea.focus();
+        var sel = document.selection.createRange();
+        sel.text = '>>' + id + '\n';
+    } else if (textarea.selectionStart || textarea.selectionStart == '0') {
+        var start = textarea.selectionStart;
+        var end = textarea.selectionEnd;
+        textarea.value = textarea.value.substring(0, start) + '>>' + id + '\n' + textarea.value.substring(end, textarea.value.length);
+        
+        textarea.selectionStart += ('>>' + id).length + 1;
+        textarea.selectionEnd = textarea.selectionStart;
+    } else {
+        // ???
+        textarea.value += '>>' + id + '\n';
+    }
+    if (typeof $ != 'undefined') {
+        var select = document.getSelection().toString();
+        if (select) {
+            var body = $('#reply_' + id + ', #op_' + id).find('div.body');  // TODO: support for OPs
+            var index = body.text().indexOf(select.replace('\n', ''));  // for some reason this only works like this
+            if (index > -1) {
+                textarea.value += '>' + select + '\n';
+            }
+        }
 
-		$(window).trigger('cite', [id, with_link]);
-		$(textarea).change();
-	}
-	return false;
+        $(window).trigger('cite', [id, with_link]);
+        $(textarea).change();
+    }
+    return false;
 }
 
 function rememberStuff() {
-	if (document.forms.post) {
-		if (document.forms.post.password) {
-			if (!localStorage.password)
-				localStorage.password = generatePassword();
-			document.forms.post.password.value = localStorage.password;
-		}
-		
-		if (localStorage.name && document.forms.post.elements['name'])
-			document.forms.post.elements['name'].value = localStorage.name;
-		if (localStorage.email && document.forms.post.elements['email'])
-			document.forms.post.elements['email'].value = localStorage.email;
-		
-		if (window.location.hash.indexOf('q') == 1)
-			citeReply(window.location.hash.substring(2), true);
-		
-		if (sessionStorage.body) {
-			var saved = JSON.parse(sessionStorage.body);
-			if (get_cookie('{% endraw %}{{ config.cookies.js }}{% raw %}')) {
-				// Remove successful posts
-				var successful = JSON.parse(get_cookie('{% endraw %}{{ config.cookies.js }}{% raw %}'));
-				for (var url in successful) {
-					saved[url] = null;
-				}
-				sessionStorage.body = JSON.stringify(saved);
-				
-				document.cookie = '{% endraw %}{{ config.cookies.js }}{% raw %}={};expires=0;path=/;';
-			}
-			if (saved[document.location]) {
-				document.forms.post.body.value = saved[document.location];
-			}
-		}
-		
-		if (localStorage.body) {
-			document.forms.post.body.value = localStorage.body;
-			localStorage.body = '';
-		}
-	}
+    if (document.forms.post) {
+        if (document.forms.post.password) {
+            if (!localStorage.password)
+                localStorage.password = generatePassword();
+            document.forms.post.password.value = localStorage.password;
+        }
+        
+        if (localStorage.name && document.forms.post.elements['name'])
+            document.forms.post.elements['name'].value = localStorage.name;
+        if (localStorage.email && document.forms.post.elements['email'])
+            document.forms.post.elements['email'].value = localStorage.email;
+        
+        if (window.location.hash.indexOf('q') == 1)
+            citeReply(window.location.hash.substring(2), true);
+        
+        if (sessionStorage.body) {
+            var saved = JSON.parse(sessionStorage.body);
+            if (get_cookie('{% endraw %}{{ config.cookies.js }}{% raw %}')) {
+                // Remove successful posts
+                var successful = JSON.parse(get_cookie('{% endraw %}{{ config.cookies.js }}{% raw %}'));
+                for (var url in successful) {
+                    saved[url] = null;
+                }
+                sessionStorage.body = JSON.stringify(saved);
+                
+                document.cookie = '{% endraw %}{{ config.cookies.js }}{% raw %}={};expires=0;path=/;';
+            }
+            if (saved[document.location]) {
+                document.forms.post.body.value = saved[document.location];
+            }
+        }
+        
+        if (localStorage.body) {
+            document.forms.post.body.value = localStorage.body;
+            localStorage.body = '';
+        }
+    }
 }
 
 var script_settings = function(script_name) {
-	this.script_name = script_name;
-	this.get = function(var_name, default_val) {
-		if (typeof tb_settings == 'undefined' ||
-			typeof tb_settings[this.script_name] == 'undefined' ||
-			typeof tb_settings[this.script_name][var_name] == 'undefined')
-			return default_val;
-		return tb_settings[this.script_name][var_name];
-	}
+    this.script_name = script_name;
+    this.get = function(var_name, default_val) {
+        if (typeof tb_settings == 'undefined' ||
+            typeof tb_settings[this.script_name] == 'undefined' ||
+            typeof tb_settings[this.script_name][var_name] == 'undefined')
+            return default_val;
+        return tb_settings[this.script_name][var_name];
+    }
 };
 
 function init() {
-	{% endraw %}	
-	{% if config.allow_delete %}
-	if (document.forms.postcontrols) {
-		document.forms.postcontrols.password.value = localStorage.password;
-	}
-	{% endif %}
-	{% raw %}
-	
-	if (window.location.hash.indexOf('q') != 1 && window.location.hash.substring(1))
-		highlightReply(window.location.hash.substring(1));
+    {% endraw %}    
+    {% if config.allow_delete %}
+    if (document.forms.postcontrols) {
+        document.forms.postcontrols.password.value = localStorage.password;
+    }
+    {% endif %}
+    {% raw %}
+    
+    if (window.location.hash.indexOf('q') != 1 && window.location.hash.substring(1))
+        highlightReply(window.location.hash.substring(1));
 }
 
 var RecaptchaOptions = {
-	theme : 'clean'
+    theme : 'clean'
 };
 
 onready_callbacks = [];
 function onready(fnc) {
-	onready_callbacks.push(fnc);
+    onready_callbacks.push(fnc);
 }
 
 function ready() {
-	for (var i = 0; i < onready_callbacks.length; i++) {
-		onready_callbacks[i]();
-	}
+    for (var i = 0; i < onready_callbacks.length; i++) {
+        onready_callbacks[i]();
+    }
 }
 
 {% endraw %}
