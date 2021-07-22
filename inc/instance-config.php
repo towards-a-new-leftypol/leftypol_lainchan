@@ -475,7 +475,7 @@ $config['wordfilters'][] = array('/chud/i', 'FAGGOT', true);
  */
 $a_alias = 'a4@ÁÀȦÂÄǞǍĂĀÃÅǺǼǢáàȧâäǟǎăāãåǻǽǣĄĄ̊ąą̊æɑÆⱭАа';
 $g_alias = 'gǵġĝǧğǥɠǤƓǴĠĜǦĞĢ';
-$i_alias = 'i1L||ıɩįɨɨ̧ĮƗƗ̧íìîïǐĭīĩịÍÌİÎÏǏĬĪĨỊĺļľŀḷḽІії';
+$i_alias = 'i1L||ıɩįɨɨ̧ĮƗƗ̧íìîïǐĭīĩịÍÌİÎÏǏĬĪĨỊĺļľŀḷḽІії!¡';
 $n_alias = 'nŋŉńṅňñņṋŃṄŇÑŅṊ';
 
 $config['wordfilters'][] = array('/TRANN(Y|IE)?/', 'TRANSHUMANIST', true);
@@ -486,6 +486,10 @@ $config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*
 $config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+/imu", 'uygh', true);
 $config['wordfilters'][] = array('/ewish uyghur/i', 'ewish nigger', true);
 
+$config['wordfilters'][] = array('/discord(\.(gg|com))?/iu', 'fbi.gov', true);
+
+// Prevents replacing false positives in the middle of words or links
+$config['wordfilters'][] = array('/(^|<br>|[ (-])iq([) ?!.]||<br>|$)(score)?/imu', '$1autism score$2', true);
 
 /*
  * Filters for diverting anorectal violence spammer
