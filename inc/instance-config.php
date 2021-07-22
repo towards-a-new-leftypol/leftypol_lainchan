@@ -473,16 +473,19 @@ $config['wordfilters'][] = array('/chud/i', 'FAGGOT', true);
  * https://regex101.com/r/31wYx0/2
  *
  */
-$a_alias = 'a4@ÁÀȦÂÄǞǍĂĀÃÅǺǼǢáàȧâäǟǎăāãåǻǽǣĄĄ̊ąą̊æɑÆⱭАа';
-$g_alias = 'gǵġĝǧğǥɠǤƓǴĠĜǦĞĢ';
-$i_alias = 'i1L||ıɩįɨɨ̧ĮƗƗ̧íìîïǐĭīĩịÍÌİÎÏǏĬĪĨỊĺļľŀḷḽІії!¡';
-$n_alias = 'nŋŉńṅňñņṋŃṄŇÑŅṊ';
+$a_alias = 'a4@ÁÀȦÂÄǞǍĂĀÃÅǺǼǢáàȧâäǟǎăāãåǻǽǣĄĄ̊ąą̊æɑÆⱭАаaäɑ';
+$e_alias = 'eе3ee̞ɛɜɘ';
+$g_alias = 'gǵġĝǧğǥɠǤƓǴĠĜǦĞĢɡɢᶢ';
+$i_alias = 'i1L||ıɩįɨɨ̧ĮƗƗ̧íìîïǐĭīĩịÍÌİÎÏǏĬĪĨỊĺļľŀḷḽІії!¡lliɪ';
+$n_alias = 'nŋŉńṅňñņṋŃṄŇÑŅṊnɴn̥n̼ᶰ';
+$r_alias = 'rʀrɾ';
+$t_alias = 'tt̼t';
 
 $config['wordfilters'][] = array('/TRANN(Y|IE)?/', 'TRANSHUMANIST', true);
 $config['wordfilters'][] = array('/NIGGA/', 'UYGHA', true);
 $config['wordfilters'][] = array('/NIGGER/', 'UYGHUR', true);
-$config['wordfilters'][] = array("/t[^\p{L}0-9]*r+[^\p{L}0-9]*[$a_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*(y|[$i_alias]+[^\p{L}0-9]*[e3е]+)?/imu", 'transhumanist', true);
-$config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[e3е]+[^\p{L}0-9]*r/imu", 'uyghur', true);
+$config['wordfilters'][] = array("/[$t_alias][^\p{L}0-9]*[$r_alias]+[^\p{L}0-9]*[$a_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*[$n_alias]+[^\p{L}0-9]*(y|[$i_alias]+[^\p{L}0-9]*[$e_alias]+)?/imu", 'transhumanist', true);
+$config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$e_alias]+[^\p{L}0-9]*[$r_alias]/imu", 'uyghur', true);
 $config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+/imu", 'uygh', true);
 $config['wordfilters'][] = array('/ewish uyghur/i', 'ewish nigger', true);
 
