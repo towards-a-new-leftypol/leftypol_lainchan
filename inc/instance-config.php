@@ -489,7 +489,7 @@ $config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*
 $config['wordfilters'][] = array("/[$n_alias][^\p{L}0-9]*[$i_alias]+[^\p{L}0-9]*[$g_alias]+[^\p{L}0-9]*[$g_alias]+/imu", 'uygh', true);
 $config['wordfilters'][] = array('/ewish uyghur/i', 'ewish nigger', true);
 
-$config['wordfilters'][] = array('/discord(\.(gg|com))?/iu', 'fbi.gov', true);
+$config['wordfilters'][] = array('/(^|<br>|[ \/])discord(\.(gg|com))?(s?([\W]|<br>|$))/imu', '$1fbi.gov$4', true);
 
 // Prevents replacing false positives in the middle of words or links
 $config['wordfilters'][] = array('/(^|<br>|[ (-])iq([) ?!.]||<br>|$)(score)?/imu', '$1autism score$2', true);
