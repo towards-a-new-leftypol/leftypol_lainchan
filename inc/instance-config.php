@@ -105,6 +105,7 @@ $config['max_pages'] = 36;
 $config['threads_preview'] = 5;
 $config['root'] = '/';
 $config['secure_trip_salt'] = 'ODQ2NDM0ODlmMmRhNzk2M2EyNjJlOW';
+$config['report_max_length'] = 150;
 
 $config['strip_combining_chars'] = true;
 // Maximum number of combining characters in a row allowed so that they can still be used in moderation.
@@ -559,3 +560,32 @@ $config['reply_limit'] = 600;
 $config['max_body'] = 80000;
 $config['additional_javascript_compile'] = true;
 $config['minify_js'] = true;
+
+/*
+* ====================
+*  Ban settings
+* ====================
+*/
+
+    // Require users to see the ban page at least once for a ban even if it has since expired.
+    $config['require_ban_view'] = true;
+
+    // Show the post the user was banned for on the "You are banned" page.
+    $config['ban_show_post'] = true;
+
+    // Optional HTML to append to "You are banned" pages. For example, you could include instructions and/or
+    // a link to an email address or IRC chat room to appeal the ban.
+    $config['ban_page_extra'] = '';
+
+    // Allow users to appeal bans through Tinyboard.
+    $config['ban_appeals'] = true;
+
+    // Do not allow users to appeal bans that are shorter than this length (in seconds).
+    $config['ban_appeals_min_length'] = 60; // 1 minute
+
+    // How many ban appeals can be made for a single ban?
+    $config['ban_appeals_max'] = 1;
+
+    // Show moderator name on ban page.
+    $config['show_modname'] = false;
+
