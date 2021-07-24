@@ -320,7 +320,7 @@ function handle_report(){
         error($config['error']['noreport']);
     
     if (strlen($_POST['reason']) > $config['report_max_length'])
-        error($config['error']['reporttoolong']);
+        error($config['error']['toolongreport']);
     
     if (count($report) > $config['report_limit'])
         error($config['error']['toomanyreports']);
