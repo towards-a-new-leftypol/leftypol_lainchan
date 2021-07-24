@@ -372,9 +372,7 @@ $config['default_stylesheet'] = array('Dark Red', $config['stylesheets']['Dark R
  */
 
 $config['deferred_javascript'] = true;
-$config['additional_javascript'][] = 'js/jquery.min.js';
 $config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
-$config['additional_javascript'][] = 'js/inline-expanding.js';
 $config['additional_javascript'][] = 'js/ajax.js';
 $config['additional_javascript'][] = 'js/quick-reply.js';
 $config['additional_javascript'][] = 'js/post-hover.js';
