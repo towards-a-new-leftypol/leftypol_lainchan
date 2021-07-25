@@ -293,7 +293,7 @@
 		$postForm.appendTo($('body')).hide();
 		$origPostForm = $('form[name="post"]:first');
 		
-		// Synchronise body text with original post form
+		// Synchronise body text with original post form. Remember to remove listeners when closing.
 		$origPostForm.find('textarea[name="body"]').on('change input propertychange', function() {
 			$postForm.find('textarea[name="body"]').val($(this).val());
 		});
@@ -346,6 +346,10 @@
 		}
 		
 		$postForm.find('th .close-btn').click(function() {
+			// Remove origPostForm listeners
+			$origPostForm.find('textarea[name="body"]').off('change input propertychange focus');
+			$origPostForm.find('input[type="text"],select').off('change input propertychange');
+			
 			$origPostForm.find('textarea[name="body"]').attr('id', 'body');
 			$postForm.remove();
 			floating_link();
