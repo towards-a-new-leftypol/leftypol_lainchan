@@ -356,7 +356,7 @@
         'condition' => array(
             'flood-match' => array('isreply'), // Only match IP address
             'OP' => true,
-            'flood-time-any' => &$config['flood_time_any']
+            'flood-time' => &$config['flood_time_any']
         ),
         'noip' => true,
         'find-time' => 60 * 60 * 1,
