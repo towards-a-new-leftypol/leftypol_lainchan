@@ -343,51 +343,65 @@
      * Read more: http://tinyboard.org/docs/index.php?p=Config/Filters
      */
 
-    // Minimum time between between each opening post.
-    $config['flood_time_any'] = 40;
     // Minimum time between between each post by the same IP address.
-    $config['flood_time'] = 10;
+    $config['flood_time_ip'] = 10;
+    // Minimum time between between each post with the exact same content
+    $config['flood_time_repost'] = 30;
     // Minimum time between between each post with the exact same content AND same IP address.
-    $config['flood_time_ip'] = 120;
-    // Same as above but by a different IP address. (Same content, not necessarily same IP address.)
-    $config['flood_time_same'] = 30;
-
-    $config['filters'][] = array(
-        'condition' => array(
-            'flood-match' => array('isreply'), // Only match IP address
-            'OP' => true,
-            'flood-time' => &$config['flood_time_any']
-        ),
-        'action' => 'reject',
-        'message' => 'New threads are being created too quickly. Hmmm'
-    );
+    $config['flood_time_ip_repost'] = 120;
+    // Minimum time between between any opening post on the same board.
+    $config['flood_time_board_op'] = 30;
+    // Minimum time between between opening posts by the same IP address.
+    $config['flood_time_ip_op'] = 180;
 
     // Minimum time between posts by the same IP address (all boards).
     $config['filters'][] = array(
         'condition' => array(
             'flood-match' => array('ip'), // Only match IP address
-            'flood-time' => &$config['flood_time']
+            'flood-time' => &$config['flood_time_ip']
         ),
         'action' => 'reject',
         'message' => &$config['error']['flood']
     );
 
-    // Minimum time between posts by the same IP address with the same text.
+    // Minimum time between between each post with the exact same content (all boards)
     $config['filters'][] = array(
         'condition' => array(
-            'flood-match' => array('ip', 'body'), // Match IP address and post body
-            'flood-time' => &$config['flood_time_ip'],
+            'flood-match' => array('body'), // Only match post body
+            'flood-time' => &$config['flood_time_repost']
+        ),
+        'action' => 'reject',
+        'message' => &$config['error']['flood']
+    );
+
+    // Minimum time between posts by the same IP address with the same text (all boards)
+    $config['filters'][] = array(
+        'condition' => array(
+            'flood-match' => array('ip', 'body'), // Only match IP address and post body
+            'flood-time' => &$config['flood_time_ip_repost'],
             '!body' => '/^$/', // Post body is NOT empty
         ),
         'action' => 'reject',
         'message' => &$config['error']['flood']
     );
 
-    // Minimum time between posts with the same text. (Same content, but not always the same IP address.)
+    // Minimum time between between each opening post (same board)
     $config['filters'][] = array(
         'condition' => array(
-            'flood-match' => array('body'), // Match only post body
-            'flood-time' => &$config['flood_time_same']
+            'OP' => true,
+            'flood-match' => array('board',' isop'), // Only match OPs on the same board
+            'flood-time' => &$config['flood_time_board_op']
+        ),
+        'action' => 'reject',
+        'message' => 'New threads are being created too quickly.'
+    );
+
+    // Minimum time between opening posts by the same IP address (all boards)
+    $config['filters'][] = array(
+        'condition' => array(
+            'OP' => true,
+            'flood-match' => array('ip', 'isop'), // Only match IP address of OPs
+            'flood-time' => &$config['flood_time_ip_op']
         ),
         'action' => 'reject',
         'message' => &$config['error']['flood']

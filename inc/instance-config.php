@@ -88,10 +88,11 @@ $config['cookies']['salt'] = 'MGYwNjhlNjU5Y2QxNWU3YjQ3MzQ1Yj';
 
 $config['search']['enable'] = true;
 $config['flood_cache'] = 60 * 15; // 15 minutes. The oldest a post can be in the flood table
-$config['flood_time_any'] = 20; // time between thread creation
-$config['flood_time'] = 5;
-$config['flood_time_ip'] = 60;
-$config['flood_time_same'] = 60;
+$config['flood_time_ip'] = 5;          // Minimum time between between each post by the same IP address.
+$config['flood_time_repost'] = 30;     // Minimum time between between each post with the exact same content
+$config['flood_time_ip_repost'] = 120; // Minimum time between between each post with the exact same content AND same IP address.
+$config['flood_time_board_op'] = 20;   // Minimum time between between any opening post on the same board.
+$config['flood_time_ip_op'] = 180;     // Minimum time between between opening posts by the same IP address.
 $config['max_body'] = 100000;
 $config['reply_limit'] = 250;
 $config['max_links'] = 40;
