@@ -73,14 +73,6 @@ class Filter {
                 $this->flood_check = $flood_check_matched;
                 
                 return !empty($this->flood_check);
-            case 'flood-time-any':
-                foreach ($this->flood_check as $flood_post) {
-                    if (time() - $flood_post['time'] <= $match) {
-                        print_err("rejecting post with flood id: " . $flood_post['id']);
-                        return true;
-                    }
-                }
-                return false;
             case 'flood-time':
                 foreach ($this->flood_check as $flood_post) {
                     if (time() - $flood_post['time'] <= $match) {
@@ -228,37 +220,14 @@ function do_filters(array $post) {
     
     if (!isset($config['filters']) || empty($config['filters']))
         return;
-
-    // look at the flood table regardless of IP
-    $noip = false;
     
     foreach ($config['filters'] as $filter) {
-        if (isset($filter['condition']['flood-match']) && (!isset($filter['noip']) || $filter['noip'] == false)) {
+        if (isset($filter['condition']['flood-match'])) {
             $has_flood = true;
-            break;
-        } else if ($filter['noip'] == true) {
-            print_err("filters noip is true");
-            $noip = true;
-            $find_time = time() - $filter['find-time'];
         }
     }
-    
-    if ($noip) {
-        print_err("SELECT * FROM flood WHERE time > " . strval($find_time));
-        $query = prepare("SELECT * FROM ``flood`` WHERE `time` > $find_time");
-        $query->execute() or error(db_error($query));
-        $flood_check = $query->fetchAll(PDO::FETCH_ASSOC);
-    } else if (isset($has_flood)) {
-        if ($post['has_file']) {
-            $query = prepare("SELECT * FROM ``flood`` WHERE `ip` = :ip OR `posthash` = :posthash OR `filehash` = :filehash");
-            $query->bindValue(':ip', $_SERVER['REMOTE_ADDR']);
-            $query->bindValue(':posthash', make_comment_hex($post['body_nomarkup']));
-            $query->bindValue(':filehash', $post['filehash']);
-        } else {
-            $query = prepare("SELECT * FROM ``flood`` WHERE `ip` = :ip OR `posthash` = :posthash");
-            $query->bindValue(':ip', $_SERVER['REMOTE_ADDR']);
-            $query->bindValue(':posthash', make_comment_hex($post['body_nomarkup']));
-        }
+    if (isset($has_flood)) {
+        $query = prepare("SELECT * FROM ``flood``");
         $query->execute() or error(db_error($query));
         $flood_check = $query->fetchAll(PDO::FETCH_ASSOC);
     } else {
