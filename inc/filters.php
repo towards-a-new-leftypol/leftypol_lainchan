@@ -58,8 +58,12 @@ class Filter {
                                 if ($flood_post['board'] != $post['board'])
                                     continue 3;
                                 break;
+                            case 'isop':
+                                if ($flood_post['isreply'] != '0')
+                                    continue 3;
+                                break;
                             case 'isreply':
-                                if ($flood_post['isreply'] == $post['op'])
+                                if ($flood_post['isreply'] != '1')
                                     continue 3;
                                 break;
                             default:
