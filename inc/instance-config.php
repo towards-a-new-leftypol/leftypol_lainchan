@@ -29,7 +29,7 @@ $config['prepended_foreign_boards'] = array(
     'overboard' => '/overboard/',
     'sfw' => '/sfw/',
     'alt' => '/alt/',
-    'cytube' => 'https://tv.leftypol.org/'
+    'cytube' => 'https://tv.leftychan.net/'
 );
 
 $config['foreign_boards'] = array(
