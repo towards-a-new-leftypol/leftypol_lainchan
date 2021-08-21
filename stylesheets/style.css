@@ -1965,3 +1965,15 @@ span.strikethrough {
 span.orangeQuote {
     color: #FF8C00;
 }
+
+.options_general_tab--select_opt {
+    height: 2.5em;
+}
+
+.options_general_tab--select_opt span {
+    line-height: 2.5em;
+}
+
+.options_general_tab--select_opt select {
+    float: none;
+}
