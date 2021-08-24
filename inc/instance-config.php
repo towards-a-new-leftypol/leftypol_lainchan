@@ -20,7 +20,9 @@ $config['boards'] = array(
          'edu',
          'games',
          'anime',
-         'music'
+         'music',
+         'roulette',
+         'posad'
    ) ,
   array('meta')
 );
@@ -45,7 +47,9 @@ $config['categories'] = array(
         'edu',
         'games',
         'anime',
-        'music'
+        'music',
+        'roulette',
+        'posad'
     ),
     'Meta' => array('meta')
 );
