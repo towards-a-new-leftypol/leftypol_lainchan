@@ -96,8 +96,8 @@ $config['flood_time_any'] = 20; // time between thread creation
 $config['flood_time'] = 5;
 $config['flood_time_ip'] = 60;
 $config['flood_time_same'] = 60;
-$config['max_body'] = 100000;
-$config['reply_limit'] = 250;
+$config['max_body'] = 80000;
+$config['reply_limit'] = 600;
 $config['max_links'] = 40;
 $config['max_filesize'] = 52428800;
 $config['thumb_width'] = 255;
@@ -322,7 +322,6 @@ $config['robot_mute'] = false;
 
 // Changes made via web editor by "krates" @ Tue, 22 Dec 2020 16:29:57 -0800:
 $config['max_links'] = 100;
-$config['reply_limit'] = 750;
 
 // Changes made via web editor by "krates" @ Tue, 22 Dec 2020 16:34:13 -0800:
 $config['min_body'] = 0;
@@ -378,7 +377,8 @@ $config['default_stylesheet'] = array('Dark Red', $config['stylesheets']['Dark R
 $config['deferred_javascript'] = true;
 $config['additional_javascript'][] = 'js/jquery.min.js';
 $config['additional_javascript'][] = 'js/jquery-ui.custom.min.js';
-$config['additional_javascript'][] = 'js/inline-expanding.js';
+$config['additional_javascript'][] = 'js/jquery.mixitup.min.js';
+$config['additional_javascript'][] = 'js/inline-expanding.js'; // for catalog page
 $config['additional_javascript'][] = 'js/ajax.js';
 $config['additional_javascript'][] = 'js/quick-reply.js';
 $config['additional_javascript'][] = 'js/post-hover.js';
@@ -407,11 +407,15 @@ $config['additional_javascript_defer'][] = 'js/image-hover.js';
 
 
 $config['additional_javascript'][] = 'js/gallery-view.js';
-$config['additional_javascript'][] = 'js/catalog-search.js';
+$config['additional_javascript'][] = 'js/catalog-search.js'; // for catalog page
+$config['additional_javascript'][] = 'js/catalog.js';        // for catalog page
 $config['additional_javascript_defer'][] = 'js/thread-watcher.js';
 $config['additional_javascript_defer'][] = 'js/expand.js';
 $config['additional_javascript_defer'][] = 'js/webm-settings.js';
 $config['additional_javascript_defer'][] = 'js/expand-video.js';
+
+$config['additional_javascript_compile'] = true;
+$config['minify_js'] = true;
 
 $config['flag_preview'] = true;
 
@@ -508,6 +512,7 @@ $config['filters'][] = array(
     'action' => 'reject',
     'message' => "$fakereason_ano" 
 );
+
 $config['filters'][] = array(
     'condition' => array(
         'filename'  => '/(TAKE ACTION v|trends.*associations|anusporn|anal insanity|anorectal risks|TAv[0-9]+|arisks)/', // Typical opening filename format. Their usual evasion strategy is to post only the image.
@@ -524,38 +529,3 @@ $config['filters'][] = array(
     'action' => 'reject',
     'message' => "$fakereason_ano"
 );
-
-/*
- * Filter TheThingN0ticer ban evader
- */
-event_handler('post', function($post, $tor) {
-    if($post->board == 'leftypol'){
-    // note: just posting nazi flag with name doesn't trigger, on purpose
-    $n = 0;
-    // body is just a twitter account (or has ?lang=en or something)
-    if(preg_match('/^(https:\/\/)?(www.|m(obile)?.)?twitter\.com\/[a-zA-Z0-9_-]+\/?[#?&a-zA-Z0-9=_-]*(<tinyboard[^>]*>[^<]*<\/tinyboard>|<[^>]*>|\s)*$/',
-                    $post->body_nomarkup)){$n+=2;}
-    if($post->has_file && preg_match('/^Untitled[0-9]*.png/', $post->files[0]->filename)){$n+=2;}
-    if($post->name != 'Anonymous'){$n++; if($post->name == 'NasheedsSeedAndFeed'){$n+=2;}}
-    if(strpos($post->body_nomarkup,'<tinyboard flag>nazi</tinyboard>')){$n++;}
-    
-    if($n > 2){
-        if($tor){return 'Flood detected; Post discarded.';}
-        return 'Your IP address is listed in multirbl or rbl.efnetrbl.org.';
-    }
-    }
-});
-
-
-// Changes made via web editor by "zul_admin" @ Fri, 19 Feb 2021 15:06:33 -0800:
-$config['reply_limit'] = 800;
-
-
-// Changes made via web editor by "zul_admin" @ Tue, 27 Apr 2021 15:37:26 -0700:
-$config['reply_limit'] = 600;
-
-
-// Changes made via web editor by "zul_admin" @ Tue, 27 Apr 2021 15:39:19 -0700:
-$config['max_body'] = 80000;
-$config['additional_javascript_compile'] = true;
-$config['minify_js'] = true;
