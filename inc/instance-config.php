@@ -367,7 +367,7 @@ $config['stylesheets']['AnonsDarkRed'] = 'anons_dark_red.css';
 $config['stylesheets']['BunkerLike'] = 'bunker_like.css';
 $config['stylesheets']['Post-Left'] = 'dead.css';
 
-$config['default_stylesheet'] = array('Dark Red', $config['stylesheets']['Dark Red']);
+$config['default_stylesheet'] = array('Yotsuba', 'yotsuba.css');
 /*
  * ====================
  *  Javascript

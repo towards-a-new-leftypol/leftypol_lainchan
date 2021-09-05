@@ -454,15 +454,6 @@
                 $board_link = $config['root'] . $board['dir'];
             }
 
-            $required_scripts = array('js/jquery.min.js', 'js/jquery.mixitup.min.js',
-                'js/catalog.js');
-
-            // Include scripts that haven't been yet included
-            foreach($required_scripts as $i => $s) {
-                if (!in_array($s, $config['additional_javascript']))
-                    $config['additional_javascript'][] = $s;
-            }
-
             $template_config = Array(
                 'settings' => $this->settings,
                 'config' => $config,
