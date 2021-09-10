@@ -21,8 +21,10 @@ $config['boards'] = array(
          'games',
          'anime',
          'music',
-         'roulette',
-         'posad'
+         '777',
+         'posad',
+         'i',
+         'dead'
    ) ,
   array('meta')
 );
@@ -48,8 +50,10 @@ $config['categories'] = array(
         'games',
         'anime',
         'music',
-        'roulette',
-        'posad'
+        '777',
+        'posad',
+        'i',
+        'dead'
     ),
     'Meta' => array('meta')
 );
