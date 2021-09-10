@@ -303,10 +303,10 @@ CREATE TABLE IF NOT EXISTS `ban_appeals` (
 -- Table structure for table `pages`
 --
 
-CREATE TABLE `pages` (
+CREATE TABLE IF NOT EXISTS `pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `board` varchar(150) DEFAULT NULL,
-  `name` varchar(150) NOT NULL,
+  `board` varchar(58) CHARACTER SET utf8 DEFAULT NULL,
+  `name` varchar(150) CHARACTER SET utf8 NOT NULL,
   `title` varchar(150) DEFAULT NULL,
   `type` varchar(150) DEFAULT NULL,
   `content` text,
@@ -320,8 +320,8 @@ CREATE TABLE `pages` (
 -- Table structure for table `nntp_references`
 --
 
-CREATE TABLE `nntp_references` (
-  `board` varchar(60) NOT NULL,
+CREATE TABLE IF NOT EXISTS `nntp_references` (
+  `board` varchar(30) NOT NULL,
   `id` int(11) unsigned NOT NULL,
   `message_id` varchar(190) CHARACTER SET ascii NOT NULL,
   `message_id_digest` varchar(40) CHARACTER SET ascii NOT NULL,
@@ -345,3 +345,4 @@ CREATE TABLE IF NOT EXISTS `calendar_events` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
