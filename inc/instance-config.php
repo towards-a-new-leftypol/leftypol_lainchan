@@ -36,10 +36,6 @@ $config['prepended_foreign_boards'] = array(
     'cytube' => 'https://tv.leftychan.net/'
 );
 
-$config['foreign_boards'] = array(
-    'GET' => 'https://getchan.net/GET/',
-    'ref' => 'https://getchan.net/ref/'
-);
 // Board categories. Only used in the "Categories" theme.
 $config['categories'] = array(
     'Leftypol' => array('leftypol',
