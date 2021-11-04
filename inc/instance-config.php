@@ -57,10 +57,6 @@ $config['categories'] = array(
 // Optional for the Categories theme. This is an array of name => (title, url) groups for categories
 // with non-board links.
 $config['custom_categories'] = array(
-    'Our Friends' => array(
-        'GET' => 'https://getchan.net/GET/',
-        'ref' => 'https://getchan.net/ref/'
-    ),
     'Links' => array(
         'New Multitude' => 'https://newmultitude.org/',
         'Booru image repository' => 'https://lefty.booru.org/',
