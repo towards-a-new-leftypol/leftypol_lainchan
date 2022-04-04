@@ -22,6 +22,7 @@ $config['boards'] = array(
          '777',
          'posad',
          'i',
+         'R9K',
          'dead'
    ) ,
   array('meta')
@@ -45,6 +46,7 @@ $config['categories'] = array(
         '777',
         'posad',
         'i',
+         'R9K',
         'dead'
     ),
     'Meta' => array('meta')
