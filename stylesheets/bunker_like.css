@@ -173,3 +173,20 @@ hr {
 .options_tab_icon.active {
 	color: #FFB300;
 }
+
+/* FIXES */
+div.ban {
+	background: #1D1F21;
+    border: 1px dashed #117743;
+}
+
+div.ban h2 {
+    background: #282A2E;
+    color: #ACACAC;
+}
+
+table thead th {
+    background: #282A2E;
+    color: #ACACAC;
+    border: 1px solid #117743;
+}
