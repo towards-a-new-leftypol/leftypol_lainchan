@@ -15,7 +15,7 @@
 
 $(document).ready(function(){
 	var showBackLinks = function() {
-		var reply_id = $(this).attr('id').replace(/^reply_/, '');
+		var reply_id = $(this).attr('id').replace(/(^reply_)|(^op_)/, '');
 		
 		$(this).find('div.body a:not([rel="nofollow"])').each(function() {
 			var id, post, $mentioned;
@@ -26,8 +26,13 @@ $(document).ready(function(){
 				return;
 		
 			$post = $('#reply_' + id);
-			if($post.length == 0)
-				return;
+			if($post.length == 0){
+				// Disable OP backlinks outside of thread page, they're broken
+				if(!$('body').hasClass('active-thread')) return;
+				$post = $('#op_' + id);
+				if($post.length == 0)
+					return;
+			}
 		
 			$mentioned = $post.find('p.intro span.mentioned');
 			if($mentioned.length == 0)
@@ -47,14 +52,12 @@ $(document).ready(function(){
 	};
 	
 	$('div.post.reply').each(showBackLinks);
+	$('div.post.op').each(showBackLinks);
 
         $(document).on('new_post', function(e, post) {
-		if ($(post).hasClass("reply")) {
-			showBackLinks.call(post);
-		}
-		else {
+		showBackLinks.call(post);
+		if ($(post).hasClass("op")) {
 			$(post).find('div.post.reply').each(showBackLinks);
 		}
 	});
 });
-
