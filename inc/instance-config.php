@@ -15,6 +15,7 @@
 $config['boards'] = array(
    array('leftypol',
          'b',
+         'WRK',
          'hobby',
          'tech',
          'edu',
@@ -39,6 +40,7 @@ $config['prepended_foreign_boards'] = array(
 $config['categories'] = array(
     'Leftypol' => array('leftypol',
         'b',
+         'WRK',
         'hobby',
         'tech',
         'edu',
@@ -446,7 +448,7 @@ $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</s
 // $config['wordfilters'][] = array('/nigger/i', 'uyghur', true);
 // $config['wordfilters'][] = array('/nigg/i', 'uygh', true);
 
-$config['wordfilters'][] = array('/chud/i', 'FAGGOT', true);
+// $config['wordfilters'][] = array('/chud/i', 'FAGGOT', true);
 
 /*
  * Traditional word filters. Expires 31-12-2021.
@@ -523,3 +525,7 @@ $config['filters'][] = array(
     'action' => 'reject',
     'message' => "$fakereason_ano"
 );
+
+// Changes made by Zer0- @ Thu 17 Mar 2022 05:22:44 PM UTC:
+$config['global_message'] = '<p><a href="https://matrix.to/#/#leftyspace:matrix.leftychan.net" class="redtext"><span class="heading">Matrix</span></a></p> <p><a href="https://pleroma.leftychan.net/" class="redtext"><span class="heading">Pleroma</a></p> <p><a href="mumble://leftychan.net" class="redtext"><span class="heading">Mumble</span></a></p> <p><a href="https://discord.gg/AcZeFKXPmZ" class="redtext"><span class="heading">Discord</a></p> <p><a href="irc://irc.rizon.net:6697/leftychan" class="redtext"><span class="heading">IRC</span></a></p> <p><a href="https://dis.leftychan.net" class="redtext"><span class="heading">Text Boards</span></a></p>';
+
