@@ -14,21 +14,7 @@
 			'subtitle' => '30 most recently bumped threads',
 			'exclude' => array('assembly', 'assembly_archive', 'gulag'),
 			'thread_limit' => $thread_limit,
-		),
-		array(
-			'title' => 'SFW Overboard',
-			'uri' => 'sfw',
-			'subtitle' => '30 most recently bumped threads from work-safe boards',
-			'exclude' => array('assembly', 'assembly_archive', 'gulag', 'b'),
-			'thread_limit' => $thread_limit,
-		),
-		array(
-			'title' => 'Alternate Overboard',
-			'uri' => 'alt',
-			'subtitle' => '30 most recently bumped threads from smaller interest boards',
-			'exclude' => array('assembly', 'assembly_archive', 'gulag', 'leftypol', 'b', 'meta'),
-			'thread_limit' => $thread_limit,
-		),
+		)
 	);
 
 ?>
