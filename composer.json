@@ -1,5 +1,6 @@
 {
     "require": {
-        "phpunit/phpunit": "^5"
+        "phpunit/phpunit": "^5",
+        "guzzlehttp/guzzle": "^7.0"
     }
 }
