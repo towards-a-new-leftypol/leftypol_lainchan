@@ -1998,10 +1998,10 @@ function markup(&$body, $track_cites = false, $op = false) {
 	$tracked_cites = array();
 
 	// Cites
-	if (isset($board) && preg_match_all('/(^|\s)&gt;&gt;(\d+?)((?=[\s,.)?!])|$)/m', $body, $cites, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
+	if (isset($board) && preg_match_all('/(^|\s)&gt;&gt;(\d+?)((?=[\s,.:)?!&])|$)/m', $body, $cites, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
 		if (count($cites[0]) > $config['max_cites']) {
 			error($config['error']['toomanycites']);
-		}
+	}
 
 		$skip_chars = 0;
 		$body_tmp = $body;
@@ -2045,7 +2045,7 @@ function markup(&$body, $track_cites = false, $op = false) {
 	}
 
 	// Cross-board linking
-	if (preg_match_all('/(^|\s)&gt;&gt;&gt;\/(' . $config['board_regex'] . 'f?)\/(\d+)?((?=[\s,.)?!])|$)/um', $body, $cites, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
+	if (preg_match_all('/(^|\s)&gt;&gt;&gt;\/(' . $config['board_regex'] . 'f?)\/(\d+)?((?=[\s,.:)?!&])|$)/um', $body, $cites, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
 		if (count($cites[0]) > $config['max_cites']) {
 			error($config['error']['toomanycross']);
 		}
