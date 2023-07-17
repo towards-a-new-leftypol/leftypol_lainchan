@@ -35,7 +35,7 @@ function makeIcon(mode){
         var favicon = $('<link rel="shortcut icon"></link>').appendTo('head');
     }
 
-    $("link[rel='shortcut icon']").attr("href", configRoot+"static/favicon"+(mode?"-"+mode:"")+".ico");
+    $("link[rel='shortcut icon']").attr("href", configRoot+"favicon"+(mode?"-"+mode:"")+".ico");
 }
 
 +function(){
