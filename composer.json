@@ -3,6 +3,6 @@
         "phpunit/phpunit": "^5",
         "guzzlehttp/guzzle": "^7.0",
         "lifo/ip": "^1.1",
-        "twig/twig": "^3.0"
+        "twig/twig": "^1.0"
     }
 }
