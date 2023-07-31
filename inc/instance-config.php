@@ -409,6 +409,7 @@ $config['additional_javascript_defer'][] = 'js/thread-watcher.js';
 $config['additional_javascript_defer'][] = 'js/expand.js';
 $config['additional_javascript_defer'][] = 'js/webm-settings.js';
 $config['additional_javascript_defer'][] = 'js/expand-video.js';
+$config['additional_javascript_defer'][] = 'js/remove-lazy-loading.js';
 
 $config['additional_javascript_compile'] = true;
 $config['minify_js'] = true;
