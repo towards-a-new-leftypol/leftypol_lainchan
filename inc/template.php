@@ -11,7 +11,7 @@ $twig = false;
 function load_twig() {
 	global $twig, $config;
 	
-	require 'lib/Twig/Autoloader.php';
+    require_once 'vendor/autoload.php';
 	Twig_Autoloader::register();
 
 	Twig_Autoloader::autoload('Twig_Extensions_Node_Trans');
