@@ -74,3 +74,36 @@ stylesheets/fonts
 
 #Images from twemoji
 js/twemoji/16x16/
+
+.cache/
+777/
+R9K/
+WRK/
+a/
+alt/
+anime/
+anime_backup/
+b/
+bans.json
+composer.phar
+db_dump.sql.xz
+db_dump_jan_19th_21_50.sql.xz
+dead/
+edu/
+ent/
+games/
+gulag/
+hardcopy.1
+hobby/
+i/
+leftypol/
+leftypol_archive/
+meta/
+overboard/
+phpinfo.php
+posad/
+restore_b_ass/
+save_ass_thread/
+semirand.js
+sfw/
+tech/
