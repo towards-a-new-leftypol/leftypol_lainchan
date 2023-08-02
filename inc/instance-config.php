@@ -510,3 +510,4 @@ $config['filters'][] = array(
 $config['global_message'] = '<p><a href="https://matrix.to/#/#leftyspace:matrix.leftychan.net" class="redtext"><span class="heading">Matrix</span></a></p> <p><a href="https://pleroma.leftychan.net/" class="redtext"><span class="heading">Pleroma</a></p> <p><a href="mumble://leftychan.net" class="redtext"><span class="heading">Mumble</span></a></p> <p><a href="https://discord.gg/AcZeFKXPmZ" class="redtext"><span class="heading">Discord</a></p> <p><a href="irc://irc.rizon.net:6697/leftychan" class="redtext"><span class="heading">IRC</span></a></p> <p><a href="https://dis.leftychan.net" class="redtext"><span class="heading">Text Boards</span></a></p>';
 
 $config['spam_noticer']['website_name'] = "leftychan_dev";
+$config['debug'] = true;
