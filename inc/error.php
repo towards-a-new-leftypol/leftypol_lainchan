@@ -49,17 +49,21 @@ function error($message, $priority = true, $debug_stuff = false) {
 
 		if ($config['debug']) {
 			$debug_stuff=array();
-			if(isset($db_error)){
+
+			if (isset($db_error)){
 				$debug_stuff = array_combine(array('SQLSTATE', 'Error code', 'Error message'), $db_error);
 			}
+
 			$debug_stuff['backtrace'] = debug_backtrace();
 			$pw = $config['db']['password'];
-			$debug_callback = function(&$item) use (&$debug_callback, $pw) {
-				if (is_array($item)) {
-					return array_map($debug_callback, $item);
-				}
-				return ($item == $pw ? 'hunter2' : $item);
-			};
+
+            $debug_callback = function ($item) use (&$debug_callback, $pw) {
+                if (is_array($item)) {
+                    return array_map($debug_callback, $item);
+                }
+                return ($item == $pw ? 'hunter2' : $item);
+            };
+
 			$debug_stuff = array_map($debug_callback, $debug_stuff);
 		}
 	}
