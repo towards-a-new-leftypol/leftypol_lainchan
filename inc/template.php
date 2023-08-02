@@ -6,25 +6,25 @@
 
 defined('TINYBOARD') or exit;
 
+require_once 'vendor/autoload.php';
+
+use PhpMyAdmin\Twig\Extensions\I18nExtension;
+
 $twig = false;
 
 function load_twig() {
     global $twig, $config;
 
-    require_once 'vendor/autoload.php';
-    Twig_Autoloader::register();
 
-    $loader = new Twig_Loader_Filesystem($config['dir']['template']);
-    $twig = new Twig_Environment($loader, array(
+    $loader = new Twig\Loader\FilesystemLoader($config['dir']['template']);
+    $twig = new Twig\Environment($loader, array(
         'autoescape' => false,
         'cache' => is_writable('templates') || (is_dir('templates/cache') && is_writable('templates/cache')) ?
-        "{$config['dir']['template']}/cache" : false,
+            "{$config['dir']['template']}/cache" : false,
         'debug' => $config['debug']
     ));
 
-    // Add extensions (if they are still compatible with Twig 1.x)
-    $twig->addExtension(new Twig_Extensions_Extension_Tinyboard());
-    $twig->addExtension(new Twig_Extensions_Extension_I18n());
+    $twig->addExtension(new I18nExtension());
 }
 
 function Element($templateFile, array $options) {
