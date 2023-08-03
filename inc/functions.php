@@ -2231,7 +2231,11 @@ function escape_markup_modifiers($string) {
 }
 
 function utf8tohtml($utf8) {
-	return htmlspecialchars($utf8, ENT_NOQUOTES, 'UTF-8');
+    if ($utf8 == null) {
+        return '';
+    } else {
+        return htmlspecialchars($utf8, ENT_NOQUOTES, 'UTF-8');
+    }
 }
 
 function ordutf8($string, &$offset) {
