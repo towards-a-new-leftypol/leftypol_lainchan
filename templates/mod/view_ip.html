@@ -2,7 +2,7 @@
 	<fieldset id="notes">
 		<legend>
 			{% set notes_on_record = 'note' ~ (notes|count != 1 ? 's' : '') ~ ' on record' %}
-			<legend>{{ notes|count }} {% trans notes_on_record %}</legend>
+            <legend>{{ notes|count }} {{ notes_on_record|trans }}</legend>
 		</legend>
 		
 		{% if notes and notes|length > 0 %}
