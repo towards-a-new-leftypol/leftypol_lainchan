@@ -138,15 +138,16 @@
 			foreach ($boards as &$_board) {
 				if (in_array($_board['uri'], $this->excluded))
 					continue;
-				$query .= sprintf("SELECT `files` FROM ``posts_%s`` UNION ALL ", $_board['uri']);
+				$query .= sprintf("SELECT `files` FROM `posts_%s` WHERE `num_files` > 0 UNION ALL ", $_board['uri']);
 			}
-			$query = preg_replace('/UNION ALL $/', ' WHERE `num_files` > 0) AS `posts_all`', $query);
+			$query = preg_replace('/UNION ALL $/', ') AS `posts_all`', $query);
 			$query = query($query) or error(db_error());
 			$files = $query->fetchAll();
 			$stats['active_content'] = 0;
+
 			foreach ($files as &$file) {
-				preg_match_all('/"size":([0-9]*)/', $file[0], $matches);
-				$stats['active_content'] += array_sum($matches[1]);
+                preg_match_all('/"size":([0-9]*)/', $file[0], $matches);
+                $stats['active_content'] += array_sum($matches[1]);
 			}
 			
 			$query = query("SELECT * FROM ``news`` ORDER BY `time` DESC" . ($settings['limit_news'] ? ' LIMIT ' . $settings['limit_news'] : '')) or error(db_error());
