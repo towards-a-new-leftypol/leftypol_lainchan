@@ -11,8 +11,28 @@ $hidden_inputs_twig = array();
 $logfile = "/tmp/lainchan_err.out";
 
 function print_err($s) {
-	// global $logfile;
-	// file_put_contents($logfile, $s . "\n", FILE_APPEND);
+	global $logfile;
+	file_put_contents($logfile, $s . "\n", FILE_APPEND);
+}
+
+function getStackTraceAsString() {
+    $stackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+
+    $traceString = '';
+    foreach ($stackTrace as $index => $entry) {
+        if ($index > 0) {
+            $traceString .= sprintf(
+                "#%d %s(%d): %s%s",
+                $index - 1,
+                isset($entry['file']) ? $entry['file'] : 'unknown',
+                isset($entry['line']) ? $entry['line'] : 0,
+                isset($entry['class']) ? $entry['class'] . $entry['type'] . $entry['function'] : $entry['function'],
+                PHP_EOL
+            );
+        }
+    }
+
+    return $traceString;
 }
 
 function print_err2($s) {

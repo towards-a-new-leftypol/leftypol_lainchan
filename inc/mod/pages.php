@@ -2676,6 +2676,19 @@ function mod_new_pm($username) {
     ));
 }
 
+function clearCacheFiles($cacheLocation) {
+    if (is_string($cacheLocation)) {
+        foreach (new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($cacheLocation), 
+            \RecursiveIteratorIterator::LEAVES_ONLY) as $file
+        ) {
+            if ($file->isFile()) {
+                @unlink($file->getPathname());
+            }
+        }
+    }
+}
+
 function mod_rebuild() {
     global $config, $twig;
     print_err("mod_rebuild");
@@ -2698,7 +2711,7 @@ function mod_rebuild() {
 
             $log[] = 'Clearing template cache';
             load_twig();
-            $twig->clearCacheFiles();
+            clearCacheFiles("{$config['dir']['template']}/cache");
         }
 
         if (isset($_POST['rebuild_themes'])) {

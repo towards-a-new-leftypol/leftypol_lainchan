@@ -19,14 +19,14 @@
         //  - post (a reply has been made)
         //  - post-thread (a thread has been made)
         if ($action === 'all') {
-            foreach ($boards as $board) {
-                $action = generation_strategy("sb_catalog", array($board));
+            foreach ($boards as $board_name) {
+                $action = generation_strategy("sb_catalog", array($board_name));
                 if ($action == 'delete') {
-                    file_unlink($config['dir']['home'] . $board . '/catalog.html');
-                    file_unlink($config['dir']['home'] . $board . '/index.rss');
+                    file_unlink($config['dir']['home'] . $board_name . '/catalog.html');
+                    file_unlink($config['dir']['home'] . $board_name . '/index.rss');
                 }
                 elseif ($action == 'rebuild') {
-                    $b->build($settings, $board);
+                    $b->build($settings, $board_name);
                 }
             }
             if(isset($settings['has_overboard']) && $settings['has_overboard']) {
@@ -307,11 +307,10 @@
          */
         public function build($settings, $board_name) {
             global $config, $board;
-            if ($board['uri'] != $board_name) {         
-                if (!openBoard($board_name)) {
-                    error(sprintf(_("Board %s doesn't exist"), $board_name));
-                }
-            }   
+
+            if (!openBoard($board_name)) {
+                error(sprintf(_("Board %s doesn't exist"), $board_name));
+            }
 
             if (array_key_exists($board_name, $this->threadsCache)) {
                 $threads = $this->threadsCache[$board_name];
