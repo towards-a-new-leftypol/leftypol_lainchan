@@ -405,11 +405,11 @@ function rebuildThemes($action, $boardname = false) {
 		$config = $_config;
 		$board = $_board;
 
-		// Reload the locale	
-	        if ($config['locale'] != $current_locale) {
-	                $current_locale = $config['locale'];
-	                init_locale($config['locale']);
-	        }
+        // Reload the locale	
+        if ($config['locale'] != $current_locale) {
+            $current_locale = $config['locale'];
+            init_locale($config['locale']);
+        }
 
 		if (PHP_SAPI === 'cli') {
 			echo "Rebuilding theme ".$theme['theme']."... ";
@@ -446,7 +446,7 @@ function loadThemeConfig($_theme) {
 	return $theme;
 }
 
-function rebuildTheme($theme, $action, $board = false) {
+function rebuildTheme($theme, $action, $boardname = false) {
 	global $config, $_theme;
 	$_theme = $theme;
 
@@ -455,7 +455,7 @@ function rebuildTheme($theme, $action, $board = false) {
 	if (file_exists($config['dir']['themes'] . '/' . $_theme . '/theme.php')) {
 		require_once $config['dir']['themes'] . '/' . $_theme . '/theme.php';
 
-		$theme['build_function']($action, themeSettings($_theme), $board);
+		$theme['build_function']($action, themeSettings($_theme), $boardname);
 	}
 }
 
