@@ -7,6 +7,7 @@
 defined('TINYBOARD') or exit;
 
 require_once 'vendor/autoload.php';
+require_once 'inc/lib/twig/Extensions/Tinyboard.php';
 
 use PhpMyAdmin\Twig\Extensions\I18nExtension;
 
@@ -14,7 +15,6 @@ $twig = false;
 
 function load_twig() {
     global $twig, $config;
-
 
     $loader = new Twig\Loader\FilesystemLoader($config['dir']['template']);
     $twig = new Twig\Environment($loader, array(
@@ -25,6 +25,7 @@ function load_twig() {
     ));
 
     $twig->addExtension(new I18nExtension());
+    $twig->addExtension(new TinyboardExtension());
 }
 
 function Element($templateFile, array $options) {
