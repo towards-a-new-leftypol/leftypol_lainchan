@@ -198,7 +198,7 @@ foreach ($pages as $uri => $handler) {
 			} elseif (is_callable("mod_page_$handler")) {
 				call_user_func_array("mod_page_$handler", $matches);
 			} elseif (is_callable("mod_$handler")) {
-				call_user_func_array("mod_$handler", $matches);
+				call_user_func_array("mod_$handler", array_slice($matches, 0, 2));
 			} else {
 				error("Mod page '$handler' not found!");
 			}
