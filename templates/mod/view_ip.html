@@ -71,7 +71,7 @@
 {% if bans and bans|length > 0 and mod|hasPermission(config.mod.view_ban) %}
     <fieldset id="bans">
         {% set bans_on_record = 'ban' ~ (bans|count != 1 ? 's' : '') ~ ' on record' %}
-        <legend>{{ bans|count }} {% trans bans_on_record %}</legend>
+        <legend>{{ bans|count }} {{ bans_on_record|trans }}</legend>
         
         {% for ban in bans %}
             <form action="" method="post" style="text-align:center">
