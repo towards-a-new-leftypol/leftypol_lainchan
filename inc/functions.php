@@ -25,8 +25,6 @@ require_once 'inc/queue.php';
 require_once 'inc/polyfill.php';
 @include_once 'inc/lib/parsedown/Parsedown.php'; // fail silently, this isn't a critical piece of code
 
-require_once 'inc/anti-bot.php'; // DELETE ME THIS IS FOR print_err function only!
-
 if (!extension_loaded('gettext')) {
 	require_once 'inc/lib/gettext/gettext.inc';
 }
@@ -373,7 +371,6 @@ function define_groups() {
 function create_antibot($board, $thread = null) {
 	require_once dirname(__FILE__) . '/anti-bot.php';
 
-	print_err("Create Antibot.");
 	return _create_antibot($board, $thread);
 }
 
@@ -1743,8 +1740,8 @@ function buildJavascript() {
 	}
 
 	if ($config['minify_js']) {
-		require_once 'inc/lib/minify/JSMin.php';		
-		$script = JSMin::minify($script);
+        require_once 'vendor/autoload.php';
+		$script = JSMin\JSMin::minify($script);
 	}
 
 	file_write($config['file_script'], $script);

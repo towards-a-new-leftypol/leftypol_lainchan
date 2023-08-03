@@ -148,12 +148,15 @@ class Bans {
     }
 
     static public function stream_json($out = false, $filter_ips = false, $filter_staff = false, $board_access = false, $hide_regexes = []) {
-        $query = query("SELECT ``bans``.*, `username` FROM ``bans``
+        $query_str = "SELECT ``bans``.*, `username` FROM ``bans``
             LEFT JOIN ``mods`` ON ``mods``.`id` = `creator`
-            ORDER BY `created` DESC") or error(db_error());
-                $bans = $query->fetchAll(PDO::FETCH_ASSOC);
+            ORDER BY `created` DESC";
 
-        if ($board_access && $board_access[0] == '*') $board_access = false;
+        $query = query($query_str) or error(db_error());
+        $bans = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($board_access && $board_access[0] == '*')
+            $board_access = false;
 
         $out ? fputs($out, "[") : print("[");
 
@@ -164,7 +167,7 @@ class Bans {
 
             $hide_message = false;
             foreach ($hide_regexes as $regex) {
-                if(preg_match($regex, $ban['reason'])) {
+                if(preg_match($regex, $ban['reason'] || '')) {
                     $hide_message = true;
                     break;
                 }
