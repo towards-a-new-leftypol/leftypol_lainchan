@@ -198,7 +198,12 @@ foreach ($pages as $uri => $handler) {
             } elseif (is_callable("mod_page_$handler")) {
                 call_user_func_array("mod_page_$handler", $matches);
             } elseif (is_callable("mod_$handler")) {
-                call_user_func_array("mod_$handler", array_slice($matches, 0, 2));
+                // HACK to fix too many params being passed to the function
+                $reflection = new ReflectionFunction("mod_$handler");
+                $arity = $reflection->getNumberOfParameters();
+
+                // remember that this calls a function by the name of "mod_$handler" with the arguments in $matches, we need to trim those down here or we get an error
+                call_user_func_array("mod_$handler", array_slice($matches, 0, $arity));
             } else {
                 error("Mod page '$handler' not found!");
             }
