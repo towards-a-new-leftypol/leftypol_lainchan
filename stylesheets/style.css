@@ -372,7 +372,7 @@ form table tr td div label {
 	
 }
 
-#Grid .thread:before {
+.grid_thread_wrapper_for_hats:before {
 	content: "";
 	position: absolute;
     width: 60px;
@@ -383,6 +383,10 @@ form table tr td div label {
     background-size: cover; /* You can adjust this value to fit your needs */
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.grid_thread_wrapper_for_hats {
+    overflow: hidden;
 }
 
 .theme-catalog div.thread {
@@ -905,7 +909,8 @@ pre {
   max-width: 95%
 }
 
-.theme-catalog div.grid-size-vsmall {
+.theme-catalog div.grid-size-vsmall,
+.grid-size-vsmall .grid_thread_wrapper_for_hats {
   min-width:90px; max-width: 90px;
   max-height: 148px;
 }
@@ -915,7 +920,8 @@ pre {
   max-width: 95%
 }
 
-.theme-catalog div.grid-size-small {
+.theme-catalog div.grid-size-small,
+.grid-size-small .grid_thread_wrapper_for_hats {
   min-width:140px; max-width: 140px;
   max-height: 192px;
 }
@@ -925,7 +931,8 @@ pre {
   max-width: 95%
 }
 
-.theme-catalog div.grid-size-medium {
+.theme-catalog div.grid-size-medium,
+.grid-size-medium .grid_thread_wrapper_for_hats {
   min-width:200px; max-width: 200px;
   max-height: 274px;
 }
@@ -935,7 +942,8 @@ pre {
   max-width: 95%
 }
 
-.theme-catalog div.grid-size-large {
+.theme-catalog div.grid-size-large,
+.grid-size-large .grid_thread_wrapper_for_hats {
   min-width: 256px; max-width: 256px;
   max-height: 384px;
 }
@@ -963,7 +971,8 @@ pre {
     margin-right: 0;
   }
 
-  .theme-catalog div.threads {
+  /*.theme-catalog div.threads {*/
+  .theme-catalog .grid_thread_wrapper_for_hats {
     overflow: hidden;
   }
   div.post .body {
