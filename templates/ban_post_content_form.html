@@ -28,6 +28,8 @@
 			{% if post.modifiers['warning message'] %}
 				{{ config.mod.warning_message|sprintf(post.modifiers['warning message']) }}
 			{% endif %}
+<input class="ban_form--content_file_chkbox" type="checkbox" name="text_is_spam" id="text_is_spam" checked>
+<label class="ban_form--content_file_chkbox_lbl" for="text_is_spam">Text is also spam</label>
 		</div>
 	</div>
 </div>
