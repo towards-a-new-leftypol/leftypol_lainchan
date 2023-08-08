@@ -348,6 +348,31 @@ form table tr td div label {
   float: left;
 }
 
+/*
+ * Party Hats
+ */
+
+/*
+.thread {
+    position: relative;
+}
+
+[data-board] > .files > :nth-child(1):not(.multifile) > a:before {
+	content: url('/static/partyhat.png');
+	position: absolute;
+	top: -120px;
+	left: -30px;
+	
+}
+[data-board] > .files > :nth-child(1).multifile > a:before {
+	content: url('/static/partyhat.png');
+	position: absolute;
+	top: -120px;
+	left: -50px;
+	
+}
+*/
+
 .file:not(.multifile) {
   float: none;
 }
