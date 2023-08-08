@@ -37,21 +37,21 @@ $options['quick'] = isset($opts['quick']);
 $options['full'] = isset($opts['full']) || isset($opts['f']);
 
 if(!$options['quiet'])
-	echo "== Tinyboard + vichan {$config['version']} ==\n";	
+    echo "== Tinyboard + vichan {$config['version']} ==\n"; 
 
 if(!$options['quiet'])
-	echo "Clearing template cache...\n";
+    echo "Clearing template cache...\n";
 
 load_twig();
 
 clearCacheFiles("{$config['dir']['template']}/cache");
 
 if(!$options['quiet'])
-	echo "Regenerating theme files...\n";
+    echo "Regenerating theme files...\n";
 rebuildThemes('all');
 
 if(!$options['quiet'])
-	echo "Generating Javascript file...\n";
+    echo "Generating Javascript file...\n";
 buildJavascript();
 
 $main_js = $config['file_script'];
@@ -61,51 +61,51 @@ $boards = listBoards();
 ini_set('memory_limit', -1);
 
 foreach($boards as &$board) {
-	if($options['board'] && $board['uri'] != $options['board'])
-		continue;
-	
-	if(!$options['quiet'])
-		echo "Opening board /{$board['uri']}/...\n";
-	// Reset locale to global locale
-	$config['locale'] = $global_locale;
-	$config['try_smarter'] = false;
-	
-	if($config['file_script'] != $main_js) {
-		// different javascript file
-		if(!$options['quiet'])
-			echo "Generating Javascript file...\n";
-		buildJavascript();
-	}
-	
-	
-	if(!$options['quiet'])
-		echo "Creating index pages...\n";
+    if($options['board'] && $board['uri'] != $options['board'])
+        continue;
+    
+    if(!$options['quiet'])
+        echo "Opening board /{$board['uri']}/...\n";
+    // Reset locale to global locale
+    $config['locale'] = $global_locale;
+    $config['try_smarter'] = false;
+    
+    if($config['file_script'] != $main_js) {
+        // different javascript file
+        if(!$options['quiet'])
+            echo "Generating Javascript file...\n";
+        buildJavascript();
+    }
+    
+    
+    if(!$options['quiet'])
+        echo "Creating index pages...\n";
 
     setupBoard($board);
-	buildIndex();
-	
-	if($options['quick'])
-		continue; // do no more
-	
-	if($options['full']) {
-		$query = query(sprintf("SELECT `id` FROM ``posts_%s``", $board['uri'])) or error(db_error());
-		while($post = $query->fetch()) {
-			if(!$options['quiet'])
-				echo "Rebuilding #{$post['id']}...\n";
-			rebuildPost($post['id']);
-		}
-	}
-	
-	$query = query(sprintf("SELECT `id` FROM ``posts_%s`` WHERE `thread` IS NULL", $board['uri'])) or error(db_error());
-	while($post = $query->fetch()) {
-		if(!$options['quiet'])
-			echo "Rebuilding #{$post['id']}...\n";
-		buildThread($post['id']);
-	}
+    buildIndex();
+    
+    if($options['quick'])
+        continue; // do no more
+    
+    if($options['full']) {
+        $query = query(sprintf("SELECT `id` FROM ``posts_%s``", $board['uri'])) or error(db_error());
+        while($post = $query->fetch()) {
+            if(!$options['quiet'])
+                echo "Rebuilding #{$post['id']}...\n";
+            rebuildPost($post['id']);
+        }
+    }
+    
+    $query = query(sprintf("SELECT `id` FROM ``posts_%s`` WHERE `thread` IS NULL", $board['uri'])) or error(db_error());
+    while($post = $query->fetch()) {
+        if(!$options['quiet'])
+            echo "Rebuilding #{$post['id']}...\n";
+        buildThread($post['id']);
+    }
 }
 
 if(!$options['quiet'])
-	printf("Complete! Took %g seconds\n", microtime(true) - $start);
+    printf("Complete! Took %g seconds\n", microtime(true) - $start);
 
 unset($board);
 modLog('Rebuilt everything using tools/rebuild.php');
