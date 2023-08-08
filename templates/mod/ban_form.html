@@ -24,7 +24,7 @@
     <input class="ban-form-action--input" type="checkbox" name="checkbox-ban" id="checkbox-ban" checked>
     <label class="ban-form-action--label" for="checkbox-ban">Ban</label>
 
-    <input class="ban-form-action--input" type="checkbox" name="checkbox-delete" id="checkbox-delete" checked>
+    <input class="ban-form-action--input" type="checkbox" name="checkbox-delete" id="checkbox-delete" {% if delete %}checked{% endif %}>
     <label class="ban-form-action--label" for="checkbox-delete">Delete</label>
 
     <input class="ban-form-action--input" type="checkbox" name="checkbox-ban-content" id="checkbox-ban-content">
