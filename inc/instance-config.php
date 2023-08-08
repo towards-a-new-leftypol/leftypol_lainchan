@@ -105,7 +105,7 @@ $config['thread_subject_in_title'] = true;
 // this functionality is permanently disabled.
 $config['spam']['enabled'] = false;
 $config['spam_noticer']['enabled'] = true;
-$config['spam_noticer']['base_url'] = 'http://192.168.4.147:8888';
+$config['spam_noticer']['base_url'] = 'http://192.168.4.6:8888';
 
 /*
  * Basic captcha. See also: captchaconfig.php
