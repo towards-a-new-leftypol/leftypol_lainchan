@@ -372,6 +372,23 @@ form table tr td div label {
 	
 }
 
+#Grid .thread:before {
+	content: "";
+	position: absolute;
+    width: 60px;
+    height: 75px;
+    top: -52px;
+    left: 20px;
+    background-image: url('/static/partyhat.png');
+    background-size: cover; /* You can adjust this value to fit your needs */
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.theme-catalog div.thread {
+    overflow: visible !important;
+}
+
 .file:not(.multifile) {
   float: none;
 }
