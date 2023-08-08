@@ -6,8 +6,6 @@
 
 defined('TINYBOARD') or exit;
 
-require_once 'inc/anti-bot.php'; // DELETE ME THIS IS FOR print_err function only!
-
 function mod_page($title, $template, $args, $subtitle = false) {
     global $config, $mod;
 
@@ -1755,7 +1753,7 @@ function mod_merge($originBoard, $postID) {
     mod_page(_('Merge thread'), 'mod/merge.html', array('post' => $postID, 'board' => $originBoard, 'boards' => $boards, 'token' => $security_token));
 }
 
-function mod_ban_post($board, $delete, $post, $token = false) {
+function mod_ban_post($board, $delete, $post_num, $token = false) {
     global $config, $mod;
 
     if (!openBoard($board))
@@ -1764,17 +1762,17 @@ function mod_ban_post($board, $delete, $post, $token = false) {
     if (!hasPermission($config['mod']['delete'], $board))
         error($config['error']['noaccess']);
 
-    $security_token = make_secure_link_token($board . '/ban/' . $post);
+    $security_token = make_secure_link_token($board . '/ban/' . $post_num);
 
-    $query = prepare(sprintf('SELECT ' . ($config['ban_show_post'] ? '*' : '`ip`, `thread`') .
+    $query = prepare(sprintf('SELECT *' .
         ' FROM ``posts_%s`` WHERE `id` = :id', $board));
-    $query->bindValue(':id', $post);
+    $query->bindValue(':id', $post_num);
     $query->execute() or error(db_error($query));
-    if (!$_post = $query->fetch(PDO::FETCH_ASSOC))
+    if (!$post = $query->fetch(PDO::FETCH_ASSOC))
         error($config['error']['404']);
 
-    $thread = $_post['thread'];
-    $ip = $_post['ip'];
+    $thread = $post['thread'];
+    $ip = $post['ip'];
 
     if (isset($_POST['new_ban'], $_POST['reason'], $_POST['length'], $_POST['board'])) {
         require_once 'inc/mod/ban.php';
@@ -1783,7 +1781,7 @@ function mod_ban_post($board, $delete, $post, $token = false) {
             $ip = $_POST['ip'];
 
         Bans::new_ban($_POST['ip'], $_POST['reason'], $_POST['length'], $_POST['board'] == '*' ? false : $_POST['board'],
-            false, $config['ban_show_post'] ? $_post : false);
+            false, $config['ban_show_post'] ? $post : false);
 
         if (isset($_POST['public_message'], $_POST['message'])) {
             // public ban message
@@ -1792,19 +1790,19 @@ function mod_ban_post($board, $delete, $post, $token = false) {
             $_POST['message'] = str_replace('%length%', $length_english, $_POST['message']);
             $_POST['message'] = str_replace('%LENGTH%', strtoupper($length_english), $_POST['message']);
             $query = prepare(sprintf('UPDATE ``posts_%s`` SET `body_nomarkup` = CONCAT(`body_nomarkup`, :body_nomarkup) WHERE `id` = :id', $board));
-            $query->bindValue(':id', $post);
+            $query->bindValue(':id', $post_num);
             $query->bindValue(':body_nomarkup', sprintf("\n<tinyboard ban message>%s</tinyboard>", utf8tohtml($_POST['message'])));
             $query->execute() or error(db_error($query));
             rebuildPost($post);
 
-            modLog("Attached a public ban message to post #{$post}: " . utf8tohtml($_POST['message']));
-            buildThread($thread ? $thread : $post);
+            modLog("Attached a public ban message to post #{$post_num}: " . utf8tohtml($_POST['message']));
+            buildThread($thread ? $thread : $post_num);
             buildIndex();
         } elseif (isset($_POST['delete']) && (int) $_POST['delete']) {
             // Delete post
             if ($config['autotagging']){
                 $query = prepare(sprintf("SELECT *  FROM ``posts_%s`` WHERE id = :id", $board));
-                $query->bindValue(':id', $post );
+                $query->bindValue(':id', $post_num );
                 $query->execute() or error(db_error($query));
                 $ip = "";
                 $time = "";
@@ -1843,8 +1841,8 @@ function mod_ban_post($board, $delete, $post, $token = false) {
                     modLog("Added a note for <a href=\"?/IP/{$ip}\">{$ip}</a>");
                 }
             }
-            deletePost($post);
-            modLog("Deleted post #{$post}");
+            deletePost($post_num);
+            modLog("Deleted post #{$post_num}");
             // Rebuild board
             buildIndex();
             // Rebuild themes
@@ -1860,14 +1858,22 @@ function mod_ban_post($board, $delete, $post, $token = false) {
         }
     }
 
+    if (!$post['thread']) {
+        $post = new Thread($post, '?/', false, false);
+    } else {
+        $post = new Post($post, '?/', false);
+    }
+
     $args = array(
         'ip' => $ip,
         'hide_ip' => !hasPermission($config['mod']['show_ip'], $board),
+        'post_num' => $post_num,
         'post' => $post,
         'board' => $board,
-        'delete' => (bool)$delete,
+        'delete' => (bool) $delete,
         'boards' => listBoards(),
-        'token' => $security_token
+        'token' => $security_token,
+        'spamnoticer' => $config['spam_noticer']['enabled']
     );
 
     if(isset($_GET['thread']) && $_GET['thread']) {
@@ -2691,7 +2697,6 @@ function clearCacheFiles($cacheLocation) {
 
 function mod_rebuild() {
     global $config, $twig;
-    print_err("mod_rebuild");
 
     if (!hasPermission($config['mod']['rebuild']))
         error($config['error']['noaccess']);
@@ -2716,9 +2721,7 @@ function mod_rebuild() {
 
         if (isset($_POST['rebuild_themes'])) {
             $log[] = 'Regenerating theme files';
-            print_err("mod_rebuild calling rebuildThemes");
             rebuildThemes('all');
-            print_err("mod_rebuild calling rebuildThemes ok");
         }
 
         if (isset($_POST['rebuild_javascript'])) {
