@@ -22,6 +22,7 @@
 require dirname(__FILE__) . '/inc/cli.php';
 
 require_once("inc/bans.php");
+require_once("inc/mod/pages.php");
 
 $start = microtime(true);
 
@@ -42,7 +43,8 @@ if(!$options['quiet'])
 	echo "Clearing template cache...\n";
 
 load_twig();
-$twig->clearCacheFiles();
+
+clearCacheFiles("{$config['dir']['template']}/cache");
 
 if(!$options['quiet'])
 	echo "Regenerating theme files...\n";
@@ -56,6 +58,8 @@ $main_js = $config['file_script'];
 
 $boards = listBoards();
 
+ini_set('memory_limit', -1);
+
 foreach($boards as &$board) {
 	if($options['board'] && $board['uri'] != $options['board'])
 		continue;
@@ -64,7 +68,6 @@ foreach($boards as &$board) {
 		echo "Opening board /{$board['uri']}/...\n";
 	// Reset locale to global locale
 	$config['locale'] = $global_locale;
-	openBoard($board['uri']);
 	$config['try_smarter'] = false;
 	
 	if($config['file_script'] != $main_js) {
@@ -77,6 +80,8 @@ foreach($boards as &$board) {
 	
 	if(!$options['quiet'])
 		echo "Creating index pages...\n";
+
+    setupBoard($board);
 	buildIndex();
 	
 	if($options['quick'])
