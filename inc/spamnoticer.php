@@ -18,6 +18,38 @@ class SpamNoticerResult {
     public $client = NULL;
 }
 
+class SpamNoticerBanFileInfo {
+    public $filename;
+    public $is_illegal;
+    public $is_spam;
+
+    public function __construct($filename, $isIllegal, $isSpam) {
+        $this->filename = $filename;
+        $this->is_illegal = $isIllegal;
+        $this->is_spam = $isSpam;
+    }
+}
+
+class BanFormFieldsForSpamnoticer {
+    public bool $ban;
+    public bool $delete;
+    public bool $ban_content;
+    public array $files_info;
+
+    public function __construct(
+            bool $ban,
+            bool $delete,
+            bool $ban_content,
+            array $files_info, // Array of SpamNoticerBanFileInfo
+            ) {
+        $this->ban = $ban;
+        $this->delete = $delete;
+        $this->ban_content = $ban_content;
+        $this->files_info = $files_info;
+    }
+
+}
+
 function checkWithSpamNoticer($config, $post, $boardname) {
     $client = _createClient($config);
 

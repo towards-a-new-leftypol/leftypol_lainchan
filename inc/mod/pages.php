@@ -1753,6 +1753,30 @@ function mod_merge($originBoard, $postID) {
     mod_page(_('Merge thread'), 'mod/merge.html', array('post' => $postID, 'board' => $originBoard, 'boards' => $boards, 'token' => $security_token));
 }
 
+function parse_spamnoticer_content_fields($postData, $post):  BanFormFieldsForSpamnoticer {
+    $files_info = array();
+
+    foreach ($post->files as $file) {
+        $filename = $file->file;
+        $filekey = str_replace('.', '_', $filename); // because $_POST actually does the inverse of this when no one is asking it to. php is a fucking idiotic language
+
+        $fileSpamKey = "file_is_spam_$filekey";
+        $fileIllegalKey = "file_is_illegal_$filekey";
+
+        $is_spam = isset($postData[$fileSpamKey]);
+        $is_illegal = isset($postData[$fileIllegalKey]);
+
+        $fileInfo = new SpamNoticerBanFileInfo($filename, $is_illegal, $is_spam);
+        array_push($files_info, $fileInfo);
+    }
+
+    $ban = isset($postData['checkbox-ban']);
+    $delete = isset($postData['checkbox-delete']);
+    $ban_content = isset($postData['checkbox-ban-content']);
+
+    return new BanFormFieldsForSpamnoticer($ban, $delete, $ban_content, $files_info);
+}
+
 function mod_ban_post($board, $delete, $post_num, $token = false) {
     global $config, $mod;
 
@@ -1773,6 +1797,21 @@ function mod_ban_post($board, $delete, $post_num, $token = false) {
 
     $thread = $post['thread'];
     $ip = $post['ip'];
+
+    if (!$post['thread']) {
+        $po = new Thread($post, '?/', false, false);
+    } else {
+        $po = new Post($post, '?/', false);
+    }
+
+    require_once 'inc/spamnoticer.php';
+
+    if (isset($_POST['spamnoticer'])) {
+        $spamnoticer_info = parse_spamnoticer_content_fields($_POST, $po);
+        echo json_encode($spamnoticer_info);
+        die();
+        return;
+    }
 
     if (isset($_POST['new_ban'], $_POST['reason'], $_POST['length'], $_POST['board'])) {
         require_once 'inc/mod/ban.php';
@@ -1811,6 +1850,7 @@ function mod_ban_post($board, $delete, $post_num, $token = false) {
                 $subject = "";
                 $name = "";
                 $body = "";
+
                 while ($mypost = $query->fetch(PDO::FETCH_ASSOC)) {
                     $time = $mypost["time"];
                     $ip = $mypost["ip"];
@@ -1824,7 +1864,8 @@ function mod_ban_post($board, $delete, $post_num, $token = false) {
                         $filename .=  $mypost['files'][$file_count]->name . "\r\n";
                     }
                 }
-                if ($time !== ''){
+
+                if ($time !== '') {
                     $dt = new DateTime("@$time");
                     $autotag = "";
                     $autotag .= $name . " " . $subject . " " . $dt->format('Y-m-d H:i:s')  . " No.". $post . "\r\n";
@@ -1841,6 +1882,7 @@ function mod_ban_post($board, $delete, $post_num, $token = false) {
                     modLog("Added a note for <a href=\"?/IP/{$ip}\">{$ip}</a>");
                 }
             }
+
             deletePost($post_num);
             modLog("Deleted post #{$post_num}");
             // Rebuild board
@@ -1858,17 +1900,11 @@ function mod_ban_post($board, $delete, $post_num, $token = false) {
         }
     }
 
-    if (!$post['thread']) {
-        $post = new Thread($post, '?/', false, false);
-    } else {
-        $post = new Post($post, '?/', false);
-    }
-
     $args = array(
         'ip' => $ip,
         'hide_ip' => !hasPermission($config['mod']['show_ip'], $board),
         'post_num' => $post_num,
-        'post' => $post,
+        'post' => $po,
         'board' => $board,
         'delete' => (bool) $delete,
         'boards' => listBoards(),
