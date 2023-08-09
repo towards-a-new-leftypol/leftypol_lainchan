@@ -203,10 +203,12 @@ $config['allowed_ext_files'][] = 'mp4';
 $config['allowed_ext_files'][] = 'pdf';
 $config['allowed_ext_files'][] = 'txt';
 $config['allowed_ext_files'][] = 'epub';
+$config['allowed_ext_files'][] = 'djvu';
 // Compressed files
 $config['allowed_ext_files'][] = 'zip';
 $config['allowed_ext_files'][] = 'gz';
 $config['allowed_ext_files'][] = 'bz2';
+$config['allowed_ext_files'][] = 'xz';
 
 /*
  * Flags
