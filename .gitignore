@@ -70,3 +70,34 @@ stylesheets/fonts
 
 #Images from twemoji
 js/twemoji/16x16/
+
+# JUNK
+GET/
+anime/
+b/
+b_anime/
+b_b/
+b_dead/
+b_edu/
+b_games/
+b_get/
+b_gulag/
+b_hobby/
+b_ref/
+b_tech/
+bans.json
+bunker_like.css
+dead/
+edu/
+games/
+gulag/
+hardcopy.1
+hobby/
+instance-config.php
+leftypol/
+meta/
+overboard/
+phpinfo.php
+ref/
+tech/
+tqgit status
