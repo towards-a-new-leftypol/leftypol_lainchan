@@ -34,18 +34,21 @@ class BanFormFieldsForSpamnoticer {
     public bool $ban;
     public bool $delete;
     public bool $ban_content;
+    public bool $text_is_spam;
     public array $files_info;
 
     public function __construct(
             bool $ban,
             bool $delete,
             bool $ban_content,
+            bool $text_is_spam,
             array $files_info, // Array of SpamNoticerBanFileInfo
             ) {
         $this->ban = $ban;
         $this->delete = $delete;
         $this->ban_content = $ban_content;
         $this->files_info = $files_info;
+        $this->text_is_spam = $text_is_spam;
     }
 
 }

@@ -1773,8 +1773,9 @@ function parse_spamnoticer_content_fields($postData, $post):  BanFormFieldsForSp
     $ban = isset($postData['checkbox-ban']);
     $delete = isset($postData['checkbox-delete']);
     $ban_content = isset($postData['checkbox-ban-content']);
+    $text_is_spam = isset($postData['text_is_spam']);
 
-    return new BanFormFieldsForSpamnoticer($ban, $delete, $ban_content, $files_info);
+    return new BanFormFieldsForSpamnoticer($ban, $delete, $ban_content, $text_is_spam, $files_info);
 }
 
 function mod_ban_post($board, $delete, $post_num, $token = false) {
