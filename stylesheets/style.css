@@ -352,6 +352,7 @@ form table tr td div label {
  * Party Hats
  */
 
+/*
 .thread .files {
     position: relative;
 }
@@ -372,7 +373,6 @@ form table tr td div label {
 	
 }
 
-/*
 .grid_thread_wrapper_for_hats:before {
 	content: "";
 	position: absolute;
