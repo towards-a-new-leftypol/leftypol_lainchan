@@ -19,10 +19,12 @@ $config['boards'] = array(
          'hobby',
          'tech',
          'edu',
+         'ga',
          'ent',
          '777',
          'posad',
          'i',
+         'a',
          'R9K',
          'dead'
    ) ,
@@ -44,10 +46,12 @@ $config['categories'] = array(
         'hobby',
         'tech',
         'edu',
+         'ga',
         'ent',
         '777',
         'posad',
         'i',
+         'a',
          'R9K',
         'dead'
     ),
@@ -124,14 +128,7 @@ $config['post_date'] = '%F (%a) %T';
 
 $config['thread_subject_in_title'] = true;
 
-/*
- * Some users are having trouble posting when this is on,
- * with the message 'Your request looks automated; Post discarded.'
- *
- * This did not affect all users, and for some users only for some posts.
- *
- * If we are getting spammed hard, try turning this on.
- */
+// this functionality is permanently disabled.
 $config['spam']['enabled'] = false;
 
 /*
@@ -203,10 +200,12 @@ $config['allowed_ext_files'][] = 'mp4';
 $config['allowed_ext_files'][] = 'pdf';
 $config['allowed_ext_files'][] = 'txt';
 $config['allowed_ext_files'][] = 'epub';
+$config['allowed_ext_files'][] = 'djvu';
 // Compressed files
 $config['allowed_ext_files'][] = 'zip';
 $config['allowed_ext_files'][] = 'gz';
 $config['allowed_ext_files'][] = 'bz2';
+$config['allowed_ext_files'][] = 'xz';
 
 /*
  * Flags
@@ -526,6 +525,4 @@ $config['filters'][] = array(
     'message' => "$fakereason_ano"
 );
 
-// Changes made by Zer0- @ Thu 17 Mar 2022 05:22:44 PM UTC:
-$config['global_message'] = '<p><a href="https://matrix.to/#/#leftyspace:matrix.leftychan.net" class="redtext"><span class="heading">Matrix</span></a></p> <p><a href="https://pleroma.leftychan.net/" class="redtext"><span class="heading">Pleroma</a></p> <p><a href="mumble://leftychan.net" class="redtext"><span class="heading">Mumble</span></a></p> <p><a href="https://discord.gg/AcZeFKXPmZ" class="redtext"><span class="heading">Discord</a></p> <p><a href="irc://irc.rizon.net:6697/leftychan" class="redtext"><span class="heading">IRC</span></a></p> <p><a href="https://dis.leftychan.net" class="redtext"><span class="heading">Text Boards</span></a></p>';
-
+$config['global_message'] = '<p><a href="https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net" class="redtext"><span class="heading">Matrix</span></a></p><p><a href="ircs://irc.leftychan.net:6697/#leftychan" class="redtext"><span class="heading">IRC Chat</span></a></p><p><a href="https://pleroma.leftychan.net/" class="redtext"><span class="heading">Pleroma</a></p><p><a href="mumble://leftychan.net" class="redtext"><span class="heading">Mumble</span></a></p><p><a href="https://t.me/+RegtyzzrE0M1NDMx" class="red text"><span class="heading">Telegram</a></span></p><p><a href="https://discord.gg/AcZeFKXPmZ" class="redtext"><span class="heading">Discord</a></span></p>';
