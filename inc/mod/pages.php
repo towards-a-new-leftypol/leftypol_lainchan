@@ -1778,7 +1778,7 @@ function parse_spamnoticer_content_fields($postData, $post):  BanFormFieldsForSp
     return new BanFormFieldsForSpamnoticer($ban, $delete, $ban_content, $text_is_spam, $files_info);
 }
 
-function mod_ban_post($board, $delete, $post_num, $token = false) {
+function mod_ban_post(string $board, $delete, $post_num, $token = false) {
     global $config, $mod;
 
     if (!openBoard($board))
@@ -1809,7 +1809,15 @@ function mod_ban_post($board, $delete, $post_num, $token = false) {
 
     if (isset($_POST['spamnoticer'])) {
         $spamnoticer_info = parse_spamnoticer_content_fields($_POST, $po);
-        echo json_encode($spamnoticer_info);
+        $spamnoticer_result = addToSpamNoticer($config, $po, $board, $spamnoticer_info);
+        echo $spamnoticer_result;
+        echo json_encode(
+            array(
+                "spamnoticer_info" => $spamnoticer_info,
+                "board" => $board,
+                "po" => $po
+            )
+        );
         die();
         return;
     }
