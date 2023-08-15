@@ -60,7 +60,7 @@
 				 data-sticky="{% if post.sticky %}true{% else %}false{% endif %}"
 				 data-locked="{% if post.locked %}true{% else %}false{% endif %}"
 			>
-                                <div class="thread grid-li grid-size-small"><div class="grid_thread_wrapper_for_hats">
+                                <div class="thread grid-li grid-size-small">
                                         <a href="{{post.link}}">
 						{% if post.youtube %}
 							<img src="/vi/{{ post.youtube }}/0.jpg"
@@ -84,7 +84,7 @@
 								{{ post.body }}
                                                 </div>
                                 </div>
-                        </div></div>
+                        </div>
                 {% endfor %}
                 </div>
         </div>
