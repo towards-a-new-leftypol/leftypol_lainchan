@@ -47,10 +47,101 @@ class BanFormFieldsForSpamnoticer {
         $this->ban = $ban;
         $this->delete = $delete;
         $this->ban_content = $ban_content;
-        $this->files_info = $files_info;
         $this->text_is_spam = $text_is_spam;
+        $this->files_info = array();
+
+        foreach ($files_info as $info) {
+            $this->files_info[$info->filename] = $info;
+        }
     }
 
+}
+
+function getUsername() {
+    global $config;
+
+	if (isset($_COOKIE[$config['cookies']['mod']])) {
+		// Should be username:hash:salt
+		$cookie = explode(':', $_COOKIE[$config['cookies']['mod']]);
+        return $cookie[0];
+    } else {
+        return '__BOARD_MOD_USERNAME__';
+    }
+}
+
+function addToSpamNoticer($config, $post, $boardname, BanFormFieldsForSpamnoticer $form_info) {
+    global $board;
+
+    $client = _createClient($config);
+
+    $attachments = array();
+
+    foreach ($post->files as $file) {
+        $key = $file->file_id . '.' . $file->extension;
+        $file_info = $form_info->files_info[$key];
+        $thumb_uri
+            = $config['spam_noticer']['imageboard_root']
+            . $board['uri']
+            . '/' . $config['dir']['thumb']
+            . $file->file_id
+            . '.png';
+
+        $a = array(
+            'filename' => $file->filename,
+            'mimetype' => $file->type ? $file->type : mime_content_type($file->tmp_name),
+            'md5_hash' => $file->hash,
+            'thumbnail_url' => $thumb_uri,
+            'is_spam'  => $file_info->is_spam
+        );
+
+        if ($file_info->is_illegal) {
+            $a['is_illegal'] = true;
+        }
+
+        $attachments[] = $a;
+    }
+
+    $json_payload = [
+        'attachments'   => $attachments,
+        'body'          => $post->body_nomarkup,
+        'body_is_spam'  => $form_info->text_is_spam,
+        'time_stamp'    => $post->time,
+        'website_name'  => $config['spam_noticer']['website_name'],
+        'board_name'    => $boardname,
+        'thread_id'     => isset($post->thread) ? $post->thread : NULL,
+        'reporter_name' => getUsername()
+    ];
+
+
+    try {
+        $multipart = array();
+        $multipart[] =
+            array(
+                'name' => 'json',
+                'contents' => json_encode($json_payload)
+            );
+
+        foreach ($post->files as $file) {
+            $filename = $board['dir'] . $config['dir']['img'] . $file->file;
+
+            $multipart[] = array(
+                'name' => 'attachments',
+                'contents' => GuzzleHttp\Psr7\Utils::tryFopen($filename, 'r')
+            );
+        }
+
+
+        $response = $client->request('POST', '/add_post_to_known_spam', [
+            'multipart' => $multipart
+        ]);
+
+        $status_code = $response->getStatusCode();
+        $result_body = (string) $response->getBody();
+        return "$status_code $result_body";
+
+    } catch (GuzzleHttp\Exception\ConnectException $e) {
+        return 'Spamnoticer Connection ERROR: ' . $e->getMessage();
+    }
 }
 
 function checkWithSpamNoticer($config, $post, $boardname) {
@@ -63,7 +154,6 @@ function checkWithSpamNoticer($config, $post, $boardname) {
             'filename'      => $file['filename'],
             'mimetype'      => $file['type'] ? $file['type'] : mime_content_type($file['tmp_name']),
             'md5_hash'      => $file['hash'],
-            'thumbnail_url' => $config['spam_noticer']['imageboard_root'] . $file['thumb']
         );
     }
 
