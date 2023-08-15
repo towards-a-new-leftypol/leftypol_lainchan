@@ -7,17 +7,6 @@ require_once 'inc/functions.php';
 require_once 'inc/anti-bot.php';
 require_once 'inc/bans.php';
 
-// Fix for magic quotes
-if (get_magic_quotes_gpc()) {
-    function strip_array($var) {
-        return is_array($var) ? array_map('strip_array', $var) : stripslashes($var);
-    }
-    
-    $_GET = strip_array($_GET);
-    $_POST = strip_array($_POST);
-}
-
-
 $dropped_post = false;
 
 function handle_nntpchan() {
@@ -1411,8 +1400,16 @@ function handle_post(){
             $js = (object) array();
         // Tell it to delete the cached post for referer
         $js->{$_SERVER['HTTP_REFERER']} = true;
+
         // Encode and set cookie
-        setcookie($config['cookies']['js'], json_encode($js), 0, $config['cookies']['jail'] ? $config['cookies']['path'] : '/', null, false, false);
+        setcookie(
+            $config['cookies']['js'],
+            json_encode($js),
+            0,
+            $config['cookies']['jail'] ? $config['cookies']['path'] : '/',
+            '',
+            false,
+            false);
     }
     
     $root = $post['mod'] ? $config['root'] . $config['file_mod'] . '?/' : $config['root'];

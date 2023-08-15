@@ -75,6 +75,8 @@ stylesheets/fonts
 #Images from twemoji
 js/twemoji/16x16/
 
+#Garbage
+.bash_history
 .cache/
 777/
 R9K/
@@ -107,3 +109,4 @@ save_ass_thread/
 semirand.js
 sfw/
 tech/
+ga/
