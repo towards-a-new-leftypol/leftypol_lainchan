@@ -1805,24 +1805,39 @@ function mod_ban_post(string $board, $delete, $post_num, $token = false) {
         $po = new Post($post, '?/', false);
     }
 
+    $will_ban = true;
+    $will_delete = true;
+    $will_spamnoticer = isset($_POST['spamnoticer']);
+
     require_once 'inc/spamnoticer.php';
 
-    if (isset($_POST['spamnoticer'])) {
+    if ($will_spamnoticer) {
         $spamnoticer_info = parse_spamnoticer_content_fields($_POST, $po);
-        $spamnoticer_result = addToSpamNoticer($config, $po, $board, $spamnoticer_info);
-        echo $spamnoticer_result;
-        echo json_encode(
-            array(
-                "spamnoticer_info" => $spamnoticer_info,
-                "board" => $board,
-                "po" => $po
-            )
-        );
-        die();
-        return;
+
+        if ($spamnoticer_info->ban_content) {
+            $spamnoticer_result = addToSpamNoticer(
+                $config,
+                $po,
+                $board,
+                $spamnoticer_info);
+        }
+
+        $will_ban = $spamnoticer_info->ban;
+        $will_delete = $spamnoticer_info->delete;
     }
 
-    if (isset($_POST['new_ban'], $_POST['reason'], $_POST['length'], $_POST['board'])) {
+    $will_ban = $will_ban &&
+        isset(
+            $_POST['new_ban'],
+            $_POST['reason'],
+            $_POST['length'],
+            $_POST['board']);
+
+    $will_delete = isset($_POST['delete']) && (int) $_POST['delete'];
+
+    $has_public_message = isset($_POST['public_message'], $_POST['message']);
+
+    if ($will_ban) {
         require_once 'inc/mod/ban.php';
 
         if (isset($_POST['ip']))
@@ -1831,7 +1846,7 @@ function mod_ban_post(string $board, $delete, $post_num, $token = false) {
         Bans::new_ban($_POST['ip'], $_POST['reason'], $_POST['length'], $_POST['board'] == '*' ? false : $_POST['board'],
             false, $config['ban_show_post'] ? $post : false);
 
-        if (isset($_POST['public_message'], $_POST['message'])) {
+        if ($has_public_message) {
             // public ban message
             $length_english = Bans::parse_time($_POST['length']) ? 'for ' . until(Bans::parse_time($_POST['length'])) : 'permanently';
             $_POST['message'] = preg_replace('/[\r\n]/', '', $_POST['message']);
@@ -1846,60 +1861,65 @@ function mod_ban_post(string $board, $delete, $post_num, $token = false) {
             modLog("Attached a public ban message to post #{$post_num}: " . utf8tohtml($_POST['message']));
             buildThread($thread ? $thread : $post_num);
             buildIndex();
-        } elseif (isset($_POST['delete']) && (int) $_POST['delete']) {
-            // Delete post
-            if ($config['autotagging']){
-                $query = prepare(sprintf("SELECT *  FROM ``posts_%s`` WHERE id = :id", $board));
-                $query->bindValue(':id', $post_num );
-                $query->execute() or error(db_error($query));
-                $ip = "";
-                $time = "";
-                $filename = "";
-                $filehash = "";
-                $subject = "";
-                $name = "";
-                $body = "";
+        }
+    }
 
-                while ($mypost = $query->fetch(PDO::FETCH_ASSOC)) {
-                    $time = $mypost["time"];
-                    $ip = $mypost["ip"];
-                    $body = $mypost["body_nomarkup"];
-                    $name = $mypost["name"];
-                    $subject = $mypost["subject"];
-                    $filehash = $mypost["filehash"];
-                    $mypost['files'] = $mypost['files'] ? json_decode($mypost['files']) : array();
-                    // For each file append file name
-                    for ($file_count = 0; $file_count < $mypost["num_files"];$file_count++){
-                        $filename .=  $mypost['files'][$file_count]->name . "\r\n";
-                    }
-                }
+    if ($will_delete && !$has_public_message) {
+        // Delete post
+        if ($config['autotagging']){
+            $query = prepare(sprintf("SELECT *  FROM ``posts_%s`` WHERE id = :id", $board));
+            $query->bindValue(':id', $post_num );
+            $query->execute() or error(db_error($query));
+            $ip = "";
+            $time = "";
+            $filename = "";
+            $filehash = "";
+            $subject = "";
+            $name = "";
+            $body = "";
 
-                if ($time !== '') {
-                    $dt = new DateTime("@$time");
-                    $autotag = "";
-                    $autotag .= $name . " " . $subject . " " . $dt->format('Y-m-d H:i:s')  . " No.". $post . "\r\n";
-                    $autotag .= "/${board}/" . " " . $filehash .  " " . $filename ."\r\n";
-                    $autotag .= $body . "\r\n";
-                    $autotag = escape_markup_modifiers($autotag);
-                    markup($autotag);
-                    $query = prepare('INSERT INTO ``ip_notes`` VALUES (NULL, :ip, :mod, :time, :body)');
-                    $query->bindValue(':ip', $ip);
-                    $query->bindValue(':mod', $mod['id']);
-                    $query->bindValue(':time', time());
-                    $query->bindValue(':body', $autotag);
-                    $query->execute() or error(db_error($query));
-                    modLog("Added a note for <a href=\"?/IP/{$ip}\">{$ip}</a>");
+            while ($mypost = $query->fetch(PDO::FETCH_ASSOC)) {
+                $time = $mypost["time"];
+                $ip = $mypost["ip"];
+                $body = $mypost["body_nomarkup"];
+                $name = $mypost["name"];
+                $subject = $mypost["subject"];
+                $filehash = $mypost["filehash"];
+                $mypost['files'] = $mypost['files'] ? json_decode($mypost['files']) : array();
+
+                // For each file append file name
+                for ($file_count = 0; $file_count < $mypost["num_files"];$file_count++){
+                    $filename .=  $mypost['files'][$file_count]->name . "\r\n";
                 }
             }
 
-            deletePost($post_num);
-            modLog("Deleted post #{$post_num}");
-            // Rebuild board
-            buildIndex();
-            // Rebuild themes
-            rebuildThemes('post-delete', $board);
+            if ($time !== '') {
+                $dt = new DateTime("@$time");
+                $autotag = "";
+                $autotag .= $name . " " . $subject . " " . $dt->format('Y-m-d H:i:s')  . " No.". $post . "\r\n";
+                $autotag .= "/${board}/" . " " . $filehash .  " " . $filename ."\r\n";
+                $autotag .= $body . "\r\n";
+                $autotag = escape_markup_modifiers($autotag);
+                markup($autotag);
+                $query = prepare('INSERT INTO ``ip_notes`` VALUES (NULL, :ip, :mod, :time, :body)');
+                $query->bindValue(':ip', $ip);
+                $query->bindValue(':mod', $mod['id']);
+                $query->bindValue(':time', time());
+                $query->bindValue(':body', $autotag);
+                $query->execute() or error(db_error($query));
+                modLog("Added a note for <a href=\"?/IP/{$ip}\">{$ip}</a>");
+            }
         }
 
+        deletePost($post_num);
+        modLog("Deleted post #{$post_num}");
+        // Rebuild board
+        buildIndex();
+        // Rebuild themes
+        rebuildThemes('post-delete', $board);
+    }
+
+    if ($will_ban || $will_delete || $will_spamnoticer) {
         if(isset($_POST['thread'])) {
             // Redirect to thread
             header('Location: ?/' . sprintf($config['board_path'], $board) . $config['dir']['res'] . str_replace('%d', $_POST['thread'], $config['file_page']), true, $config['redirect_http']);

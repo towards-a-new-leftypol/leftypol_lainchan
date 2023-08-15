@@ -31,7 +31,7 @@
         {% if spamnoticer %}
             [<input class="ban_form--content_file_chkbox" type="checkbox" name="file_is_spam_{{ file.file }}" id="file_is_spam_{{ file.file }}" checked>
             <label class="ban_form--content_file_chkbox_lbl" for="file_is_spam_{{ file.file }}">Is spam</label>]
-            [<input class="ban_form--content_file_chkbox" type="checkbox" name="file_is_illegal_{{ file.file }}" id="file_is_illegal_{{ file.file }}" checked>
+            [<input class="ban_form--content_file_chkbox" type="checkbox" name="file_is_illegal_{{ file.file }}" id="file_is_illegal_{{ file.file }}">
             <label class="ban_form--content_file_chkbox_lbl" for="file_is_illegal_{{ file.file }}">Is illegal</label>]
         {% endif %}
         {% include "post/image_identification.html" %}
