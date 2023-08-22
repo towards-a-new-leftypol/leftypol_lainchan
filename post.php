@@ -7,6 +7,8 @@ require_once 'inc/functions.php';
 require_once 'inc/anti-bot.php';
 require_once 'inc/bans.php';
 
+use Ramsey\Uuid\Uuid;
+
 $dropped_post = false;
 
 function handle_nntpchan() {
@@ -249,11 +251,11 @@ function handle_delete(){
             
             if (isset($_POST['file'])) {
                 // Delete just the file
-                deleteFile($id);
+                deleteFile($id, true, null, true);
                 modLog("User deleted file from his own post #$id");
             } else {
                 // Delete entire post
-                deletePost($id);
+                deletePost($id, true, true, true);
                 modLog("User deleted his own post #$id");
             }
             
@@ -972,11 +974,19 @@ function handle_post(){
 
     if ($config['spam_noticer']['enabled']) {
         require_once 'inc/spamnoticer.php';
+
+        $delete_token_uuid = Uuid::uuid4(); // Generate a version 4 (random) UUID
+        $delete_token = $delete_token_uuid->toString();
+        $post['delete_token'] = $delete_token;
+
         $spam_noticer_result = checkWithSpamNoticer($config, $post, $board['uri']);
+
         if ($spam_noticer_result->succeeded) {
             if ($spam_noticer_result->noticed) {
                 error($config['error']['spam_noticer'] . $spam_noticer_result->reason);
             }
+        } else {
+            print_err($spam_noticer_result->reason);
         }
     } else {
         print_err("spam_noticer off!");

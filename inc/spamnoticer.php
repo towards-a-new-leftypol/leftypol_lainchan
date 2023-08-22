@@ -163,7 +163,8 @@ function checkWithSpamNoticer($config, $post, $boardname) {
         'time_stamp' => time(),
         'website_name' => $config['spam_noticer']['website_name'],
         'board_name' => $boardname,
-        'thread_id' => array_key_exists('thread', $post) ? $post['thread'] : NULL
+        'thread_id' => array_key_exists('thread', $post) ? $post['thread'] : NULL,
+        'delete_token' => $post['delete_token'],
     ];
 
     $result = new SpamNoticerResult();
@@ -200,9 +201,6 @@ function checkWithSpamNoticer($config, $post, $boardname) {
         } else {
             $result->reason = (string) $response->getBody();
         }
-
-        print_err("strbody:\n" . $result->reason);
-        print_err("status_code: " . $response->getStatusCode());
 
         $result->client = $client;
 
