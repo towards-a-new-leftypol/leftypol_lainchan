@@ -35,10 +35,6 @@ function getStackTraceAsString() {
     return $traceString;
 }
 
-function print_err2($s) {
-	print_err($s);
-}
-
 print_err("\n\nSTART\n\n");
 
 class AntiBot {

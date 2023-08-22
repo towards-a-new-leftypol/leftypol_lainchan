@@ -172,7 +172,7 @@ function handle_nntpchan() {
 
 }
 
-function handle_delete(){
+function handle_delete() {
     // Delete
     global $config, $board, $mod;
     if (!isset($_POST['board'], $_POST['password']))
@@ -278,9 +278,10 @@ function handle_delete(){
         echo json_encode(array('success' => true));
     }
 
-        // We are already done, let's continue our heavy-lifting work in the background (if we run off FastCGI)
-        if (function_exists('fastcgi_finish_request'))
-                @fastcgi_finish_request();
+    // We are already done, let's continue our heavy-lifting work in the background (if we run off FastCGI)
+    if (function_exists('fastcgi_finish_request')) {
+        @fastcgi_finish_request();
+    }
 
     rebuildThemes('post-delete', $board['uri']);
 
@@ -988,8 +989,6 @@ function handle_post(){
         } else {
             print_err($spam_noticer_result->reason);
         }
-    } else {
-        print_err("spam_noticer off!");
     }
 
     if (!hasPermission($config['mod']['bypass_filters'], $board['uri']) && !$dropped_post) {
