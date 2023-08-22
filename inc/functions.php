@@ -23,6 +23,7 @@ require_once 'inc/mod/auth.php';
 require_once 'inc/lock.php';
 require_once 'inc/queue.php';
 require_once 'inc/polyfill.php';
+require_once 'inc/spamnoticer.php';
 @include_once 'inc/lib/parsedown/Parsedown.php'; // fail silently, this isn't a critical piece of code
 
 if (!extension_loaded('gettext')) {
@@ -1116,7 +1117,7 @@ function bumpThread($id) {
 function deleteFile($id, $remove_entirely_if_already=true, $file=null, $alert_spamnoticer=false) {
     global $board, $config;
 
-    $query = prepare(sprintf("SELECT `thread`, `files`, `num_files` FROM ``posts_%s`` WHERE `id` = :id LIMIT 1", $board['uri']));
+    $query = prepare(sprintf("SELECT `thread`, `files`, `num_files`, `delete_token` FROM ``posts_%s`` WHERE `id` = :id LIMIT 1", $board['uri']));
     $query->bindValue(':id', $id, PDO::PARAM_INT);
     $query->execute() or error(db_error($query));
     if (!$post = $query->fetch(PDO::FETCH_ASSOC))
@@ -1153,6 +1154,16 @@ function deleteFile($id, $remove_entirely_if_already=true, $file=null, $alert_sp
 
     $query->bindValue(':id', $id, PDO::PARAM_INT);
     $query->execute() or error(db_error($query));
+
+    if ($alert_spamnoticer) {
+        $delete_tokens = array();
+
+        if ($post['delete_token']) {
+            $delete_tokens[] = $post['delete_token'];
+        }
+
+        removeRecentPostFromSpamnoticer($config, $delete_tokens, true);
+    }
 
     if ($post['thread'])
         buildThread($post['thread']);
@@ -1192,7 +1203,7 @@ function deletePost($id, $error_if_doesnt_exist=true, $rebuild_after=true, $aler
     global $board, $config;
 
     // Select post and replies (if thread) in one query
-    $query = prepare(sprintf("SELECT `id`,`thread`,`files`,`slug` FROM ``posts_%s`` WHERE `id` = :id OR `thread` = :id", $board['uri']));
+    $query = prepare(sprintf("SELECT `id`,`thread`,`files`,`slug`, `delete_token` FROM ``posts_%s`` WHERE `id` = :id OR `thread` = :id", $board['uri']));
     $query->bindValue(':id', $id, PDO::PARAM_INT);
     $query->execute() or error(db_error($query));
 
@@ -1206,6 +1217,7 @@ function deletePost($id, $error_if_doesnt_exist=true, $rebuild_after=true, $aler
     }
 
     $ids = array();
+    $delete_tokens = array();
 
     // Delete posts and maybe replies
     while ($post = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -1238,13 +1250,21 @@ function deletePost($id, $error_if_doesnt_exist=true, $rebuild_after=true, $aler
             }
         }
 
-        $ids[] = (int)$post['id'];
+        $ids[] = (int) $post['id'];
 
+        if ($post['delete_token']) {
+            $delete_tokens[] = $post['delete_token'];
+        }
     }
+
 
     $query = prepare(sprintf("DELETE FROM ``posts_%s`` WHERE `id` = :id OR `thread` = :id", $board['uri']));
     $query->bindValue(':id', $id, PDO::PARAM_INT);
     $query->execute() or error(db_error($query));
+
+    if ($alert_spamnoticer) {
+        removeRecentPostFromSpamnoticer($config, $delete_tokens);
+    }
 
     $query = prepare("SELECT `board`, `post` FROM ``cites`` WHERE `target_board` = :board AND (`target` = " . implode(' OR `target` = ', $ids) . ") ORDER BY `board`");
     $query->bindValue(':board', $board['uri']);

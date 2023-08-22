@@ -211,3 +211,36 @@ function checkWithSpamNoticer($config, $post, $boardname) {
 
     return $result;
 }
+
+function removeRecentPostFromSpamnoticer($config, $delete_tokens, $files_only = false) {
+    if (!$delete_tokens) {
+        return;
+    }
+
+    $client = _createClient($config);
+
+    $promise = $client->postAsync('/undo_recent_post', [
+        'headers' => [
+            'Content-Type' => 'application/json',
+        ],
+        'json' => [
+            'delete_tokens' => $delete_tokens,
+            'files_only' => $files_only,
+        ]
+    ]);
+
+    $promise->then(
+        function ($response) use ($config) {
+            // This callback is executed when the request is successful
+            if ($config['debug']) {
+                print_err("POST to SpamNoticer /undo_recent_post sent successfully!");
+            }
+        },
+        function (RequestException $exception) {
+            print_err("ERROR sending POST to SpamNoticer /undo_recent_post:\n$exception");
+        }
+    );
+
+    // This will initiate the asynchronous request, but we won't wait for the response.
+    $promise->wait(false);  // Set to false for asynchronous behavior
+}
