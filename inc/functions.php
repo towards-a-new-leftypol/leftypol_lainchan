@@ -229,15 +229,17 @@ function loadConfig() {
         if (!isset($config['image_deleted']))
             $config['image_deleted'] = $config['dir']['static'] . 'deleted.png';
 
-        if (!isset($config['uri_thumb']))
+        if (!isset($config['uri_thumb']) && isset($board)) {
             $config['uri_thumb'] = $config['root'] . $board['dir'] . $config['dir']['thumb'];
-        elseif (isset($board['dir']))
+        } elseif (isset($board['dir']) && isset($board)) {
             $config['uri_thumb'] = sprintf($config['uri_thumb'], $board['dir']);
+        }
 
-        if (!isset($config['uri_img']))
+        if (!isset($config['uri_img']) && isset($board))
             $config['uri_img'] = $config['root'] . $board['dir'] . $config['dir']['img'];
-        elseif (isset($board['dir']))
+        elseif (isset($board) && isset($board['dir'])) {
             $config['uri_img'] = sprintf($config['uri_img'], $board['dir']);
+        }
 
         if (!isset($config['uri_stylesheets']))
             $config['uri_stylesheets'] = $config['root'] . 'stylesheets/';
@@ -362,7 +364,7 @@ function define_groups() {
     foreach ($config['mod']['groups'] as $group_value => $group_name) {
         $group_name = strtoupper($group_name);
         if(!defined($group_name)) {
-            define($group_name, $group_value, true);
+            define($group_name, $group_value);
         }
     }
     
