@@ -13,21 +13,22 @@
  */
 
 $config['boards'] = array(
-   array('leftypol',
-         'b',
-         'WRK',
-         'hobby',
-         'tech',
-         'edu',
-         'ga',
-         'ent',
-         '777',
-         'posad',
-         'i',
-         'a',
-         'R9K',
-         'dead'
-   ) ,
+  array(
+    'leftypol',
+    'b',
+    'WRK',
+    'hobby',
+    'tech',
+    'edu',
+    'ga',
+    'ent',
+    '777',
+    'posad',
+    'i',
+    'a',
+    'R9K',
+    'dead'
+  ),
   array('meta')
 );
 
@@ -40,22 +41,23 @@ $config['prepended_foreign_boards'] = array(
 
 // Board categories. Only used in the "Categories" theme.
 $config['categories'] = array(
-    'Leftypol' => array('leftypol',
-        'b',
-         'WRK',
-        'hobby',
-        'tech',
-        'edu',
-         'ga',
-        'ent',
-        '777',
-        'posad',
-        'i',
-         'a',
-         'R9K',
-        'dead'
-    ),
-    'Meta' => array('meta')
+  'Leftypol' => array(
+    'leftypol',
+    'b',
+    'WRK',
+    'hobby',
+    'tech',
+    'edu',
+    'ga',
+    'ent',
+    '777',
+    'posad',
+    'i',
+    'a',
+    'R9K',
+    'dead'
+  ),
+  'Meta' => array('meta')
 );
 
 // Optional for the Categories theme. This is an array of name => (title, url) groups for categories
