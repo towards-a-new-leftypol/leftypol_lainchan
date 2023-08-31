@@ -137,6 +137,7 @@ function addToSpamNoticer($config, $post, $boardname, BanFormFieldsForSpamnotice
 
         $status_code = $response->getStatusCode();
         $result_body = (string) $response->getBody();
+        print_err($result_body);
         return "$status_code $result_body";
 
     } catch (GuzzleHttp\Exception\ConnectException $e) {
@@ -203,6 +204,8 @@ function checkWithSpamNoticer($config, $post, $boardname) {
         }
 
         $result->client = $client;
+
+        print_err($response->getBody());
 
         return $result;
     } catch (GuzzleHttp\Exception\ConnectException $e) {

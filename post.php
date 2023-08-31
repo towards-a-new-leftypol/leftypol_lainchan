@@ -6,6 +6,7 @@
 require_once 'inc/functions.php';
 require_once 'inc/anti-bot.php';
 require_once 'inc/bans.php';
+require_once 'inc/anti-bot.php'; // DELETE ME FOR DEBUGGING ONLY
 
 use Ramsey\Uuid\Uuid;
 
@@ -416,10 +417,14 @@ function handle_report(){
 function handle_post(){
     global $config,$dropped_post,$board, $mod,$pdo;
 
+    print_err('handle_post BEGIN');
 
     if (!isset($_POST['body'], $_POST['board']) && !$dropped_post) {
+        print_err('handle_post bot error 1');
         error($config['error']['bot']);
     }
+
+    print_err('handle_post NO SUCH bot error 1');
 
     $post = array('board' => $_POST['board'], 'files' => array());
 

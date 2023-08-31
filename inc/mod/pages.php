@@ -1810,6 +1810,7 @@ function mod_ban_post(string $board, $delete, $post_num, $token = false) {
     $will_spamnoticer = isset($_POST['spamnoticer']);
 
     require_once 'inc/spamnoticer.php';
+    require_once 'inc/anti-bot.php';
 
     if ($will_spamnoticer) {
         $spamnoticer_info = parse_spamnoticer_content_fields($_POST, $po);
@@ -1820,6 +1821,7 @@ function mod_ban_post(string $board, $delete, $post_num, $token = false) {
                 $po,
                 $board,
                 $spamnoticer_info);
+            print_err('$spamnoticer_result: ' . $spamnoticer_result);
         }
 
         $will_ban = $spamnoticer_info->ban;

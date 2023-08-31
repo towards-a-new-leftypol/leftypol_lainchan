@@ -15,6 +15,8 @@
 $config['boards'] = array(
 	array(
 		'b',
+        'leftypol',
+        'Test'
 	)
 );
 
@@ -27,7 +29,7 @@ $config['prepended_foreign_boards'] = array(
 
 // Board categories. Only used in the "Categories" theme.
 $config['categories'] = array(
-	'Leftypol' => array(
+	'Leftychan' => array(
 		'b',
 	)
 );
@@ -112,7 +114,7 @@ $config['thread_subject_in_title'] = true;
  */
 $config['spam']['enabled'] = false;
 $config['spam_noticer']['enabled'] = true;
-$config['spam_noticer']['base_url'] = 'http://192.168.4.6:8888';
+$config['spam_noticer']['base_url'] = 'http://localhost:8300';
 $config['spam_noticer']['website_name'] = "leftychan_dev";
 
 /*
