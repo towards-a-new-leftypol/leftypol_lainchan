@@ -1833,7 +1833,7 @@ function mod_ban_post(string $board, $delete, $post_num, $token = false) {
             $_POST['length'],
             $_POST['board']);
 
-    $will_delete = isset($_POST['delete']) && (int) $_POST['delete'];
+    $will_delete = $will_delete && isset($_POST['delete']) && (int) $_POST['delete'];
 
     $has_public_message = isset($_POST['public_message'], $_POST['message']);
 

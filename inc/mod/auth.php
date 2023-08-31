@@ -135,7 +135,15 @@ function setCookies() {
 function destroyCookies() {
 	global $config;
 	// Delete the cookies
-	setcookie($config['cookies']['mod'], 'deleted', time() - $config['cookies']['expire'], $config['cookies']['jail']?$config['cookies']['path'] : '/', null, !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off', true);
+    setcookie(
+        $config['cookies']['mod'],
+        'deleted',
+        time() - $config['cookies']['expire'],
+        $config['cookies']['jail']?$config['cookies']['path'] : '/',
+        "",
+        !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off',
+        true
+    );
 }
 
 function modLog($action, $_board=null) {
