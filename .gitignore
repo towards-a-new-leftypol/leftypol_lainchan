@@ -71,6 +71,7 @@ stylesheets/fonts
 #Images from twemoji
 js/twemoji/16x16/
 
+<<<<<<< HEAD
 # JUNK
 GET/
 anime/
@@ -93,11 +94,15 @@ games/
 gulag/
 hardcopy.1
 hobby/
-instance-config.php
+i/
 leftypol/
+leftypol_archive/
 meta/
 overboard/
 phpinfo.php
-ref/
+posad/
+restore_b_ass/
+save_ass_thread/
+sfw/
 tech/
-tqgit status
+ref/
