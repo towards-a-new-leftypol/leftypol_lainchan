@@ -424,6 +424,7 @@ function handle_report(){
 function handle_post(){
     global $config,$dropped_post,$board, $mod,$pdo;
 
+
     if (!isset($_POST['body'], $_POST['board']) && !$dropped_post) {
         error($config['error']['bot']);
     }
@@ -433,7 +434,7 @@ function handle_post(){
     // Check if board exists
     if (!openBoard($post['board']))
         error($config['error']['noboard']);
-    
+
     $board_locked_check = (!isset($_POST['mod']) || !$_POST['mod'])
         && ($config['board_locked']===true
         || (is_array($config['board_locked']) && in_array(strtolower($_POST['board']), $config['board_locked'])));
@@ -674,6 +675,7 @@ function handle_post(){
     $post['subject'] = $_POST['subject'];
     $post['email'] = str_replace(' ', '%20', htmlspecialchars($_POST['email']));
     $post['body'] = $_POST['body'];
+    $post['raw_body'] = $_POST['body'];
     $post['password'] = $_POST['password'];
     $post['has_file'] = (!isset($post['embed']) && (($post['op'] && !isset($post['no_longer_require_an_image_for_op']) && $config['force_image_op']) || count($_FILES) > 0));
     
@@ -977,6 +979,18 @@ function handle_post(){
         else {
             $post['filehash'] = md5($allhashes);
         }
+    }
+
+    if ($config['spam_noticer']['enabled']) {
+        require_once 'inc/spamnoticer.php';
+        $spam_noticer_result = checkWithSpamNoticer($config, $post, $board['uri']);
+        if ($spam_noticer_result->succeeded) {
+            if ($spam_noticer_result->noticed) {
+                error($config['error']['spam_noticer'] . $spam_noticer_result->reason);
+            }
+        }
+    } else {
+        print_err("spam_noticer off!");
     }
 
     if (!hasPermission($config['mod']['bypass_filters'], $board['uri']) && !$dropped_post) {
@@ -1319,10 +1333,6 @@ function handle_post(){
     }
 
     $post = (array)$post;
-
-    if ($post['files']) {
-        $post['files'] = $post['files'];
-    }
 
     $post['num_files'] = sizeof($post['files']);
     

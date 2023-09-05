@@ -382,7 +382,7 @@
             '!body' => '/^$/', // Post body is NOT empty
         ),
         'action' => 'reject',
-        'message' => &$config['error']['flood']
+        'message' => &$config['error']['flood1']
     );
 
     // Minimum time between posts with the same text. (Same content, but not always the same IP address.)
@@ -392,7 +392,7 @@
             'flood-time' => &$config['flood_time_same']
         ),
         'action' => 'reject',
-        'message' => &$config['error']['flood']
+        'message' => &$config['error']['flood2']
     );
 
     // Example: Minimum time between posts with the same file hash.
@@ -1142,7 +1142,9 @@
     $config['error']['reply_hard_limit']    = _('Thread has reached its maximum reply limit.');
     $config['error']['image_hard_limit']    = _('Thread has reached its maximum image limit.');
     $config['error']['nopost']      = _('You didn\'t make a post.');
-    $config['error']['flood']       = _('Flood detected; Post discarded.');
+    $config['error']['flood']       = _('Flood detected; Post discarded.0');
+    $config['error']['flood1']       = _('Flood detected; Post discarded.1');
+    $config['error']['flood2']       = _('Flood detected; Post discarded.2');
     $config['error']['spam']        = _('Your request looks automated; Post discarded.');
     $config['error']['unoriginal']      = _('Unoriginal content!');
     $config['error']['muted']       = _('Unoriginal content! You have been muted for %d seconds.');
@@ -1176,8 +1178,8 @@
 
     // Moderator errors
     $config['error']['toomanyunban']    = _('You are only allowed to unban %s users at a time. You tried to unban %u users.');
-    $config['error']['invalid']     = _('Invalid username and/or password.');
-    $config['error']['notamod']     = _('You are not a mod…');
+    $config['error']['invalid']         = _('Invalid username and/or password.');
+    $config['error']['notamod']         = _('You are not a mod…');
     $config['error']['invalidafter']    = _('Invalid username and/or password. Your user may have been deleted or changed.');
     $config['error']['malformed']       = _('Invalid/malformed cookies.');
     $config['error']['missedafield']    = _('Your browser didn\'t submit an input when it should have.');
@@ -1186,11 +1188,12 @@
     $config['error']['boardexists']     = _('There is already a %s board.');
     $config['error']['noaccess']        = _('You don\'t have permission to do that.');
     $config['error']['invalidpost']     = _('That post doesn\'t exist…');
-    $config['error']['404']         = _('Page not found.');
+    $config['error']['404']             = _('Page not found.');
     $config['error']['modexists']       = _('That mod <a href="?/users/%d">already exists</a>!');
     $config['error']['invalidtheme']    = _('That theme doesn\'t exist!');
-    $config['error']['csrf']        = _('Invalid security token! Please go back and try again.');
+    $config['error']['csrf']            = _('Invalid security token! Please go back and try again.');
     $config['error']['badsyntax']       = _('Your code contained PHP syntax errors. Please go back and correct them. PHP says: ');
+    $config['error']['spam_noticer']    = _('Your post was determined to be spam. Reasoning: ');
 
 /*
  * =========================
@@ -1942,3 +1945,9 @@
     //Logo location for themes
     $config['logo'] = 'static/logo.png';
 
+
+    // $config['spam_noticer'] = array();
+    $config['spam_noticer']['enabled'] = false;
+    $config['spam_noticer']['base_url'] = 'http://localhost:8888';
+    $config['spam_noticer']['imageboard_root'] = 'http://localhost:8080/';
+    $config['spam_noticer']['website_name'] = "";
