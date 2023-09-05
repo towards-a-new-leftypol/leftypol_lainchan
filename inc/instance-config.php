@@ -65,11 +65,11 @@ $config['cookies']['mod'] = 'mod';
 $config['cookies']['salt'] = 'MGYwNjhlNjU5Y2QxNWU3YjQ3MzQ1Yj';
 
 $config['search']['enable'] = true;
-$config['flood_cache'] = 60 * 15; // 15 minutes. The oldest a post can be in the flood table
-$config['flood_time_any'] = 20; // time between thread creation
-$config['flood_time'] = 0;
-$config['flood_time_ip'] = 60;
-$config['flood_time_same'] = 60;
+$config['flood_cache'] = 0; // 15 minutes. The oldest a post can be in the flood table
+$config['flood_time_any'] = -1; // time between thread creation
+$config['flood_time'] = -1;
+$config['flood_time_ip'] = -1;
+$config['flood_time_same'] = -1;
 $config['max_body'] = 80000;
 $config['reply_limit'] = 600;
 $config['max_links'] = 40;
