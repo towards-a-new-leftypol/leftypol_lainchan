@@ -106,6 +106,7 @@ $config['thread_subject_in_title'] = true;
 $config['spam']['enabled'] = false;
 $config['spam_noticer']['enabled'] = true;
 $config['spam_noticer']['base_url'] = 'http://192.168.4.6:8888';
+$config['spam_noticer']['website_name'] = "leftychan_dev";
 
 /*
  * Basic captcha. See also: captchaconfig.php

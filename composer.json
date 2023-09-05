@@ -6,6 +6,7 @@
         "twig/twig": "^3.0",
         "phpmyadmin/twig-i18n-extension": "^4.0",
         "php81_bc/strftime": "^0.5.0",
-        "mrclay/jsmin-php": "^2.4"
+        "mrclay/jsmin-php": "^2.4",
+        "ramsey/uuid": "^4.7"
     }
 }

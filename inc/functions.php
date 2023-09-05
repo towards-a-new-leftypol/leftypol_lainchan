@@ -995,7 +995,7 @@ function insertFloodPost(array $post) {
 
 function post(array $post) {
     global $pdo, $board,$config;
-    $query = prepare(sprintf("INSERT INTO ``posts_%s`` VALUES ( NULL, :thread, :subject, :email, :name, :trip, :capcode, :body, :body_nomarkup, :time, :time, :files, :num_files, :filehash, :password, :ip, :sticky, :locked, :cycle, 0, :embed, :slug)", $board['uri']));
+    $query = prepare(sprintf("INSERT INTO ``posts_%s`` VALUES ( NULL, :thread, :subject, :email, :name, :trip, :capcode, :body, :body_nomarkup, :time, :time, :files, :num_files, :filehash, :password, :ip, :sticky, :locked, :cycle, 0, :embed, :slug, :delete_token)", $board['uri']));
 
     // Basic stuff
     if (!empty($post['subject'])) {
@@ -1082,6 +1082,12 @@ function post(array $post) {
         $query->bindValue(':slug', NULL);
     }
 
+    if ($config['spam_noticer']['enabled']) {
+        $query->bindValue(':delete_token', $post['delete_token']);
+    } else {
+        $query->bindValue(':delete_token', NULL);
+    }
+
     if (!$query->execute()) {
         undoImage($post);
         error(db_error($query));
@@ -1107,7 +1113,7 @@ function bumpThread($id) {
 }
 
 // Remove file from post
-function deleteFile($id, $remove_entirely_if_already=true, $file=null) {
+function deleteFile($id, $remove_entirely_if_already=true, $file=null, $alert_spamnoticer=false) {
     global $board, $config;
 
     $query = prepare(sprintf("SELECT `thread`, `files`, `num_files` FROM ``posts_%s`` WHERE `id` = :id LIMIT 1", $board['uri']));
@@ -1162,8 +1168,9 @@ function rebuildPost($id) {
     $query->bindValue(':id', $id, PDO::PARAM_INT);
     $query->execute() or error(db_error($query));
 
-    if ((!$post = $query->fetch(PDO::FETCH_ASSOC)) || !$post['body_nomarkup'])
+    if ((!$post = $query->fetch(PDO::FETCH_ASSOC)) || !$post['body_nomarkup']) {
         return false;
+    }
 
     markup($post['body'] = &$post['body_nomarkup']);
     $post = (object)$post;
@@ -1181,7 +1188,7 @@ function rebuildPost($id) {
 }
 
 // Delete a post (reply or thread)
-function deletePost($id, $error_if_doesnt_exist=true, $rebuild_after=true) {
+function deletePost($id, $error_if_doesnt_exist=true, $rebuild_after=true, $alert_spamnoticer=false) {
     global $board, $config;
 
     // Select post and replies (if thread) in one query
@@ -1190,18 +1197,22 @@ function deletePost($id, $error_if_doesnt_exist=true, $rebuild_after=true) {
     $query->execute() or error(db_error($query));
 
     if ($query->rowCount() < 1) {
-        if ($error_if_doesnt_exist)
+
+        if ($error_if_doesnt_exist) {
             error($config['error']['invalidpost']);
-        else return false;
+        } else {
+            return false;
+        }
     }
 
     $ids = array();
 
     // Delete posts and maybe replies
     while ($post = $query->fetch(PDO::FETCH_ASSOC)) {
+
         event('delete', $post);
-        
         $thread_id = $post['thread'];
+
         if (!$post['thread']) {
             // Delete thread HTML page
             file_unlink($board['dir'] . $config['dir']['res'] . link_for($post) );
@@ -1216,6 +1227,7 @@ function deletePost($id, $error_if_doesnt_exist=true, $rebuild_after=true) {
             // Rebuild thread
             $rebuild = &$post['thread'];
         }
+
         if ($post['files']) {
             // Delete file
             foreach (json_decode($post['files']) as $i => $f) {
@@ -1237,6 +1249,7 @@ function deletePost($id, $error_if_doesnt_exist=true, $rebuild_after=true) {
     $query = prepare("SELECT `board`, `post` FROM ``cites`` WHERE `target_board` = :board AND (`target` = " . implode(' OR `target` = ', $ids) . ") ORDER BY `board`");
     $query->bindValue(':board', $board['uri']);
     $query->execute() or error(db_error($query));
+
     while ($cite = $query->fetch(PDO::FETCH_ASSOC)) {
         if ($board['uri'] != $cite['board']) {
             if (!isset($tmp_board))
