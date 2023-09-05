@@ -281,7 +281,6 @@ function checkSpam(array $extra_salt = array()) {
 
 	// Iterate through each input
 	foreach ($inputs as $name => $value) {
-		print_err("->   " . $name . ' : ' . $value);
 		$_hash .= $name . '=' . $value;
 	}
 
@@ -292,7 +291,6 @@ function checkSpam(array $extra_salt = array()) {
 	$_hash = sha1($_hash . $extra_salt);
 
 	if ($hash != $_hash) {
-		print_err("Hash mismatch");
 		return true;
 	}
 

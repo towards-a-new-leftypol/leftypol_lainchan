@@ -6,7 +6,6 @@
 require_once 'inc/functions.php';
 require_once 'inc/anti-bot.php';
 require_once 'inc/bans.php';
-require_once 'inc/anti-bot.php'; // DELETE ME FOR DEBUGGING ONLY
 
 use Ramsey\Uuid\Uuid;
 
@@ -534,6 +533,7 @@ function handle_post(){
         }
 
         if (!$post['mod'] && $config['spam']['enabled'] == true) {
+            print_err("ANTI SPAM IS ENABLED");
             $post['antispam_hash'] = checkSpam(
                 array($board['uri'],
                 isset($post['thread']) ? $post['thread'] : ($config['try_smarter'] && isset($_POST['page']) ? 0 - (int)$_POST['page'] : null))

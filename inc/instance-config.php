@@ -104,8 +104,7 @@ $config['post_date'] = '%F (%a) %T';
 
 $config['thread_subject_in_title'] = true;
 
-// this functionality is permanently disabled.
-$config['spam']['enabled'] = false;
+$config['spam']['enabled'] = true;
 $config['spam_noticer']['enabled'] = true;
 $config['spam_noticer']['base_url'] = 'http://localhost:8300';
 $config['spam_noticer']['website_name'] = "leftychan_dev";
