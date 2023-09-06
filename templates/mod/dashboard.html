@@ -75,6 +75,14 @@
 
 {% endif %}
 
+{% if config.spam_noticer.enabled %}
+    <li>
+        <a href="{{ config.spam_noticer.base_url }}/static/index.html">
+            SpamNoticer
+        </a>
+    </li>
+{% endif %}
+
 {% if config.debug %}
 
   <li><a href="?/debug/antispam">{% trans 'Anti-spam' %}</a></li>
