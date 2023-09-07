@@ -107,6 +107,7 @@ $config['thread_subject_in_title'] = true;
 $config['spam']['enabled'] = true;
 $config['spam_noticer']['enabled'] = true;
 $config['spam_noticer']['base_url'] = 'http://localhost:8300';
+$config['spam_noticer']['ui_url'] = 'https://dev-spamnoticer.leftychan.net/static/index.html';
 $config['spam_noticer']['website_name'] = "leftychan_dev";
 
 /*

@@ -48,7 +48,7 @@ function proxy() {
 }
 
 function main() {
-    global $mod;
+    global $mod, $config;
 
     check_login(true);
 
@@ -61,7 +61,12 @@ function main() {
         exit;
     }
 
-    #echo json_encode($mod);
+    if (!hasPermission($config['mod']['spam_noticer'])) {
+        header("HTTP/1.1 403 Forbidden");
+        echo "You do not have sufficient privileges.";
+        exit;
+    }
+
     proxy();
 }
 

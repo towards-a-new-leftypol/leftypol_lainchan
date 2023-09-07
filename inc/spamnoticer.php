@@ -192,10 +192,14 @@ function checkWithSpamNoticer($config, $post, $boardname) {
 
         $status_code = $response->getStatusCode();
 
+        print_err("spamnoticer status code: " . $status_code);
+        print_err("spamnoticer response body: " . $response->getBody());
+
         if ($status_code >= 200 && $status_code < 300) {
             $result->succeeded = true;
             $result->result_json = json_decode($response->getBody(), true);
             $result->noticed = $result->result_json['noticed'] == true;
+
             if ($result->noticed) {
                 $result->reason = (string) $response->getBody();
             }
@@ -204,8 +208,6 @@ function checkWithSpamNoticer($config, $post, $boardname) {
         }
 
         $result->client = $client;
-
-        print_err($response->getBody());
 
         return $result;
     } catch (GuzzleHttp\Exception\ConnectException $e) {

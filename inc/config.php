@@ -1623,6 +1623,8 @@
     // Allow searching posts (can be used with board configuration file to disallow searching through a
     // certain board)
     $config['mod']['search_posts'] = JANITOR;
+    // Access SpamNoticer UI
+    $config['mod']['spam_noticer'] = MOD;
     // Read the moderator noticeboard
     $config['mod']['noticeboard'] = JANITOR;
     // Post to the moderator noticeboard

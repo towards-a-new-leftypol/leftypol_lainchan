@@ -75,9 +75,9 @@
 
 {% endif %}
 
-{% if config.spam_noticer.enabled %}
+{% if (config.spam_noticer.enabled) and (mod|hasPermission(config.mod.spam_noticer)) %}
     <li>
-        <a href="{{ config.spam_noticer.base_url }}/static/index.html">
+        <a href="{{ config.spam_noticer.ui_url }}">
             SpamNoticer
         </a>
     </li>
