@@ -108,6 +108,7 @@ $config['spam']['enabled'] = true;
 $config['spam_noticer']['enabled'] = true;
 $config['spam_noticer']['base_url'] = 'http://localhost:8300';
 $config['spam_noticer']['ui_url'] = 'https://dev-spamnoticer.leftychan.net/static/index.html';
+$config['spam_noticer']['imageboard_root'] = 'http://dev.leftychan.net/';
 $config['spam_noticer']['website_name'] = "leftychan_dev";
 
 /*
@@ -505,5 +506,4 @@ $config['filters'][] = array(
 );
 
 $config['global_message'] = '<p><a href="https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net" class="redtext"><span class="heading">Matrix</span></a></p><p><a href="ircs://irc.leftychan.net:6697/#leftychan" class="redtext"><span class="heading">IRC Chat</span></a></p><p><a href="mumble://leftychan.net" class="redtext"><span class="heading">Mumble</span></a></p><p><a href="https://t.me/+RegtyzzrE0M1NDMx" class="red text"><span class="heading">Telegram</a></span></p><p><a href="https://discord.gg/AcZeFKXPmZ" class="redtext"><span class="heading">Discord</a></span></p>';
-$config['spam_noticer']['website_name'] = "leftychan_dev";
 $config['debug'] = true;

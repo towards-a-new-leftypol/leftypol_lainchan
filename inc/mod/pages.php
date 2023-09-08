@@ -1821,7 +1821,6 @@ function mod_ban_post(string $board, $delete, $post_num, $token = false) {
                 $po,
                 $board,
                 $spamnoticer_info);
-            print_err('$spamnoticer_result: ' . $spamnoticer_result);
         }
 
         $will_ban = $spamnoticer_info->ban;

@@ -108,10 +108,12 @@ function addToSpamNoticer($config, $post, $boardname, BanFormFieldsForSpamnotice
         'time_stamp'    => $post->time,
         'website_name'  => $config['spam_noticer']['website_name'],
         'board_name'    => $boardname,
-        'thread_id'     => isset($post->thread) ? $post->thread : NULL,
         'reporter_name' => getUsername()
     ];
 
+    if (isset($post->thread)) {
+        $json_payload['thread_id'] = $post->thread;
+    }
 
     try {
         $multipart = array();
@@ -164,9 +166,12 @@ function checkWithSpamNoticer($config, $post, $boardname) {
         'time_stamp' => time(),
         'website_name' => $config['spam_noticer']['website_name'],
         'board_name' => $boardname,
-        'thread_id' => array_key_exists('thread', $post) ? $post['thread'] : NULL,
         'delete_token' => $post['delete_token'],
     ];
+
+    if (array_key_exists('thread', $post)) {
+        $json_payload['thread_id'] = $post['thread'];
+    }
 
     $result = new SpamNoticerResult();
 
