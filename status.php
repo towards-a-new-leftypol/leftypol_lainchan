@@ -4,7 +4,7 @@ require_once 'inc/functions.php';
 require_once 'templates/themes/overboards/overboards.php';
 
 // Boards that are nsfw
-$nsfw_boards = ['b', 'overboard'];
+$nsfw_boards = ['b', 'R9K', 'overboard'];
 // Boards where posts are not allowed to be created
 $readonly_boards = [];
 
