@@ -19,7 +19,7 @@
 			'title' => 'SFW Overboard',
 			'uri' => 'sfw',
 			'subtitle' => '30 most recently bumped threads from work-safe boards',
-			'exclude' => array('assembly', 'assembly_archive', 'gulag', 'b'),
+			'exclude' => array('assembly', 'assembly_archive', 'gulag', 'b', 'R9K'),
 			'thread_limit' => $thread_limit,
 		),
 		array(
