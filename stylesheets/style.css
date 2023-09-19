@@ -1383,6 +1383,11 @@ div.boardlist {
 	float: right;
 }
 
+#uniqueip > span {
+	float:   right;
+	margin:  0em 1em;
+}
+
 #post-moderation-fields {
 	float: right;
 	text-align: right;
