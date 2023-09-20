@@ -18,6 +18,9 @@ function proxy() {
     curl_setopt($ch, CURLOPT_HEADER, true);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
 
+    // Set the HTTP method explicitly to match the original request method
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $_SERVER['REQUEST_METHOD']);
+
     // If there was a POST request, then forward that as well.
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         curl_setopt($ch, CURLOPT_POST, true);
