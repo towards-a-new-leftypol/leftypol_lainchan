@@ -13,11 +13,23 @@
  */
 
 $config['boards'] = array(
-	array(
-		'b',
-        'leftypol',
-        'Test'
-	)
+  array(
+    'leftypol',
+    'b',
+    'WRK',
+    'hobby',
+    'tech',
+    'edu',
+    'ga',
+    'ent',
+    '777',
+    'posad',
+    'i',
+    'a',
+    'R9K',
+    'dead'
+  ),
+  array('meta')
 );
 
 $config['prepended_foreign_boards'] = array(
@@ -29,9 +41,23 @@ $config['prepended_foreign_boards'] = array(
 
 // Board categories. Only used in the "Categories" theme.
 $config['categories'] = array(
-	'Leftychan' => array(
-		'b',
-	)
+  'Leftypol' => array(
+    'leftypol',
+    'b',
+    'WRK',
+    'hobby',
+    'tech',
+    'edu',
+    'ga',
+    'ent',
+    '777',
+    'posad',
+    'i',
+    'a',
+    'R9K',
+    'dead'
+  ),
+  'Meta' => array('meta')
 );
 
 // Optional for the Categories theme. This is an array of name => (title, url) groups for categories
@@ -67,11 +93,11 @@ $config['cookies']['mod'] = 'mod';
 $config['cookies']['salt'] = 'MGYwNjhlNjU5Y2QxNWU3YjQ3MzQ1Yj';
 
 $config['search']['enable'] = true;
-$config['flood_cache'] = 0; // 15 minutes. The oldest a post can be in the flood table
-$config['flood_time_any'] = -1; // time between thread creation
-$config['flood_time'] = -1;
-$config['flood_time_ip'] = -1;
-$config['flood_time_same'] = -1;
+$config['flood_cache'] = 60 * 15; // 15 minutes. The oldest a post can be in the flood table
+$config['flood_time_any'] = 20; // time between thread creation
+$config['flood_time'] = 5;
+$config['flood_time_ip'] = 10;
+$config['flood_time_same'] = 60;
 $config['max_body'] = 80000;
 $config['reply_limit'] = 600;
 $config['max_links'] = 40;
@@ -107,9 +133,9 @@ $config['thread_subject_in_title'] = true;
 $config['spam']['enabled'] = true;
 $config['spam_noticer']['enabled'] = true;
 $config['spam_noticer']['base_url'] = 'http://localhost:8300';
-$config['spam_noticer']['ui_url'] = 'https://dev-spamnoticer.leftychan.net/static/index.html';
-$config['spam_noticer']['imageboard_root'] = 'http://dev.leftychan.net/';
-$config['spam_noticer']['website_name'] = "leftychan_dev";
+$config['spam_noticer']['ui_url'] = 'https://spamnoticer.leftychan.net/static/index.html';
+$config['spam_noticer']['imageboard_root'] = 'http://leftychan.net/';
+$config['spam_noticer']['website_name'] = "leftychan";
 
 /*
  * Basic captcha. See also: captchaconfig.php
@@ -506,4 +532,4 @@ $config['filters'][] = array(
 );
 
 $config['global_message'] = '<p><a href="https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net" class="redtext"><span class="heading">Matrix</span></a></p><p><a href="ircs://irc.leftychan.net:6697/#leftychan" class="redtext"><span class="heading">IRC Chat</span></a></p><p><a href="mumble://leftychan.net" class="redtext"><span class="heading">Mumble</span></a></p><p><a href="https://t.me/+RegtyzzrE0M1NDMx" class="red text"><span class="heading">Telegram</a></span></p><p><a href="https://discord.gg/AcZeFKXPmZ" class="redtext"><span class="heading">Discord</a></span></p>';
-$config['debug'] = true;
+$config['debug'] = false;
