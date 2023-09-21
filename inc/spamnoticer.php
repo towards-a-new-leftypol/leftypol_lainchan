@@ -10,6 +10,80 @@ function _createClient($config) {
     ]);
 }
 
+$REASONS = [
+    (1 << 0) => [
+        'reason' => 'RECENTLY_POSTED_ATTACHMENT_ABOVE_RATE',
+        'explanation' => 'your file was posted too fast',
+    ],
+    (1 << 1) => [
+        'reason' => 'LEXICAL_ANALYSIS_SHOWS_NONSENSE',
+        'explanation' => 'your post is nonsense',
+    ],
+    (1 << 2) => [
+        'reason' => 'SEGMENTED_AVG_ENTROPY_TOO_HIGH',
+        'explanation' => 'this seems to be garbage input',
+    ],
+    (1 << 3) => [
+        'reason' => 'TEXT_MATCHES_KNOWN_SPAM',
+        'explanation' => 'your text is considered spam',
+    ],
+    (1 << 4) => [
+        'reason' => 'RECENTLY_POSTED_TEXT_ABOVE_RATE',
+        'explanation' => 'your text is being spammed',
+    ],
+    (1 << 5) => [
+        'reason' => 'TEXT_IS_URL',
+        'explanation' => 'this is just a url',
+    ],
+    (1 << 6) => [
+        'reason' => 'TEXT_IS_ONE_LONG_WORD',
+        'explanation' => "your post is illegible",
+    ],
+    (1 << 7) => [
+        'reason' => 'TEXT_IS_RANDOM_WORDS',
+        'explanation' => "what you're saying is nonsense",
+    ],
+    (1 << 8) => [
+        'reason' => 'ATTACHMENT_MATCHES_KNOWN_SPAM',
+        'explanation' => 'that file is considered spam',
+    ],
+    (1 << 9) => [
+        'reason' => 'TEXT_MANUALLY_MARKED_AS_SPAM',
+        'explanation' => "we said you can't post that",
+    ],
+    (1 << 10) => [
+        'reason' => 'ATTACHMENT_MANUALLY_MARKED_AS_SPAM',
+        'explanation' => 'that file is spam',
+    ],
+    (1 << 11) => [
+        'reason' => 'ILLEGAL_ATTACHMENT',
+        'explanation' => 'of illegal content',
+    ],
+];
+
+function reasonsFromBitmap($n) {
+    $reasons = [];
+
+    foreach ($GLOBALS['REASONS'] as $bit => $reason) {
+        if ($n & $bit) {
+            $reasons[] = $reason['explanation'];
+        }
+    }
+
+    return $reasons;
+}
+
+function renderReasons($reason) {
+    $reasons = reasonsFromBitmap($reason);
+    $result = '';
+
+    if (!empty($reasons)) {
+        $result = implode(' and ', $reasons);
+    }
+
+    return $result;
+}
+
 class SpamNoticerResult {
     public $result_json = NULL;
     public $noticed = false;
@@ -206,7 +280,10 @@ function checkWithSpamNoticer($config, $post, $boardname) {
             $result->noticed = $result->result_json['noticed'] == true;
 
             if ($result->noticed) {
-                $result->reason = (string) $response->getBody();
+                $body = (string) $response->getBody();
+                print_err($body);
+                $reasons_bitmap = json_decode($body)->reason;
+                $result->reason = renderReasons($reasons_bitmap);
             }
         } else {
             $result->reason = (string) $response->getBody();

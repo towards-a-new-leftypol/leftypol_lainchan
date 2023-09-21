@@ -1195,7 +1195,7 @@
     $config['error']['invalidtheme']    = _('That theme doesn\'t exist!');
     $config['error']['csrf']            = _('Invalid security token! Please go back and try again.');
     $config['error']['badsyntax']       = _('Your code contained PHP syntax errors. Please go back and correct them. PHP says: ');
-    $config['error']['spam_noticer']    = _('Your post was determined to be spam. Reasoning: ');
+    $config['error']['spam_noticer']    = _("Not going to post this because ");
 
 /*
  * =========================
