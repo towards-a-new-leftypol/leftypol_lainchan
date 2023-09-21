@@ -1,0 +1,33 @@
+/* Show the table when "Ban" checkbox is checked */
+#checkbox-ban:checked ~ .ban-form,
+#checkbox-ban-content:checked ~ .postcontainer {
+    filter: grayscale(0%);
+}
+
+/* Hide the table by default */
+.ban-form,
+.postcontainer {
+    filter: grayscale(100%);
+}
+
+.ban_delete_action_form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.ban-form {
+    flex-basis: 100%;
+}
+
+.ban-form-action--input {
+    margin: 1em .5em;
+}
+
+.ban-form-action--label {
+    margin-right: 2em;
+    margin-left: 0em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}

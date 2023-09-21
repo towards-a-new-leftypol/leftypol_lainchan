@@ -19,7 +19,6 @@ class Filter {
     }
     
     public function match($condition, $match) {
-        print_err("Filter condition: " . $condition);
         $condition = strtolower($condition);
 
         $post = &$this->post;
@@ -76,14 +75,14 @@ class Filter {
             case 'flood-time-any':
                 foreach ($this->flood_check as $flood_post) {
                     if (time() - $flood_post['time'] <= $match) {
-                        print_err("rejecting post with flood id: " . $flood_post['id']);
                         return true;
                     }
                 }
                 return false;
             case 'flood-time':
                 foreach ($this->flood_check as $flood_post) {
-                    if (time() - $flood_post['time'] <= $match) {
+                    $t = time();
+                    if ($t - $flood_post['time'] <= $match) {
                         return true;
                     }
                 }
@@ -223,8 +222,6 @@ function purge_flood_table() {
 
 function do_filters(array $post) {
     global $config;
-
-    print_err("do_filters begin");
     
     if (!isset($config['filters']) || empty($config['filters']))
         return;
@@ -237,14 +234,12 @@ function do_filters(array $post) {
             $has_flood = true;
             break;
         } else if ($filter['noip'] == true) {
-            print_err("filters noip is true");
             $noip = true;
             $find_time = time() - $filter['find-time'];
         }
     }
     
     if ($noip) {
-        print_err("SELECT * FROM flood WHERE time > " . strval($find_time));
         $query = prepare("SELECT * FROM ``flood`` WHERE `time` > $find_time");
         $query->execute() or error(db_error($query));
         $flood_check = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -266,7 +261,6 @@ function do_filters(array $post) {
     }
     
     foreach ($config['filters'] as $filter_array) {
-        print_err("creating new filter, running check");
         $filter = new Filter($filter_array);
         $filter->flood_check = $flood_check;
         if ($filter->check($post)) {

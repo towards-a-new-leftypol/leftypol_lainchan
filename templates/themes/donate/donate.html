@@ -1,4 +1,4 @@
-{% filter remove_whitespace %}
+{% apply remove_whitespace %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -52,10 +52,10 @@
 
     </div>
 	<div class="pages"></div>
-	<script type="text/javascript">{% raw %}
+	<script type="text/javascript">{% verbatim %}
 		ready();
-	{% endraw %}</script>
+	{% endverbatim %}</script>
 
   </body>
 </html>
-{% endfilter %}
+{% endapply %}

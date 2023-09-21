@@ -7,16 +7,7 @@ require_once 'inc/functions.php';
 require_once 'inc/anti-bot.php';
 require_once 'inc/bans.php';
 
-// Fix for magic quotes
-if (get_magic_quotes_gpc()) {
-    function strip_array($var) {
-        return is_array($var) ? array_map('strip_array', $var) : stripslashes($var);
-    }
-    
-    $_GET = strip_array($_GET);
-    $_POST = strip_array($_POST);
-}
-
+use Ramsey\Uuid\Uuid;
 
 $dropped_post = false;
 
@@ -181,7 +172,7 @@ function handle_nntpchan() {
 
 }
 
-function handle_delete(){
+function handle_delete() {
     // Delete
     global $config, $board, $mod;
     if (!isset($_POST['board'], $_POST['password']))
@@ -260,11 +251,11 @@ function handle_delete(){
             
             if (isset($_POST['file'])) {
                 // Delete just the file
-                deleteFile($id);
+                deleteFile($id, true, null, true);
                 modLog("User deleted file from his own post #$id");
             } else {
                 // Delete entire post
-                deletePost($id);
+                deletePost($id, true, true, true);
                 modLog("User deleted his own post #$id");
             }
             
@@ -287,9 +278,10 @@ function handle_delete(){
         echo json_encode(array('success' => true));
     }
 
-        // We are already done, let's continue our heavy-lifting work in the background (if we run off FastCGI)
-        if (function_exists('fastcgi_finish_request'))
-                @fastcgi_finish_request();
+    // We are already done, let's continue our heavy-lifting work in the background (if we run off FastCGI)
+    if (function_exists('fastcgi_finish_request')) {
+        @fastcgi_finish_request();
+    }
 
     rebuildThemes('post-delete', $board['uri']);
 
@@ -424,16 +416,21 @@ function handle_report(){
 function handle_post(){
     global $config,$dropped_post,$board, $mod,$pdo;
 
+    print_err('handle_post BEGIN');
+
     if (!isset($_POST['body'], $_POST['board']) && !$dropped_post) {
+        print_err('handle_post bot error 1');
         error($config['error']['bot']);
     }
+
+    print_err('handle_post NO SUCH bot error 1');
 
     $post = array('board' => $_POST['board'], 'files' => array());
 
     // Check if board exists
     if (!openBoard($post['board']))
         error($config['error']['noboard']);
-    
+
     $board_locked_check = (!isset($_POST['mod']) || !$_POST['mod'])
         && ($config['board_locked']===true
         || (is_array($config['board_locked']) && in_array(strtolower($_POST['board']), $config['board_locked'])));
@@ -536,6 +533,7 @@ function handle_post(){
         }
 
         if (!$post['mod'] && $config['spam']['enabled'] == true) {
+            print_err("ANTI SPAM IS ENABLED");
             $post['antispam_hash'] = checkSpam(
                 array($board['uri'],
                 isset($post['thread']) ? $post['thread'] : ($config['try_smarter'] && isset($_POST['page']) ? 0 - (int)$_POST['page'] : null))
@@ -674,6 +672,7 @@ function handle_post(){
     $post['subject'] = $_POST['subject'];
     $post['email'] = str_replace(' ', '%20', htmlspecialchars($_POST['email']));
     $post['body'] = $_POST['body'];
+    $post['raw_body'] = $_POST['body'];
     $post['password'] = $_POST['password'];
     $post['has_file'] = (!isset($post['embed']) && (($post['op'] && !isset($post['no_longer_require_an_image_for_op']) && $config['force_image_op']) || count($_FILES) > 0));
     
@@ -979,6 +978,24 @@ function handle_post(){
         }
     }
 
+    if ($config['spam_noticer']['enabled']) {
+        require_once 'inc/spamnoticer.php';
+
+        $delete_token_uuid = Uuid::uuid4(); // Generate a version 4 (random) UUID
+        $delete_token = $delete_token_uuid->toString();
+        $post['delete_token'] = $delete_token;
+
+        $spam_noticer_result = checkWithSpamNoticer($config, $post, $board['uri']);
+
+        if ($spam_noticer_result->succeeded) {
+            if ($spam_noticer_result->noticed) {
+                error($config['error']['spam_noticer'] . $spam_noticer_result->reason);
+            }
+        } else {
+            print_err($spam_noticer_result->reason);
+        }
+    }
+
     if (!hasPermission($config['mod']['bypass_filters'], $board['uri']) && !$dropped_post) {
         require_once 'inc/filters.php';
 
@@ -990,7 +1007,7 @@ function handle_post(){
         if ($file['is_an_image']) {
             if ($config['ie_mime_type_detection'] !== false) {
                 // Check IE MIME type detection XSS exploit
-                $buffer = file_get_contents($upload, null, null, null, 255);
+                $buffer = file_get_contents($upload, false, null, 0, 255);
                 if (preg_match($config['ie_mime_type_detection'], $buffer)) {
                     undoImage($post);
                     error($config['error']['mime_exploit']);
@@ -1320,10 +1337,6 @@ function handle_post(){
 
     $post = (array)$post;
 
-    if ($post['files']) {
-        $post['files'] = $post['files'];
-    }
-
     $post['num_files'] = sizeof($post['files']);
     
     $post['id'] = $id = post($post);
@@ -1401,8 +1414,16 @@ function handle_post(){
             $js = (object) array();
         // Tell it to delete the cached post for referer
         $js->{$_SERVER['HTTP_REFERER']} = true;
+
         // Encode and set cookie
-        setcookie($config['cookies']['js'], json_encode($js), 0, $config['cookies']['jail'] ? $config['cookies']['path'] : '/', null, false, false);
+        setcookie(
+            $config['cookies']['js'],
+            json_encode($js),
+            0,
+            $config['cookies']['jail'] ? $config['cookies']['path'] : '/',
+            '',
+            false,
+            false);
     }
     
     $root = $post['mod'] ? $config['root'] . $config['file_mod'] . '?/' : $config['root'];

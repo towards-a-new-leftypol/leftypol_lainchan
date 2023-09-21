@@ -75,6 +75,14 @@
 
 {% endif %}
 
+{% if (config.spam_noticer.enabled) and (mod|hasPermission(config.mod.spam_noticer)) %}
+    <li>
+        <a href="{{ config.spam_noticer.ui_url }}">
+            SpamNoticer
+        </a>
+    </li>
+{% endif %}
+
 {% if config.debug %}
 
   <li><a href="?/debug/antispam">{% trans 'Anti-spam' %}</a></li>

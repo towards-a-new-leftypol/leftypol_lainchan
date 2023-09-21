@@ -9,7 +9,6 @@ if (fopen('inc/instance-config.php' , 'a') === false) {
 }
 
 require 'inc/functions.php';
-require_once 'inc/anti-bot.php'; // DELETE ME THIS IS FOR print_err function only!
 
 loadConfig();
 
@@ -25,27 +24,17 @@ $page = array(
 $config['minify_html'] = false;
 
 function checkMd5Exec(bool $can_exec) {
-	print_err2("checkMd5Exec");
-	print_err2($can_exec);
 	$shell_out = shell_exec("pwd");
-	print_err2("shell out: " . $shell_out);
 	$shell_out = shell_exec('echo "vichan" | md5sum');
-	print_err2("shell out: " . $shell_out);
 	$shell_ok = $shell_out == "141225c362da02b5c359c45b665168de  -\n";
-	print_err2("shell ok: " . strval($shell_ok));
 	$result = $can_exec && $shell_ok;
-	print_err2($result);
 	return $result;
 }
 
 function checkGifsicle() {
-	print_err2("checkGifsicle");
 	$shell_out = shell_exec('echo $PATH');
-	print_err2("shell out: " . $shell_out);
 	$shell_out = shell_exec('gifsicle --help');
-	print_err2("shell out: " . $shell_out);
 	$shell_out = shell_exec('which gifsicle');
-	print_err2("shell out (which gifsicle): " . $shell_out);
 	return $shell_out;
 }
 
@@ -673,7 +662,6 @@ if ($step == 0) {
 	
 	echo Element('page.html', $page);
 } elseif ($step == 1) {
-	print_err2("Hello World install.php");
 	$page['title'] = 'Pre-installation test';
 	
 	$can_exec = true;
@@ -691,8 +679,6 @@ if ($step == 0) {
 		define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
 	}
 
-	print_err2("Can exec: " . strval($can_exec));
-	
 	// Required extensions
 	$extensions = array(
 		'PDO' => array(

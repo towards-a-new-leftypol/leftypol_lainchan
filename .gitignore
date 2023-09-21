@@ -73,6 +73,13 @@ js/twemoji/16x16/
 
 # JUNK
 GET/
+.bash_history
+.cache/
+777/
+R9K/
+WRK/
+a/
+alt/
 anime/
 b/
 b_anime/
@@ -93,11 +100,17 @@ games/
 gulag/
 hardcopy.1
 hobby/
-instance-config.php
+i/
 leftypol/
+leftypol_archive/
 meta/
 overboard/
 phpinfo.php
-ref/
+posad/
+restore_b_ass/
+save_ass_thread/
+sfw/
 tech/
-tqgit status
+ref/
+ga/
+Test/
