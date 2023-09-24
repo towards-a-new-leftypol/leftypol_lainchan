@@ -416,14 +416,10 @@ function handle_report(){
 function handle_post(){
     global $config,$dropped_post,$board, $mod,$pdo;
 
-    print_err('handle_post BEGIN');
-
     if (!isset($_POST['body'], $_POST['board']) && !$dropped_post) {
         print_err('handle_post bot error 1');
         error($config['error']['bot']);
     }
-
-    print_err('handle_post NO SUCH bot error 1');
 
     $post = array('board' => $_POST['board'], 'files' => array());
 
@@ -533,7 +529,6 @@ function handle_post(){
         }
 
         if (!$post['mod'] && $config['spam']['enabled'] == true) {
-            print_err("ANTI SPAM IS ENABLED");
             $post['antispam_hash'] = checkSpam(
                 array($board['uri'],
                 isset($post['thread']) ? $post['thread'] : ($config['try_smarter'] && isset($_POST['page']) ? 0 - (int)$_POST['page'] : null))

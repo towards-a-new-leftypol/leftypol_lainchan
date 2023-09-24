@@ -35,7 +35,7 @@ function getStackTraceAsString() {
     return $traceString;
 }
 
-print_err("\n\nSTART\n\n");
+// print_err("\n\nSTART\n\n");
 
 class AntiBot {
 	public $salt, $inputs = array(), $index = 0;
