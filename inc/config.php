@@ -1498,7 +1498,7 @@
     // Capcode permissions.
     $config['mod']['capcode'] = array(
         JANITOR     => array('Janitor'),
-        MOD     => array('Mod'),
+        MOD         => array('Mod'),
         ADMIN       => true
     );
 

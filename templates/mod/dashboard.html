@@ -82,6 +82,13 @@
         </a>
     </li>
 {% endif %}
+{% if (mod|hasPermission(config.mod.news)) %}
+    <li>
+        <a href="/mod.php?edit_news">
+          News Entries
+        </a>
+    </li>
+{% endif %}
 
 {% if config.debug %}
 
