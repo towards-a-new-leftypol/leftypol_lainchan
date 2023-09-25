@@ -131,7 +131,7 @@ $config['post_date'] = '%F (%a) %T';
 $config['thread_subject_in_title'] = true;
 
 $config['spam']['enabled'] = true;
-$config['spam_noticer']['enabled'] = false;
+$config['spam_noticer']['enabled'] = true;
 $config['spam_noticer']['base_url'] = 'http://localhost:8300';
 $config['spam_noticer']['ui_url'] = 'https://spamnoticer.leftychan.net/static/index.html';
 $config['spam_noticer']['imageboard_root'] = 'http://leftychan.net/';
