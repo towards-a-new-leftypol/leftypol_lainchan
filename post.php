@@ -973,6 +973,12 @@ function handle_post(){
         }
     }
 
+    if (!hasPermission($config['mod']['bypass_filters'], $board['uri']) && !$dropped_post) {
+        require_once 'inc/filters.php';
+
+        do_filters($post);
+    }
+
     if ($config['spam_noticer']['enabled']) {
         require_once 'inc/spamnoticer.php';
 
@@ -985,12 +991,6 @@ function handle_post(){
         if ($spam_noticer_result->succeeded && $spam_noticer_result->noticed) {
           error($config['error']['spam_noticer'] . $spam_noticer_result->reason);
         }
-    }
-
-    if (!hasPermission($config['mod']['bypass_filters'], $board['uri']) && !$dropped_post) {
-        require_once 'inc/filters.php';
-
-        do_filters($post);
     }
 
     if ($post['has_file']) {
