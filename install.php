@@ -1,7 +1,7 @@
 <?php
 
 // Installation/upgrade file	
-define('VERSION', '5.1.3');
+define('VERSION', '5.2.0');
 
 if (fopen('inc/instance-config.php' , 'a') === false) {
 	print('install.php does not have permission to write to /inc/, without permission the installer cannot continue');
