@@ -1,11 +1,10 @@
 <?php
 
-require_once 'inc/anti-bot.php';
-
+require_once 'inc/lib/gmstrftime/php-8.1-strftime.php';
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use function PHP81_BC\strftime;
+use function PHP81_BC\gmstrftime;
 
 class TinyboardExtension extends AbstractExtension
 {
@@ -83,7 +82,7 @@ function twig_remove_whitespace_filter($data) {
 }
 
 function twig_date_filter($date, $format) {
-    return strftime($format, $date, 'en_US');
+    return gmstrftime($format, $date, 'en_US');
 }
 
 function twig_hasPermission_filter($mod, $permission, $board = null) {
