@@ -982,12 +982,8 @@ function handle_post(){
 
         $spam_noticer_result = checkWithSpamNoticer($config, $post, $board['uri']);
 
-        if ($spam_noticer_result->succeeded) {
-            if ($spam_noticer_result->noticed) {
-                error($config['error']['spam_noticer'] . $spam_noticer_result->reason);
-            }
-        } else {
-            print_err($spam_noticer_result->reason);
+        if ($spam_noticer_result->succeeded && $spam_noticer_result->noticed) {
+          error($config['error']['spam_noticer'] . $spam_noticer_result->reason);
         }
     }
 

@@ -271,9 +271,6 @@ function checkWithSpamNoticer($config, $post, $boardname) {
 
         $status_code = $response->getStatusCode();
 
-        print_err("spamnoticer status code: " . $status_code);
-        print_err("spamnoticer response body: " . $response->getBody());
-
         if ($status_code >= 200 && $status_code < 300) {
             $result->succeeded = true;
             $result->result_json = json_decode($response->getBody(), true);
@@ -286,6 +283,9 @@ function checkWithSpamNoticer($config, $post, $boardname) {
                 $result->reason = renderReasons($reasons_bitmap);
             }
         } else {
+            print_err("spamnoticer status code: " . $status_code);
+            print_err("spamnoticer response body: " . $response->getBody());
+
             $result->reason = (string) $response->getBody();
         }
 
