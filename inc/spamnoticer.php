@@ -199,13 +199,15 @@ function addToSpamNoticer($config, $post, $boardname, BanFormFieldsForSpamnotice
                 'contents' => json_encode($json_payload)
             );
 
-        foreach ($post->files as $file) {
-            $filename = $board['dir'] . $config['dir']['img'] . $file->file;
+        if (isset($post->files) && is_array($post->files)) {
+            foreach ($post->files as $file) {
+                $filename = $board['dir'] . $config['dir']['img'] . $file->file;
 
-            $multipart[] = array(
-                'name' => 'attachments',
-                'contents' => GuzzleHttp\Psr7\Utils::tryFopen($filename, 'r')
-            );
+                $multipart[] = array(
+                    'name' => 'attachments',
+                    'contents' => GuzzleHttp\Psr7\Utils::tryFopen($filename, 'r')
+                );
+            }
         }
 
 
