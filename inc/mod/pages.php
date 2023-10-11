@@ -1756,18 +1756,21 @@ function mod_merge($originBoard, $postID) {
 function parse_spamnoticer_content_fields($postData, $post):  BanFormFieldsForSpamnoticer {
     $files_info = array();
 
-    foreach ($post->files as $file) {
-        $filename = $file->file;
-        $filekey = str_replace('.', '_', $filename); // because $_POST actually does the inverse of this when no one is asking it to. php is a fucking idiotic language
 
-        $fileSpamKey = "file_is_spam_$filekey";
-        $fileIllegalKey = "file_is_illegal_$filekey";
+    if (isset($post->files) && is_array($post->files)) {
+        foreach ($post->files as $file) {
+            $filename = $file->file;
+            $filekey = str_replace('.', '_', $filename); // because $_POST actually does the inverse of this when no one is asking it to. php is a fucking idiotic language
 
-        $is_spam = isset($postData[$fileSpamKey]);
-        $is_illegal = isset($postData[$fileIllegalKey]);
+            $fileSpamKey = "file_is_spam_$filekey";
+            $fileIllegalKey = "file_is_illegal_$filekey";
 
-        $fileInfo = new SpamNoticerBanFileInfo($filename, $is_illegal, $is_spam);
-        array_push($files_info, $fileInfo);
+            $is_spam = isset($postData[$fileSpamKey]);
+            $is_illegal = isset($postData[$fileIllegalKey]);
+
+            $fileInfo = new SpamNoticerBanFileInfo($filename, $is_illegal, $is_spam);
+            array_push($files_info, $fileInfo);
+        }
     }
 
     $ban = isset($postData['checkbox-ban']);
