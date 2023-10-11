@@ -150,29 +150,31 @@ function addToSpamNoticer($config, $post, $boardname, BanFormFieldsForSpamnotice
 
     $attachments = array();
 
-    foreach ($post->files as $file) {
-        $key = $file->file_id . '.' . $file->extension;
-        $file_info = $form_info->files_info[$key];
-        $thumb_uri
-            = $config['spam_noticer']['imageboard_root']
-            . $board['uri']
-            . '/' . $config['dir']['thumb']
-            . $file->file_id
-            . '.png';
+    if (isset($post->files) && is_array($post->files)) {
+        foreach ($post->files as $file) {
+            $key = $file->file_id . '.' . $file->extension;
+            $file_info = $form_info->files_info[$key];
+            $thumb_uri
+                = $config['spam_noticer']['imageboard_root']
+                . $board['uri']
+                . '/' . $config['dir']['thumb']
+                . $file->file_id
+                . '.png';
 
-        $a = array(
-            'filename' => $file->filename,
-            'mimetype' => $file->type ? $file->type : mime_content_type($file->tmp_name),
-            'md5_hash' => $file->hash,
-            'thumbnail_url' => $thumb_uri,
-            'is_spam'  => $file_info->is_spam
-        );
+            $a = array(
+                'filename' => $file->filename,
+                'mimetype' => $file->type ? $file->type : mime_content_type($file->tmp_name),
+                'md5_hash' => $file->hash,
+                'thumbnail_url' => $thumb_uri,
+                'is_spam'  => $file_info->is_spam
+            );
 
-        if ($file_info->is_illegal) {
-            $a['is_illegal'] = true;
+            if ($file_info->is_illegal) {
+                $a['is_illegal'] = true;
+            }
+
+            $attachments[] = $a;
         }
-
-        $attachments[] = $a;
     }
 
     $json_payload = [
