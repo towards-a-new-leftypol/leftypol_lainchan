@@ -153,6 +153,11 @@ function addToSpamNoticer($config, $post, $boardname, BanFormFieldsForSpamnotice
     if (isset($post->files) && is_array($post->files)) {
         foreach ($post->files as $file) {
             $key = $file->file_id . '.' . $file->extension;
+
+            if (!isset($form_info->files_info[$key])) {
+                continue;
+            }
+
             $file_info = $form_info->files_info[$key];
             $thumb_uri
                 = $config['spam_noticer']['imageboard_root']
@@ -201,6 +206,11 @@ function addToSpamNoticer($config, $post, $boardname, BanFormFieldsForSpamnotice
 
         if (isset($post->files) && is_array($post->files)) {
             foreach ($post->files as $file) {
+                $key = $file->file_id . '.' . $file->extension;
+                if (!isset($form_info->files_info[$key])) {
+                    continue;
+                }
+
                 $filename = $board['dir'] . $config['dir']['img'] . $file->file;
 
                 $multipart[] = array(
