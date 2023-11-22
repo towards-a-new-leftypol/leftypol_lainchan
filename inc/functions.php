@@ -1085,7 +1085,7 @@ function post(array $post) {
         $query->bindValue(':slug', NULL);
     }
 
-    if ($config['spam_noticer']['enabled']) {
+    if ($config['spam_noticer']['enabled'] && isset($post['delete_token'])) {
         $query->bindValue(':delete_token', $post['delete_token']);
     } else {
         $query->bindValue(':delete_token', NULL);
