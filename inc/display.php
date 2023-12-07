@@ -357,6 +357,11 @@ class PostProps {
     public $slug;
     public $delete_token;
     public $board;
+    public $thread_id;
+    public $link;
+    public $file;
+    public $pubdate;
+    public $board_name;
 
     public $mod;
     public $root;
@@ -465,17 +470,21 @@ class Thread extends PostProps {
                 $this->body
             );
     }
+
     public function link($pre = '', $page = false) {
         global $config, $board;
         
         return $this->root . $board['dir'] . $config['dir']['res'] . link_for((array)$this, $page == '50') . '#' . $pre . $this->id;
     }
+
     public function add(Post $post) {
         $this->posts[] = $post;
     }
+
     public function postCount() {
            return count($this->posts) + $this->omitted;
     }
+
     public function build($index=false, $isnoko50=false) {
         global $board, $config, $debug;
         

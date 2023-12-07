@@ -102,6 +102,13 @@ class Image {
 }
 
 class ImageGD {
+    public $image;
+    public $original;
+    public $width;
+    public $height;
+    public $original_width;
+    public $original_height;
+
 	public function GD_create() {
 		$this->image = imagecreatetruecolor($this->width, $this->height);
 	}
@@ -116,10 +123,7 @@ class ImageGD {
 
 class ImageBase extends ImageGD {
 	public $image, $src, $original, $original_width, $original_height, $width, $height;		
-	public function valid() {
-		return (bool)$this->image;
-	}
-	
+
 	public function __construct($img, $size = false) {
 		if (method_exists($this, 'init'))
 			$this->init();
@@ -134,6 +138,10 @@ class ImageBase extends ImageGD {
 			$this->from();
 		}
 	}
+
+	public function valid() {
+		return (bool)$this->image;
+	}
 	
 	public function _width() {
 		if (method_exists($this, 'width'))
@@ -141,18 +149,21 @@ class ImageBase extends ImageGD {
 		// use default GD functions
 		return imagesx($this->image);
 	}
+
 	public function _height() {
 		if (method_exists($this, 'height'))
 			return $this->height();
 		// use default GD functions
 		return imagesy($this->image);
 	}
+
 	public function _destroy() {
 		if (method_exists($this, 'destroy'))
 			return $this->destroy();
 		// use default GD functions
 		return imagedestroy($this->image);
 	}
+
 	public function _resize($original, $width, $height) {
 		$this->original = &$original;
 		$this->width = $width;
@@ -171,6 +182,7 @@ class ImageImagick extends ImageBase {
 		$this->image = new Imagick();
 		$this->image->setBackgroundColor(new ImagickPixel('transparent'));
 	}
+
 	public function from() {
 		try {
 			$this->image->readImage($this->src);
@@ -179,25 +191,34 @@ class ImageImagick extends ImageBase {
 			$this->image = false;
 		}
 	}
+
 	public function to($src) {
 		global $config;
+
 		if ($config['strip_exif']) {
 			$this->image->stripImage();
 		}
-		if (preg_match('/\.gif$/i', $src))
-			$this->image->writeImages($src, true);
-		else
-			$this->image->writeImage($src);
+
+		if (preg_match('/\.gif$/i', $src)) {
+            $this->image->writeImages($src, true);
+        }
+		else {
+            $this->image->writeImage($src);
+        }
 	}
+
 	public function width() {
 		return $this->image->getImageWidth();
 	}
+
 	public function height() {
 		return $this->image->getImageHeight();
 	}
+
 	public function destroy() {
 		return $this->image->destroy();
 	}
+
 	public function resize() {
 		global $config;
 		
@@ -206,11 +227,14 @@ class ImageImagick extends ImageBase {
 			$this->image->setFormat('gif');
 			
 			$keep_frames = array();
-			for ($i = 0; $i < $this->original->getNumberImages(); $i += floor($this->original->getNumberImages() / $config['thumb_keep_animation_frames']))
+
+			for ($i = 0; $i < $this->original->getNumberImages(); $i += floor($this->original->getNumberImages() / $config['thumb_keep_animation_frames'])) {
 				$keep_frames[] = $i;
+            }
 			
 			$i = 0;
 			$delay = 0;
+
 			foreach ($this->original as $frame) {
 				$delay += $frame->getImageDelay();
 				
@@ -246,6 +270,7 @@ class ImageConvert extends ImageBase {
 		
 		$this->temp = false;
 	}
+
 	public function get_size($src, $try_gd_first = true) {
 		if ($try_gd_first) {
 			if ($size = @getimagesize($src))
@@ -256,12 +281,15 @@ class ImageConvert extends ImageBase {
 			return array($m[1], $m[2]);
 		return false;
 	}
+
 	public function from() {
 		if ($this->width > 0 && $this->height > 0) {
 			$this->image = true;
 			return;
 		}
+
 		$size = $this->get_size($this->src, false);
+
 		if ($size) {
 			$this->width = $size[0];
 			$this->height = $size[1];
@@ -272,6 +300,7 @@ class ImageConvert extends ImageBase {
 			$this->image = false;
 		}
 	}
+
 	public function to($src) {
 		global $config;
 		
@@ -294,16 +323,20 @@ class ImageConvert extends ImageBase {
 			chmod($src, 0664);
 		}
 	}
+
 	public function width() {
 		return $this->width;
 	}
+
 	public function height() {
 		return $this->height;
 	}
+
 	public function destroy() {
 		@unlink($this->temp);
 		$this->temp = false;
 	}
+
 	public function resize() {
 		global $config;
 		
@@ -446,13 +479,16 @@ class ImageConvert extends ImageBase {
 }
 
 class ImagePNG extends ImageBase {
+
 	public function from() {
 		$this->image = @imagecreatefrompng($this->src);
 	}
+
 	public function to($src) {
 		global $config;
 		imagepng($this->image, $src);
 	}
+
 	public function resize() {
 		$this->GD_create();
 		imagecolortransparent($this->image, imagecolorallocatealpha($this->image, 0, 0, 0, 0));
@@ -463,12 +499,15 @@ class ImagePNG extends ImageBase {
 }
 
 class ImageGIF extends ImageBase {
+
 	public function from() {
 		$this->image = @imagecreatefromgif($this->src);
 	}
+
 	public function to($src) {
 		imagegif ($this->image, $src);
 	}
+
 	public function resize() {
 		$this->GD_create();
 		imagecolortransparent($this->image, imagecolorallocatealpha($this->image, 0, 0, 0, 0));
@@ -478,25 +517,26 @@ class ImageGIF extends ImageBase {
 }
 
 class ImageJPG extends ImageBase {
+
 	public function from() {
 		$this->image = @imagecreatefromjpeg($this->src);
 	}
+
 	public function to($src) {
 		imagejpeg($this->image, $src);
 	}
 }
+
 class ImageJPEG extends ImageJPG {
 }
 
 class ImageBMP extends ImageBase {
+
 	public function from() {
 		$this->image = @imagecreatefrombmp($this->src);
 	}
+
 	public function to($src) {
 		imagebmp($this->image, $src);
 	}
 }
-
-
-
-

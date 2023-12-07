@@ -14,8 +14,9 @@ class Filter {
     private $post;
     
     public function __construct(array $arr) {
-        foreach ($arr as $key => $value)
+        foreach ($arr as $key => $value) {
             $this->$key = $value;       
+        }
     }
     
     public function match($condition, $match) {
@@ -146,6 +147,7 @@ class Filter {
         global $board;
 
         $this->add_note = isset($this->add_note) ? $this->add_note : false;
+
         if ($this->add_note) {
             $query = prepare('INSERT INTO ``ip_notes`` VALUES (NULL, :ip, :mod, :time, :body)');
                     $query->bindValue(':ip', $_SERVER['REMOTE_ADDR']);
@@ -154,6 +156,7 @@ class Filter {
                     $query->bindValue(':body', "Autoban message: ".$this->post['body']);
                     $query->execute() or error(db_error($query));
         }               
+
         if (isset ($this->action)) switch($this->action) {
             case 'reject':
                 error(isset($this->message) ? $this->message : 'Posting blocked by filter.');
@@ -183,6 +186,7 @@ class Filter {
     
     public function check(array $post) {
         $this->post = $post;
+
         foreach ($this->condition as $condition => $value) {
             if ($condition[0] == '!') {
                 $NOT = true;
@@ -263,6 +267,7 @@ function do_filters(array $post) {
     foreach ($config['filters'] as $filter_array) {
         $filter = new Filter($filter_array);
         $filter->flood_check = $flood_check;
+
         if ($filter->check($post)) {
             $filter->action();
         }
