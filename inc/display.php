@@ -332,14 +332,54 @@ function embed_html($link) {
     return 'Embedding error.';
 }
 
-class Post {
+class PostProps {
+    public $id;
+    public $thread;
+    public $subject;
+    public $email;
+    public $name;
+    public $trip;
+    public $capcode;
+    public $body;
+    public $body_nomarkup;
+    public $time;
+    public $bump;
+    public $files;
+    public $num_files;
+    public $filehash;
+    public $password;
+    public $ip;
+    public $sticky;
+    public $locked;
+    public $cycle;
+    public $sage;
+    public $embed;
+    public $slug;
+    public $delete_token;
+    public $board;
+
+    public $mod;
+    public $root;
+    public $hr;
+    public $posts;
+    public $omitted;
+    public $omitted_images;
+    public $modifiers;
+
+    public $images;
+    public $replies;
+}
+
+
+class Post extends PostProps {
+
     public function __construct($post, $root=null, $mod=false) {
         global $config;
         if (!isset($root))
             $root = &$config['root'];
         
         foreach ($post as $key => $value) {
-            $this->{$key} = $value;
+            $this->$key = $value;
         }
 
         if (isset($this->files) && $this->files)
@@ -382,14 +422,15 @@ class Post {
     }
 };
 
-class Thread {
+class Thread extends PostProps {
+
     public function __construct($post, $root = null, $mod = false, $hr = true) {
         global $config;
         if (!isset($root))
             $root = &$config['root'];
         
         foreach ($post as $key => $value) {
-            $this->{$key} = $value;
+            $this->$key = $value;
         }
         
         if (isset($this->files))

@@ -2029,6 +2029,7 @@ function mod_warning_post($board,$post, $token = false) {
                 }
             }
         }
+
         if(isset($_POST['thread'])) {
             // Redirect to thread
             header('Location: ?/' . sprintf($config['board_path'], $board) . $config['dir']['res'] . str_replace('%d', $_POST['thread'], $config['file_page']), true, $config['redirect_http']);
@@ -2036,7 +2037,8 @@ function mod_warning_post($board,$post, $token = false) {
             // Redirect to board index.
             header('Location: ?/' . sprintf($config['board_path'], $board) . $config['file_index'], true, $config['redirect_http']);
         }
-        }
+    }
+
     $args = array(
         'ip' => $ip,
         'hide_ip' => !hasPermission($config['mod']['show_ip'], $board),
