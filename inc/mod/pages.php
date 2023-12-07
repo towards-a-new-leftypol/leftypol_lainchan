@@ -1270,7 +1270,7 @@ function mod_move_reply($originBoard, $postID) {
         // trigger themes
         rebuildThemes('post', $targetBoard);
         // mod log
-        modLog("Moved post #${postID} to " . sprintf($config['board_abbreviation'], $targetBoard) . " (#${newID})", $originBoard);
+        modLog("Moved post #{$postID} to " . sprintf($config['board_abbreviation'], $targetBoard) . " (#{$newID})", $originBoard);
 
         // return to original board
         openBoard($originBoard);
@@ -1450,7 +1450,7 @@ function mod_move($originBoard, $postID) {
             }
         }
 
-        modLog("Moved thread #${postID} to " . sprintf($config['board_abbreviation'], $targetBoard) . " (#${newID})", $originBoard);
+        modLog("Moved thread #{$postID} to " . sprintf($config['board_abbreviation'], $targetBoard) . " (#{$newID})", $originBoard);
 
         // build new thread
         buildThread($newID);
@@ -1582,7 +1582,7 @@ function mod_merge($originBoard, $postID) {
 
             // trigger themes
             rebuildThemes('post', $targetBoard);
-            modLog("Merged thread with  #${sourceOp} to " . sprintf($config['board_abbreviation'], $targetBoard) . " (#${targetOp})", $originBoard);
+            modLog("Merged thread with  #{$sourceOp} to " . sprintf($config['board_abbreviation'], $targetBoard) . " (#{$targetOp})", $originBoard);
 
             // redirect
             header('Location: ?/' . sprintf($config['board_path'], $board['uri']) . $config['dir']['res'] . link_for($newpost) . '#' . $targetOp, true, $config['redirect_http']);
@@ -1707,7 +1707,7 @@ function mod_merge($originBoard, $postID) {
                 }
             }
 
-            modLog("Moved thread #${postID} to " . sprintf($config['board_abbreviation'], $targetBoard) . " (#${newID})", $originBoard);
+            modLog("Moved thread #{$postID} to " . sprintf($config['board_abbreviation'], $targetBoard) . " (#{$newID})", $originBoard);
 
             // build new thread
             buildThread($newID);
@@ -1741,7 +1741,7 @@ function mod_merge($originBoard, $postID) {
 
             // trigger themes
             rebuildThemes('post', $targetBoard);
-            modLog("Merged thread with  #${newID} to " . sprintf($config['board_abbreviation'], $targetBoard) . " (#${targetOp})", $targetBoard);
+            modLog("Merged thread with  #{$newID} to " . sprintf($config['board_abbreviation'], $targetBoard) . " (#{$targetOp})", $targetBoard);
 
             // redirect
             header('Location: ?/' . sprintf($config['board_path'], $board['uri']) . $config['dir']['res'] . link_for($newpost) . '#' . $targetOp, true, $config['redirect_http']);
@@ -1901,7 +1901,7 @@ function mod_ban_post(string $board, $delete, $post_num, $token = false) {
                 $dt = new DateTime("@$time");
                 $autotag = "";
                 $autotag .= $name . " " . $subject . " " . $dt->format('Y-m-d H:i:s')  . " No.". $post . "\r\n";
-                $autotag .= "/${board}/" . " " . $filehash .  " " . $filename ."\r\n";
+                $autotag .= "/{$board}/" . " " . $filehash .  " " . $filename ."\r\n";
                 $autotag .= $body . "\r\n";
                 $autotag = escape_markup_modifiers($autotag);
                 markup($autotag);
@@ -2015,7 +2015,7 @@ function mod_warning_post($board,$post, $token = false) {
                     $dt = new DateTime("@$time");
                     $autotag = "Post warned\r\n";
                     $autotag .= $name . " " . $subject . " " . $dt->format('Y-m-d H:i:s')  . " No.". $post . "\r\n";
-                    $autotag .= "/${board}/" . " " . $filehash .  " " . $filename ."\r\n";
+                    $autotag .= "/{$board}/" . " " . $filehash .  " " . $filename ."\r\n";
                     $autotag .= $body . "\r\n";
                     $autotag = escape_markup_modifiers($autotag);
                     markup($autotag);
@@ -2169,7 +2169,7 @@ function mod_delete($board, $post) {
             $dt = new DateTime("@$time");
             $autotag = "";
             $autotag .= $name . " " . $subject . " " . $dt->format('Y-m-d H:i:s')  . " No.". $post . "\r\n";
-            $autotag .= "/${board}/" . " " . $filehash .  " " . $filename ."\r\n";
+            $autotag .= "/{$board}/" . " " . $filehash .  " " . $filename ."\r\n";
             $autotag .= $body . "\r\n";
             $autotag = escape_markup_modifiers($autotag);
             markup($autotag);
@@ -2337,7 +2337,7 @@ function mod_deletebyip($boardName, $post, $global = false) {
                 $dt = new DateTime("@$time");
                 $autotag = "";
                 $autotag .= $name . " " . $subject . " " . $dt->format('Y-m-d H:i:s')  . " No.". $post['id'] . "\r\n";
-                $autotag .= "/${post['board']}/" . " " . $filehash .  " " . $filename ."\r\n";
+                $autotag .= "/{$post['board']}/" . " " . $filehash .  " " . $filename ."\r\n";
                 $autotag .= $body . "\r\n";
                 $autotag = escape_markup_modifiers($autotag);
                 markup($autotag);
