@@ -157,30 +157,31 @@ class Filter {
                     $query->execute() or error(db_error($query));
         }               
 
-        if (isset ($this->action)) switch($this->action) {
-            case 'reject':
-                error(isset($this->message) ? $this->message : 'Posting blocked by filter.');
-            case 'ban':
-                if (!isset($this->reason))
-                    error('The ban action requires a reason.');
-                
-                $this->expires = isset($this->expires) ? $this->expires : false;
-                $this->reject = isset($this->reject) ? $this->reject : true;
-                $this->all_boards = isset($this->all_boards) ? $this->all_boards : false;
-                
-                Bans::new_ban($_SERVER['REMOTE_ADDR'], $this->reason, $this->expires, $this->all_boards ? false : $board['uri'], -1);
+        if (isset ($this->action))
+            switch($this->action) {
+                case 'reject':
+                    error(isset($this->message) ? $this->message : 'Posting blocked by filter.');
+                case 'ban':
+                    if (!isset($this->reason))
+                        error('The ban action requires a reason.');
 
-                if ($this->reject) {
-                    if (isset($this->message))
-                        error($message);
-                    
-                    checkBan($board['uri']);
-                    exit;
-                }
-                
-                break;
-            default:
-                error('Unknown filter action: ' . $this->action);
+                    $this->expires = isset($this->expires) ? $this->expires : false;
+                    $this->reject = isset($this->reject) ? $this->reject : true;
+                    $this->all_boards = isset($this->all_boards) ? $this->all_boards : false;
+
+                    Bans::new_ban($_SERVER['REMOTE_ADDR'], $this->reason, $this->expires, $this->all_boards ? false : $board['uri'], -1);
+
+                    if ($this->reject) {
+                        if (isset($this->message))
+                            error($message);
+
+                        checkBan($board['uri']);
+                        exit;
+                    }
+
+                    break;
+                default:
+                    error('Unknown filter action: ' . $this->action);
         }
     }
     
