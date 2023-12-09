@@ -375,6 +375,7 @@ class PostProps {
     public $replies;
 
     public $built;
+    public $youtube;
 }
 
 
