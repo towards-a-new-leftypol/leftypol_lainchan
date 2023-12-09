@@ -15,6 +15,8 @@
     
     // Wrap functions in a class so they don't interfere with normal Tinyboard operations
     class RecentPosts {
+        public array $excluded;
+
         public function build($action, $settings) {
             global $config, $_theme;
             

@@ -373,6 +373,8 @@ class PostProps {
 
     public $images;
     public $replies;
+
+    public $built;
 }
 
 
