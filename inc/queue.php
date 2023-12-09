@@ -1,6 +1,9 @@
 <?php
 
 class Queue {
+  public $lock;
+  public $key;
+
   function __construct($key) { global $config;
     if ($config['queue']['enabled'] == 'fs') {
       $this->lock = new Lock($key);

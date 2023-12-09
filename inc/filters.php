@@ -12,11 +12,22 @@ class Filter {
     public $flood_check;
     private $condition;
     private $post;
+    private array $filters;
     
     public function __construct(array $arr) {
-        foreach ($arr as $key => $value) {
-            $this->$key = $value;       
-        }
+
+        /*
+         *
+         * Look, this needs to either change or get
+         * into a subvalue, an associative array
+         * by the name of 'filters'
+         *
+         * And then we need to understand how that's used...
+         * however the only place I can see that this is used is
+         * the do_filters function inside this module.
+         *
+         */
+        $this->filters = $arr;
     }
     
     public function match($condition, $match) {
@@ -188,7 +199,7 @@ class Filter {
     public function check(array $post) {
         $this->post = $post;
 
-        foreach ($this->condition as $condition => $value) {
+        foreach ($this->filters['condition'] as $condition => $value) {
             if ($condition[0] == '!') {
                 $NOT = true;
                 $condition = substr($condition, 1);

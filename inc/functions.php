@@ -26,10 +26,6 @@ require_once 'inc/polyfill.php';
 require_once 'inc/spamnoticer.php';
 @include_once 'inc/lib/parsedown/Parsedown.php'; // fail silently, this isn't a critical piece of code
 
-if (!extension_loaded('gettext')) {
-    require_once 'inc/lib/gettext/gettext.inc';
-}
-
 // the user is not currently logged in as a moderator
 $mod = false;
 
@@ -612,18 +608,6 @@ function purge($uri) {
 
 function file_write($path, $data, $simple = false, $skip_purge = false) {
     global $config, $debug;
-
-    if (preg_match('/^remote:\/\/(.+)\:(.+)$/', $path, $m)) {
-        if (isset($config['remote'][$m[1]])) {
-            require_once 'inc/remote.php';
-
-            $remote = new Remote($config['remote'][$m[1]]);
-            $remote->write($data, $m[2]);
-            return;
-        } else {
-            error('Invalid remote server: ' . $m[1]);
-        }
-    }
 
     if (!$fp = fopen($path, $simple ? 'w' : 'c'))
         error('Unable to open file for writing: ' . $path);

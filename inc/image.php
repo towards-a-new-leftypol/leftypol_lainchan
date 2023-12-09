@@ -9,6 +9,7 @@ require_once 'inc/polyfill.php';
 
 class Image {
 	public $src, $format, $image, $size;
+
 	public function __construct($src, $format = false, $size = false) {
 		global $config;
 		
@@ -108,6 +109,7 @@ class ImageGD {
     public $height;
     public $original_width;
     public $original_height;
+    public $format;
 
 	public function GD_create() {
 		$this->image = imagecreatetruecolor($this->width, $this->height);
