@@ -37,7 +37,8 @@
             $description = 'Welcome to Siberia.';
             $query = query("SELECT * FROM ``news`` ORDER BY `time` DESC") or error(db_error());
             $news = $query->fetchAll(PDO::FETCH_ASSOC);
-            $stats = Categories::getPostStatistics($settings);
+            //$stats = Categories::getPostStatistics($settings);
+            $stats = null;
             return Element(
                 'themes/categories/frames.html',
                 Array(
