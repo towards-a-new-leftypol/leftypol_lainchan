@@ -68,6 +68,7 @@ $config['custom_categories'] = array(
         'Booru image repository' => 'https://lefty.booru.org/',
         'Leftypedia' => 'https://leftypedia.org/',
         'Official chat room' => 'https://app.element.io/#/room/!RQxdjfGouwsFHwUzwL:matrix.org',
+        'Gitea isntance' => 'https://git.leftychan.net',
         'Rules' => 'rules.html'
     ),
     'Learning resources and blogs' => array(
