@@ -743,7 +743,7 @@ function handle_post(){
     }
     else {
         if (!$post['op']) {
-      $numposts = numPosts($post['thread']);
+            $numposts = numPosts($post['thread']);
         }
     }
 
@@ -847,7 +847,9 @@ function handle_post(){
         }
     }
 
-    if (empty($post['files'])) $post['has_file'] = false;
+    if (empty($post['files'])) {
+        $post['has_file'] = false;
+    }
 
     if (!$dropped_post) {
         // Check for a file

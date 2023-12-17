@@ -359,7 +359,7 @@
             'flood-time-any' => &$config['flood_time_any']
         ),
         'noip' => true,
-        'find-time' => 60 * 60 * 1,
+        'find_time' => 60 * 60 * 1,
         'action' => 'reject',
         'message' => 'New threads are being created too quickly. Hmmm'
     );

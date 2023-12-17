@@ -6,28 +6,23 @@
 
 defined('TINYBOARD') or exit;
 
-require_once 'inc/anti-bot.php';
-
 class Filter {
     public $flood_check;
     private $condition;
+    private string $action;
+    private string $message;
+    private $expires;
+    private $reject;
+    private $all_boards;
     private $post;
-    private array $filters;
+    private bool $add_note;
+    private bool $noip;
+    private $find_time;
     
     public function __construct(array $arr) {
-
-        /*
-         *
-         * Look, this needs to either change or get
-         * into a subvalue, an associative array
-         * by the name of 'filters'
-         *
-         * And then we need to understand how that's used...
-         * however the only place I can see that this is used is
-         * the do_filters function inside this module.
-         *
-         */
-        $this->filters = $arr;
+        foreach ($arr as $key => $value) {
+            $this->$key = $value;
+        }
     }
     
     public function match($condition, $match) {
@@ -199,7 +194,7 @@ class Filter {
     public function check(array $post) {
         $this->post = $post;
 
-        foreach ($this->filters['condition'] as $condition => $value) {
+        foreach ($this->condition as $condition => $value) {
             if ($condition[0] == '!') {
                 $NOT = true;
                 $condition = substr($condition, 1);
@@ -207,9 +202,11 @@ class Filter {
                 $NOT = false;
             }
             
-            if ($this->match($condition, $value) == $NOT)
+            if ($this->match($condition, $value) == $NOT) {
                 return false;
+            }
         }
+
         return true;
     }
 }
@@ -239,8 +236,9 @@ function purge_flood_table() {
 function do_filters(array $post) {
     global $config;
     
-    if (!isset($config['filters']) || empty($config['filters']))
+    if (!isset($config['filters']) || empty($config['filters'])) {
         return;
+    }
 
     // look at the flood table regardless of IP
     $noip = false;
@@ -251,10 +249,10 @@ function do_filters(array $post) {
             break;
         } else if ($filter['noip'] == true) {
             $noip = true;
-            $find_time = time() - $filter['find-time'];
+            $find_time = time() - $filter['find_time'];
         }
     }
-    
+
     if ($noip) {
         $query = prepare("SELECT * FROM ``flood`` WHERE `time` > $find_time");
         $query->execute() or error(db_error($query));
@@ -287,4 +285,3 @@ function do_filters(array $post) {
     
     purge_flood_table();
 }
-
