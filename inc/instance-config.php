@@ -558,5 +558,13 @@ $config['filters'][] = array(
     'message' => 'Url in the email field is not allowed'
 );
 
+$config['filters'][] = array(
+    'condition' => array(
+        'body'  => '/https?:\/\/\w{2,6}\.[a-z]{2,3}\/\w{2,8}(\s|$)/i', // url shorteners are not allowed
+    ),
+    'action' => 'reject',
+    'message' => 'Url shorteners are not allowed'
+);
+
 $config['global_message'] = '<p><a href="https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net" class="redtext"><span class="heading">Matrix</span></a></p><p><a href="ircs://irc.leftychan.net:6697/#leftychan" class="redtext"><span class="heading">IRC Chat</span></a></p><p><a href="mumble://leftychan.net" class="redtext"><span class="heading">Mumble</span></a></p><p><a href="https://t.me/+RegtyzzrE0M1NDMx" class="red text"><span class="heading">Telegram</a></span></p><p><a href="https://discord.gg/AcZeFKXPmZ" class="redtext"><span class="heading">Discord</a></span></p>';
 $config['debug'] = false;
