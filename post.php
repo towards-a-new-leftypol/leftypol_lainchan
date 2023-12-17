@@ -413,6 +413,47 @@ function handle_report(){
 
 }
 
+function validate_images(array $post_array) {
+    global $config;
+
+    if (!$post_array['has_file']) {
+        return;
+    }
+
+    foreach ($post_array['files'] as $key => &$file) {
+        if ($file['is_an_image']) {
+            $err = null;
+
+            if ($config['ie_mime_type_detection'] !== false) {
+                $upload = $file['tmp_name'];
+                // Check IE MIME type detection XSS exploit
+                $buffer = file_get_contents($upload, false, null, 0, 255);
+                if (preg_match($config['ie_mime_type_detection'], $buffer)) {
+                    $err = $config['error']['mime_exploit'];
+                }
+            }
+
+            // find dimensions of an image using GD
+            if (!$size = @getimagesize($file['tmp_name'])) {
+                $err = $config['error']['invalidimg2'];
+            }
+
+            if (!in_array($size[2], array(IMAGETYPE_PNG, IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_BMP))) {
+                $err = $config['error']['invalidimg3'];
+            }
+
+            if ($size[0] > $config['max_width'] || $size[1] > $config['max_height']) {
+                $err = $config['error']['maxsize'];
+            }
+
+            if (!is_null($err)) {
+                undoImage($post_array);
+                error($err);
+            }
+        }
+    }
+}
+
 function handle_post(){
     global $config,$dropped_post,$board, $mod,$pdo;
 
@@ -605,7 +646,7 @@ function handle_post(){
         function upload_by_url($config,$post,$url) {
         $post['file_url'] = $url;
         if (!preg_match('@^https?://@', $post['file_url']))
-            error($config['error']['invalidimg']);
+            error($config['error']['invalidimg1']);
         
         if (mb_strpos($post['file_url'], '?') !== false)
             $url_without_params = mb_substr($post['file_url'], 0, mb_strpos($post['file_url'], '?'));
@@ -949,15 +990,15 @@ function handle_post(){
             
             $upload = $file['tmp_name'];
             
-            if (!is_readable($upload))
+            if (!is_readable($upload)) {
                 error($config['error']['nomove']);
+            }
 
             if ($md5cmd) {
                 $output = shell_exec_error($md5cmd . " " . escapeshellarg($upload));
                 $output = explode(' ', $output);
                 $hash = $output[0];
-            }
-            else {
+            } else {
                 $hash = md5_file($upload);
             }
 
@@ -979,6 +1020,8 @@ function handle_post(){
         do_filters($post);
     }
 
+    validate_images($post);
+
     if ($config['spam_noticer']['enabled']) {
         require_once 'inc/spamnoticer.php';
 
@@ -995,265 +1038,248 @@ function handle_post(){
 
     if ($post['has_file']) {
         foreach ($post['files'] as $key => &$file) {
-        if ($file['is_an_image']) {
-            if ($config['ie_mime_type_detection'] !== false) {
-                // Check IE MIME type detection XSS exploit
-                $buffer = file_get_contents($upload, false, null, 0, 255);
-                if (preg_match($config['ie_mime_type_detection'], $buffer)) {
-                    undoImage($post);
-                    error($config['error']['mime_exploit']);
-                }
-            }
-            
-            require_once 'inc/image.php';
-            
-            // find dimensions of an image using GD
-            if (!$size = @getimagesize($file['tmp_name'])) {
-                error($config['error']['invalidimg']);
-            }
-            if (!in_array($size[2], array(IMAGETYPE_PNG, IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_BMP))) {
-                error($config['error']['invalidimg']);
-            }
-            if ($size[0] > $config['max_width'] || $size[1] > $config['max_height']) {
-                error($config['error']['maxsize']);
-            }
-            
-            if ($config['convert_auto_orient'] && ($file['extension'] == 'jpg' || $file['extension'] == 'jpeg')) {
-                // The following code corrects the image orientation.
-                // Currently only works with the 'convert' option selected but it could easily be expanded to work with the rest if you can be bothered.
-                if (!($config['redraw_image'] || (($config['strip_exif'] && !$config['use_exiftool']) && ($file['extension'] == 'jpg' || $file['extension'] == 'jpeg')))) {
-                    if (in_array($config['thumb_method'], array('convert', 'convert+gifsicle', 'gm', 'gm+gifsicle'))) {
-                        $exif = @exif_read_data($file['tmp_name']);
-                        $gm = in_array($config['thumb_method'], array('gm', 'gm+gifsicle'));
-                        if (isset($exif['Orientation']) && $exif['Orientation'] != 1) {
-                            if ($config['convert_manual_orient']) {
-                                $error = shell_exec_error(($gm ? 'gm ' : '') . 'convert ' .
-                                    escapeshellarg($file['tmp_name']) . ' ' .
-                                    ImageConvert::jpeg_exif_orientation(false, $exif) . ' ' .
-                                    ($config['strip_exif'] ? '+profile "*"' :
-                                        ($config['use_exiftool'] ? '' : '+profile "*"')
-                                    ) . ' ' .
-                                    escapeshellarg($file['tmp_name']));
-                                if ($config['use_exiftool'] && !$config['strip_exif']) {
-                                    if ($exiftool_error = shell_exec_error(
-                                        'exiftool -overwrite_original -q -q -orientation=1 -n ' .
-                                            escapeshellarg($file['tmp_name'])))
-                                        error(_('exiftool failed!'), null, $exiftool_error);
+            if ($file['is_an_image']) {
+                if ($config['convert_auto_orient'] && ($file['extension'] == 'jpg' || $file['extension'] == 'jpeg')) {
+                    // The following code corrects the image orientation.
+                    // Currently only works with the 'convert' option selected but it could easily be expanded to work with the rest if you can be bothered.
+                    if (!($config['redraw_image'] || (($config['strip_exif'] && !$config['use_exiftool']) && ($file['extension'] == 'jpg' || $file['extension'] == 'jpeg')))) {
+                        if (in_array($config['thumb_method'], array('convert', 'convert+gifsicle', 'gm', 'gm+gifsicle'))) {
+                            $exif = @exif_read_data($file['tmp_name']);
+                            $gm = in_array($config['thumb_method'], array('gm', 'gm+gifsicle'));
+                            if (isset($exif['Orientation']) && $exif['Orientation'] != 1) {
+                                if ($config['convert_manual_orient']) {
+                                    $error = shell_exec_error(($gm ? 'gm ' : '') . 'convert ' .
+                                        escapeshellarg($file['tmp_name']) . ' ' .
+                                        ImageConvert::jpeg_exif_orientation(false, $exif) . ' ' .
+                                        ($config['strip_exif'] ? '+profile "*"' :
+                                            ($config['use_exiftool'] ? '' : '+profile "*"')
+                                        ) . ' ' .
+                                        escapeshellarg($file['tmp_name']));
+                                    if ($config['use_exiftool'] && !$config['strip_exif']) {
+                                        if ($exiftool_error = shell_exec_error(
+                                            'exiftool -overwrite_original -q -q -orientation=1 -n ' .
+                                                escapeshellarg($file['tmp_name'])))
+                                            error(_('exiftool failed!'), null, $exiftool_error);
+                                    } else {
+                                        // TODO: Find another way to remove the Orientation tag from the EXIF profile
+                                        // without needing `exiftool`.
+                                    }
                                 } else {
-                                    // TODO: Find another way to remove the Orientation tag from the EXIF profile
-                                    // without needing `exiftool`.
+                                    $error = shell_exec_error(($gm ? 'gm ' : '') . 'convert ' .
+                                            escapeshellarg($file['tmp_name']) . ' -auto-orient ' . escapeshellarg($file['tmp_name']));
                                 }
-                            } else {
-                                $error = shell_exec_error(($gm ? 'gm ' : '') . 'convert ' .
-                                        escapeshellarg($file['tmp_name']) . ' -auto-orient ' . escapeshellarg($upload));
+                                if ($error) {
+                                    error(_('Could not auto-orient image!'), null, $error);
+                                }
+                                $size = @getimagesize($file['tmp_name']);
+                                if ($config['strip_exif'])
+                                    $file['exif_stripped'] = true;
                             }
-                            if ($error) {
-                                error(_('Could not auto-orient image!'), null, $error);
-                            }
-                            $size = @getimagesize($file['tmp_name']);
-                            if ($config['strip_exif'])
-                                $file['exif_stripped'] = true;
                         }
                     }
                 }
-            }
 
-            // create image object
-            $image = new Image($file['tmp_name'], $file['extension'], $size);
-            if ($image->size->width > $config['max_width'] || $image->size->height > $config['max_height']) {
-                $image->delete();
-
-                error($config['error']['maxsize']);
-            }
-            
-            $file['width'] = $image->size->width;
-            $file['height'] = $image->size->height;
-            
-            if ($config['spoiler_images'] && isset($_POST['spoiler'])) {
-                $file['thumb'] = 'spoiler';
+                require_once 'inc/image.php';
                 
-                $size = @getimagesize($config['spoiler_image']);
-                $file['thumbwidth'] = $size[0];
-                $file['thumbheight'] = $size[1];
-            } elseif ($config['minimum_copy_resize'] &&
-                $image->size->width <= $config['thumb_width'] &&
-                $image->size->height <= $config['thumb_height'] &&
-                $file['extension'] == ($config['thumb_ext'] ? $config['thumb_ext'] : $file['extension'])) {
-            
-                // Copy, because there's nothing to resize
-                copy($file['tmp_name'], $file['thumb']);
-            
-                $file['thumbwidth'] = $image->size->width;
-                $file['thumbheight'] = $image->size->height;
-            } else {
-                $thumb = $image->resize(
-                    $config['thumb_ext'] ? $config['thumb_ext'] : $file['extension'],
-                    $post['op'] ? $config['thumb_op_width'] : $config['thumb_width'],
-                    $post['op'] ? $config['thumb_op_height'] : $config['thumb_height']
-                );
+                // create image object
+                $image = new Image($file['tmp_name'], $file['extension'], $size);
+                if ($image->size->width > $config['max_width'] || $image->size->height > $config['max_height']) {
+                    $image->delete();
+
+                    error($config['error']['maxsize']);
+                }
                 
-                $thumb->to($file['thumb']);
-
-                $file['thumbwidth'] = $thumb->width;
-                $file['thumbheight'] = $thumb->height;
-            
-                $thumb->_destroy();
-            }
-
-            if ($config['redraw_image'] || (!@$file['exif_stripped'] && $config['strip_exif'] && ($file['extension'] == 'jpg' || $file['extension'] == 'jpeg'))) {
-                if (!$config['redraw_image'] && $config['use_exiftool']) {
-                    if($error = shell_exec_error('exiftool -overwrite_original -ignoreMinorErrors -q -q -all= ' .
-                        escapeshellarg($file['tmp_name']))) {
-                        error(_('Could not strip EXIF metadata!'), null, $error);
-                    } else {
-                        clearstatcache(true, $file['tmp_name']);
-                        if (($newfilesize = filesize($file['tmp_name'])) !== false)
-                            $file['size'] = $newfilesize;
-                    }
+                $file['width'] = $image->size->width;
+                $file['height'] = $image->size->height;
+                
+                if ($config['spoiler_images'] && isset($_POST['spoiler'])) {
+                    $file['thumb'] = 'spoiler';
+                    
+                    $size = @getimagesize($config['spoiler_image']);
+                    $file['thumbwidth'] = $size[0];
+                    $file['thumbheight'] = $size[1];
+                } elseif ($config['minimum_copy_resize'] &&
+                    $image->size->width <= $config['thumb_width'] &&
+                    $image->size->height <= $config['thumb_height'] &&
+                    $file['extension'] == ($config['thumb_ext'] ? $config['thumb_ext'] : $file['extension'])) {
+                
+                    // Copy, because there's nothing to resize
+                    copy($file['tmp_name'], $file['thumb']);
+                
+                    $file['thumbwidth'] = $image->size->width;
+                    $file['thumbheight'] = $image->size->height;
                 } else {
-                    $image->to($file['file']);
-                    $dont_copy_file = true;
-                }
-            }
-            $image->destroy();
-        } else {
-            if (($file['extension'] == "pdf" && $config['pdf_file_thumbnail']) || 
-                ($file['extension'] == "djvu" && $config['djvu_file_thumbnail']) ){
-                $path = $file['thumb'];
-                $error = shell_exec_error( 'convert -thumbnail x300 -background white -alpha remove ' .
-                escapeshellarg($file['tmp_name']. '[0]') . ' ' .
-                escapeshellarg($file['thumb']));
+                    $thumb = $image->resize(
+                        $config['thumb_ext'] ? $config['thumb_ext'] : $file['extension'],
+                        $post['op'] ? $config['thumb_op_width'] : $config['thumb_width'],
+                        $post['op'] ? $config['thumb_op_height'] : $config['thumb_height']
+                    );
+                    
+                    $thumb->to($file['thumb']);
 
-                if ($error){
-                    $path = sprintf($config['file_thumb'],isset($config['file_icons'][$file['extension']]) ? $config['file_icons'][$file['extension']] : $config['file_icons']['default']); 
+                    $file['thumbwidth'] = $thumb->width;
+                    $file['thumbheight'] = $thumb->height;
+                
+                    $thumb->_destroy();
                 }
 
-                $file['thumb'] = basename($file['thumb']);
-                $size = @getimagesize($path);
-                $file['thumbwidth'] = $size[0];
-                $file['thumbheight'] = $size[1];
-                $file['width'] = $size[0];
-                $file['height'] = $size[1];
-            }
-            /*if (($file['extension'] == "epub" && $config['epub_file_thumbnail'])){ 
-                $path = $file['thumb'];
-                // Open epub
-                // Get file list
-                // Check if cover file exists according to regex if it does use it
-                // Otherwise check if metadata file exists, and if does get rootfile and search for manifest for cover file name 
-                // Otherwise Check if other image files exist and use them, based on criteria to pick the best one.
-                // Once we have filename extract said file from epub to file['thumb'] location. 
-                $zip = new ZipArchive();
-                if(@$zip->open($path)){
-                    $filename = "";
-                    // Go looking for a file name, current implementation just uses regex but should fallback to
-                    // getting all images and then choosing one.
-                    for( $i = 0; $i < $zip->numFiles; $i++ ){ 
-                        $stat = $zip->statIndex( $i ); 
-                        $matches = array();
-                        if (preg_match('/.*cover.*\.(jpg|jpeg|png)/', $stat['name'], $matches)) {
-                            $filename = $matches[0];
-                                break;      
+                if ($config['redraw_image'] || (!@$file['exif_stripped'] && $config['strip_exif'] && ($file['extension'] == 'jpg' || $file['extension'] == 'jpeg'))) {
+                    if (!$config['redraw_image'] && $config['use_exiftool']) {
+                        if($error = shell_exec_error('exiftool -overwrite_original -ignoreMinorErrors -q -q -all= ' .
+                            escapeshellarg($file['tmp_name']))) {
+                            error(_('Could not strip EXIF metadata!'), null, $error);
+                        } else {
+                            clearstatcache(true, $file['tmp_name']);
+                            if (($newfilesize = filesize($file['tmp_name'])) !== false)
+                                $file['size'] = $newfilesize;
                         }
-                    } 
-                    // We have a cover filename to extract.         
-                    if (strlen($filename) > 0){
-                        //$zip->extractTo(dirname($file['thumb']), array($filename));
+                    } else {
+                        $image->to($file['file']);
+                        $dont_copy_file = true;
+                    }
+                }
+                $image->destroy();
+            } else {
+                if (($file['extension'] == "pdf" && $config['pdf_file_thumbnail']) || 
+                    ($file['extension'] == "djvu" && $config['djvu_file_thumbnail']) ){
+                    $path = $file['thumb'];
+                    $error = shell_exec_error( 'convert -thumbnail x300 -background white -alpha remove ' .
+                    escapeshellarg($file['tmp_name']. '[0]') . ' ' .
+                    escapeshellarg($file['thumb']));
+
+                    if ($error){
+                        $path = sprintf($config['file_thumb'],isset($config['file_icons'][$file['extension']]) ? $config['file_icons'][$file['extension']] : $config['file_icons']['default']); 
+                    }
+
+                    $file['thumb'] = basename($file['thumb']);
+                    $size = @getimagesize($path);
+                    $file['thumbwidth'] = $size[0];
+                    $file['thumbheight'] = $size[1];
+                    $file['width'] = $size[0];
+                    $file['height'] = $size[1];
+                }
+                /*if (($file['extension'] == "epub" && $config['epub_file_thumbnail'])){ 
+                    $path = $file['thumb'];
+                    // Open epub
+                    // Get file list
+                    // Check if cover file exists according to regex if it does use it
+                    // Otherwise check if metadata file exists, and if does get rootfile and search for manifest for cover file name 
+                    // Otherwise Check if other image files exist and use them, based on criteria to pick the best one.
+                    // Once we have filename extract said file from epub to file['thumb'] location. 
+                    $zip = new ZipArchive();
+                    if(@$zip->open($path)){
+                        $filename = "";
+                        // Go looking for a file name, current implementation just uses regex but should fallback to
+                        // getting all images and then choosing one.
+                        for( $i = 0; $i < $zip->numFiles; $i++ ){ 
+                            $stat = $zip->statIndex( $i ); 
+                            $matches = array();
+                            if (preg_match('/.*cover.*\.(jpg|jpeg|png)/', $stat['name'], $matches)) {
+                                $filename = $matches[0];
+                                    break;      
+                            }
+                        } 
+                        // We have a cover filename to extract.         
+                        if (strlen($filename) > 0){
+                            //$zip->extractTo(dirname($file['thumb']), array($filename));
+                        }
+                        else {
+                        $error = 1;
+                        }
+
                     }
                     else {
-                    $error = 1;
+                        $error = 1;
+                    }
+                    
+                    if ($error){
+                        $path = sprintf($config['file_thumb'],isset($config['file_icons'][$file['extension']]) ? $config['file_icons'][$file['extension']] : $config['file_icons']['default']); 
                     }
 
+                    $file['thumb'] = basename($file['thumb']);
+                    $size = @getimagesize($path);
+                    $file['thumbwidth'] = $size[0];
+                    $file['thumbheight'] = $size[1];
+                    $file['width'] = $size[0];
+                    $file['height'] = $size[1];
+                }*/
+                else if ($file['extension'] == "txt" && $config['txt_file_thumbnail']){
+                    $path = $file['thumb'];
+                    $error = shell_exec_error( 'convert -thumbnail x300 xc:white -pointsize 12 -fill black -annotate +15+15 ' .
+                    escapeshellarg( '@' . $file['tmp_name']) . ' ' .
+                    escapeshellarg($file['thumb']));
+
+                    if ($error){
+                        $path = sprintf($config['file_thumb'],isset($config['file_icons'][$file['extension']]) ? $config['file_icons'][$file['extension']] : $config['file_icons']['default']); 
+                    }
+
+                    $file['thumb'] = basename($file['thumb']);
+                    $size = @getimagesize($path);
+                    $file['thumbwidth'] = $size[0];
+                    $file['thumbheight'] = $size[1];
+                    $file['width'] = $size[0];
+                    $file['height'] = $size[1];
+                }
+                else if ($file['extension'] == "svg"){
+                    // Copy, because there's nothing to resize
+                    $file['thumb'] = substr_replace($file['thumb'] , $file['extension'], strrpos($file['thumb'] , '.') +1);
+                    copy($file['tmp_name'], $file['thumb']);
+                    $file['thumbwidth'] = $config['thumb_width'];
+                    $file['thumbheight'] = $config['thumb_height'];
+                    $file['thumb'] = basename($file['thumb']);
+                
                 }
                 else {
-                    $error = 1;
-                }
-                
-                if ($error){
-                    $path = sprintf($config['file_thumb'],isset($config['file_icons'][$file['extension']]) ? $config['file_icons'][$file['extension']] : $config['file_icons']['default']); 
-                }
+                // not an image
+                //copy($config['file_thumb'], $post['thumb']);
+                $file['thumb'] = 'file';
 
-                $file['thumb'] = basename($file['thumb']);
-                $size = @getimagesize($path);
+                $size = @getimagesize(sprintf($config['file_thumb'],
+                    isset($config['file_icons'][$file['extension']]) ?
+                        $config['file_icons'][$file['extension']] : $config['file_icons']['default']));
                 $file['thumbwidth'] = $size[0];
                 $file['thumbheight'] = $size[1];
-                $file['width'] = $size[0];
-                $file['height'] = $size[1];
-            }*/
-            else if ($file['extension'] == "txt" && $config['txt_file_thumbnail']){
-                $path = $file['thumb'];
-                $error = shell_exec_error( 'convert -thumbnail x300 xc:white -pointsize 12 -fill black -annotate +15+15 ' .
-                escapeshellarg( '@' . $file['tmp_name']) . ' ' .
-                escapeshellarg($file['thumb']));
-
-                if ($error){
-                    $path = sprintf($config['file_thumb'],isset($config['file_icons'][$file['extension']]) ? $config['file_icons'][$file['extension']] : $config['file_icons']['default']); 
-                }
-
-                $file['thumb'] = basename($file['thumb']);
-                $size = @getimagesize($path);
-                $file['thumbwidth'] = $size[0];
-                $file['thumbheight'] = $size[1];
-                $file['width'] = $size[0];
-                $file['height'] = $size[1];
-            }
-            else if ($file['extension'] == "svg"){
-                // Copy, because there's nothing to resize
-                $file['thumb'] = substr_replace($file['thumb'] , $file['extension'], strrpos($file['thumb'] , '.') +1);
-                copy($file['tmp_name'], $file['thumb']);
-                $file['thumbwidth'] = $config['thumb_width'];
-                $file['thumbheight'] = $config['thumb_height'];
-                $file['thumb'] = basename($file['thumb']);
-            
-            }
-            else {
-            // not an image
-            //copy($config['file_thumb'], $post['thumb']);
-            $file['thumb'] = 'file';
-
-            $size = @getimagesize(sprintf($config['file_thumb'],
-                isset($config['file_icons'][$file['extension']]) ?
-                    $config['file_icons'][$file['extension']] : $config['file_icons']['default']));
-            $file['thumbwidth'] = $size[0];
-            $file['thumbheight'] = $size[1];
-            }
-        }
-
-        if ($config['tesseract_ocr'] && $file['thumb'] != 'file') { // Let's OCR it!
-            $fname = $file['tmp_name'];
-
-            if ($file['height'] > 500 || $file['width'] > 500) {
-                $fname = $file['thumb'];
-            }
-
-            if ($fname == 'spoiler') { // We don't have that much CPU time, do we?
-            }
-            else {
-                $tmpname = __DIR__ . "/tmp/tesseract/".rand(0,10000000);
-
-                // Preprocess command is an ImageMagick b/w quantization
-                $error = shell_exec_error(sprintf($config['tesseract_preprocess_command'], escapeshellarg($fname)) . " | " .
-                                                          'tesseract stdin '.escapeshellarg($tmpname).' '.$config['tesseract_params']);
-                $tmpname .= ".txt";
-
-                $value = @file_get_contents($tmpname);
-                @unlink($tmpname);
-
-                if ($value && trim($value)) {
-                    // This one has an effect, that the body is appended to a post body. So you can write a correct
-                    // spamfilter.
-                    $post['body_nomarkup'] .= "<tinyboard ocr image $key>".htmlspecialchars($value)."</tinyboard>";
                 }
             }
-        }
 
-        if (!isset($dont_copy_file) || !$dont_copy_file) {
-            if (isset($file['file_tmp'])) {
-                if (!@rename($file['tmp_name'], $file['file']))
+            if ($config['tesseract_ocr'] && $file['thumb'] != 'file') { // Let's OCR it!
+                $fname = $file['tmp_name'];
+
+                if ($file['height'] > 500 || $file['width'] > 500) {
+                    $fname = $file['thumb'];
+                }
+
+                if ($fname == 'spoiler') { // We don't have that much CPU time, do we?
+                }
+                else {
+                    $tmpname = __DIR__ . "/tmp/tesseract/".rand(0,10000000);
+
+                    // Preprocess command is an ImageMagick b/w quantization
+                    $error = shell_exec_error(sprintf($config['tesseract_preprocess_command'], escapeshellarg($fname)) . " | " .
+                                                              'tesseract stdin '.escapeshellarg($tmpname).' '.$config['tesseract_params']);
+                    $tmpname .= ".txt";
+
+                    $value = @file_get_contents($tmpname);
+                    @unlink($tmpname);
+
+                    if ($value && trim($value)) {
+                        // This one has an effect, that the body is appended to a post body. So you can write a correct
+                        // spamfilter.
+                        $post['body_nomarkup'] .= "<tinyboard ocr image $key>".htmlspecialchars($value)."</tinyboard>";
+                    }
+                }
+            }
+
+            if (!isset($dont_copy_file) || !$dont_copy_file) {
+                if (isset($file['file_tmp'])) {
+                    if (!@rename($file['tmp_name'], $file['file'])) {
+                        error($config['error']['nomove']);
+                    }
+
+                    chmod($file['file'], 0644);
+                } elseif (!@move_uploaded_file($file['tmp_name'], $file['file'])) {
                     error($config['error']['nomove']);
-                chmod($file['file'], 0644);
-            } elseif (!@move_uploaded_file($file['tmp_name'], $file['file']))
-                error($config['error']['nomove']);
+                }
             }
         }
 

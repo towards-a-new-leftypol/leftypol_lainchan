@@ -31,13 +31,13 @@ class Image {
 
 		if (!$this->image->valid()) {
 			$this->delete();
-			error($config['error']['invalidimg']);
+			error($config['error']['invalidimg4']);
 		}
 		
 		$this->size = (object)array('width' => $this->image->_width(), 'height' => $this->image->_height());
 		if ($this->size->width < 1 || $this->size->height < 1) {
 			$this->delete();
-			error($config['error']['invalidimg']);
+			error($config['error']['invalidimg5']);
 		}
 	}
 	

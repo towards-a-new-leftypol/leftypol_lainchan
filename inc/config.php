@@ -1161,7 +1161,11 @@
     $config['error']['toolongreport']	= _('The reason was too long.');
     $config['error']['toomanyreports']  = _('You can\'t report that many posts at once.');
     $config['error']['invalidpassword'] = _('Wrong password…');
-    $config['error']['invalidimg']      = _('Invalid image.');
+    $config['error']['invalidimg1']      = _('Invalid image.1');
+    $config['error']['invalidimg2']      = _('Invalid image.2');
+    $config['error']['invalidimg3']      = _('Unsupported image MIME type. (Hint: double check what format your image *really* is)');
+    $config['error']['invalidimg4']      = _('Invalid image.4');
+    $config['error']['invalidimg5']      = _('Invalid image.5');
     $config['error']['unknownext']      = _('Unknown file extension.');
     $config['error']['filesize']        = _('Maximum file size: %maxsz% bytes<br>Your file\'s size: %filesz% bytes');
     $config['error']['maxsize']     = _('The file was too big.');
