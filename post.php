@@ -1041,6 +1041,8 @@ function handle_post(){
     if ($post['has_file']) {
         foreach ($post['files'] as $key => &$file) {
             if ($file['is_an_image']) {
+                $size = @getimagesize($file['tmp_name']);
+
                 if ($config['convert_auto_orient'] && ($file['extension'] == 'jpg' || $file['extension'] == 'jpeg')) {
                     // The following code corrects the image orientation.
                     // Currently only works with the 'convert' option selected but it could easily be expanded to work with the rest if you can be bothered.
@@ -1048,8 +1050,10 @@ function handle_post(){
                         if (in_array($config['thumb_method'], array('convert', 'convert+gifsicle', 'gm', 'gm+gifsicle'))) {
                             $exif = @exif_read_data($file['tmp_name']);
                             $gm = in_array($config['thumb_method'], array('gm', 'gm+gifsicle'));
+
                             if (isset($exif['Orientation']) && $exif['Orientation'] != 1) {
                                 if ($config['convert_manual_orient']) {
+
                                     $error = shell_exec_error(($gm ? 'gm ' : '') . 'convert ' .
                                         escapeshellarg($file['tmp_name']) . ' ' .
                                         ImageConvert::jpeg_exif_orientation(false, $exif) . ' ' .
@@ -1057,6 +1061,7 @@ function handle_post(){
                                             ($config['use_exiftool'] ? '' : '+profile "*"')
                                         ) . ' ' .
                                         escapeshellarg($file['tmp_name']));
+
                                     if ($config['use_exiftool'] && !$config['strip_exif']) {
                                         if ($exiftool_error = shell_exec_error(
                                             'exiftool -overwrite_original -q -q -orientation=1 -n ' .
@@ -1070,10 +1075,11 @@ function handle_post(){
                                     $error = shell_exec_error(($gm ? 'gm ' : '') . 'convert ' .
                                             escapeshellarg($file['tmp_name']) . ' -auto-orient ' . escapeshellarg($file['tmp_name']));
                                 }
+
                                 if ($error) {
                                     error(_('Could not auto-orient image!'), null, $error);
                                 }
-                                $size = @getimagesize($file['tmp_name']);
+
                                 if ($config['strip_exif'])
                                     $file['exif_stripped'] = true;
                             }
