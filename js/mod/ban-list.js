@@ -36,7 +36,7 @@ var banlist_init = function(token, my_boards, inMod) {
         }
         return pre+f.mask;
       } },
-      reason: {name: _("Reason"), width: "40%", max_width: "40%", max_height: "240px", handle_longwords: true, fmt: function(f) {
+      reason: {name: _("Reason"), width: "40%", max_width: "40%", handle_longwords: true, fmt: function(f) {
         var add = "", suf = '';
         if (f.seen == 1) add += "<i class='fa fa-check' title='"+_("Seen")+"'></i>";
         if (f.message) {

@@ -46,10 +46,6 @@ $.fn.longtable = function(fields, options, data) {
       }
       el.css("width", fields[field].width);
 
-      if (fields[field].max_height) {
-        el.css("max-height", fields[field].max_height);
-      }
-
       return el;
     },
     _gen_tr: function(id) {
