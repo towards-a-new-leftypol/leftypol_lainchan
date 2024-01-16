@@ -37,7 +37,7 @@ var banlist_init = function(token, my_boards, inMod) {
 	}
 	return pre+f.mask;
       } },
-      reason: {name: _("Reason"), width: "calc(100% - 715px - 6 * 4px)", fmt: function(f) {
+      reason: {name: _("Reason"), width: "40%", max_width: "40%", max_height: "240px", handle_longwords: true, fmt: function(f) {
 	var add = "", suf = '';
         if (f.seen == 1) add += "<i class='fa fa-check' title='"+_("Seen")+"'></i>";
 	if (f.message) {
@@ -133,25 +133,5 @@ var banlist_init = function(token, my_boards, inMod) {
 
       $(".banform").off("submit").submit();
     });
-
-    if (device_type == 'desktop') {
-      // Stick topbar
-      var stick_on = $(".banlist-opts").offset().top;
-      var state = true;
-      $(window).on("scroll resize", function() {
-        if ($(window).scrollTop() > stick_on && state == true) {
-  	  $("body").css("margin-top", $(".banlist-opts").height());
-          $(".banlist-opts").addClass("boardlist top").detach().prependTo("body");
-  	  $("#banlist tr:not(.row)").addClass("tblhead").detach().appendTo(".banlist-opts");
-	  state = !state;
-        }
-        else if ($(window).scrollTop() < stick_on && state == false) {
-	  $("body").css("margin-top", "auto");
-          $(".banlist-opts").removeClass("boardlist top").detach().prependTo(".banform");
-	  $(".tblhead").detach().prependTo("#banlist");
-          state = !state;
-        }
-      });
-    }
   });
 }

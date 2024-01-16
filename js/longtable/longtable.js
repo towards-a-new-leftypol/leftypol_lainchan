@@ -28,14 +28,28 @@ $.fn.longtable = function(fields, options, data) {
       }
       else {
         el = $("<td></td>");
-        if (fields[field].fmt) { // Special formatting?
+        if (fields[field].fmt) {
+          // Apply ad-hoc formatting.
           el.html(fields[field].fmt(data[id]));
         }
         else {
           el.html(data[id][field]);
         }
       }
+
+      if (fields[field].handle_longwords) {
+        el.css("word-break", "break-all");
+      }
+
+      if (fields[field].max_width) {
+      	el.css("max-width", fields[field].max_width);
+      }
       el.css("width", fields[field].width);
+
+      if (fields[field].max_height) {
+        el.css("max-height", fields[field].max_height);
+      }
+
       return el;
     },
     _gen_tr: function(id) {
@@ -111,11 +125,12 @@ $.fn.longtable = function(fields, options, data) {
       first = Math.floor(first / options.row_h);
       last  = Math.ceil (last /  options.row_h);
 
-      first = first < 0 ? 0 : first;
+      first = first < 1 ? 1 : first;
       last = last >= data.length ? data.length - 1 : last;
 
       $.each(shown_rows, function(id) {
-        if (id < first || id > last) {
+        // Remove only the rows after.
+        if (id > last) {
           lt._remove(id);
         }
       });
