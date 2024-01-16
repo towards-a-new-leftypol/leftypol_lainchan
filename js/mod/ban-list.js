@@ -2,7 +2,6 @@ var banlist_init = function(token, my_boards, inMod) {
   inMod = !inMod;
 
   var lt;
-
   var selected = {};
 
   var time = function() { return Date.now()/1000|0; }
@@ -33,46 +32,46 @@ var banlist_init = function(token, my_boards, inMod) {
         }
 
         if (inMod && f.single_addr && !f.masked) {
-	  return pre+"<a href='?/IP/"+f.mask+"'>"+f.mask+"</a>";
-	}
-	return pre+f.mask;
+          return pre+"<a href='?/IP/"+f.mask+"'>"+f.mask+"</a>";
+        }
+        return pre+f.mask;
       } },
       reason: {name: _("Reason"), width: "40%", max_width: "40%", max_height: "240px", handle_longwords: true, fmt: function(f) {
-	var add = "", suf = '';
+        var add = "", suf = '';
         if (f.seen == 1) add += "<i class='fa fa-check' title='"+_("Seen")+"'></i>";
-	if (f.message) {
-	  add += "<i class='fa fa-comment' title='"+_("Message for which user was banned is included")+"'></i>";
-	  suf = "<br /><br /><strong>"+_("Message:")+"</strong><br />"+f.message;
-	}
+        if (f.message) {
+          add += "<i class='fa fa-comment' title='"+_("Message for which user was banned is included")+"'></i>";
+          suf = "<br /><br /><strong>"+_("Message:")+"</strong><br />"+f.message;
+        }
 
-	if (add) { add = "<div style='float: right;'>"+add+"</div>"; }
+        if (add) { add = "<div style='float: right;'>"+add+"</div>"; }
 
         if (f.reason) return add + f.reason + suf;
         else return add + "-" + suf;
       } },
       board: {name: _("Board"), width: "60px", fmt: function(f) {
         if (f.board) return "/"+f.board+"/";
-	else return "<em>"+_("all")+"</em>";
+        else return "<em>"+_("all")+"</em>";
       } },
       created: {name: _("Set"), width: "100px", fmt: function(f) {
         return ago(f.created) + _(" ago"); // in AGO form
       } },
       // duration?
       expires: {name: _("Expires"), width: "235px", fmt: function(f) {
-	if (!f.expires || f.expires == 0) return "<em>"+_("never")+"</em>";
+        if (!f.expires || f.expires == 0) return "<em>"+_("never")+"</em>";
         return strftime(window.post_date, new Date((f.expires|0)*1000), datelocale) + 
           ((f.expires < time()) ? "" : " <small>"+_("in ")+until(f.expires|0)+"</small>");
       } },
       username: {name: _("Staff"), width: "100px", fmt: function(f) {
-	var pre='',suf='',un=f.username;
-	if (inMod && f.username && f.username != '?' && !f.vstaff) {
-	  pre = "<a href='?/new_PM/"+f.username+"'>";
-	  suf = "</a>";
-	}
-	if (!f.username) {
-	  un = "<em>"+_("system")+"</em>";
-	}
-	return pre + un + suf;
+        var pre='',suf='',un=f.username;
+        if (inMod && f.username && f.username != '?' && !f.vstaff) {
+          pre = "<a href='?/new_PM/"+f.username+"'>";
+          suf = "</a>";
+        }
+        if (!f.username) {
+          un = "<em>"+_("system")+"</em>";
+        }
+        return pre + un + suf;
       } }
     }, {}, t);
 
@@ -92,22 +91,22 @@ var banlist_init = function(token, my_boards, inMod) {
         var fields = ["mask", "reason", "board", "staff", "message"];
 
         var ret_false = false;
-	terms.forEach(function(t) {
+        terms.forEach(function(t) {
           var fs = fields;
 
-	  var re = /^(mask|reason|board|staff|message):/, ma;
+          var re = /^(mask|reason|board|staff|message):/, ma;
           if (ma = t.match(re)) {
             fs = [ma[1]];
-	    t = t.replace(re, "");
-	  }
+            t = t.replace(re, "");
+          }
 
-	  var found = false
-	  fs.forEach(function(f) {
-	    if (e[f] && e[f].indexOf(t) !== -1) {
-	      found = true;
-	    }
-	  });
-	  if (!found) ret_false = true;
+          var found = false
+          fs.forEach(function(f) {
+            if (e[f] && e[f].indexOf(t) !== -1) {
+              found = true;
+            }
+          });
+          if (!found) ret_false = true;
         });
 
         if (ret_false) return false;

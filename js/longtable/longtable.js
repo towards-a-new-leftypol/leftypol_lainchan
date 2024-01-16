@@ -42,7 +42,7 @@ $.fn.longtable = function(fields, options, data) {
       }
 
       if (fields[field].max_width) {
-      	el.css("max-width", fields[field].max_width);
+        el.css("max-width", fields[field].max_width);
       }
       el.css("width", fields[field].width);
 
@@ -75,7 +75,6 @@ $.fn.longtable = function(fields, options, data) {
       $(elem).trigger("new-row", [data[id], el]);
       shown_rows[id] = true;
     },
-
     _sort_by: function(field) {
       if (field !== undefined) {
         if (sorted_by == field) {
@@ -88,22 +87,18 @@ $.fn.longtable = function(fields, options, data) {
       }
       lt.sort_by(sorted_by, sorted_reverse);
     },
-
     _apply_filter: function() {
-      data = data.filter(filter);      
+      data = data.filter(filter);
     },
     _reset_data: function() {
       data = orig_data;
     },
-
-
     set_filter: function(f) {
       filter = f;
       lt._reset_data();
       lt._apply_filter();
       lt._sort_by();
     },
-
     sort_by: function(field, reverse) {
       if (field !== undefined) {
         sorted_by = field;
@@ -117,7 +112,6 @@ $.fn.longtable = function(fields, options, data) {
 
       lt.update_data();
     },
-
     update_viewport: function() {
       var first = $(window).scrollTop() - $(elem).offset().top - options.row_h;
       var last = first + $(window).height();
@@ -139,20 +133,14 @@ $.fn.longtable = function(fields, options, data) {
         if (!shown_rows[id]) lt._insert(id);
       }
     },
-
     update_data: function() {
-
       lt._clean();
       lt.update_viewport();
     },
-
     get_data: function() {
       return data;
     },
-
-    destroy: function() {
-    },
-
+    destroy: function() {},
     // http://web.archive.org/web/20130826203933/http://my.opera.com/GreyWyvern/blog/show.dml/1671288
     sort_alphanum: function(a, b) {
       function chunkify(t) {
@@ -184,8 +172,6 @@ $.fn.longtable = function(fields, options, data) {
     }
     // End of foreign code
   };
-
-
 
   lt._gen_tr().appendTo(elem);
   lt.update_data();
