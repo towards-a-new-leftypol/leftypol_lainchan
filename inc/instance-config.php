@@ -560,17 +560,7 @@ $config['filters'][] = array(
 
 $config['filters'][] = array(
     'condition' => array(
-      /*
-       * Old version:
-       *
-       * 'body'  => '/https?:\/\/\w{2,6}\.[a-z]{2,3}\/\w{2,8}(\s|$)/i', // url shorteners are not allowed
-       *    - has to have http(s)://
-       *
-       *  
-       *  New version:
-       *    - optional http(s):// domain name (without tld) might have a dash - in it.
-       */
-        'body'  => '/((https)?:\/\/)?[\w-]{2,6}\.[a-z]{2,3}\/\w{2,8}(\s|$)/i', // url shorteners are not allowed
+        'body'  => '/((https)?:\/\/)?[\w-]{2,6}\.[a-z]{2,4}\/\w{2,8}(\s|$)/i', // url shorteners are not allowed
     ),
     'action' => 'reject',
     'message' => 'Url shorteners are not allowed'
