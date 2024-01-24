@@ -67,7 +67,7 @@ $config['custom_categories'] = array(
         'New Multitude' => 'https://newmultitude.org/',
         'Booru image repository' => 'https://lefty.booru.org/',
         'Leftypedia' => 'https://leftypedia.org/',
-        'Official chat room' => 'https://app.element.io/#/room/!RQxdjfGouwsFHwUzwL:matrix.org',
+        'Official chat room' => 'https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net',
         'Gitea instance' => 'https://git.leftychan.net',
         'Rules' => 'rules.html'
     ),
