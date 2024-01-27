@@ -354,7 +354,13 @@
 
     $config['filters'][] = array(
         'condition' => array(
-            'flood-match' => array('isreply'), // Only match IP address
+          /*
+           * Confusingly `isreply` is defined as:
+           *    $flood_post['isreply'] == $post['op']
+           *
+           * We only want to look at OP posts in the flood table.
+           */
+            'flood-match' => array('isreply'),
             'OP' => true,
             'flood-time-any' => &$config['flood_time_any']
         ),
