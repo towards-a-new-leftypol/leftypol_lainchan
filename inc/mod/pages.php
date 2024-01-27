@@ -1860,7 +1860,7 @@ function mod_ban_post(string $board, $delete, $post_num, $token = false) {
             $query->bindValue(':id', $post_num);
             $query->bindValue(':body_nomarkup', sprintf("\n<tinyboard ban message>%s</tinyboard>", utf8tohtml($_POST['message'])));
             $query->execute() or error(db_error($query));
-            rebuildPost($post);
+            rebuildPost($post_num);
 
             modLog("Attached a public ban message to post #{$post_num}: " . utf8tohtml($_POST['message']));
             buildThread($thread ? $thread : $post_num);
