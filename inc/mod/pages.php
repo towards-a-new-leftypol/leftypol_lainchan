@@ -1809,11 +1809,10 @@ function mod_ban_post(string $board, $delete, $post_num, $token = false) {
     }
 
     $will_ban = true;
-    $will_delete = true;
+    $will_delete = isset($_POST['delete']) && (int) $_POST['delete'];
     $will_spamnoticer = isset($_POST['spamnoticer']);
 
     require_once 'inc/spamnoticer.php';
-    require_once 'inc/anti-bot.php';
 
     if ($will_spamnoticer) {
         $spamnoticer_info = parse_spamnoticer_content_fields($_POST, $po);
@@ -1836,8 +1835,6 @@ function mod_ban_post(string $board, $delete, $post_num, $token = false) {
             $_POST['reason'],
             $_POST['length'],
             $_POST['board']);
-
-    $will_delete = $will_delete && isset($_POST['delete']) && (int) $_POST['delete'];
 
     $has_public_message = isset($_POST['public_message'], $_POST['message']);
 
