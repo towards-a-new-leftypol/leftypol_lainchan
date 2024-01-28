@@ -95,7 +95,7 @@ $config['cookies']['salt'] = 'MGYwNjhlNjU5Y2QxNWU3YjQ3MzQ1Yj';
 
 $config['search']['enable'] = true;
 $config['flood_cache'] = 60 * 15; // 15 minutes. The oldest a post can be in the flood table
-$config['flood_time_any'] = 60; // time between thread creation
+$config['flood_time_any'] = 120; // time between thread creation
 $config['flood_time'] = 1;
 $config['flood_time_ip'] = 10;
 $config['flood_time_same'] = 60;
