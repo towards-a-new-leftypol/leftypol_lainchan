@@ -5,8 +5,6 @@
     if (AbortSignal.any === undefined) {
         AbortSignal.any = function (signals) {
             const controller = new AbortController()
-            const callbacks = []
-
             const abortFn = () => {
                 for (const signal of signals) {
                     signal.removeEventListener("abort", abortFn)
