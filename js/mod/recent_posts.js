@@ -24,13 +24,14 @@
         const kLocationPath = location.href.slice(location.origin.length)
         if (/^\/mod\.php\?\/recent\/\d+$/.test(kLocationPath)) {
             const loadIntFromStorage = key => {
-                const value = localStorage.getItem(`jon-liveposts-enabled::${key}`)
+                const value = localStorage.getItem(`jon-liveposts::${key}`)
                 return value != null ? parseInt(value) : null
             }
 
             const kPullXPosts = loadIntFromStorage("pull-x-posts") ?? 6
             const kPullEveryX = loadIntFromStorage("pull-every-x") ?? 8000
             const kRecentXPosts = parseInt(kLocationPath.slice(17).split(/[^\d]/)[0])
+            const kWasEnabled = loadIntFromStorage("enabled") == 1
 
             let liveUpdateEnabled = false
             let liveUpdateAbortController = null
@@ -103,6 +104,7 @@
                 const checkbox = document.createElement("input")
                 checkbox.type = "checkbox"
                 checkbox.id = id
+                checkbox.checked = kWasEnabled
                 label.innerText = "live update: "
                 label.for = id
                 div.style.display = "inline"
@@ -116,20 +118,27 @@
             const pageNums = Array.prototype.find.apply(document.body.children, [ el => el.nodeName == "P" ])
             const form = createCheckbox()
 
-            form.checkbox.addEventListener("click", () => {
-                setTimeout(() => {
-                    if (form.checkbox.checked) {
-                        liveUpdateEnabled = true
-                        liveUpdateAbortController = new AbortController()
-                        liveUpdateIntervalId = setInterval(() => updateRecentPosts(), kPullEveryX)
-                    } else {
-                        liveUpdateEnabled = false
-                        clearInterval(liveUpdateIntervalId)
-                        liveUpdateAbortController.abort()
-                        liveUpdateIntervalId = null
-                        liveUpdateAbortController = null
-                    }
-                }, 700)
+            const liveUpdateToggle = enabled => {
+                if (enabled) {
+                    liveUpdateEnabled = true
+                    liveUpdateAbortController = new AbortController()
+                    liveUpdateIntervalId = setInterval(() => updateRecentPosts(), kPullEveryX)
+                } else {
+                    liveUpdateEnabled = false
+                    clearInterval(liveUpdateIntervalId)
+                    liveUpdateAbortController.abort()
+                    liveUpdateIntervalId = null
+                    liveUpdateAbortController = null
+                }
+
+                if (form.checkbox.checked != enabled) {
+                    form.checkbox.checked = enabled
+                }
+            }
+
+            form.checkbox.addEventListener("change", () => {
+                localStorage.setItem("jon-liveposts::enabled", form.checkbox.checked ? "1" : "0")
+                liveUpdateToggle(form.checkbox.checked)
             })
 
             document.body.addEventListener("mousemove", () => {
@@ -141,6 +150,10 @@
 
             pageNums.append("|")
             pageNums.append(form.div)
+
+            if (kWasEnabled) {
+                setTimeout(() => liveUpdateToggle(true), 1)
+            }
         }
     }
 
