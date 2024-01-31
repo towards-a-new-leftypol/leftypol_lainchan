@@ -38,6 +38,10 @@
             let liveUpdateIntervalId = null
             let liveUpdateFaviconChanged = false
 
+            const getChanComment = el => Array.prototype.find.apply(el.children, [
+                el => el.classList.contains("thread") || el.classList.contains("postcontainer")
+            ])
+
             const parser = new DOMParser()
             const fetchLatest = async () => {
                 const res = await fetch(`/mod.php?/recent/${kPullXPosts}`, {
@@ -50,7 +54,7 @@
                     return posts.map(el => ({
                         "element": el,
                         "href": Array.prototype.find.apply(el.children, [ el => el.classList.contains("eita-link") ]).href,
-                        "id": Array.prototype.find.apply(el.children, [ el => el.classList.contains("thread") || el.classList.contains("postcontainer") ]).id
+                        "id": getChanComment(el).id
                     }))
                 } else {
                     return []
@@ -62,18 +66,23 @@
                 if (liveUpdateEnabled) {
                     fetchLatest()
                       .then(latestPosts => {
-                        const lastPost = document.body.querySelector(".post-wrapper")
+                        const lastPost = Array.prototype.find.apply(document.body.children, [ el => el.classList.contains("post-wrapper") ])
                         const lastPostTs = getPostTimestamp(lastPost).getTime()
                         const posts = latestPosts.filter(post => document.getElementById(post.id) == null && getPostTimestamp(post.element).getTime() > lastPostTs)
                         if (posts.length > 0) {
                             const totalPosts = Array.from(document.body.querySelectorAll(".post-wrapper"))
                             for (const post of posts) {
-                                lastPost.prepend(post.element)
+                                document.body.insertBefore(post.element, lastPost)
                                 totalPosts.unshift(post.element)
                             }
 
                             while (totalPosts.length > kRecentXPosts) {
                                 document.body.removeChild(totalPosts.pop())
+                            }
+
+                            // XXX: Fire ::new_post for chanx listeners
+                            for (const post of posts.slice(0, kRecentXPosts)) {
+                                $(document).trigger("new_post", [ getChanComment(post.element) ])
                             }
 
                             updatePageNext()
