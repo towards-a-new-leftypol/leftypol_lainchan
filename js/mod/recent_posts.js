@@ -32,8 +32,10 @@
             const kPullEveryX = loadIntFromStorage("pull-every-x") ?? 8000
             const kRecentXPosts = parseInt(kLocationPath.slice(17).split(/[^\d]/)[0])
             const kWasEnabled = loadIntFromStorage("enabled") == 1
+            const kBellWasEnabled = loadIntFromStorage("bell-enabled") == 1
 
             let liveUpdateEnabled = false
+            let liveUpdateBellEnabled = kBellWasEnabled
             let liveUpdateAbortController = null
             let liveUpdateIntervalId = null
             let liveUpdateFaviconChanged = false
@@ -106,15 +108,14 @@
                 pageNext.href = `/mod.php?/recent/${kRecentXPosts}&last=${getPostTimestamp(oldestPost).getTime() / 1000}`
             }
 
-            const createCheckbox = () => {
-                const id = "jon-liveposts-enabled"
+            const createCheckbox = (id, text, initialState) => {
                 const div = document.createElement("div")
                 const label = document.createElement("label")
                 const checkbox = document.createElement("input")
                 checkbox.type = "checkbox"
                 checkbox.id = id
-                checkbox.checked = kWasEnabled
-                label.innerText = "live update: "
+                checkbox.checked = initialState
+                label.innerText = text
                 label.for = id
                 div.style.display = "inline"
                 div.append(" ")
@@ -123,9 +124,6 @@
                 div.append(" ")
                 return { checkbox, label, div }
             }
-
-            const pageNums = Array.prototype.find.apply(document.body.children, [ el => el.nodeName == "P" ])
-            const form = createCheckbox()
 
             const liveUpdateToggle = enabled => {
                 if (enabled) {
@@ -140,15 +138,37 @@
                     liveUpdateAbortController = null
                 }
 
-                if (form.checkbox.checked != enabled) {
-                    form.checkbox.checked = enabled
+                if (kLiveForm.checkbox.checked != enabled) {
+                    kLiveForm.checkbox.checked = enabled
                 }
             }
 
-            form.checkbox.addEventListener("change", () => {
-                localStorage.setItem("jon-liveposts::enabled", form.checkbox.checked ? "1" : "0")
-                liveUpdateToggle(form.checkbox.checked)
+            const pageNums = Array.prototype.find.apply(document.body.children, [ el => el.nodeName == "P" ])
+            const kLiveForm = createCheckbox("jon-liveposts-enabled", "live: ", kWasEnabled)
+            const kBellForm = createCheckbox("jon-liveposts-bell-enabled", "beep: ", kBellWasEnabled)
+            const kBell = new Audio("/static/jannybell.mp3")
+
+            kLiveForm.checkbox.addEventListener("change", () => {
+                localStorage.setItem("jon-liveposts::enabled", kLiveForm.checkbox.checked ? "1" : "0")
+                liveUpdateToggle(kLiveForm.checkbox.checked)
             })
+
+            kBellForm.checkbox.addEventListener("change", () => {
+                localStorage.setItem("jon-liveposts::bell-enabled", kBellForm.checkbox.checked ? "1" : "0")
+                liveUpdateBellEnabled = kBellForm.checkbox.checked
+            })
+
+            $(document).on("new_post", () => {
+                if (liveUpdateBellEnabled && kBell.paused) {
+                    // XXX: Site requires autoplay media permission to do this
+                    kBell.play().catch(console.error)
+                }
+            })
+
+            for (const form of [ kLiveForm, kBellForm ]) {
+                pageNums.append("|")
+                pageNums.append(form.div)
+            }
 
             document.body.addEventListener("mousemove", () => {
                 if (liveUpdateFaviconChanged) {
@@ -156,9 +176,6 @@
                     makeIcon(false)
                 }
             })
-
-            pageNums.append("|")
-            pageNums.append(form.div)
 
             if (kWasEnabled) {
                 setTimeout(() => liveUpdateToggle(true), 1)
