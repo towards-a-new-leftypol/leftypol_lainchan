@@ -2,6 +2,7 @@
 
 require_once 'vendor/autoload.php';
 require_once 'inc/anti-bot.php';
+require_once 'inc/functions.php';
 
 function _createClient($config) {
     return new GuzzleHttp\Client([
@@ -184,7 +185,7 @@ function addToSpamNoticer($config, $post, $boardname, BanFormFieldsForSpamnotice
 
     $json_payload = [
         'attachments'   => $attachments,
-        'body'          => $post->body_nomarkup,
+        'body'          => remove_modifiers($post->body_nomarkup),
         'body_is_spam'  => $form_info->text_is_spam,
         'time_stamp'    => $post->time,
         'website_name'  => $config['spam_noticer']['website_name'],
