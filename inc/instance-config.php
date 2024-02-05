@@ -402,7 +402,6 @@ $config['additional_javascript'][] = 'js/options/user-css.js';
 $config['additional_javascript'][] = 'js/options/user-js.js';
 $config['additional_javascript'][] = 'js/flag-preview.js';
 $config['additional_javascript'][] = 'js/file-selector.js';
-$config['additional_javascript'][] = 'js/download-original.js';
 $config['additional_javascript_defer'][] = 'js/auto-reload.js';
 $config['additional_javascript_defer'][] = 'js/thread-stats.js';
 $config['additional_javascript_defer'][] = 'js/image-hover.js';
