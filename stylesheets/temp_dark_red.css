@@ -82,6 +82,9 @@ textarea:focus, input:not([type="file"]):not([type="checkbox"]):focus, [type="su
 }
 
 /* Replies */
+div.sidearrows {
+    display: none;
+}
 /* Background color and green border */
 div.post.reply {
     background: #282A2E;

@@ -298,6 +298,9 @@ input.delete {
 div.delete {
 	float: right;
 }
+div.sidearrows {
+    display: none;
+}
 div.post.reply p {
 	margin: 0.3em 0 0 0;
 }

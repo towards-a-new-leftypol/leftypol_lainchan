@@ -51,6 +51,9 @@ p.intro {
     border-radius: 5px; 
 }
 /* Replies */
+div.sidearrows {
+    color: #cccccc;
+}
 /* Background color and border */
 div.post.reply {
     background: #e9eced;

@@ -59,6 +59,10 @@ div.post.op hr {
 	font-weight: 800;
 }
 
+div.sidearrows {
+    color: #8FCCCD;
+}
+
 div.post.reply.highlighted {
 	background: #a9d8ff;
 }

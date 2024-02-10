@@ -45,18 +45,21 @@ font-weight: 600;
 }
 
 
+div.sidearrows {
+    color: #E5D959;
+}
 div.post.reply {
 	background-image: url('img/jungle_td.png');
 	border: 1px solid #E5D959;
-border-left: none;
-border-top: none;
-webkit-border-radius: 5px;
--moz-border-radius: 5px;
-border-radius: 5px;
--webkit-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.35);
--moz-box-shadow: 0px 2px 3px rgba(0,0,0,0.35);
--o-box-shadow: 0px 2px 3px rgba(0,0,0,0.35);
-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.35);
+    border-left: none;
+    border-top: none;
+    webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0px 2px 3px rgba(0,0,0,0.35);
+    -o-box-shadow: 0px 2px 3px rgba(0,0,0,0.35);
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.35);
 }
 div.post.reply.highlighted {
 	background-image: url('img/jungle_td2.png');

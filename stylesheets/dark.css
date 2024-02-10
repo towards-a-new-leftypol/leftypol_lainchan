@@ -68,6 +68,9 @@ div.post.reply div.body a:link, div.post.reply div.body a:visited {
 div.post.reply div.body a:link:hover, div.post.reply div.body a:visited:hover {
 	color: #32DD72;
 }
+div.sidearrows {
+    color: #555555;
+}
 .intro span.subject {
 	font-size: 12px;
 	font-family: sans-serif;

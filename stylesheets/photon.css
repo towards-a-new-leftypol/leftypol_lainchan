@@ -208,6 +208,11 @@ a:hover {
 .omittedposts {
         color:#666666;
 }
+
+div.sidearrows {
+    color: #CCCCCC;
+}
+
 .reply {
 	background:#DDDDDD;
 	border: solid 1px #CCCCCC;

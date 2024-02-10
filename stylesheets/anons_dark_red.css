@@ -19,6 +19,9 @@ a.post_no {
 	color: #c5c8c6;
 }
 /* Replies */
+div.sidearrows {
+    display: none;
+}
 /* Background color and border */
 div.post.reply {
     background: #282A2E;

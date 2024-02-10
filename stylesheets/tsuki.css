@@ -320,6 +320,10 @@ div.post div.body {
   white-space: pre-wrap;
 }
 
+div.sidearrows {
+    color: #B7C5D9;
+}
+
 div.post.reply {
   background: #D6DAF0;
   margin: 0.2em 4px;

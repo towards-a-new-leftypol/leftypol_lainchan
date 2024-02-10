@@ -8,7 +8,7 @@
 div.blotter, h1, h2, header div.subtitle, div.title, a:link:hover, a:visited:hover p.intro a.post_no:hover, 
 div.post.reply div.body a:link:hover, div.post.reply div.body a:visited:hover, p.intro span.name,
 p.intro a.email, p.intro a.email span.name, p.intro a.email:hover, p.intro a.email:hover span.name,
-input[type="submit"]:hover, div.ban h2 {
+input[type="submit"]:hover, div.ban h2, div.sidearrows {
 	font-family: 'Times';
 	color: #888888;
 }

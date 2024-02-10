@@ -1,5 +1,9 @@
 /* szalet 1.2 */
 
+div.sidearrows {
+    color: #583E28;
+}
+
 body {
 	font-family: sans-serif;
 	font-size: 12px;
