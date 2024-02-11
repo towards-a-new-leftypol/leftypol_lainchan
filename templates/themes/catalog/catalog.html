@@ -50,9 +50,7 @@
 	</div>
 	<br></br>
         <div class="threads">
-                <div id="Grid">
-                {% for post in recent_posts %}
-                        <div class="mix"
+                <div id="Grid">{% for post in recent_posts %}<div class="mix"
 				data-reply="{{ post.replies }}"
 				 data-bump="{{ post.bump }}"
 				 data-time="{{ post.time }}"
