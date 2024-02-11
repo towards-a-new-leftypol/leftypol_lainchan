@@ -52,7 +52,7 @@
         <div class="threads">
                 <div id="Grid">
                 {% for post in recent_posts %}
-                        <div class="mix"
+                        <div class=""
 				data-reply="{{ post.replies }}"
 				 data-bump="{{ post.bump }}"
 				 data-time="{{ post.time }}"
@@ -70,7 +70,9 @@
                                                  id="img-{{ post.id }}" data-subject="{% if post.subject %}{{ post.subject|e }}{% endif %}" data-name="{{ post.name|e }}" data-muhdifference="{{ post.muhdifference }}" class="{{post.board}} thread-image" title="{{post.bump|date('%b %d %H:%M')}}">
                                         </a>
                                                 <div class="replies">
-                                                  <span>R:</span><strong>{{ post.replies }}</strong><span> / I: </span><strong>{{ post.images }}{% if post.sticky %} (sticky){% endif %}{% if post.sage %} (sage){% endif %}{% if (config.reply_limit > 0) and (post.replies >= config.reply_limit) %} (full){% endif %}{% if post.locked %} <span class="fa fa-lock">&nbsp;</span>{% endif %}</strong>
+                                                  <div class="meta">
+                                                    <span>R: </span><b>{{ post.replies }}</b><span> / I: </span><b>{{ post.images }}{% if post.sticky %} (sticky){% endif %}{% if post.sage %} (sage){% endif %}{% if (config.reply_limit > 0) and (post.replies >= config.reply_limit) %} (full){% endif %}{% if post.locked %} <span class="fa fa-lock">&nbsp;</span>{% endif %}</b>
+                                                  </div>
                                                         {% if post.subject %}
 								<p class="intro">
 									<span class="subject">
