@@ -887,14 +887,16 @@ pre {
 }
 
 .theme-catalog div.grid-size-vsmall img {
-  max-height: 33%;
-  max-width: 95%
+  max-height: 80px;
+  max-width: 80px;
 }
 
 .theme-catalog div.grid-size-vsmall {
-  min-width:90px;
+  min-width: 90px;
   max-width: 90px;
   max-height: 148px;
+  font-size: 11px;
+  margin-bottom: 10px;
 }
 
 .theme-catalog div.grid-size-small img {
