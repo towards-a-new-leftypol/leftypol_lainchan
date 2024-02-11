@@ -194,3 +194,35 @@ table thead th {
     color: #ACACAC;
     border: 1px solid #117743;
 }
+
+/*
+ * catalog view fixes
+ */
+
+.theme-catalog div.thread {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    margin-right: 4px;
+    padding: 2px;
+}
+
+.theme-catalog div.grid-size-small {
+     width: 140px;
+     max-width: 140px;
+     height: 192px;
+ }
+
+.theme-catalog div.grid-size-small img,
+.theme-catalog div.grid-size-vsmall img {
+    max-height: 33%;
+    max-width: 95%;
+}
+
+.theme-catalog div.grid-size-vsmall img {
+    max-height: 49px;
+}
+
+.theme-catalog .thread .meta {
+    font-size: 10pt;
+}
