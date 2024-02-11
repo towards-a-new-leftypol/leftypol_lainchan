@@ -1,11 +1,12 @@
 /*Lainchan*/
 
-div.sidearrows {
-    color: #b7c5d9;
-    float: left;
-    margin-right: 2px;
-    margin-top: 0;
-    margin-left: 2px;
+div.sidearrows{
+  /*display:none;*/
+  color: #b7c5d9;
+  float: left;
+  margin-right: 2px;
+  margin-top: 0;
+  margin-left: 2px;
 }
 
 img {
@@ -34,6 +35,7 @@ html, body {
 .post-image{
   max-width: 94%!important;
 }
+
 select{
   float:right;
 }
@@ -51,7 +53,6 @@ div.boardlist.bottom {
 }
 
 img.banner, img.board_image {
-
    max-width: 100vw;
 
 }
@@ -850,9 +851,8 @@ pre {
   float: none!important;
   margin: auto;
   max-height: 150px;
-  max-width: 200px;
+  max-width: 150px;
   box-shadow: 0 0 4px rgba(0,0,0,0.55);
-  border: 2px solid rgba(153,153,153,0);
 }
 
 .theme-catalog div.thread {
@@ -869,8 +869,6 @@ pre {
   position: relative;
   font-size: 11px;
   max-height: 300px;
-  background: rgba(182, 182, 182, 0.12);
-  border: 2px solid rgba(111, 111, 111, 0.34);
   max-height:300px;
 }
 
@@ -903,8 +901,10 @@ pre {
 }
 
 .theme-catalog div.grid-size-small {
-  min-width:140px; max-width: 140px;
-  max-height: 192px;
+  min-width: 50px;
+  min-height: 50px;
+  max-width: 150px;
+  max-width: 150px;
 }
 
 .theme-catalog div.grid-size-medium img {
