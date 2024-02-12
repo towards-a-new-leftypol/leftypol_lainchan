@@ -915,6 +915,7 @@ pre {
 
 .theme-catalog div.grid-size-small {
     width: 180px;
+    min-width: 180px;
 }
 
 .theme-catalog div.grid-size-medium img {
