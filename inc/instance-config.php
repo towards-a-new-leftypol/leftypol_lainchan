@@ -69,7 +69,8 @@ $config['custom_categories'] = array(
         'Leftypedia' => 'https://leftypedia.org/',
         'Official chat room' => 'https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net',
         'Gitea instance' => 'https://git.leftychan.net',
-        'Rules' => 'rules.html'
+        'Rules' => 'rules.html',
+        'Search' => 'search.php',
     ),
     'Learning resources and blogs' => array(
         'Michael Roberts\' blog' => 'https://thenextrecession.wordpress.com/',
@@ -565,5 +566,5 @@ $config['filters'][] = array(
     'message' => 'Url shorteners are not allowed'
 );
 
-$config['global_message'] = '<p><a href="https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net" class="redtext"><span class="heading">Matrix</span></a></p><p><a href="ircs://irc.leftychan.net:6697/#leftychan" class="redtext"><span class="heading">IRC Chat</span></a></p><p><a href="mumble://leftychan.net" class="redtext"><span class="heading">Mumble</span></a></p><p><a href="https://t.me/+RegtyzzrE0M1NDMx" class="red text"><span class="heading">Telegram</a></span></p><p><a href="https://discord.gg/AcZeFKXPmZ" class="redtext"><span class="heading">Discord</a></span></p>';
+$config['global_message'] = '<span><a href="https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net" class="">Matrix</a></span> &nbsp; <span><a href="ircs://irc.leftychan.net:6697/#leftychan" class="">IRC Chat</a></span> &nbsp; <span><a href="mumble://leftychan.net" class="">Mumble</a></span> &nbsp; <span><a href="https://t.me/+RegtyzzrE0M1NDMx" class="">Telegram</a></span> &nbsp; <span><a href="https://discord.gg/AcZeFKXPmZ" class="">Discord</a></span>';
 $config['debug'] = false;
