@@ -865,6 +865,7 @@ pre {
   overflow: hidden;
   position: relative;
   font-size: 10pt;
+  padding-top: 5px;
   margin-top: 5px;
   margin-bottom: 20px;
 }
