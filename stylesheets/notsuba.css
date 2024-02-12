@@ -89,4 +89,12 @@ border-color: #B0C2B9;
 
 div.boardlist {
 color: #608673;
+background: #e9d1be;
+border-color: #dcae9b;
+}
+
+.bar {
+color: #608673;
+background: #e9d1be;
+border-color: #dcae9b;
 }
