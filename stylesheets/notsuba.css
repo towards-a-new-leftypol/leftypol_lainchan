@@ -98,3 +98,15 @@ color: #608673;
 background: #e9d1be;
 border-color: #dcae9b;
 }
+
+.theme-catalog div.thread:hover {
+background: none;
+}
+
+#update_secs {
+    display: none;
+}
+
+.theme-catalog div.grid-size-small {
+     min-width: 180px;
+ }
