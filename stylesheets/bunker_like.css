@@ -226,3 +226,7 @@ table thead th {
 .theme-catalog .thread .meta {
     font-size: 10pt;
 }
+
+.theme-catalog .thread.grid-size-small .replies {
+    padding: 0;
+}
