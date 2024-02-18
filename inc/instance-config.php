@@ -560,7 +560,7 @@ $config['filters'][] = array(
 
 $config['filters'][] = array(
     'condition' => array(
-        'body'  => '/((https)?:\/\/)?[\w-]{2,6}\.[a-z]{2,4}\/\w{2,8}(\s|$)/i', // url shorteners are not allowed
+        'body'  => '/(^|\s)((https?):\/\/)?[\w-]{2,6}\.[a-z]{2,4}\/\w{2,8}/i', // url shorteners are not allowed
     ),
     'action' => 'reject',
     'message' => 'Url shorteners are not allowed'
