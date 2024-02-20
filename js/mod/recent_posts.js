@@ -74,7 +74,7 @@ $().ready(() => {
                         }
 
                         updatePageNext()
-                        LCNSite.INSTANCE.setUnseen(LCNSite.INSTANCE.getUnseen() + postWrapper.length)
+                        LCNSite.INSTANCE.setUnseen(LCNSite.INSTANCE.getUnseen() + postWrappers.length)
                     }
                   })
                   .catch(error => {
