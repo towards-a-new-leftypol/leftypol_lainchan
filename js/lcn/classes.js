@@ -4,7 +4,7 @@
  */
 
 globalThis.LCNSite = class LCNSite {
-    static INSTANCE = new this()
+    static INSTANCE = new this();
 
     #isModerator = document.body.classList.contains("is-moderator");
     #isThreadPage = document.body.classList.contains("active-thread");
