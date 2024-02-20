@@ -179,6 +179,7 @@ globalThis.LCNThread = class LCNThread {
     "getThread" () { return this.#thread; }
     "getOP" () { return this.#op; }
     "getPosts" () { return Array.prototype.map.apply(this.#thread.querySelectorAll(".post"), [ el => LCNPost.assign(el) ]); }
+    "getReplies" () { return Array.prototype.map.apply(this.#thread.querySelectorAll(".post:not(.op)"), [ el => LCNPost.assign(el) ]); }
 
     "getParent" () { return this.#parent; }
     "__setParent" (inst) { return this.#parent = inst; }
