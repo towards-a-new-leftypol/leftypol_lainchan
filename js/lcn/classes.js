@@ -4,7 +4,7 @@
  */
 
 globalThis.LCNSite = class LCNSite {
-    static INSTANCE = new this();
+    static INSTANCE = null;
 
     #isModerator = document.body.classList.contains("is-moderator");
     #isThreadPage = document.body.classList.contains("active-thread");
@@ -264,6 +264,8 @@ globalThis.LCNPostContainer.all = () => Array.prototype.map.apply(document.query
 globalThis.LCNPostWrapper.all = () => Array.prototype.map.apply(document.querySelectorAll(".post-wrapper"), [ node => LCNPostWrapper.assign(node) ]);
 
 $().ready(() => {
+    LCNSite.INSTANCE = new LCNSite();
+
     const clazzes = [ LCNPost, LCNThread, LCNPostContainer, LCNPostWrapper ]
     for (const clazz of clazzes) {
         clazz.forEach = fn => clazz.all().forEach(fn)
