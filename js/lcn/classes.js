@@ -274,7 +274,7 @@ $().ready(() => {
     // XXX: May be a cleaner way to do this but this should be fine for now.
     for (const clazz of clazzes) { void clazz.all(); }
     $(document).on("new_post", (e, post) => {
-        if (LCNSite.INSTANCE.isRecentsPage()) {
+        if (LCNSite.INSTANCE.isModRecentsPage()) {
             void LCNPostWrapper.all()
         } else {
             void LCNPostContainer.all()
