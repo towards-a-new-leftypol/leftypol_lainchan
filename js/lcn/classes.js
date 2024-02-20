@@ -25,6 +25,34 @@ globalThis.LCNSite = class LCNSite {
     "isModRecentsPage" () { return this.#isModRecentsPage; }
     "isModReportsPage" () { return this.#isModReportsPage; }
     "isModLogPage" () { return this.#isModLogPage; }
+
+    #unseen = 0;
+    "getUnseen" () { return this.#unseen; }
+    "clearUnseen" () { if (this.#unseen != 0) { this.setUnseen(0); } }
+    "setUnseen" (int) {
+        const bool = !!int
+        if (bool != !!this.#unseen) {
+            this.setFaviconType(bool ? "reply" : null)
+        }
+        this.#unseen = int
+        this.#doTitleUpdate()
+    }
+
+    #pageTitle = document.title;
+    "getTitle" () { return this.#pageTitle; }
+    "setTitle" (title) { this.#pageTitle = title; this.#doTitleUpdate(); }
+    #doTitleUpdate () { document.title = (this.#unseen > 0 ? `(${this.#unseen}) ` : "") + this.#pageTitle; }
+
+    #favicon = document.querySelector("head > link[rel=\"shortcut icon\"]");
+    "setFaviconType" (type=null) {
+        if (this.#favicon == null) {
+            this.#favicon = document.createElement("link")
+            this.#favicon.rel = "shortcut icon"
+            document.head.appendChild(this.#favicon)
+        }
+
+        this.#favicon.href = `/favicon${type ? "-" + type : ""}.ico`
+    }
 }
 
 globalThis.LCNPostInfo = class LCNPostInfo {
@@ -86,11 +114,17 @@ globalThis.LCNPostInfo = class LCNPostInfo {
     "getIP" () { return this.#ip; }
     "getCapcode" () { return this.#capcode; }
     "getSubject" () { return this.#subject; }
+    "getCreatedAt" () { return this.#createdAt; }
 
     "isSticky" () { return this.#isSticky; }
     "isLocked" () { return this.#isLocked; }
     "isThread" () { return this.#isThread; }
     "isReply" () { return this.#isReply; }
+
+    "is" (info) {
+        assert.ok(info, "Must be LCNPost.")
+        return this.getBoardId() == info.getBoardId() && this.getPostId() == info.getPostId()
+    }
 
 }
 
@@ -175,8 +209,8 @@ globalThis.LCNThread = class LCNThread {
         this.#op.__setParent(this)
     }
 
-    "getThread" () { return this.#thread; }
-    "getOP" () { return this.#op; }
+    "getElement" () { return this.#thread; }
+    "getContent" () { return this.#op; }
     "getPosts" () { return Array.prototype.map.apply(this.#thread.querySelectorAll(".post"), [ el => LCNPost.assign(el) ]); }
     "getReplies" () { return Array.prototype.map.apply(this.#thread.querySelectorAll(".post:not(.op)"), [ el => LCNPost.assign(el) ]); }
 
@@ -250,7 +284,13 @@ globalThis.LCNPostWrapper = class LCNPostWrapper {
         this.#content.__setParent(this)
     }
 
-    "getWrapper" () { return this.#wrapper; }
+    "getPost" () {
+        const post = this.getContent().getContent()
+        assert.ok(post instanceof LCNPost, "Post should be LCNPost.")
+        return post
+    }
+
+    "getElement" () { return this.#wrapper; }
     "getContent" () { return this.#content; }
     "getEitaId" () { return this.#eitaId; }
     "getEitaHref" () { return this.#eitaHref; }
