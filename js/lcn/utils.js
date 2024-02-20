@@ -1,4 +1,3 @@
-"use-strict";
 /**
  * @file Utils for leftychan javascript.
  * @author jonsmy
