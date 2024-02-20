@@ -1,4 +1,3 @@
-"use-strict";
 /**
  * @file Supporting classes for leftychan javascript.
  * @author jonsmy
