@@ -40,10 +40,6 @@
             let liveUpdateIntervalId = null
             let liveUpdateFaviconChanged = false
 
-            const getChanComment = el => Array.prototype.find.apply(el.children, [
-                el => el.classList.contains("thread") || el.classList.contains("postcontainer")
-            ])
-
             const parser = new DOMParser()
             const fetchLatest = async () => {
                 const res = await fetch(`/mod.php?/recent/${kPullXPosts}`, {
@@ -53,10 +49,12 @@
                 if (res.ok) {
                     const dom = parser.parseFromString(await res.text(), "text/html")
                     const posts = Array.from(dom.querySelectorAll("body > .post-wrapper[data-board]"))
+                    const eita = Array.prototype.find.apply(el.children, [ el => el.classList.contains("eita-link") ])
                     return posts.map(el => ({
                         "element": el,
-                        "href": Array.prototype.find.apply(el.children, [ el => el.classList.contains("eita-link") ]).href,
-                        "id": getChanComment(el).id
+                        "post": el.querySelector(".thread, .post"),
+                        "href": eita.href,
+                        "id": eita.id
                     }))
                 } else {
                     return []
@@ -84,7 +82,7 @@
 
                             // XXX: Fire ::new_post for chanx listeners
                             for (const post of posts.slice(0, kRecentXPosts)) {
-                                $(document).trigger("new_post", [ getChanComment(post.element) ])
+                                $(document).trigger("new_post", [ post.post ])
                             }
 
                             updatePageNext()
