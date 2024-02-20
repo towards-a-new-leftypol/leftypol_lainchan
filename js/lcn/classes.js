@@ -11,10 +11,10 @@ globalThis.LCNSite = class LCNSite {
     #isBoardPage = document.body.classList.contains("active-board");
     #isCatalogPage = document.body.classList.contains("active-catalog");
 
-    #isModPage = location.pathname == "/mod.php"
-    #isModRecentsPage = this.#isModPage && (location.search == "?/recent" || location.search.startsWith("?/recent/"))
-    #isModReportsPage = this.#isModPage && (location.search == "?/reports" || location.search.startsWith("?/reports/"))
-    #isModLogPage   = this.#isModPage && (location.search == "?/log" || location.search.startsWith("?/log/"))
+    #isModPage = location.pathname == "/mod.php";
+    #isModRecentsPage = this.#isModPage && (location.search == "?/recent" || location.search.startsWith("?/recent/"));
+    #isModReportsPage = this.#isModPage && (location.search == "?/reports" || location.search.startsWith("?/reports/"));
+    #isModLogPage   = this.#isModPage && (location.search == "?/log" || location.search.startsWith("?/log/"));
 
     "isModerator" () { return this.#isModerator; }
     "isThreadPage" () { return this.#isThreadPage; }
@@ -250,7 +250,7 @@ globalThis.LCNPostWrapper = class LCNPostWrapper {
         this.#content.__setParent(this)
     }
 
-    "getWrapper" () { return this.#wrapper }
+    "getWrapper" () { return this.#wrapper; }
     "getContent" () { return this.#content; }
     "getEitaId" () { return this.#eitaId; }
     "getEitaHref" () { return this.#eitaHref; }
@@ -258,10 +258,10 @@ globalThis.LCNPostWrapper = class LCNPostWrapper {
 
 }
 
-globalThis.LCNPost.all = () => Array.prototype.map.apply(document.querySelectorAll(".post:not(.grid-li)"), [ node => LCNPost.assign(node) ])
-globalThis.LCNThread.all = () => Array.prototype.map.apply(document.querySelectorAll(".thread:not(.grid-li)"), [ node => LCNThread.assign(node) ])
-globalThis.LCNPostContainer.all = () => Array.prototype.map.apply(document.querySelectorAll(".postcontainer"), [ node => LCNPostContainer.assign(node) ])
-globalThis.LCNPostWrapper.all = () => Array.prototype.map.apply(document.querySelectorAll(".post-wrapper"), [ node => LCNPostWrapper.assign(node) ])
+globalThis.LCNPost.all = () => Array.prototype.map.apply(document.querySelectorAll(".post:not(.grid-li)"), [ node => LCNPost.assign(node) ]);
+globalThis.LCNThread.all = () => Array.prototype.map.apply(document.querySelectorAll(".thread:not(.grid-li)"), [ node => LCNThread.assign(node) ]);
+globalThis.LCNPostContainer.all = () => Array.prototype.map.apply(document.querySelectorAll(".postcontainer"), [ node => LCNPostContainer.assign(node) ]);
+globalThis.LCNPostWrapper.all = () => Array.prototype.map.apply(document.querySelectorAll(".post-wrapper"), [ node => LCNPostWrapper.assign(node) ]);
 
 $().ready(() => {
     const clazzes = [ LCNPost, LCNThread, LCNPostContainer, LCNPostWrapper ]
