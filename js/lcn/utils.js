@@ -3,7 +3,7 @@
  * @author jonsmy
  */
 
-const arrLast = arr => arr[arr.length-1] ?? undefined
+const arrLast = arr => arr[arr.length-1] ?? undefined;
 const getConfigBool = (k,d) => { const v = localStorage.getItem(`jon-modjs::${k}`); return v ? v == "1" : d; }
 const writeCSSStyle = textContent => {
     const style = document.createElement("style")
