@@ -31,3 +31,19 @@ const assert = {
         }
     }
 }
+
+AbortSignal.any ??= function (signals) {
+    const controller = new AbortController()
+    const abortFn = () => {
+        for (const signal of signals) {
+            signal.removeEventListener("abort", abortFn)
+        }
+        controller.abort()
+    }
+
+    for (const signal of signals) {
+        signal.addEventListener("abort", abortFn)
+    }
+
+    return controller.signal
+}
