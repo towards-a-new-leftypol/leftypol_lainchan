@@ -416,6 +416,10 @@ $config['additional_javascript_defer'][] = 'js/expand.js';
 $config['additional_javascript_defer'][] = 'js/webm-settings.js';
 $config['additional_javascript_defer'][] = 'js/expand-video.js';
 
+// New LCN scripts
+$config['additional_javascript'][] = 'js/lcn/utils.js';
+$config['additional_javascript'][] = 'js/lcn/classes.js';
+
 $config['additional_javascript_compile'] = true;
 $config['minify_js'] = true;
 
