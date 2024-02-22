@@ -3,7 +3,7 @@
  * @author jonsmy
  */
 $().ready(() => {
-    if (LCNSite.INSTANCE.isModRecentsPage()) {
+    if (LCNSite.INSTANCE.isModRecentsPage() && !location.search.includes("&last")) {
         const loadIntFromStorage = key => {
             const value = localStorage.getItem(`jon-liveposts::${key}`)
             return value != null ? parseInt(value) : null
