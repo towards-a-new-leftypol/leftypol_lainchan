@@ -254,7 +254,14 @@ table.board-list-table .board-tags .board-cell:hover {
 table.board-list-table tr:nth-of-type( even ) .board-tags .board-cell {
 	background: #333333;
 }
+.theme-catalog div.thread {
+    box-sizing: border-box;
+    background: #1E1E1E;
+    border: #1E1E1E 1px solid;
+}
+
 .theme-catalog div.thread:hover {
-	background: #333333;
-	border: #555555 1px solid;
+    background: #333333;
+    border: #555555 1px solid;
+    box-sizing: border-box;
 }
