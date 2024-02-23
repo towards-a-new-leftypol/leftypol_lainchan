@@ -54,9 +54,6 @@ a.post_no:hover {
 div.post.reply {
 	background: #333333;
 	border: #555555 1px solid;
-
-
-
 }
 div.post.reply.highlighted {
 	background: #555;
@@ -256,4 +253,8 @@ table.board-list-table .board-tags .board-cell:hover {
 }
 table.board-list-table tr:nth-of-type( even ) .board-tags .board-cell {
 	background: #333333;
+}
+.theme-catalog div.thread:hover {
+	background: #333333;
+	border: #555555 1px solid;
 }
