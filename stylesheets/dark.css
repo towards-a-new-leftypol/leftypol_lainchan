@@ -265,3 +265,6 @@ table.board-list-table tr:nth-of-type( even ) .board-tags .board-cell {
     border: #555555 1px solid;
     box-sizing: border-box;
 }
+.theme-catalog div.grid-size-small {
+    max-width: 140px;
+}
