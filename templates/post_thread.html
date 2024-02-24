@@ -100,7 +100,12 @@
 {% endfor %}
 <br class="clear"/>
 {% if not index %}
-<div id="uniqueip"><span style="display: block; float: left;">Unique IPs: {{ iparray|length  }} </span></div>
+<div class="lcn_threadstats">
+	<div class="lcn_threadstats_container" id="lcn_threadstats_l">
+		<span>Unique IPs: <span id="lcn_uniqueips">{{ iparray|length }}</span></span>
+	</div>
+	<div class="lcn_threadstats_container" id="lcn_threadstats_r"></div>
+</div>
 {% endif %}
 {% if hr %}<hr/>{% endif %}
 </div>
