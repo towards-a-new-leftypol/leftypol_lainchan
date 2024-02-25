@@ -59,7 +59,7 @@
 	<div class="threadlinks">
 		<span class="threadlink"><a href="{{ return }}">{% trans %}Return{% endtrans %}</a></span>
 		{% if config.catalog_link %}
-		<span class="threadlink"><a href="#top">{% trans %}Top{% endtrans %}</a></span>
+		<span class="threadlink"><a href="{{ config.root }}{{ board.dir }}{{ config.catalog_link }}">{% trans %}Catalog{% endtrans %}</a></span>
 		{% endif %}
 		<span class="threadlink"><a href="#bottom">{% trans %}Bottom{% endtrans %}</a></span>
 	</div>
