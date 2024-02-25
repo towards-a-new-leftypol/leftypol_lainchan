@@ -51,7 +51,7 @@ $().ready(() => {
                 if (stats != null) {
                     threadStats = stats
                 } else {
-                    threadState = "Pruned"
+                    threadState = String(res.status)
                 }
             } else {
                 throw new Error(`Server responded with non-OK status '${res.status}'`)
@@ -98,7 +98,7 @@ $().ready(() => {
                     updateSecondsByTSLP(lastPostC.getContent().getInfo())
                 }
             } else if (res.status == 404) {
-                threadState = "Pruned"
+                threadState = String(res.status)
             } else {
                 throw new Error(`Server responded with non-OK status '${res.status}'`)
             }
