@@ -403,8 +403,6 @@ $config['additional_javascript'][] = 'js/options/user-css.js';
 $config['additional_javascript'][] = 'js/options/user-js.js';
 $config['additional_javascript'][] = 'js/flag-preview.js';
 $config['additional_javascript'][] = 'js/file-selector.js';
-$config['additional_javascript_defer'][] = 'js/auto-reload.js';
-$config['additional_javascript_defer'][] = 'js/thread-stats.js';
 $config['additional_javascript_defer'][] = 'js/image-hover.js';
 
 
@@ -419,6 +417,7 @@ $config['additional_javascript_defer'][] = 'js/expand-video.js';
 // New LCN scripts
 $config['additional_javascript'][] = 'js/lcn/utils.js';
 $config['additional_javascript'][] = 'js/lcn/classes.js';
+$config['additional_javascript'][] = 'js/lcn/thread_autoreloader.js';
 
 $config['additional_javascript_compile'] = true;
 $config['minify_js'] = true;
