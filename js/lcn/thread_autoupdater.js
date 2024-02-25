@@ -122,7 +122,6 @@ $().ready(() => {
                 if (secondsCounter < 0) {
                     const thread = LCNThread.first()
                     try {
-                        console.debug("fetch updates!")
                         await updateStatsFn(thread)
                         if (threadState == null && threadStats.last_modified > (thread.getReplies().at(-1).getInfo().getCreatedAt().getTime() / 1000)) {
                             await updateThreadFn(thread)
