@@ -422,7 +422,7 @@ globalThis.LCNSettingsSubcategory = class LCNSettingsSubcategory {
     #id = null;
 
     #fieldset = null;
-    #legend = null
+    #legend = null;
     #label = null;
 
     static "for" (tab_id, id) {
