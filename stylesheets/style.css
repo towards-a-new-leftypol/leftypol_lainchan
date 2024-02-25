@@ -2054,6 +2054,10 @@ span.orangeQuote {
     padding: 0px 3px;
 }
 
+.bar-collection .threadlinks:not(:first-child) {
+    margin-left:4px
+}
+
 .lcn-bar .threadlinks:before,
 .lcn-bar .threadlinks:after,
 .lcn-bar .threadlinks .threadlink:not(:first-child):before {
