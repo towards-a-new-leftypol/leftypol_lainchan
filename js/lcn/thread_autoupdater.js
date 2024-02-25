@@ -71,7 +71,7 @@ $().ready(() => {
             if (res.ok) {
                 const dom = parser.parseFromString(await res.text(), "text/html")
                 const livePCList = Array.prototype.map.apply(dom.querySelectorAll(`#thread_${threadPost.getInfo().getThreadId()} > .postcontainer`), [ pc => LCNPostContainer.assign(pc) ])
-                const documentPCList = threadReplies.map(p => p.getParent())
+                const documentPCList = [ threadPost, ...threadReplies.map(p => p.getParent()) ]
                 const missingPCList = []
 
                 for (const pc of livePCList.reverse()) {
