@@ -1,4 +1,4 @@
-	/**
+/**
  * @file Utils for leftychan javascript.
  * @author jonsmy
  */
