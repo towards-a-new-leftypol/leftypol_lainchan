@@ -87,7 +87,7 @@ globalThis.LCNSite = class LCNSite {
     "getThreadStatsLContainer" () { return document.getElementById("lcn-threadstats-l"); }
     "getThreadStatsRContainer" () { return document.getElementById("lcn-threadstats-r"); }
 
-    #generatedStyle = null
+    #generatedStyle = null;
     "writeCSSStyle" (origin, stylesheet) {
         if (this.#generatedStyle == null && (this.#generatedStyle = document.querySelector("head > style.generated-css")) == null) {
             this.#generatedStyle = document.createElement("style")
