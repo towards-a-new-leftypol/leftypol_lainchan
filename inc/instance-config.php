@@ -417,7 +417,7 @@ $config['additional_javascript_defer'][] = 'js/expand-video.js';
 // New LCN scripts
 $config['additional_javascript'][] = 'js/lcn/utils.js';
 $config['additional_javascript'][] = 'js/lcn/classes.js';
-$config['additional_javascript'][] = 'js/lcn/thread_autoreloader.js';
+$config['additional_javascript'][] = 'js/lcn/thread_autoupdater.js';
 
 $config['additional_javascript_compile'] = true;
 $config['minify_js'] = true;
