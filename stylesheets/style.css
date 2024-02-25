@@ -2022,12 +2022,12 @@ span.orangeQuote {
     justify-content: space-between;
 }
 
-.lcn-threadstats_container {
+.lcn-threadstats-container {
     display: flex;
     gap: 8px;
 }
 
-.lcn-threadstats_container > :not(:first-child):before {
+.lcn-threadstats-container > :not(:first-child):before {
     content: ' | ';
 }
 
