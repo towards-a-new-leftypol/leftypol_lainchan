@@ -2030,3 +2030,52 @@ span.orangeQuote {
 .lcn_threadstats_container > :not(:first-child):before {
     content: ' | ';
 }
+
+.lcn-setting-entry {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5em;
+}
+
+.lcn-bar {
+    display: flex!important;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+#thread-update-status {
+    display: inline-block;
+    width: 2.5em;
+    text-align: right;
+    overflow-x: clip;
+}
+
+.bar-collection {
+    padding: 0px 3px;
+}
+
+.lcn-bar .threadlinks:before,
+.lcn-bar .threadlinks:after,
+.lcn-bar .threadlinks .threadlink:not(:first-child):before {
+    vertical-align: middle;
+}
+
+.threadlinks:before {
+    content: '[ ';
+}
+
+.threadlinks:after {
+    content: ' ]';
+}
+
+.threadlinks .threadlink:not(:first-child):before {
+    content: ' / ';
+}
+
+.indielinks-row .indielinks:not(:first-child):before {
+    content: ' | ';
+}
+
+.indielinks .indielink:not(:first-child) {
+    margin-left: 6px;
+}
