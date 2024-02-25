@@ -2017,17 +2017,17 @@ span.orangeQuote {
 }
 
 /* LCN */
-.lcn_threadstats {
+.lcn-threadstats {
     display: flex;
     justify-content: space-between;
 }
 
-.lcn_threadstats_container {
+.lcn-threadstats_container {
     display: flex;
     gap: 8px;
 }
 
-.lcn_threadstats_container > :not(:first-child):before {
+.lcn-threadstats_container > :not(:first-child):before {
     content: ' | ';
 }
 

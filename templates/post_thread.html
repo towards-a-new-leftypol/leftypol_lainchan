@@ -100,11 +100,11 @@
 {% endfor %}
 <br class="clear"/>
 {% if not index %}
-<div class="lcn_threadstats">
-	<div class="lcn_threadstats_container" id="lcn_threadstats_l">
-		<span>Unique IPs: <span id="lcn_uniqueips">{{ iparray|length }}</span></span>
+<div class="lcn-threadstats">
+	<div class="lcn-threadstats-container" id="lcn-threadstats-l">
+		<span>Unique IPs: <span id="lcn-uniqueips">{{ iparray|length }}</span></span>
 	</div>
-	<div class="lcn_threadstats_container" id="lcn_threadstats_r"></div>
+	<div class="lcn-threadstats-container" id="lcn-threadstats-r"></div>
 </div>
 {% endif %}
 {% if hr %}<hr/>{% endif %}
