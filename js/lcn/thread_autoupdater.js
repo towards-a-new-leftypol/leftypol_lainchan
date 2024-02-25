@@ -93,9 +93,6 @@ $().ready(() => {
                     }
 
                     LCNSite.INSTANCE.setUnseen(LCNSite.INSTANCE.getUnseen() + missingPCList.length)
-                    secondsCounter = 11
-                } else {
-                    updateSecondsByTSLP(lastPostC.getContent().getInfo())
                 }
             } else if (res.status == 404) {
                 threadState = String(res.status)
@@ -128,15 +125,14 @@ $().ready(() => {
                         }
 
                         const threadEl = thread.getElement()
-
                         statUniqueIPs.innerText = threadStats.unique_ips
                         statReplies.innerText = thread.getReplies().length
                         statFiles.innerText = threadEl.querySelectorAll(".files .file").length - threadEl.querySelectorAll(".files .file .post-image.deleted").length
                         statPage.innerText = threadStats.page + 1
+                        updateSecondsByTSLP(thread.getReplies().at(-1).getInfo())
                     } catch (error) {
                         console.error("threadAutoUpdater: Failed while processing update. Probably a network error", error)
-                    } finally {
-                        secondsCounter = secondsCounter > 0 ? secondsCounter : 60
+                        secondsCounter = 60
                     }
                 }
 
