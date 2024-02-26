@@ -395,8 +395,10 @@ class Post extends PostProps {
             $this->$key = $value;
         }
 
-        if (isset($this->files) && $this->files)
+        if (isset($this->files) && $this->files
+                && is_string($this->files)) {
             $this->files = @json_decode($this->files);
+        }
         
         $this->subject = utf8tohtml($this->subject);
         $this->name = utf8tohtml($this->name);
