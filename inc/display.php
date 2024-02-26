@@ -384,6 +384,7 @@ class Post extends PostProps {
     private $raw_body;
     private $has_file;
     private $tracked_cites;
+    private $filesize;
 
     public function __construct($post, $root=null, $mod=false) {
         global $config;

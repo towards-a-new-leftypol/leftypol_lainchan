@@ -255,7 +255,7 @@ globalThis.LCNThread = class LCNThread {
         this.#element = thread
         this.#op = LCNPost.assign(this.#element.querySelector(".post.op"))
 
-        assert.equal(this.#op.getParent(), null, "Op should not have parent.")
+        //assert.equal(this.#op.getParent(), null, "Op should not have parent.")
         this.#op.__setParent(this)
     }
 
@@ -401,10 +401,7 @@ globalThis.LCNToggleSetting = class LCNToggleSetting extends LCNSetting {
         const div = document.createElement("div")
         const chk = document.createElement("input")
         const txt = document.createElement("label")
-        const id = `${this.#id}_input`
-        txt.for = id
         txt.innerText = this.getLabel()
-        chk.id = id
         chk.type = "checkbox"
         chk.checked = this.getValue()
         chk.addEventListener("click", e => {

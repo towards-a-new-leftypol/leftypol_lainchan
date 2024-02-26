@@ -1475,7 +1475,9 @@ function handle_post(){
         
     }
 
-    buildThread($post['op'] ? $id : $post['thread']);
+    $thread_id = $post['op'] ? $id : $post['thread'];
+
+    buildThread($thread_id);
     
     if ($config['syslog'])
         _syslog(LOG_INFO, 'New post: /' . $board['dir'] . $config['dir']['res'] .
@@ -1487,12 +1489,13 @@ function handle_post(){
         header('Location: ' . $redirect, true, $config['redirect_http']);
     } else {
         header('Content-Type: text/json; charset=utf-8');
-        $api = new Api();
+
         echo json_encode(array(
             'redirect' => $redirect,
             'noko' => $noko,
             'id' => $id,
-            'post' => $api->translatePost(new Post($post))
+            'post' => (new Post($post))->build(),
+            'thread_id' => $thread_id
         ));
     }
     
