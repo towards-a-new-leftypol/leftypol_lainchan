@@ -380,6 +380,10 @@ class PostProps {
 
 
 class Post extends PostProps {
+    private $op;
+    private $raw_body;
+    private $has_file;
+    private $tracked_cites;
 
     public function __construct($post, $root=null, $mod=false) {
         global $config;

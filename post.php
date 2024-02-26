@@ -458,7 +458,6 @@ function handle_post(){
     global $config,$dropped_post,$board, $mod,$pdo;
 
     if (!isset($_POST['body'], $_POST['board']) && !$dropped_post) {
-        print_err('handle_post bot error 1');
         error($config['error']['bot']);
     }
 
@@ -1488,10 +1487,12 @@ function handle_post(){
         header('Location: ' . $redirect, true, $config['redirect_http']);
     } else {
         header('Content-Type: text/json; charset=utf-8');
+        $api = new Api();
         echo json_encode(array(
             'redirect' => $redirect,
             'noko' => $noko,
-            'id' => $id
+            'id' => $id,
+            'post' => $api->translatePost(new Post($post))
         ));
     }
     
