@@ -153,8 +153,10 @@ $().ready(() => {
 
         $(document).on("ajax_after_post", (_, xhr_body) => {
             if (kIsEnabled.getValue() && xhr_body != null) {
+                const thread = LCNThread.first()
                 const dom = parser.parseFromString(xhr_body.thread, "text/html")
-                updateThreadFn(LCNThread.first(), dom)
+                updateThreadFn(thread, dom)
+                updateSecondsByTSLP(thread.getReplies().at(-1).getInfo())
             }
         })
 
