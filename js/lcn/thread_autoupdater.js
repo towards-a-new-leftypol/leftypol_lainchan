@@ -35,7 +35,7 @@ $().ready(() => {
         }
 
         const updateSecondsByTSLP = post_info => {
-            secondsCounter = Math.floor(((Date.now() - post_info.getCreatedAt().getTime()) / 30000))
+            secondsCounter = Math.floor(((Date.now() - post_info.getCreatedAt().getTime()) / 120000))
             secondsCounter = secondsCounter > 1000 ? 1000 : secondsCounter
             secondsCounter = secondsCounter < 11 ? 11 : secondsCounter
         }
@@ -58,43 +58,24 @@ $().ready(() => {
             }
         }
 
-        const handleThreadUpdate = async (thread) => {
-            const threadPost = thread.getContent()
+        const findMissingReplies = (thread_op, thread_dom, thread_latest) => {
+            const lastPostTs = (thread_dom.at(-1)?.getInfo() ?? thread_op).getCreatedAt().getTime()
+            const missing = []
 
-            const res = await fetch(location.href, {
-                "signal": abortable.signal
-            })
-
-            if (res.ok) {
-                const dom = parser.parseFromString(await res.text(), "text/html")
-                const livePCList = Array.prototype.map.apply(dom.querySelectorAll(`#thread_${threadPost.getInfo().getThreadId()} > .postcontainer`), [ pc => LCNPostContainer.assign(pc) ])
-                updateThreadFn(thread, livePCList);
-            } else if (res.status == 404) {
-                threadState = String(res.status)
-            } else {
-                throw new Error(`Server responded with non-OK status '${res.status}'`)
-            }
-        }
-
-        function updateThreadFn(thread, lcn_pc_list) {
-            const threadPost = thread.getContent()
-            const threadReplies = thread.getReplies()
-            const lastPostC = threadReplies.at(-1).getParent()
-            const lastPostTs = lastPostC.getContent().getInfo().getCreatedAt().getTime()
-
-            const livePCList = lcn_pc_list;
-            const documentPCList = [ threadPost, ...threadReplies.map(p => p.getParent()) ]
-            const missingPCList = []
-
-            for (const pc of livePCList.reverse()) {
+            for (const pc of thread_latest.reverse()) {
                 if (pc.getContent().getInfo().getCreatedAt().getTime() > lastPostTs) {
-                    missingPCList.unshift(pc)
+                    missing.unshift(pc)
                 } else {
                     break
                 }
             }
+            return missing
+        }
 
+        const updateRepliesFn = (thread, missingPCList) => {
             if (missingPCList.length) {
+                const documentPCList = [ thread.getContent(), ...(thread.getReplies()).map(p => p.getParent()) ]
+
                 for (const pc of missingPCList) {
                     documentPCList.at(-1).getElement().after(pc.getElement())
                     documentPCList.push(pc)
@@ -106,7 +87,29 @@ $().ready(() => {
 
                 LCNSite.INSTANCE.setUnseen(LCNSite.INSTANCE.getUnseen() + missingPCList.length)
             }
+        }
 
+        const updateThreadFn = async (thread, dom) => {
+            const threadPost = thread.getContent()
+            const threadReplies = thread.getReplies()
+            const missingPCList = findMissingReplies(
+              threadPost,
+              threadReplies, 
+              LCNPostContainer.all(dom.querySelector(`#thread_${threadPost.getInfo().getThreadId()}`)))
+
+            updateRepliesFn(thread, missingPCList)
+        }
+
+        const fetchThreadFn = async () => {
+            const res = await fetch(location.href, { "signal": abortable.signal })
+            if (res.ok) {
+                return parser.parseFromString(await res.text(), "text/html")
+            } else {
+                if (res.status == 404) {
+                    threadState = String(res.status)
+                }
+                throw new Error(`Server responded with non-OK status '${res.status}'`)
+            }
         }
 
         const onTickClean = () => {
@@ -129,7 +132,7 @@ $().ready(() => {
                     try {
                         await updateStatsFn(thread)
                         if (threadState == null && threadStats.last_modified > (thread.getReplies().at(-1).getInfo().getCreatedAt().getTime() / 1000)) {
-                            await handleThreadUpdate(thread)
+                            updateThreadFn(thread, await fetchThreadFn())
                         }
 
                         const threadEl = thread.getElement()
@@ -148,6 +151,20 @@ $().ready(() => {
             }
         }
 
+        $(document).on("ajax_after_post", (_, xhr_body) => {
+            if (kIsEnabled.getValue() && xhr_body != null) {
+                const dom = parser.parseFromString(xhr_body.thread, "text/html")
+                updateThreadFn(LCNThread.first(), dom)
+            }
+        })
+
+        $(document).on("thread_manual_refresh", () => {
+            if (kIsEnabled.getValue() && secondsCounter >= 0) {
+                secondsCounter = 0
+                onTickFn()
+            }
+        })
+
         let floaterLinkBox = null
         const onStateChangeFn = v => {
             onTickClean()
@@ -164,10 +181,7 @@ $().ready(() => {
                     threadUpdateStatus.innerText = "…"
                     threadUpdateLink.addEventListener("click", e => {
                         e.preventDefault()
-                        if (secondsCounter >= 0) {
-                            secondsCounter = 0
-                            onTickFn()
-                        }
+                        $(document).trigger("thread_manual_refresh")
                     })
                     threadUpdateLink.href = "#"
                     threadUpdateLink.appendChild(new Text("Refresh: "))
@@ -228,26 +242,5 @@ $().ready(() => {
 
         kIsEnabled.onChange(onStateChangeFn)
         onStateChangeFn(kIsEnabled.getValue())
-        $(document).on("ajax_after_post", onNewPost);
-
-        function onNewPost(_, post_response) {
-            if (post_response == null) {
-                console.log("onNewPost data is null, can't do anything.");
-                return;
-            }
-
-            const thread_dom = parser.parseFromString(
-                post_response['thread'],
-                "text/html");
-
-            const thread_id_sel = "#thread_" + post_response['thread_id'];
-            const post_containers = [...thread_dom.querySelectorAll(`${thread_id_sel} > .postcontainer`)]
-                .map(elem => LCNPostContainer.assign(elem));
-
-            const thread_elem = document.querySelector(thread_id_sel);
-            const lcn_thread = new LCNThread(thread_elem);
-
-            updateThreadFn(lcn_thread, post_containers);
-        }
     }
 })
