@@ -35,7 +35,7 @@ $().ready(() => {
         }
 
         const updateSecondsByTSLP = post_info => {
-            secondsCounter = Math.floor(((Date.now() - post_info.getCreatedAt().getTime()) / 30000))
+            secondsCounter = Math.floor(((Date.now() - post_info.getCreatedAt().getTime()) / 120000))
             secondsCounter = secondsCounter > 1000 ? 1000 : secondsCounter
             secondsCounter = secondsCounter < 11 ? 11 : secondsCounter
         }
