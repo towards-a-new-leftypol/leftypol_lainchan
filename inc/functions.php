@@ -2303,6 +2303,8 @@ function buildThread($id, $return = false, $mod = false) {
 
     $action = generation_strategy('sb_thread', array($board['uri'], $id));
 
+    $rendered_thread = null;
+
     if ($action == 'rebuild' || $return || $mod) {
         $query = prepare(sprintf("SELECT *,'%s' as board FROM ``posts_%s`` WHERE (`thread` IS NULL AND `id` = :id) OR `thread` = :id ORDER BY `thread`,`id`", $board['uri'],$board['uri']));
         $query->bindValue(':id', $id, PDO::PARAM_INT);
@@ -2323,10 +2325,12 @@ function buildThread($id, $return = false, $mod = false) {
         $hasnoko50 = $thread->postCount() >= $config['noko50_min'];
         $antibot = $mod || $return ? false : create_antibot($board['uri'], $id);
 
+        $rendered_thread = $thread->build();
+
         $body = Element('thread.html', array(
             'board' => $board,
             'thread' => $thread,
-            'body' => $thread->build(),
+            'body' => $rendered_thread,
             'config' => $config,
             'id' => $id,
             'mod' => $mod,
@@ -2364,6 +2368,8 @@ function buildThread($id, $return = false, $mod = false) {
         }
 
         file_write($board['dir'] . $config['dir']['res'] . link_for($thread), $body);
+
+        return $rendered_thread;
     }
 }
 

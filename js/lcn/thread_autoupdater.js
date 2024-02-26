@@ -236,22 +236,18 @@ $().ready(() => {
                 return;
             }
 
-            const post_dom = parser.parseFromString(
-                post_response['post'],
+            const thread_dom = parser.parseFromString(
+                post_response['thread'],
                 "text/html");
 
-            const post_elem = post_dom.querySelector(".postcontainer");
-            console.log(post_elem);
-            const post_container = LCNPostContainer.assign(post_elem);
-            console.log("lcn_post_container:", post_container);
-
             const thread_id_sel = "#thread_" + post_response['thread_id'];
-            const thread = document.querySelector(thread_id_sel);
-            console.log("thread:", thread);
-            const lcn_thread = new LCNThread(thread);
-            console.log("lcn_thread: ", lcn_thread);
+            const post_containers = [...thread_dom.querySelectorAll(`${thread_id_sel} > .postcontainer`)]
+                .map(elem => LCNPostContainer.assign(elem));
 
-            updateThreadFn(lcn_thread, [ post_container ]);
+            const thread_elem = document.querySelector(thread_id_sel);
+            const lcn_thread = new LCNThread(thread_elem);
+
+            updateThreadFn(lcn_thread, post_containers);
         }
     }
 })
