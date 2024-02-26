@@ -1477,7 +1477,7 @@ function handle_post(){
 
     $thread_id = $post['op'] ? $id : $post['thread'];
 
-    buildThread($thread_id);
+    $rendered_thread = buildThread($thread_id);
     
     if ($config['syslog'])
         _syslog(LOG_INFO, 'New post: /' . $board['dir'] . $config['dir']['res'] .
@@ -1494,8 +1494,8 @@ function handle_post(){
             'redirect' => $redirect,
             'noko' => $noko,
             'id' => $id,
-            'post' => (new Post($post))->build(),
-            'thread_id' => $thread_id
+            'thread_id' => $thread_id,
+            'thread' => $rendered_thread
         ));
     }
     
