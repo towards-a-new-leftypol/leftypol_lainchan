@@ -8,7 +8,8 @@ const assert = {
         if (actual !== expected) {
             const err = new Error(`Assertion Failed. ${message}`)
             err.data = { actual, expected}
-            Error.captureStackTrace(err, assert.equal)
+            // Seems like there's no such thing as captureStackTrace in firefox?
+            //Error.captureStackTrace(err, assert.equal)
             debugger
             throw err
         }
@@ -17,7 +18,7 @@ const assert = {
         if (!actual) {
             const err = new Error(`Assertion Failed. ${message}`)
             err.data = { actual }
-            Error.captureStackTrace(err, assert.ok)
+            // Error.captureStackTrace(err, assert.ok)
             debugger
             throw err
         }
