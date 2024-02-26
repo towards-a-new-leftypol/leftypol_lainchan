@@ -130,8 +130,9 @@ class Api {
 		}
 	}
 
-	private function translatePost($post, $threadsPage = false) {
+	function translatePost($post, $threadsPage = false) {
 		global $config, $board;
+
 		$apiPost = array();
 		$fields = $threadsPage ? $this->threadsPageFields : $this->postFields;
 		$this->translateFields($fields, $post, $apiPost);
