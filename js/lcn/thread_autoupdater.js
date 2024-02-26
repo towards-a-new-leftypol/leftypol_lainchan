@@ -140,6 +140,13 @@ $().ready(() => {
             }
         }
 
+        $(document).on("thread_manual_refresh", () => {
+            if (secondsCounter >= 0) {
+                secondsCounter = 0
+                onTickFn()
+            }
+        })
+
         let floaterLinkBox = null
         const onStateChangeFn = v => {
             onTickClean()
@@ -156,10 +163,7 @@ $().ready(() => {
                     threadUpdateStatus.innerText = "…"
                     threadUpdateLink.addEventListener("click", e => {
                         e.preventDefault()
-                        if (secondsCounter >= 0) {
-                            secondsCounter = 0
-                            onTickFn()
-                        }
+                        $(document).trigger("thread_manual_refresh")
                     })
                     threadUpdateLink.href = "#"
                     threadUpdateLink.appendChild(new Text("Refresh: "))
