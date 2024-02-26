@@ -151,27 +151,23 @@ $().ready(() => {
             }
         }
 
-        const refresh = () => {
-            secondsCounter = 0;
-            onTickFn();
-        }
-
         $(document).on("ajax_after_post", (_, xhr_body) => {
             if (kIsEnabled.getValue() && xhr_body != null) {
-                if (xhr_body['mod'] == true) {
-                    refresh();
-                } else {
+                if (!xhr_body.mod) {
                     const thread = LCNThread.first()
                     const dom = parser.parseFromString(xhr_body.thread, "text/html")
                     updateThreadFn(thread, dom)
                     updateSecondsByTSLP(thread.getReplies().at(-1).getInfo())
+                } else {
+                    $(document).trigger("thread_manual_refresh")
                 }
             }
         })
 
         $(document).on("thread_manual_refresh", () => {
             if (kIsEnabled.getValue() && secondsCounter >= 0) {
-                refresh();
+                secondsCounter = 0
+                onTickFn()
             }
         })
 
@@ -235,8 +231,7 @@ $().ready(() => {
                     }
                 }
 
-                secondsCounter = 0
-                setTimeout(onTickFn, 1)
+                $(document).trigger("thread_manual_refresh")
             } else {
                 floaterLinkBox?.remove()
                 floaterLinkBox = null
