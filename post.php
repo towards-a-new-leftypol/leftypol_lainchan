@@ -1495,7 +1495,8 @@ function handle_post(){
             'noko' => $noko,
             'id' => $id,
             'thread_id' => $thread_id,
-            'thread' => $rendered_thread
+            'thread' => $rendered_thread,
+            'mod' => !!$post['mod']
         ));
     }
     

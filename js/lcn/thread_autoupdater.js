@@ -151,19 +151,27 @@ $().ready(() => {
             }
         }
 
+        const refresh = () => {
+            secondsCounter = 0;
+            onTickFn();
+        }
+
         $(document).on("ajax_after_post", (_, xhr_body) => {
             if (kIsEnabled.getValue() && xhr_body != null) {
-                const thread = LCNThread.first()
-                const dom = parser.parseFromString(xhr_body.thread, "text/html")
-                updateThreadFn(thread, dom)
-                updateSecondsByTSLP(thread.getReplies().at(-1).getInfo())
+                if (xhr_body['mod'] == true) {
+                    refresh();
+                } else {
+                    const thread = LCNThread.first()
+                    const dom = parser.parseFromString(xhr_body.thread, "text/html")
+                    updateThreadFn(thread, dom)
+                    updateSecondsByTSLP(thread.getReplies().at(-1).getInfo())
+                }
             }
         })
 
         $(document).on("thread_manual_refresh", () => {
             if (kIsEnabled.getValue() && secondsCounter >= 0) {
-                secondsCounter = 0
-                onTickFn()
+                refresh();
             }
         })
 
