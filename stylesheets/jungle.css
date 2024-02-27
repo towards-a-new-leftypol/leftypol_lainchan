@@ -24,13 +24,15 @@ body {
     left: -4px;
 }
 
-.bar.bottom {
-    font-size: 14px;
-}
+@media screen and (max-width: 600px) {
+    .bar.bottom {
+        font-size: 14px;
+    }
 
-#thread-update-status {
-    opacity: .8;
-    font-size: 8pt;
+    #thread-update-status {
+        opacity: .8;
+        font-size: 8pt;
+    }
 }
 
 div.title h1 {
