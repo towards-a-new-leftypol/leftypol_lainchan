@@ -11,46 +11,6 @@ function cont(value_to_test, fn) {
     }
 }
 
-function text(s) {
-    return document.createTextNode(s);
-}
-
-function prepend(elem, children) {
-    var child = elem.firstChild;
-
-    if (child) {
-        elem.insertBefore(children, child);
-    } else {
-        elem.appendChild(children);
-    }
-}
-
-
-function _log() {
-    for (var arg of arguments) {
-        if (arg == null) {
-            continue;
-        }
-
-        var pre = document.createElement('pre');
-        pre.appendChild(text(arg.toString()));
-        document.body.appendChild(pre);
-        try {
-            prepend(document.body, pre);
-        } catch (e) {
-            var pre = document.createElement('pre');
-            pre.appendChild(text(e.toString()));
-            document.body.appendChild(pre);
-        }
-
-    }
-}
-
-var console = {
-    log: _log,
-    error: _log
-};
-
 const assert = {
     "equal": (actual, expected, message="No message set") => {
         if (actual !== expected) {
