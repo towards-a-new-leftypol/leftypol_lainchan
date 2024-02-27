@@ -356,6 +356,7 @@ globalThis.LCNSetting = class LCNSetting {
     #id = null;
     #eventId = null;
     #label = null;
+    #hidden = false;
     #value = null;
     #valueDefault = null;
 
@@ -375,6 +376,9 @@ globalThis.LCNSetting = class LCNSetting {
         }
     }
 
+    "isHidden" () { return this.#hidden; }
+    "setHidden" (v) { this.#hidden = v; return this; }
+
     "getValue" () { return this.#value ?? (this.#value = this.#getValue()); }
     "setValue" (v) {
         if (this.#value !== v) {
@@ -391,7 +395,10 @@ globalThis.LCNSetting = class LCNSetting {
     "setDefaultValue" (vd) { this.#valueDefault = vd; return this; }
 
     "onChange" (fn) { $(document).on(`${this.#eventId}::change`, (_,v,i) => fn(v, i)); }
-    __setIdPrefix (prefix) { this.#id = `${prefix}_${this.#id}`; }
+    __setIdPrefix (prefix) {
+        this.#id = `${prefix}_${this.#id}`
+        this.#eventId = `lcnsetting::${this.#id}`
+    }
 }
 
 globalThis.LCNToggleSetting = class LCNToggleSetting extends LCNSetting {
@@ -401,7 +408,10 @@ globalThis.LCNToggleSetting = class LCNToggleSetting extends LCNSetting {
         const div = document.createElement("div")
         const chk = document.createElement("input")
         const txt = document.createElement("label")
+        const id = `lcnts::${this.id}`
+        txt.id = id
         txt.innerText = this.getLabel()
+        chk.id = id
         chk.type = "checkbox"
         chk.checked = this.getValue()
         chk.addEventListener("click", e => {
@@ -459,7 +469,7 @@ globalThis.LCNSettingsSubcategory = class LCNSettingsSubcategory {
     "addSetting" (setting) {
         assert.ok(setting instanceof LCNSetting)
         setting.__setIdPrefix(`lcnsetting_${this.#tab_id}_${this.#id}`)
-        if (setting.__builtinDOMConstructor != null) {
+        if (!setting.isHidden() && setting.__builtinDOMConstructor != null) {
             const div = setting.__builtinDOMConstructor()
             div.classList.add("lcn-setting-entry")
             this.#fieldset.appendChild(div)
