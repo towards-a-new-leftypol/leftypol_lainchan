@@ -4,20 +4,35 @@ body {
 	background: #ffe;
 	background-image: url('img/jungle_bg1.png'), url('img/jungle_bg.png');
 	background-repeat: repeat-x, repeat;
-
-background-attachment: 	 scroll, scroll;
+    background-attachment: 	 scroll, scroll;
 	color: #242B23;
 	font-family: serif;
 	font-size: 16px;
 }
-.bar
-{
+
+.bar {
 	border-color: #E5D959!important;
 	background-image: url('img/jungle_td.png');
 	-moz-box-shadow: none;
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
+
+.bar.top {
+    position: relative;
+    width: 100vw;
+    left: -4px;
+}
+
+.bar.bottom {
+    font-size: 14px;
+}
+
+#thread-update-status {
+    opacity: .8;
+    font-size: 8pt;
+}
+
 div.title h1 {
 	font-size: 24px;
 }
