@@ -3,6 +3,54 @@
  * @author jonsmy
  */
 
+function cont(value_to_test, fn) {
+    if (value_to_test != null) {
+        return fn(value_to_test);
+    } else {
+        return null;
+    }
+}
+
+function text(s) {
+    return document.createTextNode(s);
+}
+
+function prepend(elem, children) {
+    var child = elem.firstChild;
+
+    if (child) {
+        elem.insertBefore(children, child);
+    } else {
+        elem.appendChild(children);
+    }
+}
+
+
+function _log() {
+    for (var arg of arguments) {
+        if (arg == null) {
+            continue;
+        }
+
+        var pre = document.createElement('pre');
+        pre.appendChild(text(arg.toString()));
+        document.body.appendChild(pre);
+        try {
+            prepend(document.body, pre);
+        } catch (e) {
+            var pre = document.createElement('pre');
+            pre.appendChild(text(e.toString()));
+            document.body.appendChild(pre);
+        }
+
+    }
+}
+
+var console = {
+    log: _log,
+    error: _log
+};
+
 const assert = {
     "equal": (actual, expected, message="No message set") => {
         if (actual !== expected) {
@@ -39,5 +87,17 @@ if (AbortSignal.any == null) {
         }
 
         return controller.signal;
+    }
+}
+
+// polyfill for replaceChildren
+if( Node.prototype.replaceChildren === undefined) {
+    Node.prototype.replaceChildren = function(addNodes) {
+        while(this.lastChild) {
+            this.removeChild(this.lastChild); 
+        }
+        if (addNodes !== undefined) {
+            this.append(addNodes);
+        }
     }
 }

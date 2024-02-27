@@ -4,19 +4,19 @@
  */
 
 $().ready(() => {
-
     const kIsEnabled = LCNToggleSetting.build("enabled")
     //const kIsBellEnabled = LCNToggleSetting.build("bellEnabled")
     void LCNSettingsSubcategory.for("general", "threadUpdater")
       .setLabel("Thread Updater")
       .addSetting(kIsEnabled
         .setLabel(_("Fetch new replies in the background"))
-        .setDefaultValue(true))
+        .setDefaultValue(true));
       /*.addSetting(kIsBellEnabled
         .setLabel(_("Play an audible chime when new replies are found"))
         .setDefaultValue(false))*/;
 
     if (LCNSite.INSTANCE.isThreadPage()) {
+        console.log("LCNSite.INSTANCE.isThreadPage() is true");
         let threadUpdateStatus = null
         let secondsCounter = 0
         let threadState = null
@@ -30,7 +30,7 @@ $().ready(() => {
         const abortable = LCNSite.createAbortable()
         const threadStatsItems = []
         const updateDOMStatus = () => {
-            const text = threadState ?? (secondsCounter >= 0 ? `${secondsCounter}s` : "…")
+            const text = threadState || (secondsCounter >= 0 ? `${secondsCounter}s` : "…")
             threadUpdateStatus.innerText = text
         }
 
@@ -59,7 +59,7 @@ $().ready(() => {
         }
 
         const findMissingReplies = (thread_op, thread_dom, thread_latest) => {
-            const lastPostTs = (thread_dom.at(-1)?.getInfo() ?? thread_op.getInfo()).getCreatedAt().getTime()
+            const lastPostTs = (cont(thread_dom.at(-1), x => x.getInfo()) || thread_op.getInfo()).getCreatedAt().getTime()
             const missing = []
 
             for (const pc of thread_latest.reverse()) {
@@ -122,18 +122,30 @@ $().ready(() => {
 
         let onTickId = null
         const onTickFn = async () => {
+            console.log("tick function");
+
             void secondsCounter--;
+            console.log(secondsCounter);
             onTickClean()
             updateDOMStatus()
 
+            console.log("tick function2");
             if (threadState == null) {
+                console.log("tick function3");
+                console.log(secondsCounter);
+
                 if (secondsCounter < 0) {
+                    console.log("tick function3.5");
                     const thread = LCNThread.first()
+
+                    console.log("tick function4");
                     try {
                         await updateStatsFn(thread)
                         if (threadState == null && threadStats.last_modified > (thread.getPosts().at(-1).getInfo().getCreatedAt().getTime() / 1000)) {
                             updateThreadFn(thread, await fetchThreadFn())
                         }
+
+                        console.log("tick function5");
 
                         const threadEl = thread.getElement()
                         statUniqueIPs.innerText = threadStats.unique_ips
@@ -141,14 +153,17 @@ $().ready(() => {
                         statFiles.innerText = threadEl.querySelectorAll(".files .file").length - threadEl.querySelectorAll(".files .file .post-image.deleted").length
                         statPage.innerText = threadStats.page + 1
                         updateSecondsByTSLP(thread.getPosts().at(-1).getInfo())
+                        console.log("tick function6");
                     } catch (error) {
                         console.error("threadAutoUpdater: Failed while processing update. Probably a network error", error)
                         secondsCounter = 60
                     }
                 }
 
-                onTickId = setTimeout(onTickFn, 1000)
+                //onTickId = setTimeout(onTickFn, 1000)
             }
+
+            console.log("bottom of tick function");
         }
 
         $(document).on("ajax_after_post", (_, xhr_body) => {
@@ -167,15 +182,18 @@ $().ready(() => {
         $(document).on("thread_manual_refresh", () => {
             if (kIsEnabled.getValue() && secondsCounter >= 0) {
                 secondsCounter = 0
+                console.log("thread_manual_refresh handler");
                 onTickFn()
             }
         })
 
         let floaterLinkBox = null
         const onStateChangeFn = v => {
+            console.log("onStateChangeFn");
             onTickClean()
 
             if (v) {
+                console.log("v is true");
                 _domsetup_btn: {
                     const container = LCNSite.INSTANCE.getFloaterLContainer()
                     floaterLinkBox = document.createElement("span")
@@ -231,9 +249,11 @@ $().ready(() => {
                     }
                 }
 
+                console.log("thread_manual_refresh trigger");
                 $(document).trigger("thread_manual_refresh")
             } else {
-                floaterLinkBox?.remove()
+                console.log("v is false");
+                cont(floaterLinkBox, x => x.remove())
                 floaterLinkBox = null
                 statReplies = null
                 statFiles = null
@@ -247,5 +267,6 @@ $().ready(() => {
 
         kIsEnabled.onChange(onStateChangeFn)
         onStateChangeFn(kIsEnabled.getValue())
+        console.log("Bottom of if block");
     }
 })

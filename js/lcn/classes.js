@@ -3,14 +3,6 @@
  * @author jonsmy
  */
 
-function cont(value_to_test, fn) {
-    if (value_to_test != null) {
-        return fn(value_to_test);
-    } else {
-        return null;
-    }
-}
-
 globalThis.LCNSite = class LCNSite {
 
     static "createAbortable" () {
@@ -41,7 +33,7 @@ globalThis.LCNSite = class LCNSite {
         return null
     };
 
-    static "constructor" () {
+    constructor () {
         this._isModerator = document.body.classList.contains("is-moderator");
 
         this._isThreadPage = document.body.classList.contains("active-thread");
@@ -55,16 +47,18 @@ globalThis.LCNSite = class LCNSite {
         this._unseen = 0;
         this._pageTitle = document.title;
 
-        this._doTitleUpdate = () => {
-            document.title = (this._unseen > 0 ? `(${this._unseen}) ` : "") + this._pageTitle;
-        };
-
         this._favicon = document.querySelector("head > link[rel=\"shortcut icon\"]");
         this._generatedStyle = null;
     }
 
+    "_doTitleUpdate" () {
+        document.title = (this._unseen > 0 ? `(${this._unseen}) ` : "") + this._pageTitle;
+    };
+
     "isModerator" () { return this._isModerator; }
-    "isThreadPage" () { return this._isThreadPage; }
+    "isThreadPage" () {
+        return this._isThreadPage;
+    }
     "isBoardPage" () { return this._isBoardPage; }
     "isCatalogPage" () { return this._isCatalogPage; }
 
@@ -117,7 +111,7 @@ globalThis.LCNSite.INSTANCE = null;
 
 globalThis.LCNPostInfo = class LCNPostInfo {
 
-    static "constructor" () {
+     constructor () {
         this._boardId = null;
         this._threadId = null;
         this._postId = null;
@@ -202,10 +196,13 @@ LCNPostInfo.selector = ".post:not(.grid-li)";
 
 globalThis.LCNPost = class LCNPost {
 
-    static "assign" (post) { return post[this.nodeAttrib] || (post[this.nodeAttrib] = this.from(post)); }
+    static "assign" (post) {
+        return post[this.nodeAttrib] || (post[this.nodeAttrib] = this.from(post));
+    }
+
     static "from" (post) { return new this(post); }
 
-    "constructor" (post) {
+    constructor (post) {
         this._parent = null;
         this._post = null;
         this._info = null;
@@ -218,9 +215,13 @@ globalThis.LCNPost = class LCNPost {
         this._post = post;
         this._info = LCNPostInfo.assign(post);
         this._ipLink = intro.querySelector(".ip-link");
-        this._controls = Array.prototype.at.apply(post.querySelectorAll(".controls"), [ -1 ]);
 
-        assert.equal(this._info.getParent(), null, "Info should not have parent.");
+        //this._controls = Array.prototype.at.apply(post.querySelectorAll(".controls"), [ -1 ]);
+        // the above line fails on older browsers so do this instead:
+        const elements = Array.prototype.slice.call(post.querySelectorAll(".controls"));
+        this._controls = elements[elements.length - 1];
+
+        //assert.equal(this._info.getParent(), null, "Info should not have parent.");
         this._info.__setParent(this);
     }
 
@@ -269,17 +270,19 @@ globalThis.LCNPost. NBSP = String.fromCharCode(160);
 
 globalThis.LCNThread = class LCNThread {
 
-    static "assign" (thread) { return thread[this.nodeAttrib] || (thread[this.nodeAttrib] = this.from(thread)); }
+    static "assign" (thread) {
+        return thread[this.nodeAttrib] || (thread[this.nodeAttrib] = this.from(thread));
+    }
+
     static "from" (thread) { return new this(thread); }
 
-    "constructor" (thread) {
+    constructor (thread) {
         this._element = null;
         this._parent = null;
         this._op = null;
         assert.ok(thread.classList.contains("thread"), "Arty must be expected Element.")
         this._element = thread
         this._op = LCNPost.assign(this._element.querySelector(".post.op"))
-
         assert.equal(this._op.getParent(), null, "Op should not have parent.")
         this._op.__setParent(this)
     }
@@ -302,7 +305,7 @@ globalThis.LCNPostContainer = class LCNPostContainer {
     static "assign" (container) { return container[this.nodeAttrib] || (container[this.nodeAttrib] = this.from(container)); }
     static "from" (container) { return new this(container); }
 
-    "constructor" (container) {
+    constructor (container) {
         this._parent = null;
         this._element = null;
         this._content = null;
@@ -339,7 +342,7 @@ globalThis.LCNPostWrapper = class LCNPostWrapper {
     static "assign" (wrapper) { return wrapper[this.nodeAttrib] || (wrapper[this.nodeAttrib] = this.from(wrapper)); }
     static "from" (wrapper) { return new this(wrapper); }
 
-    "constructor" (wrapper) {
+    constructor (wrapper) {
         this._wrapper = null;
         this._eitaLink = null;
         this._eitaId = null;
@@ -387,7 +390,7 @@ globalThis.LCNPostWrapper.selector = ".post-wrapper";
 globalThis.LCNSetting = class LCNSetting {
     static "build" (id) { return new this(id); }
 
-    "constructor" (id) {
+    constructor (id) {
         this._id = null;
         this._eventId = null;
         this._label = null;
@@ -448,7 +451,6 @@ globalThis.LCNToggleSetting = class LCNToggleSetting extends LCNSetting {
     }
 }
 
-
 globalThis.LCNSettingsSubcategory = class LCNSettingsSubcategory {
 
     static "for" (tab_id, id) {
@@ -473,7 +475,7 @@ globalThis.LCNSettingsSubcategory = class LCNSettingsSubcategory {
         }
     }
 
-    "constructor" (tab_id, id, fieldset) {
+    constructor (tab_id, id, fieldset) {
         this._tab_id = tab_id
         this._id = id
         this._fieldset = fieldset
@@ -507,7 +509,7 @@ $().ready(() => {
         clazz.forEach = (fn, node=document) => clazz.allNodes(node).forEach(elem => fn(clazz.assign(elem)))
         clazz.filter = (fn, node=document) => clazz.all(node).filter(fn)
         clazz.find = fn => clazz.all().find(fn)
-        clazz.first = (node=document) => clazz.assign(node.querySelector(clazz.selector))
+        clazz.first = (node=document) => { return clazz.assign(node.querySelector(clazz.selector)); }
         clazz.last = (node=document) => clazz.assign(Array.prototype.at.apply(clazz.allNodes(node), [ -1 ]))
     }
 
