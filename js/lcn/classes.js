@@ -46,9 +46,11 @@ globalThis.LCNSite = class LCNSite {
         this._isModLogPage   = this._isModPage && (location.search == "?/log" || location.search.startsWith("?/log/"));
         this._unseen = 0;
         this._pageTitle = document.title;
+
         this._doTitleUpdate = () => {
             document.title = (this._unseen > 0 ? `(${this._unseen}) ` : "") + this._pageTitle;
         };
+
         this._favicon = document.querySelector("head > link[rel=\"shortcut icon\"]");
         this._generatedStyle = null;
     }
@@ -105,54 +107,55 @@ globalThis.LCNSite = class LCNSite {
 
 LCNSite.INSTANCE = null;
 
-// globalThis.LCNPostInfo = class LCNPostInfo {
-// 
-//     static nodeAttrib = "$LCNPostInfo";
-//     static selector = ".post:not(.grid-li)";
-//     #boardId = null;
-//     #threadId = null;
-//     #postId = null;
-//     #name = null;
-//     #email = null;
-//     #capcode = null;
-//     #flag = null;
-//     #ip = null;
-//     #subject = null;
-//     #createdAt = null;
-// 
-//     #parent = null;
-//     #isThread = false;
-//     #isReply = false;
-//     #isLocked = false;
-//     #isSticky = false;
-// 
-//     static "assign" (post) { return post[this.nodeAttrib] ?? (post[this.nodeAttrib] = this.from(post)); }
-//     static "from" (post) {
-//         assert.ok(post.classList.contains("post"), "Arty must be expected Element.")
-//         const inst = new this()
-//         const intro = post.querySelector(".intro")
-//         const link = intro.querySelector(".post_no:not([id])").href.split("/").reverse()
-//         inst.#postId = link[0].slice(link[0].indexOf("#q") + 2)
-//         inst.#threadId = link[0].slice(0, link[0].indexOf("."))
-//         inst.#boardId = link[2]
-//         inst.#isThread = post.classList.contains("op")
-//         inst.#isReply = !inst.#isThread
-// 
-//         inst.#subject = intro.querySelector(".subject")?.innerText ?? null
-//         inst.#name = intro.querySelector(".name")?.innerText ?? null
-//         inst.#email = intro.querySelector(".email")?.href.slice(7) ?? null
-//         inst.#flag = intro.querySelector(".flag")?.src.split("/").reverse()[0].slice(0, -4) ?? null
-// 
-//         inst.#capcode = intro.querySelector(".capcode")?.innerText ?? null
-//         inst.#ip = intro.querySelector(".ip-link")?.innerText ?? null
-//         inst.#createdAt = new Date(intro.querySelector("time[datetime]").dateTime ?? NaN)
-// 
-//         inst.#isSticky = !!intro.querySelector("i.fa-thumb-tack")
-//         inst.#isLocked = !!intro.querySelector("i.fa-lock")
-// 
-//         return inst
-//     }
-// 
+globalThis.LCNPostInfo = class LCNPostInfo {
+
+    static "constructor" () {
+        this._boardId = null;
+        this._threadId = null;
+        this._postId = null;
+        this._name = null;
+        this._email = null;
+        this._capcode = null;
+        this._flag = null;
+        this._ip = null;
+        this._subject = null;
+        this._createdAt = null;
+        this._parent = null;
+        this._isThread = false;
+        this._isReply = false;
+        this._isLocked = false;
+        this._isSticky = false;
+    }
+
+
+    static "assign" (post) { return post[this.nodeAttrib] ?? (post[this.nodeAttrib] = this.from(post)); }
+    static "from" (post) {
+        assert.ok(post.classList.contains("post"), "Arty must be expected Element.")
+        const inst = new this()
+        const intro = post.querySelector(".intro")
+        const link = intro.querySelector(".post_no:not([id])").href.split("/").reverse()
+        inst.#postId = link[0].slice(link[0].indexOf("#q") + 2)
+        inst.#threadId = link[0].slice(0, link[0].indexOf("."))
+        inst.#boardId = link[2]
+        inst.#isThread = post.classList.contains("op")
+        inst.#isReply = !inst.#isThread
+
+        inst.#subject = intro.querySelector(".subject")?.innerText ?? null
+        inst.#name = intro.querySelector(".name")?.innerText ?? null
+        inst.#email = intro.querySelector(".email")?.href.slice(7) ?? null
+        inst.#flag = intro.querySelector(".flag")?.src.split("/").reverse()[0].slice(0, -4) ?? null
+
+        inst.#capcode = intro.querySelector(".capcode")?.innerText ?? null
+        inst.#ip = intro.querySelector(".ip-link")?.innerText ?? null
+        inst.#createdAt = new Date(intro.querySelector("time[datetime]").dateTime ?? NaN)
+
+        inst.#isSticky = !!intro.querySelector("i.fa-thumb-tack")
+        inst.#isLocked = !!intro.querySelector("i.fa-lock")
+
+        return inst
+    }
+
+
 //     "getParent" () { return this.#parent; }
 //     "__setParent" (inst) { return this.#parent = inst; }
 // 
@@ -178,8 +181,11 @@ LCNSite.INSTANCE = null;
 //         return this.getBoardId() == info.getBoardId() && this.getPostId() == info.getPostId()
 //     }
 // 
-// }
-// 
+}
+
+LCNPostInfo.nodeAttrib = "$LCNPostInfo";
+LCNPostInfo.selector = ".post:not(.grid-li)";
+
 // globalThis.LCNPost = class LCNPost {
 // 
 //     static nodeAttrib = "$LCNPost";
