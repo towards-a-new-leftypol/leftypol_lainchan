@@ -128,34 +128,33 @@ globalThis.LCNPostInfo = class LCNPostInfo {
     }
 
 
-    static "assign" (post) { return post[this.nodeAttrib] ?? (post[this.nodeAttrib] = this.from(post)); }
-    static "from" (post) {
-        assert.ok(post.classList.contains("post"), "Arty must be expected Element.")
-        const inst = new this()
-        const intro = post.querySelector(".intro")
-        const link = intro.querySelector(".post_no:not([id])").href.split("/").reverse()
-        inst.#postId = link[0].slice(link[0].indexOf("#q") + 2)
-        inst.#threadId = link[0].slice(0, link[0].indexOf("."))
-        inst.#boardId = link[2]
-        inst.#isThread = post.classList.contains("op")
-        inst.#isReply = !inst.#isThread
-
-        inst.#subject = intro.querySelector(".subject")?.innerText ?? null
-        inst.#name = intro.querySelector(".name")?.innerText ?? null
-        inst.#email = intro.querySelector(".email")?.href.slice(7) ?? null
-        inst.#flag = intro.querySelector(".flag")?.src.split("/").reverse()[0].slice(0, -4) ?? null
-
-        inst.#capcode = intro.querySelector(".capcode")?.innerText ?? null
-        inst.#ip = intro.querySelector(".ip-link")?.innerText ?? null
-        inst.#createdAt = new Date(intro.querySelector("time[datetime]").dateTime ?? NaN)
-
-        inst.#isSticky = !!intro.querySelector("i.fa-thumb-tack")
-        inst.#isLocked = !!intro.querySelector("i.fa-lock")
-
-        return inst
-    }
-
-
+//     static "assign" (post) { return post[this.nodeAttrib] ?? (post[this.nodeAttrib] = this.from(post)); }
+//     static "from" (post) {
+//         assert.ok(post.classList.contains("post"), "Arty must be expected Element.")
+//         const inst = new this()
+//         const intro = post.querySelector(".intro")
+//         const link = intro.querySelector(".post_no:not([id])").href.split("/").reverse()
+//         inst.#postId = link[0].slice(link[0].indexOf("#q") + 2)
+//         inst.#threadId = link[0].slice(0, link[0].indexOf("."))
+//         inst.#boardId = link[2]
+//         inst.#isThread = post.classList.contains("op")
+//         inst.#isReply = !inst.#isThread
+// 
+//         inst.#subject = intro.querySelector(".subject")?.innerText ?? null
+//         inst.#name = intro.querySelector(".name")?.innerText ?? null
+//         inst.#email = intro.querySelector(".email")?.href.slice(7) ?? null
+//         inst.#flag = intro.querySelector(".flag")?.src.split("/").reverse()[0].slice(0, -4) ?? null
+// 
+//         inst.#capcode = intro.querySelector(".capcode")?.innerText ?? null
+//         inst.#ip = intro.querySelector(".ip-link")?.innerText ?? null
+//         inst.#createdAt = new Date(intro.querySelector("time[datetime]").dateTime ?? NaN)
+// 
+//         inst.#isSticky = !!intro.querySelector("i.fa-thumb-tack")
+//         inst.#isLocked = !!intro.querySelector("i.fa-lock")
+// 
+//         return inst
+//     }
+// 
 //     "getParent" () { return this.#parent; }
 //     "__setParent" (inst) { return this.#parent = inst; }
 // 
