@@ -215,12 +215,7 @@ globalThis.LCNPost = class LCNPost {
         this._post = post;
         this._info = LCNPostInfo.assign(post);
         this._ipLink = intro.querySelector(".ip-link");
-
-        //this._controls = Array.prototype.at.apply(post.querySelectorAll(".controls"), [ -1 ]);
-        // the above line fails on older browsers so do this instead:
-        const elements = Array.prototype.slice.call(post.querySelectorAll(".controls"));
-        this._controls = elements[elements.length - 1];
-
+        this._controls = Array.prototype.at.apply(post.querySelectorAll(".controls"), [ -1 ]);
         //assert.equal(this._info.getParent(), null, "Info should not have parent.");
         this._info.__setParent(this);
     }
@@ -435,8 +430,11 @@ globalThis.LCNToggleSetting = class LCNToggleSetting extends LCNSetting {
     __builtinDOMConstructor () {
         const div = document.createElement("div")
         const chk = document.createElement("input")
-        const txt = document.createElement("label")
-        txt.innerText = this.getLabel()
+        const lbl = document.createElement("label")
+        const id = `${this._id}_input`
+        lbl.htmlFor = id
+        lbl.innerText = this.getLabel()
+        chk.id = id
         chk.type = "checkbox"
         chk.checked = this.getValue()
         chk.addEventListener("click", e => {
@@ -446,7 +444,7 @@ globalThis.LCNToggleSetting = class LCNToggleSetting extends LCNSetting {
         this.onChange(v => chk.checked = v)
 
         div.appendChild(chk)
-        div.appendChild(txt)
+        div.appendChild(lbl)
         return div
     }
 }

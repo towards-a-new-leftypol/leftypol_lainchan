@@ -101,3 +101,13 @@ if( Node.prototype.replaceChildren === undefined) {
         }
     }
 }
+
+if (Array.prototype.at === undefined) {
+    Array.prototype.at = function(index) {
+        if (index >= 0) {
+            return this[index];
+        } else {
+            return this[this.length + index];
+        }
+    };
+}

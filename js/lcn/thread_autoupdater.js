@@ -16,7 +16,6 @@ $().ready(() => {
         .setDefaultValue(false))*/;
 
     if (LCNSite.INSTANCE.isThreadPage()) {
-        console.log("LCNSite.INSTANCE.isThreadPage() is true");
         let threadUpdateStatus = null
         let secondsCounter = 0
         let threadState = null
@@ -122,30 +121,19 @@ $().ready(() => {
 
         let onTickId = null
         const onTickFn = async () => {
-            console.log("tick function");
-
             void secondsCounter--;
-            console.log(secondsCounter);
             onTickClean()
             updateDOMStatus()
 
-            console.log("tick function2");
             if (threadState == null) {
-                console.log("tick function3");
-                console.log(secondsCounter);
-
                 if (secondsCounter < 0) {
-                    console.log("tick function3.5");
                     const thread = LCNThread.first()
 
-                    console.log("tick function4");
                     try {
                         await updateStatsFn(thread)
                         if (threadState == null && threadStats.last_modified > (thread.getPosts().at(-1).getInfo().getCreatedAt().getTime() / 1000)) {
                             updateThreadFn(thread, await fetchThreadFn())
                         }
-
-                        console.log("tick function5");
 
                         const threadEl = thread.getElement()
                         statUniqueIPs.innerText = threadStats.unique_ips
@@ -153,21 +141,19 @@ $().ready(() => {
                         statFiles.innerText = threadEl.querySelectorAll(".files .file").length - threadEl.querySelectorAll(".files .file .post-image.deleted").length
                         statPage.innerText = threadStats.page + 1
                         updateSecondsByTSLP(thread.getPosts().at(-1).getInfo())
-                        console.log("tick function6");
                     } catch (error) {
                         console.error("threadAutoUpdater: Failed while processing update. Probably a network error", error)
                         secondsCounter = 60
                     }
                 }
 
-                //onTickId = setTimeout(onTickFn, 1000)
+                onTickId = setTimeout(onTickFn, 1000)
             }
 
-            console.log("bottom of tick function");
         }
 
         $(document).on("ajax_after_post", (_, xhr_body) => {
-            if (kIsEnabled.getValue() && xhr_body != null) {
+            if (xhr_body != null) {
                 if (!xhr_body.mod) {
                     const thread = LCNThread.first()
                     const dom = parser.parseFromString(xhr_body.thread, "text/html")
@@ -182,18 +168,15 @@ $().ready(() => {
         $(document).on("thread_manual_refresh", () => {
             if (kIsEnabled.getValue() && secondsCounter >= 0) {
                 secondsCounter = 0
-                console.log("thread_manual_refresh handler");
                 onTickFn()
             }
         })
 
         let floaterLinkBox = null
         const onStateChangeFn = v => {
-            console.log("onStateChangeFn");
             onTickClean()
 
             if (v) {
-                console.log("v is true");
                 _domsetup_btn: {
                     const container = LCNSite.INSTANCE.getFloaterLContainer()
                     floaterLinkBox = document.createElement("span")
@@ -249,10 +232,8 @@ $().ready(() => {
                     }
                 }
 
-                console.log("thread_manual_refresh trigger");
                 $(document).trigger("thread_manual_refresh")
             } else {
-                console.log("v is false");
                 cont(floaterLinkBox, x => x.remove())
                 floaterLinkBox = null
                 statReplies = null
@@ -267,6 +248,5 @@ $().ready(() => {
 
         kIsEnabled.onChange(onStateChangeFn)
         onStateChangeFn(kIsEnabled.getValue())
-        console.log("Bottom of if block");
     }
 })
