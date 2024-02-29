@@ -36,8 +36,8 @@ $().ready(() => {
 
         const updateSecondsByTSLP = post_info => {
             secondsCounter = Math.floor(((Date.now() - post_info.getCreatedAt().getTime()) / 120000))
-            secondsCounter = secondsCounter > 1000 ? 1000 : secondsCounter
-            secondsCounter = secondsCounter < 11 ? 11 : secondsCounter
+            secondsCounter = Math.min(1000, secondsCounter)
+            secondsCounter = Math.max(11, secondsCounter)
         }
 
         const updateStatsFn = async thread => {
@@ -59,7 +59,7 @@ $().ready(() => {
         }
 
         const findMissingReplies = (thread_op, thread_dom, thread_latest) => {
-            const lastPostTs = (thread_dom.at(-1)?.getInfo() ?? thread_op).getCreatedAt().getTime()
+            const lastPostTs = (thread_dom.at(-1)?.getInfo() ?? thread_op.getInfo()).getCreatedAt().getTime()
             const missing = []
 
             for (const pc of thread_latest.reverse()) {
@@ -131,7 +131,7 @@ $().ready(() => {
                     const thread = LCNThread.first()
                     try {
                         await updateStatsFn(thread)
-                        if (threadState == null && threadStats.last_modified > (thread.getReplies().at(-1).getInfo().getCreatedAt().getTime() / 1000)) {
+                        if (threadState == null && threadStats.last_modified > (thread.getPosts().at(-1).getInfo().getCreatedAt().getTime() / 1000)) {
                             updateThreadFn(thread, await fetchThreadFn())
                         }
 
@@ -140,7 +140,7 @@ $().ready(() => {
                         statReplies.innerText = thread.getReplies().length
                         statFiles.innerText = threadEl.querySelectorAll(".files .file").length - threadEl.querySelectorAll(".files .file .post-image.deleted").length
                         statPage.innerText = threadStats.page + 1
-                        updateSecondsByTSLP(thread.getReplies().at(-1).getInfo())
+                        updateSecondsByTSLP(thread.getPosts().at(-1).getInfo())
                     } catch (error) {
                         console.error("threadAutoUpdater: Failed while processing update. Probably a network error", error)
                         secondsCounter = 60
@@ -157,7 +157,7 @@ $().ready(() => {
                     const thread = LCNThread.first()
                     const dom = parser.parseFromString(xhr_body.thread, "text/html")
                     updateThreadFn(thread, dom)
-                    updateSecondsByTSLP(thread.getReplies().at(-1).getInfo())
+                    updateSecondsByTSLP(thread.getPosts().at(-1).getInfo())
                 } else {
                     $(document).trigger("thread_manual_refresh")
                 }
