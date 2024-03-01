@@ -5,12 +5,17 @@
 
 $().ready(() => {
     const kIsEnabled = LCNToggleSetting.build("enabled")
+    const kUpdateOnReplyEnabled = LCNToggleSetting.build("updateOnReplyEnabled")
     //const kIsBellEnabled = LCNToggleSetting.build("bellEnabled")
     void LCNSettingsSubcategory.for("general", "threadUpdater")
       .setLabel("Thread Updater")
       .addSetting(kIsEnabled
         .setLabel(_("Fetch new replies in the background"))
-        .setDefaultValue(true));
+        .setDefaultValue(true))
+      .addSetting(kUpdateOnReplyEnabled
+        .setLabel(_("Update thread after sending a reply"))
+        .setHidden(true)
+        .setDefaultValue(true))
       /*.addSetting(kIsBellEnabled
         .setLabel(_("Play an audible chime when new replies are found"))
         .setDefaultValue(false))*/;
@@ -152,23 +157,29 @@ $().ready(() => {
 
         }
 
+        const refreshFn = () => {
+            if (secondsCounter >= 0) {
+                secondsCounter = 0
+                onTickFn()
+            }
+        }
+
         $(document).on("ajax_after_post", (_, xhr_body) => {
-            if (xhr_body != null) {
+            if (kUpdateOnReplyEnabled.getValue() && xhr_body != null) {
                 if (!xhr_body.mod) {
                     const thread = LCNThread.first()
                     const dom = parser.parseFromString(xhr_body.thread, "text/html")
                     updateThreadFn(thread, dom)
                     updateSecondsByTSLP(thread.getPosts().at(-1).getInfo())
                 } else {
-                    $(document).trigger("thread_manual_refresh")
+                    refreshFn()
                 }
             }
         })
 
         $(document).on("thread_manual_refresh", () => {
-            if (kIsEnabled.getValue() && secondsCounter >= 0) {
-                secondsCounter = 0
-                onTickFn()
+            if (kIsEnabled.getValue()) {
+                refreshFn()
             }
         })
 

@@ -389,6 +389,7 @@ globalThis.LCNSetting = class LCNSetting {
         this._id = null;
         this._eventId = null;
         this._label = null;
+        this._hidden = false;
         this._value = null;
         this._valueDefault = null;
 
@@ -405,6 +406,8 @@ globalThis.LCNSetting = class LCNSetting {
         }
     }
 
+    "isHidden" () { return this._hidden; }
+    "setHidden" (v) { this._hidden = v; return this; }
     "getValue" () { return this._value || (this._value = this._getValue()); }
     "setValue" (v) {
         if (this._value !== v) {
@@ -421,7 +424,10 @@ globalThis.LCNSetting = class LCNSetting {
     "setDefaultValue" (vd) { this._valueDefault = vd; return this; }
 
     "onChange" (fn) { $(document).on(`${this._eventId}::change`, (_,v,i) => fn(v, i)); }
-    __setIdPrefix (prefix) { this._id = `${prefix}_${this._id}`; }
+    __setIdPrefix (prefix) {
+        this._id = `${prefix}_${this._id}`
+        this._eventId = `lcnsetting::${this._id}`
+    }
 }
 
 globalThis.LCNToggleSetting = class LCNToggleSetting extends LCNSetting {
@@ -431,7 +437,7 @@ globalThis.LCNToggleSetting = class LCNToggleSetting extends LCNSetting {
         const div = document.createElement("div")
         const chk = document.createElement("input")
         const lbl = document.createElement("label")
-        const id = `${this._id}_input`
+        const id = `lcnts::${this.id}`
         lbl.htmlFor = id
         lbl.innerText = this.getLabel()
         chk.id = id
@@ -486,7 +492,7 @@ globalThis.LCNSettingsSubcategory = class LCNSettingsSubcategory {
     "addSetting" (setting) {
         assert.ok(setting instanceof LCNSetting)
         setting.__setIdPrefix(`lcnsetting_${this._tab_id}_${this._id}`)
-        if (setting.__builtinDOMConstructor != null) {
+        if (!setting.isHidden() && setting.__builtinDOMConstructor != null) {
             const div = setting.__builtinDOMConstructor()
             div.classList.add("lcn-setting-entry")
             this._fieldset.appendChild(div)
