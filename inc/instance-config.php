@@ -569,5 +569,25 @@ $config['filters'][] = array(
     'message' => 'Url shorteners are not allowed'
 );
 
+// Rate limit posting new threads over Tor
+$config['filters'][] = array(
+    'condition' => array(
+      /*
+       * Confusingly `isreply` is defined as:
+       *    $flood_post['isreply'] == $post['op']
+       *
+       * We only want to look at OP posts in the flood table.
+       */
+        'flood-match' => array('isreply'),
+        'OP' => true,
+        'flood-time-any' => 60 * 10 // 10 minutes
+    ),
+    'noip' => true,
+    'ip' => '127.0.0.1',
+    'find_time' => 60 * 60 * 1,
+    'action' => 'reject',
+    'message' => 'New threads are being created too quickly. Wait [at most] 10 minutes'
+);
+
 $config['global_message'] = '<span><a href="https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net" class="">Matrix</a></span> &nbsp; <span><a href="ircs://irc.leftychan.net:6697/#leftychan" class="">IRC Chat</a></span> &nbsp; <span><a href="mumble://leftychan.net" class="">Mumble</a></span> &nbsp; <span><a href="https://t.me/+RegtyzzrE0M1NDMx" class="">Telegram</a></span> &nbsp; <span><a href="https://discord.gg/AcZeFKXPmZ" class="">Discord</a></span>';
 $config['debug'] = false;
