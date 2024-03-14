@@ -18,6 +18,7 @@ class Filter {
     private bool $add_note;
     private bool $noip;
     private $find_time;
+    private string $ip;
     
     public function __construct(array $arr) {
         foreach ($arr as $key => $value) {
