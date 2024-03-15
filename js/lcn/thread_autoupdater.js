@@ -103,6 +103,7 @@ $().ready(() => {
               LCNPostContainer.all(dom.querySelector(`#thread_${threadPost.getInfo().getThreadId()}`)))
 
             updateRepliesFn(thread, missingPCList)
+            statUniqueIPs.innerText = dom.querySelector("#lcn-uniqueips").innerText
         }
 
         const fetchThreadFn = async () => {
@@ -141,7 +142,6 @@ $().ready(() => {
                         }
 
                         const threadEl = thread.getElement()
-                        statUniqueIPs.innerText = threadStats.unique_ips
                         statReplies.innerText = thread.getReplies().length
                         statFiles.innerText = threadEl.querySelectorAll(".files .file").length - threadEl.querySelectorAll(".files .file .post-image.deleted").length
                         statPage.innerText = threadStats.page + 1
