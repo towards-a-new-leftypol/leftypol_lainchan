@@ -29,8 +29,9 @@
 
         body {
             display: grid;
-            grid-template-columns: repeat(auto-fill,minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill,minmax(120px, 20%));
             gap: 20px;
+            min-height: 100vh;
         }
         
         .modlog {
@@ -65,6 +66,16 @@
 
         li a.system {
             font-weight: bold;
+        }
+
+        footer {
+            grid-column: 1 / 9;
+        }
+
+        div.news.ban {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
         
         @media (max-width:768px) {
