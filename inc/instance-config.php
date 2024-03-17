@@ -41,7 +41,7 @@ $config['prepended_foreign_boards'] = array(
 
 // Board categories. Only used in the "Categories" theme.
 $config['categories'] = array(
-  'Leftypol' => array(
+  'Boards' => array(
     'leftypol',
     'b',
     'WRK',
