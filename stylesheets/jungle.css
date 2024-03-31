@@ -20,7 +20,9 @@ body {
 
 .bar.top {
     position: relative;
-    width: 100vw;
+    width: calc(100% + 8px);
+    box-sizing: border-box;
+    padding: 0 .25em;
     left: -4px;
 }
 
