@@ -45,7 +45,7 @@ class Api {
 
 		$this->threadsPageFields = array(
 			'id' => 'no',
-			'bump' => 'last_modified',
+			'bump' => 'bump',
 			'board' => 'board',
 		);
 
@@ -197,6 +197,7 @@ class Api {
 			$ips[] = $p->ip;
 		}
 		$apiPosts['posts'][0]['unique_ips'] = count(array_unique($ips));
+		$apiPosts['posts'][0]['last_modified'] = (empty($thread->posts) ? $thread : end($thread->posts))->time;
 
 		return $apiPosts;
 	}
