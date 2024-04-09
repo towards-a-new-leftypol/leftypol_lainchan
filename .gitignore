@@ -62,7 +62,7 @@ tf/
 /random/
 
 # Banners
-banners/*
+# banners/*
 !banners/lain-bottom.png
 
 #Fonts
