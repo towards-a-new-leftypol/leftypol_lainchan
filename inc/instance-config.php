@@ -280,6 +280,7 @@ $config['user_flags'] = array (
     'luck_o_the_irish' => 'Luck O\' The Irish',
     'luxemburg' => 'Luxemburg',
     'marx' => 'Marx',
+    'marxism_blackpilism' => 'Marxism Blackpillism',
     'mutualism' => 'Mutualism',
     'naxalite' => 'Naxalite',
     'nazbol' => 'Nazbol',
@@ -314,8 +315,7 @@ $config['user_flags'] = array (
     'united_farm_workers' => 'United Farm Workers',
     'viet_cong' => 'Viet Cong',
     'ypg' => 'YPG',
-    'yugoslavia' => 'Yugoslavia',
-    'marxism_blackpilism' => 'Marxism Blackpillism'
+    'yugoslavia' => 'Yugoslavia'
 );
 
 
