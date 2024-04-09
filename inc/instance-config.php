@@ -315,7 +315,8 @@ $config['user_flags'] = array (
     'viet_cong' => 'Viet Cong',
     'ypg' => 'YPG',
     'yugoslavia' => 'Yugoslavia',
-    'zapatista' => 'Zapatista'
+    'marxism_blackpilism' => 'Marxism Blackpillism',
+    '
 );
 
 
