@@ -209,6 +209,7 @@ $config['allowed_ext_files'][] = 'pdf';
 $config['allowed_ext_files'][] = 'txt';
 $config['allowed_ext_files'][] = 'epub';
 $config['allowed_ext_files'][] = 'djvu';
+$config['allowed_ext_files'][] = 'opus';
 // Compressed files
 $config['allowed_ext_files'][] = 'zip';
 $config['allowed_ext_files'][] = 'gz';
