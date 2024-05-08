@@ -2905,3 +2905,34 @@ function strategy_first($fun, $array) {
         return array('defer');
     }
 }
+
+function ipIsLocal($ip) {
+    // Define the local IP ranges commonly used in private networks
+    $localRanges = [
+        '10.0.0.0/8',       // Private network range 10.0.0.0 to 10.255.255.255
+        '172.16.0.0/12',    // Private network range 172.16.0.0 to 172.31.255.255
+        '192.168.0.0/16',   // Private network range 192.168.0.0 to 192.168.255.255
+        '127.0.0.0/8',      // Loopback range for localhost
+        '169.254.0.0/16'    // Link-local addresses
+    ];
+
+    foreach ($localRanges as $range) {
+        if (ipInRange($ip, $range)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function ipInRange($ip, $range) {
+    // Split the range to get the base IP and the netmask
+    list($baseIP, $netmask) = explode('/', $range);
+    // Convert IPs into long format for easy comparison
+    $ipLong = ip2long($ip);
+    $rangeLong = ip2long($baseIP);
+    $maskLong = ~((1 << (32 - $netmask)) - 1);
+
+    // Check if the IP is in the given range
+    return (($ipLong & $maskLong) == ($rangeLong & $maskLong));
+}

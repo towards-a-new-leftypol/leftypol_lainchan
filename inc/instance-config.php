@@ -142,7 +142,8 @@ $config['spam_noticer']['website_name'] = "leftychan";
 /*
  * Basic captcha. See also: captchaconfig.php
  */
-$config['securimage'] = false;
+$config['securimage'] = true;
+$config['captcha_tor_only'] = true;
 
 /*
  * Permissions

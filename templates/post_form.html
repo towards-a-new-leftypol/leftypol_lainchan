@@ -5,13 +5,10 @@
     method="post"
     data-max-images="{{ config.max_images }}"
     >
-{{ antibot.html() }}
 {% if id %}<input type="hidden" name="thread" value="{{ id }}">{% endif %}
-{{ antibot.html() }}
 {% if board.uri not in config.overboards|keys %}
 <input type="hidden" name="board" value="{{ board.uri }}">
 {% endif %}
-{{ antibot.html() }}
 {% if current_page %}
 	<input type="hidden" name="page" value="{{ current_page }}">
 {% endif %}
@@ -103,15 +100,39 @@
 		</tr>
 		{% endif %}
 		{% if config.securimage %}
-		<tr>
-			<th>
-				Captcha
-			</th>
-			<td>
-		        <img name="captcha-img" id="captcha-img" src="/captcha.php" onClick="this.src='/captcha.php?'+Date.now();document.getElementById('captcha').value = '';"><br />
-				<input type="text" name="captcha" id="captcha" size="25" maxlength="10" autocomplete="off">
-			</td>
-		</tr>
+            <tr class="post_form_captcha_row">
+                <th>
+                    Captcha
+                    {% if config.captcha_tor_only %}
+                    <br/>
+                    <small>Tor Only</small>
+                    {% endif %}
+                </th>
+                <td>
+                    <img name="captcha-img" id="captcha-img" src="/captcha.php" onClick="this.src='/captcha.php?'+Date.now();document.getElementById('captcha').value = '';"><br />
+                    <input type="text" name="captcha" id="captcha" size="25" maxlength="10" autocomplete="off">
+                </td>
+            </tr>
+            {% if config.captcha_tor_only %}
+            <script>
+                (() => {
+                    function isOnionDomain() {
+                        const hostname = window.location.hostname;
+                        return hostname.endsWith('.onion');
+                    }
+
+                    function removeCaptchaField() {
+                        document.querySelectorAll('.post_form_captcha_row')
+                            .forEach(e => e.parentNode.removeChild(e));
+                    }
+
+                    if (!isOnionDomain()) {
+                        removeCaptchaField();
+                    }
+                })();
+            </script>
+            {% else %}
+            {% endif %}
 		{% endif %}
 		{% if config.user_flag %}
 			<tr>
@@ -204,7 +225,6 @@
 			</td>
 		</tr>{% endif %}
 	</table>
-{{ antibot.html(true) }}
 <input type="hidden" name="hash" value="{{ antibot.hash() }}">
 </form>
 
