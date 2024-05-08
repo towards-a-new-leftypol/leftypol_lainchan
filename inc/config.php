@@ -33,6 +33,8 @@
 
     // Enables captcha
     $config['securimage'] = false;
+    // Limits captcha to TOR users
+    $config['captcha_tor_only'] = false;
 
     // Global announcement -- the very simple version.
     // This used to be wrongly named $config['blotter'] (still exists as an alias).

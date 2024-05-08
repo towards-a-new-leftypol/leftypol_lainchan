@@ -511,7 +511,11 @@ function handle_post(){
             }
         }
 
-        if(isset($config['securimage']) && $config['securimage']){
+        if((isset($config['securimage']) && $config['securimage'])
+            && (
+                !(isset($config['captcha_tor_only']) && $config['captcha_tor_only'])
+                || ipIsLocal($_SERVER['REMOTE_ADDR'])
+                )){
 
             if(!isset($_POST['captcha'])){
                 error($config['error']['securimage']['missing']);
