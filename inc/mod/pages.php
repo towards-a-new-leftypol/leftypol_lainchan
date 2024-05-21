@@ -1562,7 +1562,7 @@ function mod_merge($originBoard, $postID) {
             }
         }
 
-        if ($targetBoard === $originBoard){
+        if ($targetBoard === $originBoard) {
             // Just update the thread id for all posts in the original thread to new op
             $query = prepare(sprintf('UPDATE ``posts_%s`` SET `thread` = :newthread WHERE `id` = :oldthread OR `thread` = :oldthread', $originBoard));
             $query->bindValue(':newthread', $targetOp, PDO::PARAM_INT);
@@ -1586,8 +1586,7 @@ function mod_merge($originBoard, $postID) {
 
             // redirect
             header('Location: ?/' . sprintf($config['board_path'], $board['uri']) . $config['dir']['res'] . link_for($newpost) . '#' . $targetOp, true, $config['redirect_http']);
-        }
-            else {
+        } else {
             // Move thread to new board without shadow thread and then update the thread id for all posts in that thread to new op
             // indicate that the post is a thread
             if (count($boards) <= 1)
@@ -1726,6 +1725,7 @@ function mod_merge($originBoard, $postID) {
             deletePost($postID);
             modLog("Deleted post #{$postID}");
             buildIndex();
+            rebuildThemes('post', $originBoard);
 
             openBoard($targetBoard);
             // Just update the thread id for all posts in the original thread to new op
