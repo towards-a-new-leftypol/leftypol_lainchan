@@ -1501,6 +1501,7 @@ function mod_move($originBoard, $postID) {
         } else {
             deletePost($postID);
             buildIndex();
+            rebuildThemes('post', $targetBoard);
 
             openBoard($targetBoard);
             header('Location: ?/' . sprintf($config['board_path'], $newboard['uri']) . $config['dir']['res'] . link_for($op, false, $newboard), true, $config['redirect_http']);
