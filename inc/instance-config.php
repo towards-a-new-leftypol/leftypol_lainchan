@@ -591,5 +591,5 @@ $config['filters'][] = array(
     'message' => 'New threads are being created too quickly. Wait [at most] 10 minutes'
 );
 
-$config['global_message'] = '<span><a href="https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net" class="">Matrix</a></span> &nbsp; <span><a href="ircs://irc.leftychan.net:6697/#leftychan" class="">IRC Chat</a></span> &nbsp; <span><a href="mumble://leftychan.net" class="">Mumble</a></span> &nbsp; <span><a href="https://t.me/+RegtyzzrE0M1NDMx" class="">Telegram</a></span> &nbsp; <span><a href="https://discord.gg/AcZeFKXPmZ" class="">Discord</a></span>';
+$config['global_message'] = '<span><a href="https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net">Matrix</a></span> &nbsp; <span><a href="ircs://irc.leftychan.net:6697/#leftychan">IRC Chat</a></span> &nbsp; <span><a href="mumble://leftychan.net">Mumble</a></span> &nbsp; <span><a href="https://t.me/+RegtyzzrE0M1NDMx">Telegram</a></span> &nbsp; <span><a href="https://discord.gg/AcZeFKXPmZ">Discord</a></span><br/><br/><span>We will be performing scheduled maintenance from 2-3am UTC, May 30th. The board will be read only during this time.</span>';
 $config['debug'] = false;
