@@ -116,9 +116,9 @@
             {% if config.captcha_tor_only %}
             <script>
                 (() => {
-                    function isOnionDomain() {
+                    function isHiddenService() {
                         const hostname = window.location.hostname;
-                        return hostname.endsWith('.onion');
+                        return hostname.endsWith('.onion') || hostname.endsWith('.i2p');
                     }
 
                     function removeCaptchaField() {
@@ -126,12 +126,11 @@
                             .forEach(e => e.parentNode.removeChild(e));
                     }
 
-                    if (!isOnionDomain()) {
+                    if (!isHiddenService()) {
                         removeCaptchaField();
                     }
                 })();
             </script>
-            {% else %}
             {% endif %}
 		{% endif %}
 		{% if config.user_flag %}
