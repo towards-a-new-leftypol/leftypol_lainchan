@@ -6,6 +6,8 @@
 
 defined('TINYBOARD') or exit;
 
+require_once 'inc/mod/pages.php';
+
 // create a hash/salt pair for validate logins
 function mkhash($username, $password, $salt = false) {
 	global $config;
