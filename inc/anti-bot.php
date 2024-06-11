@@ -12,7 +12,12 @@ $logfile = "/tmp/lainchan_err.out";
 
 function print_err($s) {
 	global $logfile;
-	file_put_contents($logfile, $s . "\n", FILE_APPEND);
+    $datetime = new Datetime();
+    file_put_contents(
+        $logfile,
+        $datetime->format(DateTime::ATOM) . " " . $s . "\n",
+        FILE_APPEND
+    );
 }
 
 function getStackTraceAsString() {
@@ -217,6 +222,13 @@ class AntiBot {
 		// Use SHA1 for the hash
 		return sha1($hash . $this->salt);
 	}
+
+    public function printErrVars() { //DELETE ME
+		$inputs = $this->inputs;
+		ksort($inputs);
+
+        print_err("Antibot " . $this->hash() . " inputs: " . json_encode($inputs));
+    }
 }
 
 function _create_antibot($board, $thread) {
@@ -245,15 +257,44 @@ function _create_antibot($board, $thread) {
 	$query->bindValue(':thread', $thread);
 	$query->bindValue(':hash', $antibot->hash());
 	$query->execute() or error(db_error($query));
+
+    $antibot->printErrVars();
 	
 	return $antibot;
+}
+
+function dumpVars($extra_salt) {
+    global $config;
+
+    print_err("Check Spam POST data: " . json_encode($_POST));
+
+    /*
+	foreach ($_POST as $name => $value) {
+        $is_valid_input = in_array($name, $config['spam']['valid_inputs']) ? "valid" : "invalid";
+        print_err(" $name: $value ($is_valid_input)");
+    }
+     */
+
+	if (!empty($extra_salt)) {
+		$extra_salt = implode(':', $extra_salt);
+	} else { 
+		$extra_salt = '';
+	}
+
+    print_err("extra_salt: $extra_salt");
 }
 
 function checkSpam(array $extra_salt = array()) {
 	global $config, $pdo;
 
-	if (!isset($_POST['hash']))
+    #print_err("checkSpam start");
+    $extra_salt_orig = $extra_salt;
+
+	if (!isset($_POST['hash'])) {
+        print_err("checkSpam: _POST array doesn't have key 'hash', check failed.");
+        dumpVars($extra_salt_orig);
 		return true;
+    }
 
 	$hash = $_POST['hash'];
 
@@ -291,6 +332,8 @@ function checkSpam(array $extra_salt = array()) {
 	$_hash = sha1($_hash . $extra_salt);
 
 	if ($hash != $_hash) {
+        print_err("checkSpam: Hash values do not match! submitted hash value from POST data: $hash ; Computed hash value: $_hash");
+        dumpVars($extra_salt_orig);
 		return true;
 	}
 
@@ -299,6 +342,8 @@ function checkSpam(array $extra_salt = array()) {
 	$query->execute() or error(db_error($query));
 	if ((($passed = $query->fetchColumn(0)) === false) || ($passed > $config['spam']['hidden_inputs_max_pass'])) {
 		// there was no database entry for this hash. most likely expired.
+        print_err("checkSpam: there was no database entry for this hash. most likely expired. $hash");
+        dumpVars($extra_salt_orig);
 		return true;
 	}
 
