@@ -579,11 +579,9 @@ function handle_post(){
             );
             //$post['antispam_hash'] = checkSpam();
 
-            /*
             if ($post['antispam_hash'] === true) {
                 error($config['error']['spam']);
             }
-            */
         }
     
         if ($config['robot_enable'] && $config['robot_mute']) {

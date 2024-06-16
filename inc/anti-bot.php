@@ -258,7 +258,7 @@ function _create_antibot($board, $thread) {
   $query->bindValue(':hash', $antibot->hash());
   $query->execute() or error(db_error($query));
 
-  $antibot->printErrVars();
+  //$antibot->printErrVars();
 
   return $antibot;
 }
@@ -266,7 +266,12 @@ function _create_antibot($board, $thread) {
 function dumpVars($extra_salt) {
   global $config;
 
-  print_err("Check Spam POST data: " . json_encode($_POST));
+  $json_repr = json_encode($_POST);
+  print_err("Check Spam POST data: " . $json_repr);
+
+  if ($json_repr === false) {
+    print_err("Could not jsonify POST data: " . json_last_error_message());
+  }
 
     /*
   foreach ($_POST as $name => $value) {
@@ -344,7 +349,8 @@ function checkSpam(array $extra_salt = array()) {
     // there was no database entry for this hash. most likely expired.
     print_err("checkSpam: there was no database entry for this hash. most likely expired. $hash");
     dumpVars($extra_salt_orig);
-    return true;
+    return $hash; // do not consider this a failure case. (I would rather a spam post than a false-positive tbqh)
+    //return true;
   }
 
   return $hash;
