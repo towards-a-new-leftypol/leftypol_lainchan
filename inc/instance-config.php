@@ -133,6 +133,7 @@ $config['post_date'] = '%F (%a) %T';
 $config['thread_subject_in_title'] = true;
 
 $config['spam']['enabled'] = true;
+$config['spam']['hidden_inputs_expire'] = 60 * 60 * 24 * 120; //keep hashes for 120 days in the database just in case someone posts on a slow board.
 $config['spam_noticer']['enabled'] = true;
 $config['spam_noticer']['base_url'] = 'http://localhost:8300';
 $config['spam_noticer']['ui_url'] = 'https://spamnoticer.leftychan.net/static/index.html';
