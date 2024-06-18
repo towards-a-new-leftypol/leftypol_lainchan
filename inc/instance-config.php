@@ -64,8 +64,8 @@ $config['categories'] = array(
 // with non-board links.
 $config['custom_categories'] = array(
     'Links' => array(
-        'New Multitude' => 'https://newmultitude.org/',
-        'Booru image repository' => 'https://lefty.booru.org/',
+        'New Multitude' => 'https://newmultitude.org',
+        'Booru image repository' => 'https://lefty.pictures',
         'Leftypedia' => 'https://leftypedia.org/',
         'Official chat room' => 'https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net',
         'Gitea instance' => 'https://git.leftychan.net',
@@ -73,10 +73,10 @@ $config['custom_categories'] = array(
         'Search' => 'search.php',
     ),
     'Learning resources and blogs' => array(
-        'Michael Roberts\' blog' => 'https://thenextrecession.wordpress.com/',
-        'A Critique Of Crisis Theory blog' => 'https://critiqueofcrisistheory.wordpress.com/',
-        'Leftypedia' => 'https://leftypedia.org/',
-        'Marxist Internet Archive' => 'https://www.marxists.org/'
+        'Michael Roberts\' blog' => 'https://thenextrecession.wordpress.com',
+        'A Critique Of Crisis Theory blog' => 'https://critiqueofcrisistheory.wordpress.com',
+        'Leftypedia' => 'https://wiki.leftypol.org',
+        'Marxist Internet Archive' => 'https://www.marxists.org'
     ),
 );
 
