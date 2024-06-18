@@ -66,7 +66,6 @@ $config['custom_categories'] = array(
     'Links' => array(
         'New Multitude' => 'https://newmultitude.org',
         'Booru image repository' => 'https://lefty.pictures',
-        'Leftypedia' => 'https://leftypedia.org/',
         'Official chat room' => 'https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net',
         'Gitea instance' => 'https://git.leftychan.net',
         'Rules' => 'rules.html',
