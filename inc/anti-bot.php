@@ -295,13 +295,19 @@ function checkSpam(array $extra_salt = array()) {
   #print_err("checkSpam start");
   $extra_salt_orig = $extra_salt;
 
+  /*
   if (!isset($_POST['hash'])) {
     print_err("checkSpam: _POST array doesn't have key 'hash', check failed.");
     dumpVars($extra_salt_orig);
     return true;
   }
+  */
 
-  $hash = $_POST['hash'];
+  if (isset($_POST['hash'])) {
+    $hash = $_POST['hash'];
+  } else {
+    $hash = "";
+  }
 
   if (!empty($extra_salt)) {
     // create a salted hash of the "extra salt"
@@ -336,7 +342,12 @@ function checkSpam(array $extra_salt = array()) {
   // Use SHA1 for the hash
   $_hash = sha1($_hash . $extra_salt);
 
-  if ($hash != $_hash) {
+  if (empty($hash)) {
+    print_err("checkSpam: hash is either empty or was never present, check failed. Not flagging as spam however.");
+    dumpVars($extra_salt_orig);
+    // Ignore missing hash, because it was missing for some legitimate posters and bots tend to fill in any field.
+    return false;
+  } else if ($hash != $_hash) {
     print_err("checkSpam: Hash values do not match! submitted hash value from POST data: $hash ; Computed hash value: $_hash");
     dumpVars($extra_salt_orig);
     return true;
