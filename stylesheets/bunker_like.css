@@ -24,12 +24,12 @@ div.pages a.selected {
 
 /* INTRO */
 h1, div.title, header div.subtitle {
-	color: #663E11;
+	color: #FFB300;
 	font-family: Courier, monospace;
 }
 h1 {
 	font-size: 24pt;
-	font-weight: normal;
+	font-weight: bold;
 	letter-spacing: 0px;
 }
 header div.subtitle {
