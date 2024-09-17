@@ -32,11 +32,13 @@ $(document).ready(function(){
 							thread.find('div.hidden').remove();
 							var post_in_doc = thread.find('#' + $(this).attr('id'));
 							if(post_in_doc.length == 0) {
+                                /*
 								if(last_expanded) {
 									$(this).addClass('expanded').insertAfter(last_expanded).before('<br class="expanded">');
 								} else {
 									$(this).addClass('expanded').insertAfter(thread.find('div.post:first')).after('<br class="expanded">');
 								}
+                                */
 								last_expanded = $(this);
 								$(document).trigger('new_post', this);
 							} else {
