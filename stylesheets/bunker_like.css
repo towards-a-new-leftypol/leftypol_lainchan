@@ -90,16 +90,24 @@ input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
 input[type="submit"] {
     border: 3px double #07371F;
     border-radius: 2px;
-    background: #16171A;
+    background-color: #16171A;
     color: #ACACAC;
     font-family: Courier, monospace;
     font-weight: bold;
+    padding: 3px;
 }
+
+input[type="submit"]:hover {
+    border-color: #117743;
+    background-color: #117743;
+}
+
 .dropzone {
     background: #16171A;
-    border: 1px double #07371F;
+    border: 1px solid #07371F;
     color: #ACACAC;
     border-radius: 2px;
+    margin: 0 2px;
 }
 .dropzone .file-hint {
     color: #ACACAC;
