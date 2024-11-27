@@ -66,6 +66,13 @@ form table tr th {
 	border: 1px solid #117743;
 	border-radius: 2px;
 }
+
+input[type="text"],
+input[type="password"],
+select {
+    padding: 5px !important;
+}
+
 input[type="text"], input[type="password"], textarea, select {
 	border: 1px double #07371F;
 	border-radius: 2px;
