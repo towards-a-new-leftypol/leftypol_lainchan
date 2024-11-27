@@ -262,6 +262,7 @@ $config['user_flags'] = array (
     'egalitarianism' => 'Egalitarianism',
     'egoism' => 'Egoism',
     'eristocracy' => 'Έριστοκρατία',
+    'Eurasianism' => 'Eurasianism',
     'eureka' => 'Eureka',
     'eurocommunism' => 'Eurocommunism',
     'farc' => 'Las FARC',
@@ -287,6 +288,7 @@ $config['user_flags'] = array (
     'marx' => 'Marx',
     'marxism_blackpilism' => 'Marxism Blackpillism',
     'mutualism' => 'Mutualism',
+    'National_Bolshevik_Party_flag' => 'National Bolshevik',
     'naxalite' => 'Naxalite',
     'nazbol' => 'Nazbol',
     'nazi' => 'Nazi',
@@ -315,12 +317,14 @@ $config['user_flags'] = array (
     'syndicalism' => 'Syndicalism',
     'tankie' => 'Tankie',
     'technocracy' => 'Technocracy',
+    'The_Other_Russia' => 'The Other Russia',
     'think' => 'Think',
     'transhumanism' => 'Transhumanism',
     'united_farm_workers' => 'United Farm Workers',
     'viet_cong' => 'Viet Cong',
     'ypg' => 'YPG',
-    'yugoslavia' => 'Yugoslavia'
+    'yugoslavia' => 'Yugoslavia',
+    'zgang' => 'Z Gang'
 );
 
 
