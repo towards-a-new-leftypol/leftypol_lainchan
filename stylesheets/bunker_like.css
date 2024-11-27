@@ -65,12 +65,13 @@ form table tr th {
 	background: #282A2E;
 	border: 1px solid #117743;
 	border-radius: 2px;
+    padding: 3px;
 }
 
 input[type="text"],
 input[type="password"],
 select {
-    padding: 5px !important;
+    padding: 4px !important;
 }
 
 input[type="text"], input[type="password"], textarea, select {
