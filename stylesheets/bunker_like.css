@@ -9,6 +9,21 @@ body {
 	font-size: 13px;
 }
 
+.theme-catalog .replies {
+    font-family: serif;
+}
+
+div.post div.body {
+    font-family: serif;
+}
+
+.theme-catalog .replies .meta,
+.theme-catalog .replies .intro,
+div.post div.body a,
+div.post div.body .toolong {
+    font-family: Courier, monospace;
+}
+
 /* LINKS */
 a, a:link, a:visited, .intro a.email span.name {
 	color: #FFB300;
@@ -44,15 +59,16 @@ div.banner {
 form table {
 	border: 1px dashed #117743;
 	padding-right: 1px;
+    border-radius: 3px;
 }
 form table tr th {
 	background: #282A2E;
 	border: 1px solid #117743;
-	border-radius: 5px;
+	border-radius: 2px;
 }
 input[type="text"], input[type="password"], textarea, select {
 	border: 1px double #07371F;
-	border-radius: 5px;
+	border-radius: 2px;
 	background: #282A2E;
 	color: #ACACAC;
 	font-family: Courier, monospace;
@@ -62,7 +78,7 @@ input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
 }
 input[type="submit"] {
 	border: 3px double #07371F;
-	border-radius: 5px;
+	border-radius: 2px;
   background: #16171A;
 	color: #ACACAC;
 	font-family: Courier, monospace;
@@ -113,12 +129,12 @@ fieldset {
 div.post.reply {
 	background: #282A2E;
 	border: 1px solid #117743;
-	border-radius: 5px;
+	border-radius: 2px;
 }
 div.post.reply.highlighted {
 	background: rgba(59, 22, 43, 0.4);
 	border: 1px solid #117743;
-	border-radius: 5px;
+	border-radius: 2px;
 }
 
 /* POST CONTENT */
@@ -159,7 +175,7 @@ hr {
 .theme-catalog div.thread, .theme-catalog div.thread:hover {
 	background: #282A2E;
 	border: 1px solid #117743;
-	border-radius: 5px;
+	border-radius: 2px;
 	font-size: 10pt;
 }
 
