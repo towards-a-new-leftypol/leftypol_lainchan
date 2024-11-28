@@ -68,19 +68,14 @@ form table tr th {
     padding: 3px;
 }
 
-input[type="text"],
-input[type="password"],
-select {
-    padding: 4px !important;
-}
-
 input[type="text"], input[type="password"], textarea, select {
     border: 1px double #07371F;
     border-radius: 2px;
     background: #282A2E;
     color: #ACACAC;
     font-family: Courier, monospace;
-    margin: 0 2px;
+    margin: 0 1px;
+    padding: 5px;
 }
 
 input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
@@ -94,7 +89,6 @@ input[type="submit"] {
     color: #ACACAC;
     font-family: Courier, monospace;
     font-weight: bold;
-    padding: 3px;
 }
 
 input[type="submit"]:hover {
