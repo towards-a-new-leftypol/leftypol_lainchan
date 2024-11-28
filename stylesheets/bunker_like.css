@@ -89,7 +89,7 @@ input[type="submit"] {
     color: #ACACAC;
     font-family: Courier, monospace;
     font-weight: bold;
-    padding: 3px;
+    padding: 0 2px;
 }
 
 input[type="submit"]:hover {
