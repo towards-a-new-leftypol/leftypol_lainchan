@@ -6,7 +6,7 @@ body {
     background: #1D1F21;
     color: #ACACAC;
     font-family: Courier, monospace;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .theme-catalog .replies {
@@ -15,6 +15,10 @@ body {
 
 div.post div.body {
     font-family: serif;
+}
+
+span.heading {
+    font-size: 15px;
 }
 
 .theme-catalog .replies .meta,
@@ -90,7 +94,7 @@ input[type="submit"] {
     color: #ACACAC;
     font-family: Courier, monospace;
     font-weight: bold;
-    padding: 0 2px;
+    font-size: 16px;
 }
 
 input[type="submit"]:hover {
@@ -192,7 +196,7 @@ hr {
     background: #282A2E;
     border: 1px solid #117743;
     border-radius: 2px;
-    font-size: 10pt;
+    font-size: 11pt;
 }
 
 /* OPTIONS */
@@ -257,7 +261,7 @@ table thead th {
 }
 
 .theme-catalog .thread .meta {
-    font-size: 10pt;
+    font-size: 13px;
 }
 
 .theme-catalog .thread.grid-size-small .replies {
