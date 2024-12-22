@@ -171,11 +171,12 @@ class ImageBase extends ImageGD {
 		$this->width = $width;
 		$this->height = $height;
 		
-		if (method_exists($this, 'resize'))
+		if (method_exists($this, 'resize')) {
 			$this->resize();
-		else
+        } else {
 			// use default GD functions
 			$this->GD_resize();
+        }
 	}
 }
 
@@ -339,6 +340,24 @@ class ImageConvert extends ImageBase {
 		$this->temp = false;
 	}
 
+    // Returns true if there is a real error and false if it's just a warning
+    // (appilcable to the return text of the `gm convert` command only)
+    public static function actualErrorOrJustWarning($message_string) {
+        $warnings = array(
+            "known incorrect sRGB profile",
+            "iCCP: Not recognizing known sRGB profile that has been edited",
+            "sRGB: cHRM chunk does not match sRGB"
+        );
+
+        foreach ($warnings as $w) {
+            if (strpos($message_string, $w) !== False) {
+                return False;
+            }
+        }
+
+        return True;
+    }
+
 	public function resize() {
 		global $config;
 		
@@ -390,24 +409,29 @@ class ImageConvert extends ImageBase {
 				$convert_args = str_replace('-auto-orient', '', $config['convert_args']);
 			else
 				$convert_args = &$config['convert_args'];
-			if (($error = shell_exec_error(($this->gm ? 'gm ' : '') . 'convert ' .
-				sprintf($convert_args,
+
+            $full_convert_cmd =
+                ($this->gm ? 'gm ' : '') . 'convert ' .
+                sprintf(
+                    $convert_args,
 					$this->width,
 					$this->height,
 					escapeshellarg($this->src . '[0]'),
 					$this->width,
 					$this->height,
-					escapeshellarg($this->temp)))) || !file_exists($this->temp)) {
+                    escapeshellarg($this->temp)
+                );
 
-					if (strpos($error, "known incorrect sRGB profile") === false &&
-                                            strpos($error, "iCCP: Not recognizing known sRGB profile that has been edited") === false) {
-						$this->destroy();
-						error(_('Failed to resize image!')." "._('Details: ').nl2br(htmlspecialchars($error)), null, array('convert_error' => $error));
-					}
-					if (!file_exists($this->temp)) {
-						$this->destroy();
-						error(_('Failed to resize image!'), null, $error);
-					}
+			if (($error = shell_exec_error($full_convert_cmd)) || !file_exists($this->temp)) {
+                if (ImageConvert::actualErrorOrJustWarning($error)) {
+                    $this->destroy();
+                    error(_('Failed to resize image!')." "._('Details: ').nl2br(htmlspecialchars($error)), null, array('convert_error' => $error));
+                }
+
+                if (!file_exists($this->temp)) {
+                    $this->destroy();
+                    error(_('Failed to resize image!'), null, $error);
+                }
 			}
 			if ($size = $this->get_size($this->temp)) {
 				$this->width = $size[0];

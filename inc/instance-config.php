@@ -138,14 +138,14 @@ $config['spam']['enabled'] = true;
 $config['spam']['hidden_inputs_expire'] = 60 * 60 * 24 * 120; //keep hashes for 120 days in the database just in case someone posts on a slow board.
 $config['spam_noticer']['enabled'] = true;
 $config['spam_noticer']['base_url'] = 'http://localhost:8300';
-$config['spam_noticer']['ui_url'] = 'https://spamnoticer.leftychan.net/static/index.html';
+$config['spam_noticer']['ui_url'] = 'http://localhost:8081/static/index.html';
 $config['spam_noticer']['imageboard_root'] = 'http://leftychan.net/';
 $config['spam_noticer']['website_name'] = "leftychan";
 
 /*
  * Basic captcha. See also: captchaconfig.php
  */
-$config['securimage'] = true;
+$config['securimage'] = false;
 $config['captcha_tor_only'] = true;
 
 /*
@@ -598,4 +598,4 @@ $config['filters'][] = array(
 );
 
 $config['global_message'] = '<span><a href="https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net">Matrix</a></span> &nbsp; <span><a href="ircs://irc.leftychan.net:6697/#leftychan">IRC Chat</a></span> &nbsp; <span><a href="mumble://leftychan.net">Mumble</a></span> &nbsp; <span><a href="https://t.me/+RegtyzzrE0M1NDMx">Telegram</a></span> &nbsp; <span><a href="https://discord.gg/AcZeFKXPmZ">Discord</a></span>';
-$config['debug'] = false;
+$config['debug'] = true;

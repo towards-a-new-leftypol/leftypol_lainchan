@@ -457,6 +457,8 @@ function validate_images(array $post_array) {
 function handle_post(){
     global $config,$dropped_post,$board, $mod,$pdo;
 
+    init_global_post_cleanup();
+
     if (!isset($_POST['body'], $_POST['board']) && !$dropped_post) {
         error($config['error']['bot']);
     }
@@ -1035,6 +1037,17 @@ function handle_post(){
         $post['delete_token'] = $delete_token;
 
         $spam_noticer_result = checkWithSpamNoticer($config, $post, $board['uri']);
+
+        /*
+         * If we have an error with posting this later, send back the
+         * delete token to spamnoticer to remove the post from the recent
+         * posts table. (see error.php for the error cleanup function)
+         */
+        $f_spamnoticer_cleanup_on_err = function() use ($config, $delete_token) {
+            removeRecentPostFromSpamnoticer($config, array($delete_token));
+        };
+
+        push_global_post_cleanup($f_spamnoticer_cleanup_on_err);
 
         if ($spam_noticer_result->succeeded && $spam_noticer_result->noticed) {
           error($config['error']['spam_noticer'] . $spam_noticer_result->reason);

@@ -24,6 +24,42 @@ register_shutdown_function('fatal_error_handler');
 
 $error_recursion=false;
 
+
+
+/*
+ * Global anything is always a bad idea, but since all of this website's error handling comes
+ * down to calling this error function and quitting, we have no way of catching exceptions, for example
+ * during thumbnail creation.
+ *
+ * So push things to run in case of a crash into a list, and then run all of them in error.
+ *
+ * This will be exclusive to callbacks for posting a post callflow, not mod actions or anything else.
+ */
+function global_post_cleanup() {
+    global $post_cleanup_list;
+
+    foreach ($post_cleanup_list as $f) {
+        $f();
+    }
+
+    unset($post_cleanup_list);
+}
+
+function push_global_post_cleanup($f) {
+    global $post_cleanup_list;
+
+    if (!isset($post_cleanup_list)) {
+        $post_cleanup_list = array($f);
+    } else {
+        array_push($post_cleanup_list, $f);
+    }
+}
+
+function init_global_post_cleanup() {
+    global $post_cleanup_list;
+    $post_cleanup_list = array();
+}
+
 function error($message, $priority = true, $debug_stuff = false) {
     global $board, $mod, $config, $db_error, $error_recursion;
 
@@ -75,10 +111,13 @@ function error($message, $priority = true, $debug_stuff = false) {
             $data['debug']=$debug_stuff;
         }
         print json_encode($data);
+        global_post_cleanup();
         exit();
     }
 
     header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error');
+
+    global_post_cleanup();
 
     die(Element('page.html', array(
         'config' => $config,
