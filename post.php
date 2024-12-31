@@ -455,7 +455,10 @@ function validate_images(array $post_array) {
 }
 
 function handle_post(){
-    global $config,$dropped_post,$board, $mod,$pdo;
+    global $config, $dropped_post, $board, $mod, $pdo, $debug;
+
+    $time_1 = microtime(true);
+    $debug['time']['post'] = array();
 
     init_global_post_cleanup();
 
@@ -1029,6 +1032,9 @@ function handle_post(){
 
     validate_images($post);
 
+    $time_2 = microtime(true);
+    $debug['time']['post']['pre_noticer'] = round(($time_2 - $time_1) * 1000, 2) . 'ms';
+
     if ($config['spam_noticer']['enabled']) {
         require_once 'inc/spamnoticer.php';
 
@@ -1052,7 +1058,11 @@ function handle_post(){
         if ($spam_noticer_result->succeeded && $spam_noticer_result->noticed) {
           error($config['error']['spam_noticer'] . $spam_noticer_result->reason);
         }
+
+        $debug['time']['post']['spam_noticer'] = round(($microtime(true) - $time_1) * 1000, 2) . 'ms';
     }
+
+    $time_3 = microtime(true);
 
     if ($post['has_file']) {
         foreach ($post['files'] as $key => &$file) {
@@ -1493,6 +1503,10 @@ function handle_post(){
     }
 
     $thread_id = $post['op'] ? $id : $post['thread'];
+
+    $time_end = microtime(true);
+    $debug['time']['post']['post_noticer'] = round(($time_end - $time_3) * 1000, 2) . 'ms';
+    $debug['time']['post']['total'] = round(($time_end - $time_1) * 1000, 2) . 'ms';
 
     $rendered_thread = buildThread($thread_id);
     
