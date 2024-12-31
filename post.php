@@ -599,7 +599,7 @@ function handle_post(){
     }
 
     $time_rolling2 = microtime(true);
-    $debug['time']['post']['pre_noticer1'] = round(($time_rolling1 - $time_1) * 1000, 2) . 'ms';
+    $debug['time']['post']['pre_noticer1'] = round(($time_rolling2 - $time_1) * 1000, 2) . 'ms';
     $time_rolling1 = $time_rolling2;
     
     //Check if thread exists
