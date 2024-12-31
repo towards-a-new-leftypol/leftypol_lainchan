@@ -38,6 +38,10 @@ $error_recursion=false;
 function global_post_cleanup() {
     global $post_cleanup_list;
 
+    if (!isset($post_cleanup_list)) {
+        return;
+    }
+
     foreach ($post_cleanup_list as $f) {
         $f();
     }
