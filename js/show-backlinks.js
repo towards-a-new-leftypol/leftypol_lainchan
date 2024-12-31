@@ -25,7 +25,7 @@ $(document).ready(function(){
 			else
 				return;
 		
-			$post = $('#reply_' + id);
+			$post = $('#reply_' + id + ', #op_' + id);
 			if($post.length == 0)
 				return;
 		
@@ -46,9 +46,9 @@ $(document).ready(function(){
 		});
 	};
 	
-	$('div.post.reply').each(showBackLinks);
+	$('div.post').each(showBackLinks);
 
-        $(document).on('new_post', function(e, post) {
+    $(document).on('new_post', function(e, post) {
 		if ($(post).hasClass("reply")) {
 			showBackLinks.call(post);
 		}
