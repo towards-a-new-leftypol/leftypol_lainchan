@@ -597,6 +597,10 @@ function handle_post(){
     else {
         $mod = $post['mod'] = false;
     }
+
+    $time_rolling2 = microtime(true);
+    $debug['time']['post']['pre_noticer1'] = round(($time_rolling1 - $time_1) * 1000, 2) . 'ms';
+    $time_rolling1 = $time_rolling2;
     
     //Check if thread exists
     if (!$post['op']) {
@@ -613,6 +617,9 @@ function handle_post(){
         $thread = false;
     }
 
+    $time_rolling2 = microtime(true);
+    $debug['time']['post']['pre_noticer2'] = round(($time_rolling2 - $time_rolling1) * 1000, 2) . 'ms';
+    $time_rolling1 = $time_rolling2;
     
     // Check for an embed field
     if ($config['enable_embedding'] && isset($_POST['embed']) && !empty($_POST['embed'])) {
@@ -713,6 +720,10 @@ function handle_post(){
             
     }
 
+    $time_rolling2 = microtime(true);
+    $debug['time']['post']['pre_noticer3'] = round(($time_rolling2 - $time_rolling1) * 1000, 2) . 'ms';
+    $time_rolling1 = $time_rolling2;
+
     $post['name'] = $_POST['name'] != '' ? $_POST['name'] : $config['anonymous'];
     $post['subject'] = $_POST['subject'];
     $post['email'] = str_replace(' ', '%20', htmlspecialchars($_POST['email']));
@@ -756,6 +767,10 @@ function handle_post(){
         }
     }
 
+    $time_rolling2 = microtime(true);
+    $debug['time']['post']['pre_noticer4'] = round(($time_rolling2 - $time_rolling1) * 1000, 2) . 'ms';
+    $time_rolling1 = $time_rolling2;
+
     if ($post['has_file']) {
         // Determine size sanity
         $size = 0;
@@ -790,6 +805,10 @@ function handle_post(){
             )));
         $post['filesize'] = $size;
     }
+
+    $time_rolling2 = microtime(true);
+    $debug['time']['post']['pre_noticer5'] = round(($time_rolling2 - $time_rolling1) * 1000, 2) . 'ms';
+    $time_rolling1 = $time_rolling2;
 
     $post['capcode'] = false;
     
@@ -873,6 +892,10 @@ function handle_post(){
             error($config['error']['toomanyimages']);
         }
     }
+
+    $time_rolling2 = microtime(true);
+    $debug['time']['post']['pre_noticer6'] = round(($time_rolling2 - $time_rolling1) * 1000, 2) . 'ms';
+    $time_rolling1 = $time_rolling2;
 
     if ($config['strip_combining_chars']) {
         $post['name'] = strip_combining_chars($post['name']);
@@ -1033,8 +1056,12 @@ function handle_post(){
 
     validate_images($post);
 
+    $time_rolling2 = microtime(true);
+    $debug['time']['post']['pre_noticer7'] = round(($time_rolling2 - $time_rolling1) * 1000, 2) . 'ms';
+    $time_rolling1 = $time_rolling2;
+
     $time_2 = microtime(true);
-    $debug['time']['post']['pre_noticer'] = round(($time_2 - $time_1) * 1000, 2) . 'ms';
+    $debug['time']['post']['pre_noticer_total'] = round(($time_2 - $time_1) * 1000, 2) . 'ms';
 
     if ($config['spam_noticer']['enabled']) {
         require_once 'inc/spamnoticer.php';
