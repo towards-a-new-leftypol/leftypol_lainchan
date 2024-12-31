@@ -296,6 +296,8 @@ function checkWithSpamNoticer($config, $post, $boardname) {
                 print_err($body);
                 $reasons_bitmap = json_decode($body)->reason;
                 $result->reason = renderReasons($reasons_bitmap);
+            } else if ($config['debug']) {
+                print_err((string) $response->getBody());
             }
         } else {
             print_err("spamnoticer status code: " . $status_code);

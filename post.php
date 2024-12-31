@@ -1044,6 +1044,10 @@ function handle_post(){
 
         $spam_noticer_result = checkWithSpamNoticer($config, $post, $board['uri']);
 
+        if ($spam_noticer_result->succeeded && $spam_noticer_result->noticed) {
+            error($config['error']['spam_noticer'] . $spam_noticer_result->reason);
+        }
+
         /*
          * If we have an error with posting this later, send back the
          * delete token to spamnoticer to remove the post from the recent
@@ -1054,10 +1058,6 @@ function handle_post(){
         };
 
         push_global_post_cleanup($f_spamnoticer_cleanup_on_err);
-
-        if ($spam_noticer_result->succeeded && $spam_noticer_result->noticed) {
-          error($config['error']['spam_noticer'] . $spam_noticer_result->reason);
-        }
 
         $debug['time']['post']['spam_noticer'] = round((microtime(true) - $time_1) * 1000, 2) . 'ms';
     }
