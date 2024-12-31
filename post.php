@@ -458,7 +458,6 @@ function handle_post(){
     global $config, $dropped_post, $board, $mod, $pdo, $debug;
 
     $time_1 = microtime(true);
-    $debug['time']['post'] = array();
 
     init_global_post_cleanup();
 
@@ -471,6 +470,8 @@ function handle_post(){
     // Check if board exists
     if (!openBoard($post['board']))
         error($config['error']['noboard']);
+
+    $debug['time']['post'] = array();
 
     $board_locked_check = (!isset($_POST['mod']) || !$_POST['mod'])
         && ($config['board_locked']===true
