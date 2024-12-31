@@ -1059,7 +1059,7 @@ function handle_post(){
           error($config['error']['spam_noticer'] . $spam_noticer_result->reason);
         }
 
-        $debug['time']['post']['spam_noticer'] = round(($microtime(true) - $time_1) * 1000, 2) . 'ms';
+        $debug['time']['post']['spam_noticer'] = round((microtime(true) - $time_1) * 1000, 2) . 'ms';
     }
 
     $time_3 = microtime(true);
