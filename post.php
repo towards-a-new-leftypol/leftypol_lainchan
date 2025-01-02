@@ -554,10 +554,14 @@ function handle_post(){
             error($config['error']['referer']);
         }
 
+        $time_dnsbl = microtime(true);
         checkDNSBL();
+        $debug['time']['post']['dnsbl'] = round((microtime(true) - $time_dnsbl) * 1000, 2) . 'ms';
         
+        $time_ban = microtime(true);
         // Check if banned
         checkBan($board['uri']);
+        $debug['time']['post']['check_ban'] = round((microtime(true) - $time_ban) * 1000, 2) . 'ms';
 
         if ($post['mod'] = isset($_POST['mod']) && $_POST['mod']) {
             check_login(false);
