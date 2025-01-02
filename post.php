@@ -1091,7 +1091,7 @@ function handle_post(){
 
         push_global_post_cleanup($f_spamnoticer_cleanup_on_err);
 
-        $debug['time']['post']['spam_noticer'] = round((microtime(true) - $time_1) * 1000, 2) . 'ms';
+        $debug['time']['post']['spam_noticer'] = round((microtime(true) - $time_2) * 1000, 2) . 'ms';
     }
 
     $time_3 = microtime(true);
