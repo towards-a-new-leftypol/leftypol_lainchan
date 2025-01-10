@@ -9,23 +9,8 @@ body {
     font-size: 15px;
 }
 
-.theme-catalog .replies {
-    font-family: serif;
-}
-
-div.post div.body {
-    font-family: serif;
-}
-
 span.heading {
     font-size: 15px;
-}
-
-.theme-catalog .replies .meta,
-.theme-catalog .replies .intro,
-div.post div.body a,
-div.post div.body .toolong {
-    font-family: Courier, monospace;
 }
 
 /* LINKS */
@@ -33,10 +18,12 @@ a, a:link, a:visited, .intro a.email span.name {
     color: #FFB300;
     text-decoration: none;
 }
+
 a:link:hover, a:visited:hover {
     color: #FFB300;
     text-shadow: 0px 0px 5px #117743;
 }
+
 div.pages a.selected {
     color: #FFB300;
 }
@@ -44,13 +31,14 @@ div.pages a.selected {
 /* INTRO */
 h1, div.title, header div.subtitle {
     color: #FFB300;
-    font-family: Courier, monospace;
 }
+
 h1 {
     font-size: 18pt;
     font-weight: bold;
     letter-spacing: 0px;
 }
+
 header div.subtitle {
     font-size: 10pt;
 }
