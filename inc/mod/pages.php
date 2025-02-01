@@ -1220,6 +1220,8 @@ function mod_move_reply($originBoard, $postID) {
     if (isset($_POST['board'])) {
         $targetBoard = $_POST['board'];
 
+        $post['original_thread'] = $post['thread'];
+
         if ($_POST['target_thread']) {
             $query = prepare(sprintf('SELECT * FROM ``posts_%s`` WHERE `id` = :id', $targetBoard));
             $query->bindValue(':id', $_POST['target_thread']);
@@ -1270,7 +1272,16 @@ function mod_move_reply($originBoard, $postID) {
         // trigger themes
         rebuildThemes('post', $targetBoard);
         // mod log
-        modLog("Moved post #{$postID} to " . sprintf($config['board_abbreviation'], $targetBoard) . " (#{$newID})", $originBoard);
+
+        $_orig_threadinfo = "";
+        $_new_threadinfo = "";
+
+        if (!$post['op']) {
+            $_orig_threadinfo = " (from thread #{$post['original_thread']})";
+            $_new_threadinfo = $post['thread'];
+        }
+
+        modLog("Moved post #{$postID}$_orig_threadinfo to " . sprintf($config['board_abbreviation'], $targetBoard) . " ($_new_threadinfo/#{$newID})", $originBoard);
 
         // return to original board
         openBoard($originBoard);
