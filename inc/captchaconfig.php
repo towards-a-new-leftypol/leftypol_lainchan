@@ -19,8 +19,8 @@ return array(
 
     'image_width'      => 275,       // width of captcha image in pixels
     'image_height'     => 100,       // height of captcha image in pixels
-    'code_length'      => 6,         // # of characters for captcha code
-    'image_bg_color'   => '#770000', // hex color for image background
+    'code_length'      => 7,         // # of characters for captcha code
+    'image_bg_color'   => '#07371F', // hex color for image background
     'text_color'       => '#DDDD64', // hex color for captcha text
     'line_color'       => '#DDDD64', // hex color for lines over text
     'noise_color'      => '#DDDD64', // color of random noise to draw under text
@@ -31,8 +31,8 @@ return array(
     'use_random_spaces'   => true,
     'use_random_baseline' => true,
     'use_text_angles'     => true,
-    'use_random_boxes' => false,
-'use_transparent_text' => false,
+    'use_random_boxes' => true,
+    'use_transparent_text' => true,
 
     'wordlist_file'    => 'words/words.txt', // text file for word captcha
     'use_wordlist'     => false,             // true to use word list
