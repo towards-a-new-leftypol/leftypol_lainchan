@@ -12,14 +12,14 @@
 			'title' => 'Overboard',
 			'uri' => 'overboard',
 			'subtitle' => '30 most recently bumped threads',
-			'exclude' => array('assembly', 'assembly_archive', 'gulag'),
+			'exclude' => array('assembly', 'assembly_archive', 'gulag', 'dead'),
 			'thread_limit' => $thread_limit,
 		),
 		array(
 			'title' => 'SFW Overboard',
 			'uri' => 'sfw',
 			'subtitle' => '30 most recently bumped threads from work-safe boards',
-			'exclude' => array('assembly', 'assembly_archive', 'gulag', 'b', 'R9K'),
+			'exclude' => array('assembly', 'assembly_archive', 'gulag', 'b', 'R9K', 'dead'),
 			'thread_limit' => $thread_limit,
 		),
 		array(
