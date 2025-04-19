@@ -28,7 +28,8 @@ $config['boards'] = array(
     'i',
     'a',
     'R9K',
-    'dead'
+    'dead',
+    'lgbt'
   ),
   array('meta')
 );
@@ -57,7 +58,8 @@ $config['categories'] = array(
     'i',
     'a',
     'R9K',
-    'dead'
+    'dead',
+    'lgbt'
   ),
   'Meta' => array('meta')
 );
@@ -418,7 +420,7 @@ $config['additional_javascript_defer'][] = 'js/image-hover.js';
 $config['additional_javascript'][] = 'js/gallery-view.js';
 $config['additional_javascript'][] = 'js/catalog-search.js'; // for catalog page
 $config['additional_javascript'][] = 'js/catalog.js';        // for catalog page
-$config['additional_javascript_defer'][] = 'js/thread-watcher.js';
+// $config['additional_javascript_defer'][] = 'js/thread-watcher.js';
 $config['additional_javascript_defer'][] = 'js/expand.js';
 $config['additional_javascript_defer'][] = 'js/webm-settings.js';
 $config['additional_javascript_defer'][] = 'js/expand-video.js';
