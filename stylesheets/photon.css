@@ -12,13 +12,22 @@ div.boardlist {
     font-size: 12pt;
     margin-top: 0px;
     background-color:  #DDDDDD;
-    border: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
     border-radius: 4px 4px 4px 4px;
     margin-top: 0;
     padding: 10px;
-    position: fixed;
     top: 0;
 }
+
+.bar .bar-home,
+.bar.bottom {
+    background-color:  #DDDDDD;
+}
+
+.bar-home a {
+    padding: 10px;
+}
+
 div.boardlist.bottom {
     margin-top: 20px;
     position: inherit;
