@@ -35,6 +35,7 @@ $config['boards'] = array(
 );
 
 $config['prepended_foreign_boards'] = array(
+    'home' => '/',
     'overboard' => '/overboard/',
     'sfw' => '/sfw/',
     'alt' => '/alt/',
