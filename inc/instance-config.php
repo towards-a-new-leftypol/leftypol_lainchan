@@ -174,7 +174,7 @@ $config['mod']['news_page'] = 5;
 // Allow everyone to see bumplocks
 $config['mod']['view_bumplock'] = -1;
 
-$config['allow_thread_deletion'] = false;
+$config['allow_thread_deletion'] = true; // Only if thread has no replies
 
 // Max attachments per post
 $config['max_images'] = 5;

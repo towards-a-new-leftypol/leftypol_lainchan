@@ -220,7 +220,17 @@ function handle_delete() {
         error($config['error']['nodelete']);
         
     foreach ($delete as &$id) {
-        $query = prepare(sprintf("SELECT `thread`, `time`,`password` FROM ``posts_%s`` WHERE `id` = :id", $board['uri']));
+        $query = prepare(sprintf(
+            "SELECT `thread`, `time`, `password`, " .
+            "CASE " .
+            "    WHEN `thread` IS NULL THEN " .
+            "        (SELECT EXISTS (SELECT 1 FROM ``posts_%s`` WHERE `thread` = p.`id`)) " .
+            "    ELSE 0 " .
+            "END AS `has_replies` " .
+            "FROM ``posts_%s`` AS p " .
+            "WHERE `id` = :id",
+            $board['uri'], $board['uri']
+        ));
         $query->bindValue(':id', $id, PDO::PARAM_INT);
         $query->execute() or error(db_error($query));
         
@@ -240,23 +250,26 @@ function handle_delete() {
             B := is opening post
             C := there are replies
 
-            A B C | (A & B & C) | !(A & B & !C) | (!A & B) | (A & B & C) | (!A & B) | !(A & B & !C)
-            ------|-------------|---------------|------------------------|-------------------------
-            T T T | T           | T             | T                      | T
-            F T T | F           | T             | T                      | T
-            T F T | F           | T             | F                      | T
-            F F T | F           | T             | F                      | T
-            T T F | F           | F             | F                      | F
-            F T F | F           | T             | T                      | T
-            T F F | F           | T             | F                      | T
-            F F F | F           | T             | F                      | T
+            A B C | (A & B & C) | (!A & B) | (A & B & C) 
+            ------|-------------|------------------------
+            T T T | T           | T                      
+            F T T | F           | T                      
+            T F T | F           | F                      
+            F F T | F           | F                      
+            T T F | F           | F                      
+            F T F | F           | T                      
+            T F F | F           | F                      
+            F F F | F           | F                      
 
             STOP = (!A & B) | (A & B & C)
-            STOP = (!A & B) | !(A & B & !C) ✗
 
              */
 
-            if (isset($config['allow_thread_deletion']) && !$config['allow_thread_deletion'] && !$post['thread']) {
+            if (isset($config['allow_thread_deletion']) &&
+                (
+                  (!$config['allow_thread_deletion'] && !$post['thread'])
+                  || ($config['allow_thread_deletion'] && !$post['thread'] && $post['has_replies'])
+                )) {
                 error($config['error']['nodeletethread']);
             }
 
