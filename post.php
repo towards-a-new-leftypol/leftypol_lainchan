@@ -234,6 +234,28 @@ function handle_delete() {
                 $thread = $thread_query->fetch(PDO::FETCH_ASSOC);   
             }
 
+            /*
+
+            A := allow thread deletion is enabled
+            B := is opening post
+            C := there are replies
+
+            A B C | (A & B & C) | !(A & B & !C) | (!A & B) | (A & B & C) | (!A & B) | !(A & B & !C)
+            ------|-------------|---------------|------------------------|-------------------------
+            T T T | T           | T             | T                      | T
+            F T T | F           | T             | T                      | T
+            T F T | F           | T             | F                      | T
+            F F T | F           | T             | F                      | T
+            T T F | F           | F             | F                      | F
+            F T F | F           | T             | T                      | T
+            T F F | F           | T             | F                      | T
+            F F F | F           | T             | F                      | T
+
+            STOP = (!A & B) | (A & B & C)
+            STOP = (!A & B) | !(A & B & !C) ✗
+
+             */
+
             if (isset($config['allow_thread_deletion']) && !$config['allow_thread_deletion'] && !$post['thread']) {
                 error($config['error']['nodeletethread']);
             }
