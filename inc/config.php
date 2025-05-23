@@ -201,8 +201,8 @@
 
     // Prevents most Tor exit nodes from making posts. Recommended, as a lot of abuse comes from Tor because
     // of the strong anonymity associated with it.
-    $config['dnsbl'][] = 'rbl.efnetrbl.org';
-    $config['dnsbl'][] = 'tor.efnet.org';
+    // $config['dnsbl'][] = 'rbl.efnetrbl.org';
+    // $config['dnsbl'][] = 'tor.efnet.org';
 
 
     // http://www.sorbs.net/using.shtml
