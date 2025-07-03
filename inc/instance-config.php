@@ -601,13 +601,21 @@ $config['filters'][] = array(
     'message' => 'New threads are being created too quickly. Wait [at most] 10 minutes'
 );
 
-//Ban first part of an onion domain linking to black markets
+//onion domains in ads for black markets
+$banned_strings = array(
+    'u2uaeeuh2hnvdo24',
+    '2nkcsrek47v4xu63',
+    'zkpckszxe37pnv3e',
+    '0515c0aca62eb5ac64bf8dff8c2e2' // some sort of session id found in spam adverts
+);
+
+//If any of the strings in $banned_strings are found in the body, reject it
 $config['filters'][] = array(
     'condition' => array(
-        'body'  => '/u2uaeeuh2hnvdo24/i',
+        'body'  => '/(' . implode('|', $banned_strings) . ')/i',
     ),
     'action' => 'reject',
-    'message' => 'You posted an illicit URL.'
+    'message' => 'You\'re posting illicit advertisements.'
 );
 
 $config['global_message'] = '<span><a href="https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net">Matrix</a></span> &nbsp; <span><a href="ircs://irc.leftychan.net:6697/#leftychan">IRC Chat</a></span> &nbsp; <span><a href="mumble://leftychan.net">Mumble</a></span>';
