@@ -1258,9 +1258,9 @@ function mod_move_reply($originBoard, $postID) {
         if ($post['has_file']) {
             foreach ($post['files'] as $i => &$file) {
                 // move the image
-                if (isset($file['thumb']))
-                if ($file['thumb'] != 'spoiler' || $file['thumb'] != 'deleted') { //trying to move/copy the spoiler thumb raises an error
-                    rename($file['file_path'], sprintf($config['board_path'], $board['uri']) . $config['dir']['img'] . $file['file']);
+                rename($file['file_path'], sprintf($config['board_path'], $board['uri']) . $config['dir']['img'] . $file['file']);
+                //trying to move/copy the spoiler thumb raises an error
+                if (isset($file['thumb']) && !in_array($file['thumb'], ['spoiler', 'deleted', 'file'], true)) {
                     rename($file['thumb_path'], sprintf($config['board_path'], $board['uri']) . $config['dir']['thumb'] . $file['thumb']);
                 }
             }
