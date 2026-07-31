@@ -619,5 +619,113 @@ $config['filters'][] = array(
     'message' => 'You\'re posting illicit advertisements.'
 );
 
+// ============================================================
+// FILTER 1: Obfuscated "children sex porn" phrasing
+// Catches: "ch-ildren s-e-x po-rn", "chi ldren s e x po rn", etc.
+// ============================================================
+$config['filters'][] = array(
+    'condition' => array(
+        'custom' => function($post) {
+            $body = strtolower($post['raw_body']);
+            // Strip common obfuscation chars (hyphens, dots, asterisks, extra spaces)
+            // down to single separators so "ch-ildren" and "ch.i.l.d.r.e.n" both normalize
+            $normalized = preg_replace('/[\s\-\.\*]+/', ' ', $body);
+
+            if (preg_match('/ch\s?ildren\s+s\s?e\s?x\s+po\s?rn/i', $normalized)) {
+                return true;
+            }
+            return false;
+        }
+    ),
+    'action'  => 'reject',
+    'message' => 'Post rejected.'
+);
+
+// ============================================================
+// FILTER 2: Obfuscated "CP" near "files" and/or "site"
+// Catches: "C    p files site", ".C   .p files. site",
+//          "C.   p.  site files", "files C   p  site", etc.
+// ============================================================
+$config['filters'][] = array(
+    'condition' => array(
+        'custom' => function($post) {
+            $body = strtolower($post['raw_body']);
+
+            // "c" followed by 1-10 separator chars then "p"  (the obfuscated CP)
+            $has_cp = preg_match('/\bc[\s\.\-\*]{1,10}p\b/i', $body);
+
+            $has_files = (strpos($body, 'files') !== false);
+            $has_site  = (strpos($body, 'site')  !== false);
+
+            // Require the CP token AND at least one of "files"/"site"
+            if ($has_cp && ($has_files || $has_site)) {
+                return true;
+            }
+            return false;
+        }
+    ),
+    'action'  => 'reject',
+    'message' => 'Post rejected.'
+);
+
+// ============================================================
+// FILTER 3: "loli" combined with obfuscated CP or "site"
+// Catches: ".loli. .c   p.  .SiTe."
+// ============================================================
+$config['filters'][] = array(
+    'condition' => array(
+        'custom' => function($post) {
+            $body = strtolower($post['raw_body']);
+
+            $has_loli = (strpos($body, 'loli') !== false);
+            $has_cp   = preg_match('/\bc[\s\.\-\*]{1,10}p\b/i', $body);
+
+            if ($has_loli && $has_cp) {
+                return true;
+            }
+            return false;
+        }
+    ),
+    'action'  => 'reject',
+    'message' => 'Post rejected.'
+);
+
+// ============================================================
+// FILTER 4: Banned domains / URL fragments seen in the spam
+// Add new domains here as they appear.
+// ============================================================
+$banned_csam_domains = array(
+    'arnlweb\.com',
+    'link\.uzea\.uz',
+    'ykm\.de',
+    'shortme\.site',
+    'ho\.fi',
+    'pakeqris\.com',
+    'rklo\.nl',
+    'maze\.li',
+);
+
+$config['filters'][] = array(
+    'condition' => array(
+        'body' => '/(' . implode('|', $banned_csam_domains) . ')/i',
+    ),
+    'action'  => 'reject',
+    'message' => 'Post rejected.'
+);
+
+// ============================================================
+// FILTER 5: Generic "files <year> site: <url>" structure
+// Catches future variants that swap the keywords but keep the
+// "… files 2026. site: https://…" skeleton.
+// ============================================================
+$config['filters'][] = array(
+    'condition' => array(
+        'body' => '/files\s+\d{4}\.?\s*site\s*:?\s*https?:\/\//i',
+    ),
+    'action'  => 'reject',
+    'message' => 'Post rejected.'
+);
+
+
 $config['global_message'] = '<span><a href="https://talk.leftychan.net/#/room/#welcome:matrix.leftychan.net">Matrix</a></span> &nbsp; <span><a href="ircs://irc.leftychan.net:6697/#leftychan">IRC Chat</a></span> &nbsp; <span><a href="mumble://leftychan.net">Mumble</a></span>';
 $config['debug'] = false;
