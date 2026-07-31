@@ -279,7 +279,6 @@ function checkWithSpamNoticer($config, $post, $boardname) {
             );
         }
 
-
         $response = $client->request('POST', '', [
             'multipart' => $multipart
         ]);

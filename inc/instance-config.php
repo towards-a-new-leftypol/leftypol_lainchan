@@ -606,7 +606,8 @@ $banned_strings = array(
     'u2uaeeuh2hnvdo24',
     '2nkcsrek47v4xu63',
     'zkpckszxe37pnv3e',
-    '0515c0aca62eb5ac64bf8dff8c2e2' // some sort of session id found in spam adverts
+    '0515c0aca62eb5ac64bf8dff8c2e2', // some sort of session id found in spam adverts
+    'validdocumentpro'
 );
 
 //If any of the strings in $banned_strings are found in the body, reject it
