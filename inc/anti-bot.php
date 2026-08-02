@@ -40,6 +40,48 @@ function getStackTraceAsString() {
   return $traceString;
 }
 
+function debug_dump_request() {
+    global $dropped_post;
+
+    $delim = "========== REQUEST DUMP ==========";
+    $out = $delim . "\n";
+
+    // --- Headers ---
+    $out .= "--- HEADERS ---\n";
+    if (function_exists('getallheaders')) {
+        foreach (getallheaders() as $k => $v) {
+            $out .= "$k: $v\n";
+        }
+    } else {
+        foreach ($_SERVER as $k => $v) {
+            if (strpos($k, 'HTTP_') === 0 || in_array($k, ['CONTENT_TYPE', 'CONTENT_LENGTH', 'REQUEST_METHOD', 'REQUEST_URI'])) {
+                $out .= "$k: $v\n";
+            }
+        }
+    }
+
+    // --- Raw body (unavailable for multipart/form-data) ---
+    $out .= "--- RAW BODY (php://input) ---\n";
+    $raw = file_get_contents('php://input');
+    $out .= ($raw === '' ? '(empty)' : $raw) . "\n";
+
+    // --- Parsed POST fields ---
+    $out .= "--- \$_POST ---\n";
+    $out .= var_export($_POST, true) . "\n";
+
+    // --- Uploaded files ---
+    $out .= "--- \$_FILES ---\n";
+    $out .= var_export($_FILES, true) . "\n";
+
+    // --- Dropped post global ---
+    $out .= "--- \$dropped_post ---\n";
+    $out .= var_export($dropped_post, true) . "\n";
+
+    $out .= $delim;
+
+    print_err($out);
+}
+
 // print_err("\n\nSTART\n\n");
 
 class AntiBot {

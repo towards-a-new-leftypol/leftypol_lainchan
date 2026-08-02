@@ -489,6 +489,17 @@ function validate_images(array $post_array) {
     }
 }
 
+function have_uploaded_file() {
+    foreach ($_FILES as $file) {
+        if (in_array($file['error'], [UPLOAD_ERR_OK, UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE])
+            && !empty($file['tmp_name'])
+            && $file['size'] > 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function handle_post(){
     global $config, $dropped_post, $board, $mod, $pdo, $debug;
 
@@ -769,7 +780,7 @@ function handle_post(){
     $post['body'] = $_POST['body'];
     $post['raw_body'] = $_POST['body'];
     $post['password'] = $_POST['password'];
-    $post['has_file'] = (!isset($post['embed']) && (($post['op'] && !isset($post['no_longer_require_an_image_for_op']) && $config['force_image_op']) || count($_FILES) > 0));
+    $post['has_file'] = (!isset($post['embed']) && (($post['op'] && !isset($post['no_longer_require_an_image_for_op']) && $config['force_image_op']) || have_uploaded_file()));
     
     if (!$dropped_post) {
         if (!($post['has_file'] || isset($post['embed'])) || (($post['op'] && $config['force_body_op']) || (!$post['op'] && $config['force_body']))) {

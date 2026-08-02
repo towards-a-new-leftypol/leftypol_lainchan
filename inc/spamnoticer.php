@@ -221,7 +221,6 @@ function addToSpamNoticer($config, $post, $boardname, BanFormFieldsForSpamnotice
             }
         }
 
-
         $response = $client->request('POST', '/add_post_to_known_spam', [
             'multipart' => $multipart
         ]);
