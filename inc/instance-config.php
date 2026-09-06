@@ -461,6 +461,7 @@ $config['additional_javascript'][] = 'js/youtube.js';
 $config['markup'][] = array("/^\s*&lt;.*$/m", '<span class="orangeQuote">$0</span>');
 $config['markup'][] = array("/__(.+?)__/", "<span class=\"underline\">\$1</span>");
 $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</span>");
+$config['markup_repair_tidy'] = true;
 
 /*
  * Original wordfilters (Obsolete, this is the basic form of the newer version below)

@@ -2232,6 +2232,7 @@ function markup(&$body, $track_cites = false, $op = false) {
             'output-html' => true,
             'newline' => 'LF',
             'quiet' => true,
+            'preserve-entities' => true,
         ), 'utf8');
         $body = str_replace("\n", '', $body);
     }
@@ -2288,9 +2289,9 @@ function buildThread($id, $return = false, $mod = false) {
     global $board, $config, $build_pages;
     $id = round($id);
 
-  if (event('build-thread', $id)) {
-    return;
-  }
+    if (event('build-thread', $id)) {
+      return;
+    }
 
     if ($config['cache']['enabled'] && !$mod) {
         // Clear cache
