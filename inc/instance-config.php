@@ -464,6 +464,22 @@ $config['markup'][] = array("/~~(.+?)~~/", "<span class=\"strikethrough\">\$1</s
 $config['markup_repair_tidy'] = true;
 
 /*
+ * ====================
+ * Default file thumbnails
+ * ====================
+ */
+
+$config['file_icons']['default'] = 'file.png';
+$config['file_icons']['zip'] = 'zip.png';
+$config['file_icons']['webm'] = 'mpg.png';
+$config['file_icons']['mp4'] = 'mpg.png';
+$config['file_icons']['mp3'] = 'mp3.png';
+$config['file_icons']['7z'] = '7z.png';
+$config['file_icons']['flv'] = 'flv.png';
+$config['file_icons']['htm'] = 'htm.png';
+$config['file_icons']['html'] = 'htm.png';
+
+/*
  * Original wordfilters (Obsolete, this is the basic form of the newer version below)
  */
 // $config['wordfilters'][] = array('/trann(y|ie)?/i', 'transhumanist', true);

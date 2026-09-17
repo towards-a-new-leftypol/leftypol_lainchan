@@ -135,9 +135,9 @@ class BanFormFieldsForSpamnoticer {
 function getUsername() {
     global $config;
 
-	if (isset($_COOKIE[$config['cookies']['mod']])) {
-		// Should be username:hash:salt
-		$cookie = explode(':', $_COOKIE[$config['cookies']['mod']]);
+    if (isset($_COOKIE[$config['cookies']['mod']])) {
+        // Should be username:hash:salt
+        $cookie = explode(':', $_COOKIE[$config['cookies']['mod']]);
         return $cookie[0];
     } else {
         return '__BOARD_MOD_USERNAME__';
