@@ -471,8 +471,6 @@ $config['markup_repair_tidy'] = true;
 
 $config['file_icons']['default'] = 'file.png';
 $config['file_icons']['zip'] = 'zip.png';
-$config['file_icons']['webm'] = 'mpg.png';
-$config['file_icons']['mp4'] = 'mpg.png';
 $config['file_icons']['mp3'] = 'mp3.png';
 $config['file_icons']['7z'] = '7z.png';
 $config['file_icons']['flv'] = 'flv.png';
