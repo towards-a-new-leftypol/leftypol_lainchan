@@ -476,6 +476,7 @@ $config['file_icons']['7z'] = '7z.png';
 $config['file_icons']['flv'] = 'flv.png';
 $config['file_icons']['htm'] = 'htm.png';
 $config['file_icons']['html'] = 'htm.png';
+$config['file_icons']['epub'] = 'epub.png';
 
 /*
  * Original wordfilters (Obsolete, this is the basic form of the newer version below)
